@@ -1,0 +1,1790 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>A/B Testing Calculator</title>
+<style>
+:root {
+  --bg: #F7F7F9;
+  --paper: #FFFFFF;
+  --ink: #0F172A;
+  --muted: #64748B;
+  --border: #E5E7EB;
+  --border-strong: #CBD5E1;
+  --primary: #5B5FE9;
+  --primary-soft: #EEEEFC;
+  --primary-dark: #4548D6;
+  --emerald: #059669;
+  --emerald-soft: #D1FAE5;
+  --rose: #E11D48;
+  --rose-soft: #FFE4E6;
+  --amber: #D97706;
+  --amber-soft: #FEF3C7;
+  --slate-soft: #F1F5F9;
+  --shadow: 0 1px 2px rgba(15,23,42,.04), 0 4px 16px rgba(15,23,42,.06);
+  --radius: 14px;
+  --card-pad: 28px;
+  --page-pad: 24px;
+}
+* { box-sizing: border-box; }
+html, body { background: var(--bg); color: var(--ink); margin: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI",
+               Roboto, "Helvetica Neue", Arial, sans-serif;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ===== Hero ===== */
+.hero {
+  background: linear-gradient(135deg, #5B5FE9 0%, #7C3AED 100%);
+  color: white;
+  padding: 48px var(--page-pad) 76px;
+}
+.hero-inner { max-width: 1080px; margin: 0 auto; }
+.hero h1 {
+  margin: 0 0 8px;
+  font-size: clamp(24px, 4vw, 40px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+.hero p { margin: 0; font-size: clamp(15px, 2.5vw, 17px); opacity: 0.85; max-width: 680px; }
+
+/* ===== Mode toggle ===== */
+.mode-toggle {
+  max-width: 1080px; margin: -38px auto 0; padding: 0 var(--page-pad);
+  position: relative; z-index: 2;
+}
+.mode-toggle-inner {
+  background: var(--paper); border-radius: var(--radius); padding: 5px;
+  box-shadow: var(--shadow); display: inline-flex; gap: 4px;
+  flex-wrap: nowrap;
+}
+.mode-btn {
+  background: transparent; border: none;
+  padding: 10px 18px; font-size: clamp(13px, 2vw, 15px); font-weight: 600;
+  color: var(--muted); cursor: pointer; border-radius: 10px;
+  font-family: inherit; transition: all 0.18s;
+  white-space: nowrap;
+  min-height: 44px;
+}
+.mode-btn:hover:not(.active) { color: var(--ink); background: var(--slate-soft); }
+.mode-btn.active { background: var(--primary); color: white; }
+
+/* ===== Page ===== */
+main {
+  max-width: 1080px; margin: 28px auto 0;
+  padding: 0 var(--page-pad) 80px;
+}
+
+/* ===== Two-column layout ===== */
+.layout {
+  display: grid;
+  grid-template-columns: min(340px, 35%) 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+/* ===== Cards ===== */
+.card {
+  background: var(--paper); border-radius: var(--radius);
+  padding: var(--card-pad); box-shadow: var(--shadow); margin-bottom: 16px;
+}
+.card h2 { margin: 0 0 6px; font-size: clamp(16px, 2.5vw, 18px); font-weight: 700; letter-spacing: -0.01em; }
+.card .lede { color: var(--muted); margin: 0 0 18px; font-size: 13.5px; }
+
+/* ===== Form ===== */
+.field { margin-bottom: 14px; }
+.field label {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 13px; font-weight: 600; color: var(--ink); margin-bottom: 5px;
+}
+.help-tip {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 16px; height: 16px; background: var(--slate-soft); color: var(--muted);
+  border-radius: 50%; font-size: 10px; font-weight: 700; cursor: help; position: relative;
+  flex-shrink: 0;
+}
+.help-tip:hover .help-tip-content,
+.help-tip:focus .help-tip-content { display: block; }
+.help-tip-content {
+  display: none; position: fixed;
+  background: var(--ink); color: white; padding: 9px 11px; border-radius: 8px;
+  font-size: 12px; font-weight: 400; width: min(240px, 80vw); line-height: 1.45;
+  z-index: 200; pointer-events: none;
+  box-shadow: 0 4px 20px rgba(15,23,42,.3);
+}
+/* position the tooltip via JS for edge-safe placement */
+input[type="number"], input[type="text"], select, textarea {
+  width: 100%; padding: 11px 12px; font-size: 16px; /* 16px prevents iOS zoom */
+  font-family: inherit; color: var(--ink);
+  background: var(--paper); border: 1px solid var(--border-strong);
+  border-radius: 8px; transition: all 0.15s;
+  -webkit-appearance: none; appearance: none;
+  min-height: 44px;
+}
+input:focus, select:focus, textarea:focus {
+  outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-soft);
+}
+select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2364748B' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 32px;
+}
+textarea {
+  font-family: "SF Mono", "Menlo", "Consolas", monospace;
+  font-size: 13px; resize: vertical; min-height: 90px;
+}
+.row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+
+/* ===== Metric picker sidebar ===== */
+.metric-section h3 {
+  font-size: 14px; font-weight: 600; margin: 0 0 10px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.help-me-btn {
+  font-size: 12px; color: var(--primary); background: none; border: none; padding: 0;
+  cursor: pointer; font-weight: 600; font-family: inherit;
+  text-decoration: underline; text-underline-offset: 2px;
+  min-height: 44px; display: flex; align-items: center;
+}
+.help-me-btn:hover { color: var(--primary-dark); }
+.metric-group { background: var(--slate-soft); border-radius: 10px; padding: 4px; margin-bottom: 10px; }
+.metric-group-label {
+  font-size: 11px; font-weight: 600; color: var(--muted);
+  padding: 6px 10px 4px; text-transform: uppercase; letter-spacing: 0.04em;
+}
+.metric-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 12px; background: var(--paper); border-radius: 7px;
+  margin-bottom: 3px; cursor: pointer; border: 1.5px solid transparent;
+  transition: all 0.12s; min-height: 44px;
+}
+.metric-item:last-child { margin-bottom: 0; }
+.metric-item:hover { border-color: var(--border-strong); }
+.metric-item.selected { border-color: var(--primary); background: var(--primary-soft); }
+.metric-item .name { font-size: 13px; font-weight: 600; }
+.metric-item.selected .name { color: var(--primary-dark); }
+.metric-item .test-badge {
+  font-size: 11px; color: var(--muted); background: var(--slate-soft);
+  padding: 3px 8px; border-radius: 10px; flex-shrink: 0; margin-left: 6px;
+}
+.metric-item.selected .test-badge { background: var(--paper); color: var(--primary-dark); }
+
+/* ===== Modal ===== */
+.modal-bg {
+  display: none; position: fixed; inset: 0;
+  background: rgba(15, 23, 42, 0.5);
+  align-items: flex-start; justify-content: center;
+  padding: 60px 16px 20px; z-index: 100;
+  overflow-y: auto;
+}
+.modal-bg.open { display: flex; }
+.modal {
+  background: var(--paper); border-radius: var(--radius); max-width: 560px; width: 100%;
+  padding: 28px; box-shadow: 0 10px 40px rgba(15,23,42,.3);
+  margin: auto;
+}
+.modal h3 { margin: 0 0 8px; font-size: 20px; }
+.modal .modal-lede { color: var(--muted); margin: 0 0 20px; font-size: 14px; }
+.modal-q { margin-bottom: 16px; }
+.modal-q-text { font-weight: 600; font-size: 14px; margin-bottom: 10px; }
+.modal-options { display: flex; flex-direction: column; gap: 8px; }
+.modal-option {
+  padding: 12px 14px; background: var(--slate-soft); border-radius: 8px;
+  cursor: pointer; font-size: 14px; border: 1.5px solid transparent;
+  transition: all 0.12s; min-height: 48px; display: flex; align-items: center;
+}
+.modal-option:hover, .modal-option:active { border-color: var(--primary); background: var(--primary-soft); }
+.modal-close {
+  margin-top: 14px; background: none; border: 1px solid var(--border-strong);
+  color: var(--muted); cursor: pointer; font-family: inherit; font-size: 14px;
+  padding: 10px 16px; border-radius: 8px; width: 100%; min-height: 44px;
+}
+.modal-result {
+  margin-top: 16px; padding: 14px;
+  background: var(--emerald-soft); border-radius: 10px; font-size: 14px;
+}
+.modal-result strong { color: var(--emerald); }
+
+/* ===== Variants editor ===== */
+.variants-grid { display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; }
+.variant-row {
+  display: grid;
+  grid-template-columns: 52px 1fr 1fr 60px 32px;
+  gap: 8px; align-items: end;
+  padding: 14px; background: var(--slate-soft); border-radius: 10px;
+}
+.variant-row.is-baseline { background: var(--primary-soft); }
+.variant-row-ratio {
+  display: grid;
+  grid-template-columns: 52px 1fr 1fr 1fr 32px;
+  gap: 8px; align-items: end;
+  padding: 14px; background: var(--slate-soft); border-radius: 10px;
+  margin-bottom: 0;
+}
+.variant-row-ratio.is-baseline { background: var(--primary-soft); }
+.variant-row-ratio-extra {
+  display: grid;
+  grid-template-columns: 52px 1fr 1fr 1fr 32px;
+  gap: 8px; align-items: end;
+  padding: 0 14px 14px; background: var(--slate-soft); border-radius: 0 0 10px 10px;
+  margin-top: -12px;
+}
+.variant-row-ratio + .variant-row-ratio-extra { margin-top: -12px; }
+.variant-label { font-weight: 700; font-size: 15px; color: var(--ink); padding-bottom: 12px; }
+.variant-label .badge {
+  display: block; font-size: 10px; color: var(--primary); margin-top: 1px; font-weight: 600;
+}
+.variant-row .field,
+.variant-row-ratio .field,
+.variant-row-ratio-extra .field { margin-bottom: 0; }
+.variant-row label,
+.variant-row-ratio label,
+.variant-row-ratio-extra label { font-size: 11px; }
+.v-rate-cell {
+  display: flex; align-items: flex-end; justify-content: center;
+  color: var(--muted); font-size: 12px; padding-bottom: 13px; gap: 4px;
+}
+.v-rate { font-weight: 700; }
+.v-remove {
+  background: none; border: none; cursor: pointer; color: var(--muted);
+  font-size: 20px; padding: 0; font-family: inherit;
+  display: flex; align-items: center; justify-content: center;
+  padding-bottom: 10px; min-width: 32px; min-height: 44px;
+}
+.v-remove:hover { color: var(--rose); }
+.add-variant {
+  background: var(--paper); border: 1.5px dashed var(--border-strong);
+  border-radius: 10px; padding: 12px;
+  font-size: 14px; font-weight: 600; color: var(--muted);
+  cursor: pointer; width: 100%; font-family: inherit; transition: all 0.12s;
+  min-height: 48px;
+}
+.add-variant:hover { border-color: var(--primary); color: var(--primary); }
+
+/* ===== Settings strip ===== */
+.settings-strip { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 18px; }
+
+/* ===== Run button ===== */
+.btn-primary {
+  background: var(--primary); color: white; border: none;
+  padding: 14px 28px; font-size: 15px; font-weight: 600;
+  border-radius: 10px; cursor: pointer; font-family: inherit; transition: all 0.15s;
+  box-shadow: 0 4px 12px rgba(91, 95, 233, 0.25);
+  min-height: 48px; width: 100%;
+}
+.btn-primary:hover { background: var(--primary-dark); }
+.btn-primary:active { transform: scale(0.98); }
+
+/* ===== Results ===== */
+.results-area { margin-top: 24px; }
+.results-area:empty { display: none; }
+.verdict-card { padding: 24px; border-radius: var(--radius); margin-bottom: 16px; }
+.verdict-card.win { background: linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%); border-left: 5px solid var(--emerald); }
+.verdict-card.lose { background: linear-gradient(135deg, #FFF1F2 0%, #FFE4E6 100%); border-left: 5px solid var(--rose); }
+.verdict-card.warn { background: linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%); border-left: 5px solid var(--amber); }
+.verdict-card h3 { margin: 0 0 8px; font-size: clamp(17px, 3vw, 20px); font-weight: 700; letter-spacing: -0.01em; }
+.verdict-card.win h3 { color: var(--emerald); }
+.verdict-card.lose h3 { color: var(--rose); }
+.verdict-card.warn h3 { color: var(--amber); }
+.verdict-card p { margin: 0; font-size: 14.5px; line-height: 1.55; }
+.verdict-card .next-steps {
+  margin-top: 14px; padding-top: 14px;
+  border-top: 1px solid rgba(15, 23, 42, 0.08); font-size: 13.5px;
+}
+.verdict-card .next-steps strong { display: block; margin-bottom: 4px; }
+.verdict-card .next-steps ul { margin: 4px 0 0; padding-left: 20px; }
+.verdict-card .next-steps li { margin-bottom: 6px; }
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 10px; margin-bottom: 20px;
+}
+.stat-box {
+  background: var(--paper); border: 1px solid var(--border);
+  border-radius: 10px; padding: 14px 16px;
+}
+.stat-box .stat-label {
+  font-size: 11px; color: var(--muted);
+  text-transform: uppercase; letter-spacing: 0.04em; font-weight: 600;
+}
+.stat-box .stat-value { font-size: clamp(18px, 3vw, 22px); font-weight: 700; letter-spacing: -0.02em; margin-top: 2px; }
+.stat-box .stat-sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+.stat-box.primary .stat-value { color: var(--primary); }
+.stat-box.emerald .stat-value { color: var(--emerald); }
+.stat-box.rose .stat-value { color: var(--rose); }
+
+.results-table {
+  width: 100%; border-collapse: collapse; margin-top: 8px;
+  background: var(--paper); border-radius: 10px; overflow: hidden;
+  border: 1px solid var(--border);
+}
+.results-table th, .results-table td {
+  padding: 11px 12px; text-align: left;
+  border-bottom: 1px solid var(--border); font-size: 13px;
+}
+.results-table th {
+  background: var(--slate-soft); font-weight: 600; font-size: 11px;
+  text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted);
+}
+.results-table tr:last-child td { border-bottom: none; }
+.results-table .winner-row { background: var(--emerald-soft); }
+.results-table .winner-row td:first-child::before { content: '★'; color: var(--emerald); margin-right: 6px; }
+.results-table .baseline-row td:first-child::before { content: '◆'; color: var(--primary); margin-right: 6px; }
+
+/* Horizontal scroll for tables on narrow screens */
+.table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: 10px; }
+
+.chart-card {
+  background: var(--paper); border: 1px solid var(--border);
+  border-radius: 10px; padding: 18px; margin-bottom: 16px;
+  overflow: hidden;
+}
+.chart-card h4 { margin: 0 0 4px; font-size: 14px; font-weight: 700; }
+.chart-card .chart-lede { margin: 0 0 12px; font-size: 12.5px; color: var(--muted); }
+svg { display: block; width: 100%; height: auto; max-height: 320px; }
+
+footer { color: var(--muted); font-size: 12px; padding: 24px var(--page-pad) 50px; text-align: center; }
+
+details {
+  background: var(--paper); border-radius: 10px; padding: 14px 18px;
+  margin-bottom: 8px; border: 1px solid var(--border);
+}
+details summary {
+  cursor: pointer; font-weight: 600; font-size: 14px; list-style: none;
+  min-height: 24px;
+}
+details summary::after { content: ' →'; color: var(--muted); float: right; }
+details[open] summary::after { content: ' ↓'; }
+details .details-body {
+  margin-top: 12px; padding-top: 12px;
+  border-top: 1px solid var(--border); font-size: 13.5px; color: var(--muted); line-height: 1.6;
+}
+details code {
+  background: var(--slate-soft); padding: 1px 6px; border-radius: 4px;
+  font-size: 12.5px; font-family: "SF Mono", "Menlo", "Consolas", monospace;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 860px) {
+  .layout { grid-template-columns: 1fr; }
+  /* On mobile the sidebar becomes horizontal scrollable chips */
+  .metric-group { display: flex; flex-wrap: wrap; gap: 6px; padding: 8px; }
+  .metric-group-label { width: 100%; padding: 4px 4px 2px; }
+  .metric-item { flex: 0 0 auto; padding: 8px 12px; border-radius: 20px; margin-bottom: 0; }
+  .metric-item .test-badge { display: none; }
+}
+
+@media (max-width: 600px) {
+  :root { --card-pad: 18px; --page-pad: 14px; }
+  .hero { padding: 36px var(--page-pad) 68px; }
+  .mode-toggle { margin-top: -32px; }
+  .mode-btn { padding: 9px 14px; font-size: 13px; }
+  .row-2, .row-3, .settings-strip { grid-template-columns: 1fr; }
+  /* Variant rows: two-column on phone */
+  .variant-row {
+    grid-template-columns: 52px 1fr 1fr;
+    grid-template-rows: auto auto;
+  }
+  .variant-row > .v-rate-cell { display: none; }
+  .variant-row > .v-remove { grid-row: 1; grid-column: 3; justify-self: end; padding-bottom: 0; align-self: start; padding-top: 4px; }
+  .variant-row-ratio { grid-template-columns: 52px 1fr 1fr; }
+  .variant-row-ratio-extra { grid-template-columns: 1fr 1fr 1fr; padding-top: 0; }
+  .variant-row-ratio .v-remove { grid-row: 1; grid-column: 3; justify-self: end; align-self: start; padding: 4px 0 0; }
+  main { margin-top: 20px; }
+  .stats-grid { grid-template-columns: 1fr 1fr; }
+  .results-table th, .results-table td { padding: 9px 8px; font-size: 12px; }
+  svg { max-height: 240px; }
+}
+
+@media (min-width: 1200px) {
+  .layout { grid-template-columns: 360px 1fr; }
+  .stats-grid { grid-template-columns: repeat(4, 1fr); }
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-inner">
+    <h1>A/B Testing Calculator</h1>
+    <p>Pick your metric, drop in your numbers, get a confident decision — with the right statistical test for what you&rsquo;re actually measuring.</p>
+  </div>
+</div>
+
+<div class="mode-toggle">
+  <div class="mode-toggle-inner">
+    <button class="mode-btn active" data-mode="size">Plan a test</button>
+    <button class="mode-btn"        data-mode="test">Analyse results</button>
+    <button class="mode-btn"        data-mode="ref">Reference</button>
+  </div>
+</div>
+
+<main>
+
+<!-- SIZE MODE -->
+<div class="mode-content" data-mode="size">
+  <div class="layout">
+    <aside>
+      <div class="card metric-section">
+        <h3>What metric are you testing?
+          <button class="help-me-btn" onclick="openHelpModal()">Help me choose</button>
+        </h3>
+        <p class="lede" style="margin-top: -4px;">Each category routes you to the correct statistical test.</p>
+        <div class="metric-group">
+          <div class="metric-group-label">Conversion / proportion</div>
+          <div class="metric-item selected" data-metric="conversion" data-label="Conversion rate">
+            <span class="name">Conversion rate</span><span class="test-badge">Z-test</span>
+          </div>
+          <div class="metric-item" data-metric="conversion" data-label="Click-through rate">
+            <span class="name">Click-through rate</span><span class="test-badge">Z-test</span>
+          </div>
+          <div class="metric-item" data-metric="conversion" data-label="Open rate">
+            <span class="name">Open rate</span><span class="test-badge">Z-test</span>
+          </div>
+          <div class="metric-item" data-metric="conversion" data-label="Signup / trial-to-paid">
+            <span class="name">Signup / trial-to-paid</span><span class="test-badge">Z-test</span>
+          </div>
+          <div class="metric-item" data-metric="conversion" data-label="Retention rate">
+            <span class="name">Retention rate</span><span class="test-badge">Z-test</span>
+          </div>
+        </div>
+        <div class="metric-group">
+          <div class="metric-group-label">Continuous per-user</div>
+          <div class="metric-item" data-metric="continuous" data-label="ARPU">
+            <span class="name">ARPU</span><span class="test-badge">Welch&rsquo;s t</span>
+          </div>
+          <div class="metric-item" data-metric="continuous" data-label="Session time">
+            <span class="name">Session time per user</span><span class="test-badge">Welch&rsquo;s t</span>
+          </div>
+          <div class="metric-item" data-metric="continuous" data-label="Items per user">
+            <span class="name">Items per user</span><span class="test-badge">Welch&rsquo;s t</span>
+          </div>
+          <div class="metric-item" data-metric="continuous" data-label="LTV / 14-day spend">
+            <span class="name">LTV / 14-day spend</span><span class="test-badge">Welch&rsquo;s t</span>
+          </div>
+        </div>
+        <div class="metric-group">
+          <div class="metric-group-label">Ratio (denominator varies)</div>
+          <div class="metric-item" data-metric="ratio" data-label="AOV">
+            <span class="name">Average order value</span><span class="test-badge">Delta method</span>
+          </div>
+          <div class="metric-item" data-metric="ratio" data-label="CTR per session">
+            <span class="name">CTR per session</span><span class="test-badge">Delta method</span>
+          </div>
+          <div class="metric-item" data-metric="ratio" data-label="Items per order">
+            <span class="name">Items per order</span><span class="test-badge">Delta method</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <section>
+      <div class="card">
+        <h2>Inputs</h2>
+        <p class="lede">Provide the baseline and the smallest lift worth detecting.</p>
+
+        <div class="metric-inputs" data-for="conversion">
+          <div class="row-2">
+            <div class="field">
+              <label>Baseline rate (%)
+                <span class="help-tip">?<span class="help-tip-content">Historical conversion you observe today. 4.8 means 4.8%.</span></span>
+              </label>
+              <input type="number" id="s_conv_p" step="0.01" min="0.01" max="99.99" value="4.8">
+            </div>
+            <div class="field">
+              <label>Minimum lift to detect (% relative)
+                <span class="help-tip">?<span class="help-tip-content">Smallest improvement worth shipping. 5 means +5% relative: 4.8% → 5.04%.</span></span>
+              </label>
+              <input type="number" id="s_conv_mde" step="0.5" min="0.1" max="500" value="5">
+            </div>
+          </div>
+        </div>
+
+        <div class="metric-inputs" data-for="continuous" hidden>
+          <div class="row-2">
+            <div class="field">
+              <label>Baseline mean
+                <span class="help-tip">?<span class="help-tip-content">Average current value of the metric, in natural units (dollars for ARPU, seconds for session time).</span></span>
+              </label>
+              <input type="number" id="s_cont_mean" step="0.01" value="8.40">
+            </div>
+            <div class="field">
+              <label>Standard deviation
+                <span class="help-tip">?<span class="help-tip-content">SD from historical data. For zero-inflated metrics like ARPU, the SD is typically 3-5x the mean.</span></span>
+              </label>
+              <input type="number" id="s_cont_sd" step="0.01" min="0.0001" value="34">
+            </div>
+          </div>
+          <div class="row-2">
+            <div class="field">
+              <label>Minimum lift to detect (% relative)
+                <span class="help-tip">?<span class="help-tip-content">Smallest meaningful improvement.</span></span>
+              </label>
+              <input type="number" id="s_cont_mde" step="0.5" min="0.1" max="500" value="3">
+            </div>
+            <div class="field">
+              <label>CUPED variance reduction (%)
+                <span class="help-tip">?<span class="help-tip-content">If using CUPED with a pre-period covariate, typical reduction is 30-50%. Leave 0 if not using.</span></span>
+              </label>
+              <input type="number" id="s_cont_cuped" step="5" min="0" max="90" value="0">
+            </div>
+          </div>
+        </div>
+
+        <div class="metric-inputs" data-for="ratio" hidden>
+          <p class="lede" style="margin-top: -10px;">Each user contributes (X, Y) where R = sum(X) / sum(Y). For AOV: X = revenue, Y = orders.</p>
+          <div class="row-2">
+            <div class="field">
+              <label>Baseline ratio
+                <span class="help-tip">?<span class="help-tip-content">Current value of the ratio, e.g. $42 for AOV.</span></span>
+              </label>
+              <input type="number" id="s_ratio_r" step="0.01" value="42">
+            </div>
+            <div class="field">
+              <label>Minimum lift to detect (% relative)
+                <span class="help-tip">?<span class="help-tip-content">2 means +2% on the ratio.</span></span>
+              </label>
+              <input type="number" id="s_ratio_mde" step="0.5" min="0.1" max="500" value="2">
+            </div>
+          </div>
+          <div class="row-3">
+            <div class="field">
+              <label>SD of X per user
+                <span class="help-tip">?<span class="help-tip-content">SD of the per-user numerator (e.g. user revenue).</span></span>
+              </label>
+              <input type="number" id="s_ratio_sx" step="0.01" min="0.0001" value="65">
+            </div>
+            <div class="field">
+              <label>Mean of Y per user
+                <span class="help-tip">?<span class="help-tip-content">Mean of the per-user denominator (e.g. orders per user).</span></span>
+              </label>
+              <input type="number" id="s_ratio_my" step="0.01" min="0.0001" value="1.4">
+            </div>
+            <div class="field">
+              <label>SD of Y per user
+                <span class="help-tip">?<span class="help-tip-content">SD of the per-user denominator.</span></span>
+              </label>
+              <input type="number" id="s_ratio_sy" step="0.01" min="0.0001" value="1.1">
+            </div>
+          </div>
+          <div class="field">
+            <label>Correlation between X and Y (per user)
+              <span class="help-tip">?<span class="help-tip-content">Heavy buyers usually have both high X and high Y — typical 0.6-0.8.</span></span>
+            </label>
+            <input type="number" id="s_ratio_corr" step="0.05" min="-1" max="1" value="0.7">
+          </div>
+        </div>
+
+        <h2 style="margin-top: 22px;">Test parameters</h2>
+        <div class="settings-strip">
+          <div class="field">
+            <label>Significance (α)
+              <span class="help-tip">?<span class="help-tip-content">Acceptable false-positive rate. Standard is 0.05.</span></span>
+            </label>
+            <select id="s_alpha">
+              <option value="0.10">0.10 — fast iteration</option>
+              <option value="0.05" selected>0.05 — standard</option>
+              <option value="0.01">0.01 — high-stakes</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Power (1 − β)
+              <span class="help-tip">?<span class="help-tip-content">Chance of detecting a real effect. 80% standard, 90% for important decisions.</span></span>
+            </label>
+            <select id="s_power">
+              <option value="0.80" selected>80% — standard</option>
+              <option value="0.90">90% — high power</option>
+              <option value="0.95">95% — very high</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Hypothesis
+              <span class="help-tip">?<span class="help-tip-content">Two-sided detects any difference. One-sided is more powerful but only detects in one direction.</span></span>
+            </label>
+            <select id="s_sides">
+              <option value="2" selected>Two-sided</option>
+              <option value="1">One-sided</option>
+            </select>
+          </div>
+        </div>
+
+        <button class="btn-primary" onclick="computeSampleSize()">Calculate sample size</button>
+      </div>
+
+      <div class="results-area" id="size-results"></div>
+    </section>
+  </div>
+</div>
+
+
+<!-- TEST MODE -->
+<div class="mode-content" data-mode="test" hidden>
+  <div class="layout">
+    <aside>
+      <div class="card metric-section">
+        <h3>What metric did you test?
+          <button class="help-me-btn" onclick="openHelpModal()">Help me choose</button>
+        </h3>
+        <p class="lede" style="margin-top: -4px;">Routes to the right test for your post-experiment data.</p>
+        <div class="metric-group">
+          <div class="metric-group-label">Conversion / proportion</div>
+          <div class="metric-item selected" data-metric="conversion" data-label="Conversion rate">
+            <span class="name">Conversion / CTR / open rate</span><span class="test-badge">Z-test</span>
+          </div>
+          <div class="metric-item" data-metric="conversion-multi" data-label="3+ variants on conversion">
+            <span class="name">3+ variants on conversion</span><span class="test-badge">χ²</span>
+          </div>
+        </div>
+        <div class="metric-group">
+          <div class="metric-group-label">Continuous per-user</div>
+          <div class="metric-item" data-metric="continuous" data-label="ARPU / mean per user">
+            <span class="name">ARPU / session time / spend</span><span class="test-badge">Welch&rsquo;s t</span>
+          </div>
+          <div class="metric-item" data-metric="mw" data-label="Skewed metric, small n">
+            <span class="name">Skewed metric, small n</span><span class="test-badge">Mann–Whitney U</span>
+          </div>
+        </div>
+        <div class="metric-group">
+          <div class="metric-group-label">Ratio metric</div>
+          <div class="metric-item" data-metric="ratio" data-label="AOV / CTR per session">
+            <span class="name">AOV / CTR per session</span><span class="test-badge">Delta method</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <section>
+      <div class="card">
+        <h2>Test results</h2>
+        <p class="lede">Enter the data for each variant. A is the control.</p>
+
+        <div class="metric-inputs" data-for="conversion">
+          <div class="variants-grid" id="conv-variants"></div>
+          <button type="button" class="add-variant" onclick="addConvVariant()">+ Add variant</button>
+        </div>
+
+        <div class="metric-inputs" data-for="conversion-multi" hidden>
+          <div class="variants-grid" id="conv-multi-variants"></div>
+          <button type="button" class="add-variant" onclick="addConvMultiVariant()">+ Add variant</button>
+          <p class="lede" style="margin-top: 12px; font-size: 12px;">A χ² test across all variants tells you if any one differs. Pairwise tests (Bonferroni-corrected) follow.</p>
+        </div>
+
+        <div class="metric-inputs" data-for="continuous" hidden>
+          <div class="variants-grid" id="cont-variants"></div>
+          <button type="button" class="add-variant" onclick="addContVariant()">+ Add variant</button>
+        </div>
+
+        <div class="metric-inputs" data-for="ratio" hidden>
+          <p class="lede" style="margin-top: -10px;">Provide per-arm <strong>user-level</strong> summary stats (mean and SD of numerator and denominator across users, plus their covariance).</p>
+          <div class="variants-grid" id="ratio-variants"></div>
+          <button type="button" class="add-variant" onclick="addRatioVariant()">+ Add variant</button>
+        </div>
+
+        <div class="metric-inputs" data-for="mw" hidden>
+          <p class="lede" style="margin-top: -10px;">Paste raw values for each arm. Best for skewed metrics with small samples (n &lt; 200 per arm).</p>
+          <div class="row-2">
+            <div class="field">
+              <label>Control (A)</label>
+              <textarea id="t_mw_a">3.2, 4.1, 2.8, 5.0, 3.9, 4.5, 2.5, 3.7, 4.2, 3.0</textarea>
+            </div>
+            <div class="field">
+              <label>Variant (B)</label>
+              <textarea id="t_mw_b">4.0, 5.2, 3.6, 5.8, 4.7, 5.5, 3.4, 4.4, 5.0, 4.1</textarea>
+            </div>
+          </div>
+        </div>
+
+        <h2 style="margin-top: 22px;">Test parameters</h2>
+        <div class="settings-strip">
+          <div class="field">
+            <label>Significance (α)</label>
+            <select id="t_alpha">
+              <option value="0.10">0.10</option>
+              <option value="0.05" selected>0.05</option>
+              <option value="0.01">0.01</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Hypothesis</label>
+            <select id="t_sides">
+              <option value="2" selected>Two-sided</option>
+              <option value="1">One-sided</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Pre-registered MDE (%, optional)</label>
+            <input type="number" id="t_mde" step="0.1" placeholder="e.g. 5">
+          </div>
+        </div>
+
+        <button class="btn-primary" onclick="computeTest()">Analyse results</button>
+      </div>
+
+      <div class="results-area" id="test-results"></div>
+    </section>
+  </div>
+</div>
+
+<!-- REFERENCE MODE -->
+<div class="mode-content" data-mode="ref" hidden>
+  <div class="card">
+    <h2>Metric → Test reference</h2>
+    <p class="lede">A quick map from what you measure to which test you should run.</p>
+
+    <details open>
+      <summary>Conversion / proportion → Two-proportion Z-test</summary>
+      <div class="details-body">
+        <p><strong>What it&rsquo;s for:</strong> Any binary outcome per user — did they convert, click, sign up, retain? One row per user, one outcome (1 or 0).</p>
+        <p><strong>Formula:</strong> <code>Z = (p₂ − p₁) / √(p̄(1−p̄)(1/n₁ + 1/n₂))</code> where p̄ is the pooled rate.</p>
+        <p><strong>Requirement:</strong> at least 10 conversions per arm for the normal approximation.</p>
+        <p><strong>Examples:</strong> checkout conversion, email open rate, click-through rate, signup rate, day-7 retention.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Continuous per-user → Welch&rsquo;s t-test</summary>
+      <div class="details-body">
+        <p><strong>What it&rsquo;s for:</strong> Numeric metrics with one value per user — revenue, session time, items added. Welch&rsquo;s handles unequal variances correctly (always use it instead of Student&rsquo;s).</p>
+        <p><strong>Formula:</strong> <code>t = (x̄₂ − x̄₁) / √(s₁²/n₁ + s₂²/n₂)</code>. Welch-Satterthwaite df.</p>
+        <p><strong>Watch out:</strong> heavy-tailed metrics (ARPU, LTV) often have whales dominating. Winsorise at p99 and use CUPED to reduce variance 30–50%.</p>
+        <p><strong>Examples:</strong> ARPU, average session length, items in cart per user, 14-day spend.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Ratio metrics → Delta method (NOT a t-test!)</summary>
+      <div class="details-body">
+        <p><strong>What it&rsquo;s for:</strong> Metrics defined as a ratio of two random quantities — AOV (revenue/orders), CTR per session (clicks/sessions) — when the denominator varies per user.</p>
+        <p><strong>The trap:</strong> a t-test on AOV treats each order as independent. Orders from the same user are NOT independent — Type I error inflates to 10-30% instead of 5%.</p>
+        <p><strong>Formula:</strong> <code>Var(R) ≈ (1/n)·[Var(X)/Ȳ² − 2·X̄·Cov(X,Y)/Ȳ³ + X̄²·Var(Y)/Ȳ⁴]</code> where n is users.</p>
+        <p><strong>Examples:</strong> AOV, CTR per session, items per order, revenue per session.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Skewed / small n → Mann-Whitney U</summary>
+      <div class="details-body">
+        <p><strong>What it&rsquo;s for:</strong> Heavily skewed metrics with small samples (n &lt; 200), where CLT is shaky and outliers dominate.</p>
+        <p><strong>What it tests:</strong> stochastic dominance, NOT mean equality. Report medians as the natural summary.</p>
+        <p><strong>Examples:</strong> B2B contract value (ACV), enterprise deal sizes, early-stage metrics.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>3+ variants → χ² test</summary>
+      <div class="details-body">
+        <p><strong>What it&rsquo;s for:</strong> A vs B vs C on a binary or multi-category outcome. Avoids multiple-comparison inflation of pairwise tests.</p>
+        <p><strong>Workflow:</strong> run χ² across the contingency table. If significant, pairwise Z with Bonferroni (α/k).</p>
+        <p><strong>Examples:</strong> 3 onboarding flows, 4 subject lines, 5 pricing tiers.</p>
+      </div>
+    </details>
+
+    <h2 style="margin-top: 32px;">How α, β, and power interact</h2>
+    <p class="lede">Type I and Type II errors are tightly coupled. Power = 1 − β.</p>
+    <table class="results-table" style="margin-top: 12px;">
+      <thead><tr><th>Lever</th><th>α</th><th>β</th><th>Power</th><th>Mechanism</th></tr></thead>
+      <tbody>
+        <tr><td>Increase n</td><td>—</td><td>↓</td><td>↑</td><td>SE shrinks like 1/√n</td></tr>
+        <tr><td>Reduce variance (CUPED, stratification)</td><td>—</td><td>↓</td><td>↑</td><td>Same as more data, achieved statistically</td></tr>
+        <tr><td>Raise α (0.05 → 0.10)</td><td>↑</td><td>↓</td><td>↑</td><td>Lower rejection threshold</td></tr>
+        <tr><td>Lower α (0.05 → 0.01)</td><td>↓</td><td>↑</td><td>↓</td><td>Higher rejection threshold</td></tr>
+        <tr><td>One-sided test</td><td>—</td><td>↓</td><td>↑</td><td>All α budget on one tail</td></tr>
+        <tr><td>Pre-register hypotheses</td><td>↓</td><td>—</td><td>—</td><td>Stops post-hoc shopping</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+</main>
+
+<footer>All calculations run locally in your browser — no data leaves your device.</footer>
+
+<!-- HELP-ME MODAL -->
+<div class="modal-bg" id="help-modal">
+  <div class="modal">
+    <h3>Help me pick a metric type</h3>
+    <p class="modal-lede">Answer one or two questions and I&rsquo;ll point you to the right test.</p>
+
+    <div class="modal-q" id="q1">
+      <div class="modal-q-text">1. How many values does each user contribute?</div>
+      <div class="modal-options">
+        <div class="modal-option" onclick="helpAnswer('q1', 'one-binary')">One — yes/no (did they do it or not?)</div>
+        <div class="modal-option" onclick="helpAnswer('q1', 'one-numeric')">One — a number per user (revenue, time on site, items in cart)</div>
+        <div class="modal-option" onclick="helpAnswer('q1', 'many')">Many — multiple events/orders/sessions per user</div>
+        <div class="modal-option" onclick="helpAnswer('q1', 'small-skewed')">A number, but I have very few users (&lt; 200/arm) or the data is very skewed</div>
+      </div>
+    </div>
+
+    <div class="modal-q" id="q2-many" hidden>
+      <div class="modal-q-text">2. How is your metric computed?</div>
+      <div class="modal-options">
+        <div class="modal-option" onclick="helpResult('continuous')">A per-user total or average (e.g. total revenue per user, average session length)</div>
+        <div class="modal-option" onclick="helpResult('ratio')">A ratio where the denominator changes per user (e.g. revenue ÷ orders, clicks ÷ sessions)</div>
+      </div>
+    </div>
+
+    <div class="modal-q" id="q2-variants" hidden>
+      <div class="modal-q-text">2. How many variants are you testing?</div>
+      <div class="modal-options">
+        <div class="modal-option" onclick="helpResult('conversion')">Two (control vs one variant)</div>
+        <div class="modal-option" onclick="helpResult('conversion-multi')">Three or more</div>
+      </div>
+    </div>
+
+    <div class="modal-result" id="help-result" hidden></div>
+
+    <button class="modal-close" onclick="closeHelpModal()">Close</button>
+  </div>
+</div>
+
+<script>
+
+/* === STATS HELPERS === */
+function normCdf(z) {
+  const b1=0.319381530,b2=-0.356563782,b3=1.781477937,b4=-1.821255978,
+        b5=1.330274429,p=0.2316419,c=0.39894228;
+  const ax=Math.abs(z), t=1/(1+p*ax);
+  const v=c*Math.exp(-ax*ax/2)*t*(b1+t*(b2+t*(b3+t*(b4+t*b5))));
+  return z>=0?1-v:v;
+}
+function normInv(p) {
+  if (p<=0||p>=1) return NaN;
+  const a=[-3.969683028665376e+01,2.209460984245205e+02,-2.759285104469687e+02,1.383577518672690e+02,-3.066479806614716e+01,2.506628277459239e+00];
+  const b=[-5.447609879822406e+01,1.615858368580409e+02,-1.556989798598866e+02,6.680131188771972e+01,-1.328068155288572e+01];
+  const c=[-7.784894002430293e-03,-3.223964580411365e-01,-2.400758277161838e+00,-2.549732539343734e+00,4.374664141464968e+00,2.938163982698783e+00];
+  const d=[7.784695709041462e-03,3.224671290700398e-01,2.445134137142996e+00,3.754408661907416e+00];
+  const pLow=0.02425,pHigh=1-pLow;
+  let q,r;
+  if (p<pLow) { q=Math.sqrt(-2*Math.log(p));
+    return (((((c[0]*q+c[1])*q+c[2])*q+c[3])*q+c[4])*q+c[5])/((((d[0]*q+d[1])*q+d[2])*q+d[3])*q+1); }
+  else if (p<=pHigh) { q=p-0.5;r=q*q;
+    return (((((a[0]*r+a[1])*r+a[2])*r+a[3])*r+a[4])*r+a[5])*q/(((((b[0]*r+b[1])*r+b[2])*r+b[3])*r+b[4])*r+1); }
+  else { q=Math.sqrt(-2*Math.log(1-p));
+    return -(((((c[0]*q+c[1])*q+c[2])*q+c[3])*q+c[4])*q+c[5])/((((d[0]*q+d[1])*q+d[2])*q+d[3])*q+1); }
+}
+function chi2_cdf(x, df) {
+  if (x<=0) return 0;
+  if (df===1) return 2*normCdf(Math.sqrt(x))-1;
+  const h=2/(9*df);
+  return normCdf((Math.pow(x/df,1/3)-(1-h))/Math.sqrt(h));
+}
+function fmt(x,d=4) {
+  if (!isFinite(x)) return '—';
+  if (Math.abs(x)>=1e6) return (x/1e6).toFixed(2)+'M';
+  if (Math.abs(x)>=100) return x.toFixed(0);
+  if (Math.abs(x)>=10) return x.toFixed(2);
+  return x.toFixed(d);
+}
+function fmtInt(x) { return isFinite(x)?Math.round(x).toLocaleString():'—'; }
+function fmtPct(x,d=2) { return isFinite(x)?(x*100).toFixed(d)+'%':'—'; }
+function fmtP(p) { if (!isFinite(p)) return '—'; if (p<0.0001) return '< 0.0001'; return p.toFixed(4); }
+function median(arr) { const s=[...arr].sort((a,b)=>a-b); const m=Math.floor(s.length/2); return s.length%2?s[m]:(s[m-1]+s[m])/2; }
+function quantile(arr,q) { const s=[...arr].sort((a,b)=>a-b); const idx=q*(s.length-1); const lo=Math.floor(idx),hi=Math.ceil(idx); return s[lo]+(s[hi]-s[lo])*(idx-lo); }
+
+/* === MODE TOGGLE === */
+document.querySelectorAll('.mode-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.mode-content').forEach(c => c.hidden = (c.dataset.mode !== btn.dataset.mode));
+  });
+});
+
+/* === METRIC PICKERS === */
+function setupMetricPicker(modeName) {
+  const container = document.querySelector(`.mode-content[data-mode="${modeName}"]`);
+  if (!container) return;
+  container.querySelectorAll('.metric-item').forEach(item => {
+    item.addEventListener('click', () => {
+      container.querySelectorAll('.metric-item').forEach(i => i.classList.remove('selected'));
+      item.classList.add('selected');
+      const target = item.dataset.metric;
+      container.querySelectorAll('.metric-inputs').forEach(div => div.hidden = (div.dataset.for !== target));
+      container.querySelectorAll('.results-area').forEach(r => r.innerHTML = '');
+    });
+  });
+}
+setupMetricPicker('size');
+setupMetricPicker('test');
+function selectedMetric(modeName) {
+  const sel = document.querySelector(`.mode-content[data-mode="${modeName}"] .metric-item.selected`);
+  return { metric: sel.dataset.metric, label: sel.dataset.label };
+}
+
+/* === HELP-ME MODAL === */
+function openHelpModal() {
+  document.getElementById('help-modal').classList.add('open');
+  document.getElementById('q1').hidden = false;
+  document.getElementById('q2-many').hidden = true;
+  document.getElementById('q2-variants').hidden = true;
+  document.getElementById('help-result').hidden = true;
+}
+function closeHelpModal() { document.getElementById('help-modal').classList.remove('open'); }
+function helpAnswer(qId, answer) {
+  if (qId === 'q1') {
+    if (answer === 'one-binary') { document.getElementById('q1').hidden = true; document.getElementById('q2-variants').hidden = false; }
+    else if (answer === 'one-numeric') helpResult('continuous');
+    else if (answer === 'many') { document.getElementById('q1').hidden = true; document.getElementById('q2-many').hidden = false; }
+    else if (answer === 'small-skewed') helpResult('mw');
+  }
+}
+function helpResult(metricKey) {
+  const map = {
+    'conversion': { test: 'Two-proportion Z-test', why: 'A binary per-user outcome with two arms is the classic conversion test.' },
+    'conversion-multi': { test: 'χ² test, then pairwise Z with Bonferroni', why: 'Three or more variants need an omnibus test first to avoid multiple-comparison inflation.' },
+    'continuous': { test: "Welch's t-test", why: 'One number per user is a continuous metric. Welch&rsquo;s handles unequal variances safely.' },
+    'ratio': { test: 'Delta method', why: 'When the denominator varies per user, a naive t-test inflates false positives. Delta gives correct variance.' },
+    'mw': { test: 'Mann-Whitney U test', why: 'Small samples or heavy skew break the CLT. Rank-based tests are robust to both.' }
+  };
+  const m = map[metricKey];
+  const result = document.getElementById('help-result');
+  result.hidden = false;
+  result.innerHTML = `<strong>Use the ${m.test}.</strong> ${m.why}<br><br>
+    <button class="btn-primary" style="margin-top: 10px; padding: 8px 18px; font-size: 13px;" onclick="applyHelpResult('${metricKey}')">Use this metric</button>`;
+}
+function applyHelpResult(metricKey) {
+  const activeMode = document.querySelector('.mode-btn.active').dataset.mode;
+  const container = document.querySelector(`.mode-content[data-mode="${activeMode}"]`);
+  const target = container.querySelector(`.metric-item[data-metric="${metricKey}"]`);
+  if (target) target.click();
+  closeHelpModal();
+}
+document.getElementById('help-modal').addEventListener('click', e => { if (e.target.id === 'help-modal') closeHelpModal(); });
+
+/* === VARIANTS EDITOR === */
+const VL = ['A','B','C','D','E','F','G'];
+function makeConvVariant(idx, defaults={}) {
+  const isBase = idx === 0;
+  return `<div class="variant-row ${isBase?'is-baseline':''}" data-idx="${idx}">
+    <div class="variant-label">${VL[idx]}${isBase?'<span class="badge">CONTROL</span>':''}</div>
+    <div class="field"><label>Users</label><input type="number" inputmode="numeric" class="v-users" min="1" value="${defaults.users||122000}" aria-label="Users in variant ${VL[idx]}"></div>
+    <div class="field"><label>Conversions</label><input type="number" inputmode="numeric" class="v-conv" min="0" value="${defaults.conv||(isBase?5856:6283)}" aria-label="Conversions in variant ${VL[idx]}"></div>
+    <div class="v-rate-cell">→ <span class="v-rate">—</span></div>
+    ${idx>1?`<button class="v-remove" onclick="removeVariant(this)" aria-label="Remove variant ${VL[idx]}">×</button>`:'<div></div>'}
+  </div>`;
+}
+function makeContVariant(idx, defaults={}) {
+  const isBase = idx === 0;
+  return `<div class="variant-row ${isBase?'is-baseline':''}" data-idx="${idx}">
+    <div class="variant-label">${VL[idx]}${isBase?'<span class="badge">CONTROL</span>':''}</div>
+    <div class="field"><label>n</label><input type="number" inputmode="numeric" class="v-n" min="1" value="${defaults.n||80000}"></div>
+    <div class="field"><label>Mean</label><input type="number" inputmode="decimal" class="v-mean" step="0.01" value="${defaults.mean||(isBase?8.42:8.71)}"></div>
+    <div class="field"><label>SD</label><input type="number" inputmode="decimal" class="v-sd" step="0.01" min="0.0001" value="${defaults.sd||(isBase?33.8:35.1)}"></div>
+    ${idx>1?`<button class="v-remove" onclick="removeVariant(this)" aria-label="Remove variant ${VL[idx]}">×</button>`:'<div></div>'}
+  </div>`;
+}
+function makeRatioVariant(idx, defaults={}) {
+  const isBase = idx === 0;
+  return `<div class="variant-row-ratio ${isBase?'is-baseline':''}" data-idx="${idx}">
+    <div class="variant-label">${VL[idx]}${isBase?'<span class="badge">CONTROL</span>':''}</div>
+    <div class="field"><label>Users</label><input type="number" inputmode="numeric" class="v-n" min="1" value="${defaults.n||50000}"></div>
+    <div class="field"><label>Mean X (num)</label><input type="number" inputmode="decimal" class="v-mx" step="0.01" value="${defaults.mx||(isBase?59.82:59.84)}"></div>
+    <div class="field"><label>Mean Y (den)</label><input type="number" inputmode="decimal" class="v-my" step="0.01" value="${defaults.my||(isBase?1.42:1.39)}"></div>
+    ${idx>1?`<button class="v-remove" onclick="removeVariant(this)" aria-label="Remove">×</button>`:'<div></div>'}
+    </div><div class="variant-row-ratio-extra">
+    <div></div>
+    <div class="field"><label>SD X</label><input type="number" inputmode="decimal" class="v-sx" step="0.01" value="${defaults.sx||68}"></div>
+    <div class="field"><label>SD Y</label><input type="number" inputmode="decimal" class="v-sy" step="0.01" value="${defaults.sy||1.1}"></div>
+    <div class="field"><label>Cov(X,Y)</label><input type="number" inputmode="decimal" class="v-cxy" step="0.01" value="${defaults.cxy||38}"></div>
+    <div></div>
+  </div>`;
+}
+function refreshRates(containerId) {
+  document.querySelectorAll(`#${containerId} .variant-row`).forEach(row => {
+    const u = parseFloat(row.querySelector('.v-users')?.value);
+    const c = parseFloat(row.querySelector('.v-conv')?.value);
+    const rs = row.querySelector('.v-rate');
+    if (rs && u>0) rs.textContent = fmtPct(c/u, 2);
+  });
+}
+function addConvVariant() {
+  const c = document.getElementById('conv-variants');
+  if (c.children.length >= 7) return;
+  c.insertAdjacentHTML('beforeend', makeConvVariant(c.children.length, { users: 122000, conv: 6000 }));
+  refreshRates('conv-variants'); bindRateRefresh();
+}
+function addConvMultiVariant() {
+  const c = document.getElementById('conv-multi-variants');
+  if (c.children.length >= 7) return;
+  c.insertAdjacentHTML('beforeend', makeConvVariant(c.children.length, { users: 50000, conv: 2500 + c.children.length*100 }));
+  refreshRates('conv-multi-variants'); bindRateRefresh();
+}
+function addContVariant() {
+  const c = document.getElementById('cont-variants');
+  if (c.children.length >= 5) return;
+  c.insertAdjacentHTML('beforeend', makeContVariant(c.children.length));
+}
+function addRatioVariant() {
+  const c = document.getElementById('ratio-variants');
+  if (c.children.length >= 5) return;
+  c.insertAdjacentHTML('beforeend', makeRatioVariant(c.children.length));
+}
+function removeVariant(btn) {
+  // Handle both simple rows and two-part ratio rows
+  const row = btn.closest('.variant-row,.variant-row-ratio');
+  const container = row.parentElement;
+  // Also remove the extra row for ratio variants
+  const nextEl = row.nextElementSibling;
+  if (nextEl && nextEl.classList.contains('variant-row-ratio-extra')) nextEl.remove();
+  row.remove();
+  // Re-index remaining rows
+  let realIdx = 0;
+  [...container.children].forEach(el => {
+    if (el.classList.contains('variant-row-ratio-extra')) return; // skip extras
+    el.dataset.idx = realIdx;
+    const lbl = el.querySelector('.variant-label');
+    if (lbl) { lbl.innerHTML = VL[realIdx] + (realIdx===0?'<span class="badge">CONTROL</span>':''); }
+    el.classList.toggle('is-baseline', realIdx===0);
+    realIdx++;
+  });
+}
+function bindRateRefresh() {
+  document.querySelectorAll('#conv-variants input, #conv-multi-variants input').forEach(inp => {
+    inp.oninput = () => { refreshRates('conv-variants'); refreshRates('conv-multi-variants'); };
+  });
+}
+
+// Initialise defaults
+document.getElementById('conv-variants').innerHTML =
+  makeConvVariant(0, {users:122000, conv:5856}) + makeConvVariant(1, {users:122000, conv:6283});
+document.getElementById('conv-multi-variants').innerHTML =
+  makeConvVariant(0, {users:50000, conv:2400}) +
+  makeConvVariant(1, {users:50000, conv:2600}) +
+  makeConvVariant(2, {users:50000, conv:2550});
+document.getElementById('cont-variants').innerHTML = makeContVariant(0) + makeContVariant(1);
+document.getElementById('ratio-variants').innerHTML = makeRatioVariant(0) + makeRatioVariant(1);
+refreshRates('conv-variants');
+refreshRates('conv-multi-variants');
+bindRateRefresh();
+
+function badInput(msg) { return `<div class="verdict-card warn"><h3>Check your inputs</h3><p>${msg}</p></div>`; }
+
+/* === SAMPLE SIZE === */
+function computeSampleSize() {
+  const m = selectedMetric('size');
+  const alpha = parseFloat(document.getElementById('s_alpha').value);
+  const power = parseFloat(document.getElementById('s_power').value);
+  const sides = parseInt(document.getElementById('s_sides').value);
+  const za = normInv(1 - alpha/sides);
+  const zb = normInv(power);
+  const out = document.getElementById('size-results');
+
+  let n, baseline, mdeDesc, test, formula;
+  if (m.metric === 'conversion') {
+    const p1 = parseFloat(document.getElementById('s_conv_p').value)/100;
+    const mdeRel = parseFloat(document.getElementById('s_conv_mde').value)/100;
+    const p2 = p1*(1+mdeRel);
+    if (p2 >= 1 || p1 <= 0) { out.innerHTML = badInput('Baseline must be between 0% and 100%, and the lifted rate must stay under 100%.'); return; }
+    n = Math.ceil(((za+zb)**2 * (p1*(1-p1)+p2*(1-p2)))/((p2-p1)**2));
+    baseline = fmtPct(p1, 2);
+    mdeDesc = `${(mdeRel*100).toFixed(1)}% relative (${fmtPct(p2-p1, 3)} absolute)`;
+    test = 'Two-proportion Z-test';
+    formula = 'n ≈ (z<sub>α/2</sub> + z<sub>β</sub>)² · [p₁(1−p₁) + p₂(1−p₂)] / (p₂ − p₁)²';
+  } else if (m.metric === 'continuous') {
+    const mean = parseFloat(document.getElementById('s_cont_mean').value);
+    const sd = parseFloat(document.getElementById('s_cont_sd').value);
+    const mdeRel = parseFloat(document.getElementById('s_cont_mde').value)/100;
+    const cuped = parseFloat(document.getElementById('s_cont_cuped').value)/100;
+    const delta = mean*mdeRel;
+    if (delta <= 0 || sd <= 0) { out.innerHTML = badInput('Mean, SD, and MDE must all be positive.'); return; }
+    const sigma2 = sd*sd*(1-cuped);
+    n = Math.ceil(2*((za+zb)**2)*sigma2/(delta*delta));
+    baseline = `Mean = ${fmt(mean,2)}, SD = ${fmt(sd,2)}`;
+    mdeDesc = `${(mdeRel*100).toFixed(1)}% relative (Δ = ${fmt(delta,3)})`;
+    test = "Welch's t-test" + (cuped>0?` (with CUPED, ${(cuped*100).toFixed(0)}% var reduction)`:'');
+    formula = "n ≈ 2 · (z<sub>α/2</sub> + z<sub>β</sub>)² · σ² / Δ²";
+  } else if (m.metric === 'ratio') {
+    const r = parseFloat(document.getElementById('s_ratio_r').value);
+    const mdeRel = parseFloat(document.getElementById('s_ratio_mde').value)/100;
+    const sx = parseFloat(document.getElementById('s_ratio_sx').value);
+    const my = parseFloat(document.getElementById('s_ratio_my').value);
+    const sy = parseFloat(document.getElementById('s_ratio_sy').value);
+    const rho = parseFloat(document.getElementById('s_ratio_corr').value);
+    const mx = r*my, cxy = rho*sx*sy;
+    const varR = (sx*sx)/(my*my) - 2*mx*cxy/(my*my*my) + (mx*mx)*(sy*sy)/(my*my*my*my);
+    const delta = r*mdeRel;
+    if (delta<=0 || varR<=0) { out.innerHTML = badInput('Variance came out non-positive — check your SDs and correlation.'); return; }
+    n = Math.ceil(2*((za+zb)**2)*varR/(delta*delta));
+    baseline = `R = ${fmt(r,2)}`;
+    mdeDesc = `${(mdeRel*100).toFixed(1)}% relative (Δ = ${fmt(delta,3)})`;
+    test = 'Delta method';
+    formula = 'n ≈ 2 · (z<sub>α/2</sub> + z<sub>β</sub>)² · Var(R) / Δ²';
+  }
+
+  const totalDays = Math.ceil(2*n / 25000);
+  out.innerHTML = `
+    <div class="verdict-card win">
+      <h3>You need ${fmtInt(n)} users per variant</h3>
+      <p>${fmtInt(2*n)} total on a 50/50 split. At 25,000 eligible users per day, that&rsquo;s roughly <strong>${totalDays} days</strong> of traffic.</p>
+    </div>
+    <div class="stats-grid">
+      <div class="stat-box primary"><div class="stat-label">Per variant</div><div class="stat-value">${fmtInt(n)}</div></div>
+      <div class="stat-box"><div class="stat-label">Total (50/50)</div><div class="stat-value">${fmtInt(2*n)}</div></div>
+      <div class="stat-box"><div class="stat-label">Baseline</div><div class="stat-value" style="font-size:15px;line-height:1.3;">${baseline}</div></div>
+      <div class="stat-box"><div class="stat-label">MDE</div><div class="stat-value" style="font-size:15px;line-height:1.3;">${mdeDesc}</div></div>
+    </div>
+    <div class="chart-card">
+      <h4>How sample size scales with the MDE you target</h4>
+      <p class="chart-lede">Smaller effects need quadratically more users. The vertical line marks your current MDE.</p>
+      <div id="size-chart"></div>
+    </div>
+    <details><summary>Inputs used</summary>
+      <div class="details-body">
+        <strong>Metric:</strong> ${m.label} &nbsp;·&nbsp; <strong>Test:</strong> ${test}<br>
+        <strong>α:</strong> ${alpha} &nbsp;·&nbsp; <strong>Power:</strong> ${power*100}% &nbsp;·&nbsp; ${sides==2?'Two':'One'}-sided<br>
+        <strong>Formula:</strong> <code>${formula}</code>
+      </div>
+    </details>`;
+  setTimeout(() => drawSizeChart(n, m, alpha, power), 50);
+}
+
+/* === TEST RESULTS === */
+function computeTest() {
+  const m = selectedMetric('test');
+  const alpha = parseFloat(document.getElementById('t_alpha').value);
+  const sides = parseInt(document.getElementById('t_sides').value);
+  const mdeRel = parseFloat(document.getElementById('t_mde').value);
+  if (m.metric === 'conversion') analyzeConversion(alpha, sides, mdeRel, false);
+  else if (m.metric === 'conversion-multi') analyzeConversion(alpha, sides, mdeRel, true);
+  else if (m.metric === 'continuous') analyzeContinuous(alpha, sides, mdeRel);
+  else if (m.metric === 'ratio') analyzeRatio(alpha, sides, mdeRel);
+  else if (m.metric === 'mw') analyzeMW(alpha, sides);
+}
+
+function readConvVariants(containerId) {
+  const variants = [];
+  document.querySelectorAll(`#${containerId} .variant-row`).forEach((row, idx) => {
+    const n = parseFloat(row.querySelector('.v-users').value);
+    const x = parseFloat(row.querySelector('.v-conv').value);
+    if (n>0 && x>=0 && x<=n) variants.push({ idx, label: VL[idx], n, x, p: x/n });
+  });
+  return variants;
+}
+
+function analyzeConversion(alpha, sides, mdeRel, isMulti) {
+  const variants = readConvVariants(isMulti?'conv-multi-variants':'conv-variants');
+  if (variants.length < 2) { document.getElementById('test-results').innerHTML = badInput('Need at least 2 variants with valid data.'); return; }
+  const za = normInv(1 - alpha/sides);
+  const baseline = variants[0];
+  const others = variants.slice(1);
+  const correctedAlpha = isMulti ? alpha/others.length : alpha;
+
+  const pairs = others.map(b => {
+    const a = baseline;
+    const pp = (a.x+b.x)/(a.n+b.n);
+    const se_pooled = Math.sqrt(pp*(1-pp)*(1/a.n+1/b.n));
+    const lift_abs = b.p - a.p;
+    const lift_rel = a.p>0 ? lift_abs/a.p : null;
+    const z = lift_abs/se_pooled;
+    const p_value = sides===2 ? 2*(1-normCdf(Math.abs(z))) : (z>0?1-normCdf(z):normCdf(z));
+    return { a, b, lift_abs, lift_rel, z, p_value,
+             passes_mde: !isFinite(mdeRel)?null:(Math.abs(lift_rel*100)>=mdeRel) };
+  });
+
+  // SRM for 2-variant
+  let srm = null;
+  if (variants.length === 2) {
+    const total = variants[0].n + variants[1].n;
+    const exp = total/2;
+    const chi2 = (variants[0].n-exp)**2/exp + (variants[1].n-exp)**2/exp;
+    srm = { chi2, p: 1-chi2_cdf(chi2, 1) };
+  }
+
+  const allVariants = variants.map(v => {
+    const se = Math.sqrt(v.p*(1-v.p)/v.n);
+    return { ...v, ci_lo: v.p-za*se, ci_hi: v.p+za*se };
+  });
+
+  const winners = pairs.filter(r => r.p_value < correctedAlpha && r.lift_abs > 0);
+  const losers = pairs.filter(r => r.p_value < correctedAlpha && r.lift_abs < 0);
+  let verdict, vClass, body, nextSteps;
+
+  if (winners.length > 0) {
+    vClass = 'win';
+    const best = winners.reduce((a,r) => r.lift_abs>a.lift_abs?r:a, winners[0]);
+    verdict = `Variant ${best.b.label} wins — ship it`;
+    body = `Lift: <strong>${best.lift_abs>=0?'+':''}${fmtPct(best.lift_abs,3)} absolute</strong> (${best.lift_rel>=0?'+':''}${fmtPct(best.lift_rel,2)} relative). p = ${fmtP(best.p_value)}${isMulti?` (Bonferroni α = ${correctedAlpha.toFixed(4)})`:''}.`;
+    nextSteps = `<strong>Before shipping:</strong><ul>
+      <li>Check guardrails: did revenue, retention, or other key metrics regress?</li>
+      <li>Check segments: is the lift consistent across mobile/desktop, country, plan?</li>
+      ${best.passes_mde===false?`<li>Lift is significant but below your pre-registered MDE (${mdeRel}%). Discuss whether it&rsquo;s worth the eng cost.</li>`:''}
+      ${srm?.p < 0.001?`<li>⚠ Sample ratio mismatch detected — investigate randomisation.</li>`:''}
+    </ul>`;
+  } else if (losers.length > 0) {
+    vClass = 'lose';
+    const worst = losers.reduce((a,r) => r.lift_abs<a.lift_abs?r:a, losers[0]);
+    verdict = `Don&rsquo;t ship — variant ${worst.b.label} is significantly worse`;
+    body = `Lift: <strong>${fmtPct(worst.lift_abs,3)} absolute</strong> (${fmtPct(worst.lift_rel,2)} relative). p = ${fmtP(worst.p_value)}.`;
+    nextSteps = `<strong>Next:</strong><ul><li>Roll back the variant or iterate on the design.</li><li>Investigate why it underperformed.</li></ul>`;
+  } else {
+    vClass = 'warn';
+    verdict = 'Inconclusive — no significant winner';
+    const closest = pairs.reduce((a,r) => r.p_value<a.p_value?r:a, pairs[0]);
+    body = `No variant was significantly different from ${baseline.label} at α = ${correctedAlpha}. Closest contender: p = ${fmtP(closest.p_value)}.`;
+    nextSteps = `<strong>Likely causes:</strong><ul>
+      <li>True effect smaller than your test was powered to detect (underpowered).</li>
+      <li>The variant truly has no effect.</li>
+      <li>Variance higher than expected — consider CUPED next time.</li>
+    </ul>`;
+  }
+
+  const tableRows = allVariants.map((v, i) => {
+    const isWinner = winners.find(r => r.b.label === v.label);
+    const cls = i===0 ? 'baseline-row' : (isWinner ? 'winner-row' : '');
+    const pair = i===0 ? null : pairs[i-1];
+    return `<tr class="${cls}">
+      <td><strong>${v.label}</strong></td>
+      <td>${fmtInt(v.n)}</td>
+      <td>${fmtInt(v.x)}</td>
+      <td><strong>${fmtPct(v.p,2)}</strong></td>
+      <td>[${fmtPct(v.ci_lo,2)}, ${fmtPct(v.ci_hi,2)}]</td>
+      <td>${i===0?'—':(pair.lift_rel>=0?'+':'')+fmtPct(pair.lift_rel,2)}</td>
+      <td>${i===0?'—':fmtP(pair.p_value)}</td>
+    </tr>`;
+  }).join('');
+
+  document.getElementById('test-results').innerHTML = `
+    <div class="verdict-card ${vClass}">
+      <h3>${verdict}</h3>
+      <p>${body}</p>
+      <div class="next-steps">${nextSteps}</div>
+    </div>
+    <div class="chart-card">
+      <h4>Conversion rates with 95% confidence intervals</h4>
+      <p class="chart-lede">Bars are observed rates; whiskers are CIs. Non-overlapping intervals roughly imply a significant difference.</p>
+      <div id="conv-bar-chart"></div>
+    </div>
+    ${variants.length === 2 ? `<div class="chart-card">
+      <h4>How your observed difference compares to the null distribution</h4>
+      <p class="chart-lede">Under H₀ the difference should sit near zero. The orange marker is what you observed — the red areas are rejection zones at α = ${alpha}.</p>
+      <div id="conv-dist-chart"></div>
+    </div>` : ''}
+    <div class="table-scroll"><table class="results-table">
+      <thead><tr><th>Variant</th><th>Users</th><th>Conversions</th><th>Rate</th><th>95% CI</th><th>Δ vs ${baseline.label}</th><th>p-value</th></tr></thead>
+      <tbody>${tableRows}</tbody>
+    </table></div>
+    ${srm ? `<p style="margin-top:12px;font-size:12.5px;color:var(--muted);">SRM check: χ² = ${fmt(srm.chi2,2)}, p = ${fmtP(srm.p)} ${srm.p<0.001?'— <strong style="color:var(--rose);">FAIL: investigate randomisation</strong>':'— OK'}</p>` : ''}
+  `;
+  setTimeout(() => {
+    drawConvBarChart(allVariants);
+    if (variants.length === 2) drawConvDistChart(pairs[0], alpha, sides);
+  }, 50);
+}
+
+function analyzeContinuous(alpha, sides, mdeRel) {
+  const rows = document.querySelectorAll('#cont-variants .variant-row');
+  if (rows.length < 2) { document.getElementById('test-results').innerHTML = badInput('Need 2 variants.'); return; }
+  const a = { n: +rows[0].querySelector('.v-n').value, m: +rows[0].querySelector('.v-mean').value, s: +rows[0].querySelector('.v-sd').value, label: 'A' };
+  const b = { n: +rows[1].querySelector('.v-n').value, m: +rows[1].querySelector('.v-mean').value, s: +rows[1].querySelector('.v-sd').value, label: 'B' };
+  const za = normInv(1 - alpha/sides);
+  const lift = b.m - a.m;
+  const se = Math.sqrt(a.s*a.s/a.n + b.s*b.s/b.n);
+  const t = lift/se;
+  const df = (a.s*a.s/a.n + b.s*b.s/b.n)**2 / ((a.s*a.s/a.n)**2/(a.n-1) + (b.s*b.s/b.n)**2/(b.n-1));
+  const p = sides===2 ? 2*(1-normCdf(Math.abs(t))) : (t>0?1-normCdf(t):normCdf(t));
+  const ci_lo = lift-za*se, ci_hi = lift+za*se;
+  const lift_rel = a.m!==0 ? lift/a.m : null;
+  const sig = p < alpha;
+
+  let vClass = sig ? (lift>0?'win':'lose') : 'warn';
+  let verdict = sig ? (lift>0?`Variant ${b.label} wins — ship it`:`Don&rsquo;t ship — variant ${b.label} is significantly worse`) : 'Inconclusive — no significant difference';
+  let body = sig
+    ? `Mean lift: <strong>${lift>=0?'+':''}${fmt(lift,3)}</strong> (${lift>=0?'+':''}${fmtPct(lift_rel,2)} relative). Welch&rsquo;s t = ${fmt(t,2)}, df ≈ ${fmt(df,0)}, p = ${fmtP(p)}.`
+    : `Observed lift: ${fmt(lift,3)} (${fmtPct(lift_rel,2)} relative). p = ${fmtP(p)} > α = ${alpha}.`;
+  let steps = sig && lift>0
+    ? `<strong>Before shipping:</strong><ul><li>Check guardrails and segments.</li><li>For heavy-tailed metrics, also check the trimmed mean — did the lift come from the tail or the body?</li></ul>`
+    : sig ? `<strong>Next:</strong><ul><li>Roll back or iterate.</li></ul>`
+          : `<strong>Likely causes:</strong><ul><li>Underpowered — continuous metrics need lots of users.</li><li>Variance higher than expected — try CUPED.</li><li>Effect truly small or zero.</li></ul>`;
+
+  document.getElementById('test-results').innerHTML = `
+    <div class="verdict-card ${vClass}">
+      <h3>${verdict}</h3><p>${body}</p>
+      <div class="next-steps">${steps}</div>
+    </div>
+    <div class="stats-grid">
+      <div class="stat-box ${sig?'emerald':''}"><div class="stat-label">Absolute lift</div><div class="stat-value">${lift>=0?'+':''}${fmt(lift,3)}</div></div>
+      <div class="stat-box"><div class="stat-label">Relative lift</div><div class="stat-value">${lift>=0?'+':''}${fmtPct(lift_rel,2)}</div></div>
+      <div class="stat-box"><div class="stat-label">t-statistic</div><div class="stat-value">${fmt(t,2)}</div></div>
+      <div class="stat-box primary"><div class="stat-label">p-value</div><div class="stat-value">${fmtP(p)}</div></div>
+    </div>
+    <div class="chart-card">
+      <h4>Means with 95% confidence intervals</h4>
+      <p class="chart-lede">If intervals don&rsquo;t overlap, you typically have a significant difference.</p>
+      <div id="cont-bar-chart"></div>
+    </div>
+    <div class="table-scroll"><table class="results-table">
+      <thead><tr><th>Variant</th><th>n</th><th>Mean</th><th>SD</th><th>SE</th><th>95% CI for mean</th></tr></thead>
+      <tbody>
+        <tr class="baseline-row"><td><strong>A</strong></td><td>${fmtInt(a.n)}</td><td>${fmt(a.m,3)}</td><td>${fmt(a.s,2)}</td><td>${fmt(a.s/Math.sqrt(a.n),4)}</td><td>[${fmt(a.m-za*a.s/Math.sqrt(a.n),3)}, ${fmt(a.m+za*a.s/Math.sqrt(a.n),3)}]</td></tr>
+        <tr class="${sig&&lift>0?'winner-row':''}"><td><strong>B</strong></td><td>${fmtInt(b.n)}</td><td>${fmt(b.m,3)}</td><td>${fmt(b.s,2)}</td><td>${fmt(b.s/Math.sqrt(b.n),4)}</td><td>[${fmt(b.m-za*b.s/Math.sqrt(b.n),3)}, ${fmt(b.m+za*b.s/Math.sqrt(b.n),3)}]</td></tr>
+      </tbody>
+    </table></div>
+    <p style="margin-top:12px;font-size:12.5px;color:var(--muted);">95% CI for the lift (B − A): [${fmt(ci_lo,3)}, ${fmt(ci_hi,3)}]</p>`;
+  setTimeout(() => drawContBarChart(a, b, za, sig && lift>0), 50);
+}
+
+function analyzeRatio(alpha, sides, mdeRel) {
+  const rows = document.querySelectorAll('#ratio-variants .variant-row');
+  if (rows.length < 2) { document.getElementById('test-results').innerHTML = badInput('Need 2 variants.'); return; }
+  const parse = row => {
+    const n = +row.querySelector('.v-n').value;
+    const mx = +row.querySelector('.v-mx').value;
+    const my = +row.querySelector('.v-my').value;
+    const sx = +row.querySelector('.v-sx').value;
+    const sy = +row.querySelector('.v-sy').value;
+    const cxy = +row.querySelector('.v-cxy').value;
+    const R = mx/my;
+    const varR = ((sx*sx)/(my*my) - 2*mx*cxy/(my*my*my) + (mx*mx)*(sy*sy)/(my*my*my*my))/n;
+    return { n, mx, my, sx, sy, cxy, R, varR, se: Math.sqrt(varR) };
+  };
+  const A = parse(rows[0]); A.label = 'A';
+  const B = parse(rows[1]); B.label = 'B';
+  const za = normInv(1 - alpha/sides);
+  const lift = B.R - A.R;
+  const se = Math.sqrt(A.varR + B.varR);
+  const z = lift/se;
+  const p = sides===2 ? 2*(1-normCdf(Math.abs(z))) : (z>0?1-normCdf(z):normCdf(z));
+  const ci_lo = lift-za*se, ci_hi = lift+za*se;
+  const lift_rel = A.R!==0 ? lift/A.R : null;
+  const sig = p < alpha;
+  const naiveSE = Math.sqrt(A.sx*A.sx/(A.n*A.my*A.my) + B.sx*B.sx/(B.n*B.my*B.my));
+  const naiveZ = lift/naiveSE;
+
+  let vClass = sig ? (lift>0?'win':'lose') : 'warn';
+  let verdict = sig ? (lift>0?`Variant ${B.label} wins — ship it`:`Don&rsquo;t ship — variant ${B.label} is significantly worse`) : 'Inconclusive — no significant difference';
+  let body = `Lift in ratio: <strong>${lift>=0?'+':''}${fmt(lift,3)}</strong> (${lift>=0?'+':''}${fmtPct(lift_rel,2)} relative). Delta-method Z = ${fmt(z,2)}, p = ${fmtP(p)}. <em>Naive analysis would have given Z ≈ ${fmt(naiveZ,1)} — that&rsquo;s the bug delta-method exists to fix.</em>`;
+  let steps = sig
+    ? `<strong>Before shipping:</strong><ul><li>Also report the per-user version (e.g. ARPU = AOV × orders/user) — that&rsquo;s what the business cares about.</li><li>Watch for composition shifts.</li></ul>`
+    : `<strong>Likely causes:</strong><ul><li>Ratio metrics have inflated variance from the denominator — they need more users than you might guess.</li><li>Effect may be real but smaller than detectable.</li></ul>`;
+
+  document.getElementById('test-results').innerHTML = `
+    <div class="verdict-card ${vClass}">
+      <h3>${verdict}</h3><p>${body}</p>
+      <div class="next-steps">${steps}</div>
+    </div>
+    <div class="stats-grid">
+      <div class="stat-box ${sig?'emerald':''}"><div class="stat-label">Lift in ratio</div><div class="stat-value">${lift>=0?'+':''}${fmt(lift,3)}</div></div>
+      <div class="stat-box"><div class="stat-label">Relative lift</div><div class="stat-value">${lift>=0?'+':''}${fmtPct(lift_rel,2)}</div></div>
+      <div class="stat-box"><div class="stat-label">Z (delta)</div><div class="stat-value">${fmt(z,2)}</div></div>
+      <div class="stat-box primary"><div class="stat-label">p-value</div><div class="stat-value">${fmtP(p)}</div></div>
+    </div>
+    <div class="chart-card">
+      <h4>Delta method vs naive (wrong) analysis</h4>
+      <p class="chart-lede">The naive SE treats every event as independent. Delta accounts for within-user correlation — the SE is usually 2-5× larger.</p>
+      <div id="ratio-comp-chart"></div>
+    </div>
+    <div class="table-scroll"><table class="results-table">
+      <thead><tr><th>Variant</th><th>n (users)</th><th>Ratio</th><th>SE (delta)</th><th>95% CI for R</th></tr></thead>
+      <tbody>
+        <tr class="baseline-row"><td><strong>A</strong></td><td>${fmtInt(A.n)}</td><td>${fmt(A.R,3)}</td><td>${fmt(A.se,4)}</td><td>[${fmt(A.R-za*A.se,3)}, ${fmt(A.R+za*A.se,3)}]</td></tr>
+        <tr class="${sig&&lift>0?'winner-row':''}"><td><strong>B</strong></td><td>${fmtInt(B.n)}</td><td>${fmt(B.R,3)}</td><td>${fmt(B.se,4)}</td><td>[${fmt(B.R-za*B.se,3)}, ${fmt(B.R+za*B.se,3)}]</td></tr>
+      </tbody>
+    </table></div>
+    <p style="margin-top:12px;font-size:12.5px;color:var(--muted);">95% CI for the lift (B − A): [${fmt(ci_lo,3)}, ${fmt(ci_hi,3)}]</p>`;
+  setTimeout(() => drawRatioCompChart(z, naiveZ, se, naiveSE, lift), 50);
+}
+
+function analyzeMW(alpha, sides) {
+  const parse = s => s.split(/[\s,]+/).map(Number).filter(x => isFinite(x));
+  const a = parse(document.getElementById('t_mw_a').value);
+  const b = parse(document.getElementById('t_mw_b').value);
+  if (a.length<3 || b.length<3) { document.getElementById('test-results').innerHTML = badInput('Need at least 3 numeric values per arm.'); return; }
+  const combined = a.map(v => ({v,arm:'a'})).concat(b.map(v => ({v,arm:'b'})));
+  combined.sort((x,y) => x.v - y.v);
+  let i = 0;
+  while (i < combined.length) {
+    let j = i;
+    while (j < combined.length-1 && combined[j+1].v === combined[i].v) j++;
+    const avg = (i+j)/2+1;
+    for (let k = i; k <= j; k++) combined[k].rank = avg;
+    i = j+1;
+  }
+  let Ra = 0;
+  for (const c of combined) if (c.arm === 'a') Ra += c.rank;
+  const na = a.length, nb = b.length;
+  const U_a = Ra - na*(na+1)/2;
+  const U_b = na*nb - U_a;
+  const U = Math.min(U_a, U_b);
+  const meanU = na*nb/2;
+  const sdU = Math.sqrt(na*nb*(na+nb+1)/12);
+  const z = (U - meanU + 0.5*Math.sign(meanU - U)) / sdU;
+  const p = sides===2 ? 2*(1-normCdf(Math.abs(z))) : (U_a>meanU?1-normCdf(z):normCdf(z));
+  const medA = median(a), medB = median(b);
+  const sig = p < alpha;
+
+  let vClass = sig ? (medB>medA?'win':'lose') : 'warn';
+  let verdict = sig ? (medB>medA?'Variant B is stochastically higher than A':'Variant A is stochastically higher than B') : 'Inconclusive — no significant difference';
+
+  document.getElementById('test-results').innerHTML = `
+    <div class="verdict-card ${vClass}">
+      <h3>${verdict}</h3>
+      <p>Medians: A = ${fmt(medA,2)}, B = ${fmt(medB,2)}. U = ${fmt(U,0)}, z = ${fmt(z,2)}, p = ${fmtP(p)}.</p>
+      <div class="next-steps">
+        <strong>Important:</strong> Mann-Whitney tests stochastic dominance, not equal means. Report medians as the natural summary.
+      </div>
+    </div>
+    <div class="stats-grid">
+      <div class="stat-box"><div class="stat-label">Median A (n=${na})</div><div class="stat-value">${fmt(medA,2)}</div></div>
+      <div class="stat-box ${sig&&medB>medA?'emerald':''}"><div class="stat-label">Median B (n=${nb})</div><div class="stat-value">${fmt(medB,2)}</div></div>
+      <div class="stat-box"><div class="stat-label">U statistic</div><div class="stat-value">${fmt(U,0)}</div></div>
+      <div class="stat-box primary"><div class="stat-label">p-value</div><div class="stat-value">${fmtP(p)}</div></div>
+    </div>
+    <div class="chart-card">
+      <h4>Box plots of the two arms</h4>
+      <p class="chart-lede">Shows median, quartiles, and the spread of each arm. Mann-Whitney asks if one is shifted relative to the other.</p>
+      <div id="mw-chart"></div>
+    </div>`;
+  setTimeout(() => drawMWChart(a, b), 50);
+}
+
+/* === SVG CHART DRAWERS === */
+function svgEl(tag, attrs, parent) {
+  const e = document.createElementNS('http://www.w3.org/2000/svg', tag);
+  for (const k in attrs) e.setAttribute(k, attrs[k]);
+  if (parent) parent.appendChild(e);
+  return e;
+}
+function txt(svg, x, y, str, opts={}) {
+  const e = svgEl('text', { x, y,
+    'text-anchor': opts.anchor||'middle',
+    'font-size': opts.size||'10',
+    'font-family': 'system-ui, sans-serif',
+    'font-weight': opts.weight||'400',
+    fill: opts.fill||'#64748B' }, svg);
+  e.textContent = str;
+  return e;
+}
+
+function drawSizeChart(n_current, m, alpha, power) {
+  const target = document.getElementById('size-chart');
+  if (!target) return;
+  target.innerHTML = '';
+  const W = 640, H = 280, padL = 60, padR = 20, padT = 20, padB = 50;
+  const svg = svgEl('svg', { viewBox: `0 0 ${W} ${H}` }, target);
+  const za = normInv(1 - alpha/2);
+  const zb = normInv(power);
+  const pts = [];
+  for (let mdePct = 0.5; mdePct <= 30; mdePct += 0.5) {
+    const r = mdePct/100;
+    let n;
+    if (m.metric === 'conversion') {
+      const p1 = +document.getElementById('s_conv_p').value/100;
+      const p2 = p1*(1+r);
+      if (p2 < 1) n = ((za+zb)**2 * (p1*(1-p1)+p2*(1-p2)))/((p2-p1)**2);
+    } else if (m.metric === 'continuous') {
+      const mean = +document.getElementById('s_cont_mean').value;
+      const sd = +document.getElementById('s_cont_sd').value;
+      const cuped = +document.getElementById('s_cont_cuped').value/100;
+      n = 2*((za+zb)**2)*sd*sd*(1-cuped)/((mean*r)**2);
+    } else if (m.metric === 'ratio') {
+      const R = +document.getElementById('s_ratio_r').value;
+      const sx = +document.getElementById('s_ratio_sx').value;
+      const my = +document.getElementById('s_ratio_my').value;
+      const sy = +document.getElementById('s_ratio_sy').value;
+      const rho = +document.getElementById('s_ratio_corr').value;
+      const mx = R*my, cxy = rho*sx*sy;
+      const varR = (sx*sx)/(my*my) - 2*mx*cxy/(my*my*my) + (mx*mx)*(sy*sy)/(my*my*my*my);
+      n = 2*((za+zb)**2)*varR/((R*r)**2);
+    }
+    if (isFinite(n) && n > 0) pts.push({ x: mdePct, y: n });
+  }
+  if (!pts.length) return;
+  const yMax = Math.max(...pts.map(p=>p.y));
+  const yMin = Math.max(1, Math.min(...pts.map(p=>p.y)));
+  const xToPx = x => padL + (x-0.5)/(30-0.5)*(W-padL-padR);
+  const yToPx = y => padT + (Math.log10(yMax)-Math.log10(Math.max(y,yMin)))/(Math.log10(yMax)-Math.log10(yMin))*(H-padT-padB);
+
+  // Grid + ticks
+  svgEl('line',{x1:padL,y1:padT,x2:padL,y2:H-padB,stroke:'#CBD5E1'},svg);
+  svgEl('line',{x1:padL,y1:H-padB,x2:W-padR,y2:H-padB,stroke:'#CBD5E1'},svg);
+  [1,10,100,1000,10000,100000,1000000].filter(t=>t>=yMin&&t<=yMax*1.05).forEach(t=>{
+    const y = yToPx(t);
+    svgEl('line',{x1:padL,y1:y,x2:W-padR,y2:y,stroke:'#F1F5F9'},svg);
+    txt(svg, padL-8, y+3, t>=1000?(t/1000)+'k':t, {anchor:'end'});
+  });
+  [1,5,10,15,20,25,30].forEach(t=>{
+    const x = xToPx(t);
+    txt(svg, x, H-padB+15, t+'%');
+  });
+  txt(svg, W/2, H-10, 'MDE (% relative)', {size:'11'});
+  txt(svg, 15, H/2, 'Users per variant', {size:'11', anchor:'middle'}).setAttribute('transform', `rotate(-90, 15, ${H/2})`);
+
+  const path = pts.map((p,i)=>`${i?'L':'M'} ${xToPx(p.x)} ${yToPx(p.y)}`).join(' ');
+  svgEl('path',{d:path,stroke:'#5B5FE9','stroke-width':2.5,fill:'none'},svg);
+
+  // Current MDE marker
+  const currMDE = m.metric==='conversion'?+document.getElementById('s_conv_mde').value :
+                  m.metric==='continuous'?+document.getElementById('s_cont_mde').value :
+                  +document.getElementById('s_ratio_mde').value;
+  if (currMDE >= 0.5 && currMDE <= 30) {
+    const x = xToPx(currMDE);
+    const y = yToPx(n_current);
+    svgEl('line',{x1:x,y1:padT,x2:x,y2:H-padB,stroke:'#C76844','stroke-width':1.5,'stroke-dasharray':'4 3'},svg);
+    svgEl('circle',{cx:x,cy:y,r:5,fill:'#C76844'},svg);
+    txt(svg, x+8, y-8, `Your test: ${fmtInt(n_current)} per arm`, {anchor:'start',weight:'700',fill:'#C76844',size:'11'});
+  }
+}
+
+function drawConvBarChart(variants) {
+  const target = document.getElementById('conv-bar-chart');
+  if (!target) return;
+  target.innerHTML = '';
+  const W = 640, H = 240, padL = 60, padR = 20, padT = 30, padB = 50;
+  const svg = svgEl('svg', { viewBox: `0 0 ${W} ${H}` }, target);
+  const all = variants.flatMap(v => [v.p, v.ci_lo, v.ci_hi]);
+  const yMin = Math.max(0, Math.min(...all)*0.92);
+  const yMax = Math.max(...all)*1.08;
+  const yToPx = y => padT + (yMax-y)/(yMax-yMin)*(H-padT-padB);
+  svgEl('line',{x1:padL,y1:padT,x2:padL,y2:H-padB,stroke:'#CBD5E1'},svg);
+  svgEl('line',{x1:padL,y1:H-padB,x2:W-padR,y2:H-padB,stroke:'#CBD5E1'},svg);
+  // Y ticks
+  const yRange = yMax-yMin;
+  const stepBase = Math.pow(10, Math.floor(Math.log10(yRange)));
+  const step = yRange/stepBase > 5 ? stepBase : stepBase/2;
+  for (let y = Math.ceil(yMin/step)*step; y <= yMax; y += step) {
+    const yPx = yToPx(y);
+    svgEl('line',{x1:padL,y1:yPx,x2:W-padR,y2:yPx,stroke:'#F1F5F9'},svg);
+    txt(svg, padL-8, yPx+3, fmtPct(y,1), {anchor:'end'});
+  }
+  // Bars
+  const barW = (W-padL-padR)/variants.length*0.6;
+  const stride = (W-padL-padR)/variants.length;
+  variants.forEach((v,i) => {
+    const cx = padL + stride*(i+0.5);
+    const barH = (H-padB) - yToPx(v.p);
+    const color = i===0 ? '#94A3B8' : '#5B5FE9';
+    svgEl('rect',{x:cx-barW/2,y:yToPx(v.p),width:barW,height:barH,fill:color,rx:4},svg);
+    const whisk = barW*0.4;
+    svgEl('line',{x1:cx,y1:yToPx(v.ci_lo),x2:cx,y2:yToPx(v.ci_hi),stroke:'#0F172A','stroke-width':1.5},svg);
+    svgEl('line',{x1:cx-whisk/2,y1:yToPx(v.ci_lo),x2:cx+whisk/2,y2:yToPx(v.ci_lo),stroke:'#0F172A','stroke-width':1.5},svg);
+    svgEl('line',{x1:cx-whisk/2,y1:yToPx(v.ci_hi),x2:cx+whisk/2,y2:yToPx(v.ci_hi),stroke:'#0F172A','stroke-width':1.5},svg);
+    txt(svg, cx, yToPx(v.ci_hi)-8, fmtPct(v.p,2), {weight:'700',fill:'#0F172A',size:'12'});
+    txt(svg, cx, H-padB+18, v.label, {weight:'600',fill:'#0F172A',size:'13'});
+    if (i === 0) txt(svg, cx, H-padB+30, 'CONTROL', {weight:'600',fill:'#5B5FE9',size:'9'});
+  });
+}
+
+function drawConvDistChart(pair, alpha, sides) {
+  const target = document.getElementById('conv-dist-chart');
+  if (!target) return;
+  target.innerHTML = '';
+  const W = 640, H = 240, padL = 50, padR = 20, padT = 30, padB = 50;
+  const svg = svgEl('svg', { viewBox: `0 0 ${W} ${H}` }, target);
+  const observed = pair.lift_abs;
+  const se = Math.sqrt(pair.a.p*(1-pair.a.p)/pair.a.n + pair.b.p*(1-pair.b.p)/pair.b.n);
+  const range = Math.max(4*se, Math.abs(observed)*1.4);
+  const xMin = -range, xMax = range;
+  const xToPx = x => padL + (x-xMin)/(xMax-xMin)*(W-padL-padR);
+  const pdf = x => Math.exp(-0.5*(x/se)**2)/(se*Math.sqrt(2*Math.PI));
+  let yMax = 0;
+  for (let x = xMin; x <= xMax; x += (xMax-xMin)/200) yMax = Math.max(yMax, pdf(x));
+  yMax *= 1.15;
+  const yToPx = y => padT + (yMax-y)/yMax*(H-padT-padB);
+  const za = normInv(1 - alpha/sides);
+  const crit = za*se;
+
+  // Rejection regions
+  const buildTail = (from, to) => {
+    let path = `M ${xToPx(from)} ${yToPx(0)} `;
+    for (let x = from; x <= to; x += (xMax-xMin)/300) path += `L ${xToPx(x)} ${yToPx(pdf(x))} `;
+    path += `L ${xToPx(to)} ${yToPx(0)} Z`;
+    return path;
+  };
+  if (sides === 2) svgEl('path',{d:buildTail(xMin, -crit),fill:'#FFE4E6','fill-opacity':0.7},svg);
+  svgEl('path',{d:buildTail(crit, xMax),fill:'#FFE4E6','fill-opacity':0.7},svg);
+
+  // Density curve
+  let curvePath = '';
+  for (let x = xMin; x <= xMax; x += (xMax-xMin)/300) {
+    curvePath += (curvePath?'L':'M')+` ${xToPx(x)} ${yToPx(pdf(x))} `;
+  }
+  svgEl('path',{d:curvePath,stroke:'#5B5FE9','stroke-width':2,fill:'none'},svg);
+
+  // Center line at x=0
+  svgEl('line',{x1:padL,y1:H-padB,x2:W-padR,y2:H-padB,stroke:'#CBD5E1'},svg);
+  svgEl('line',{x1:xToPx(0),y1:padT,x2:xToPx(0),y2:H-padB,stroke:'#CBD5E1','stroke-dasharray':'3 3'},svg);
+  txt(svg, xToPx(0), H-padB+15, '0 (no difference)');
+
+  // Critical lines
+  if (sides === 2) {
+    svgEl('line',{x1:xToPx(-crit),y1:padT+20,x2:xToPx(-crit),y2:H-padB,stroke:'#E11D48','stroke-width':1,'stroke-dasharray':'4 3'},svg);
+  }
+  svgEl('line',{x1:xToPx(crit),y1:padT+20,x2:xToPx(crit),y2:H-padB,stroke:'#E11D48','stroke-width':1,'stroke-dasharray':'4 3'},svg);
+  txt(svg, xToPx(crit), padT+12, `+${(za).toFixed(2)} SE (critical)`, {fill:'#E11D48',weight:'600',size:'10'});
+
+  // Observed lift marker
+  const obsPx = xToPx(observed);
+  svgEl('line',{x1:obsPx,y1:padT,x2:obsPx,y2:H-padB,stroke:'#C76844','stroke-width':2},svg);
+  svgEl('circle',{cx:obsPx,cy:yToPx(pdf(observed)),r:6,fill:'#C76844'},svg);
+  txt(svg, obsPx, padT-5, `Observed: ${fmtPct(observed,3)}`, {fill:'#C76844',weight:'700',size:'11'});
+
+  // X-axis labels
+  for (let i = -3; i <= 3; i++) {
+    if (i === 0) continue;
+    const v = i*se;
+    if (v >= xMin && v <= xMax) {
+      const x = xToPx(v);
+      txt(svg, x, H-padB+15, fmtPct(v,2), {size:'9'});
+    }
+  }
+}
+
+function drawContBarChart(a, b, za, isWinner) {
+  const target = document.getElementById('cont-bar-chart');
+  if (!target) return;
+  target.innerHTML = '';
+  const W = 640, H = 240, padL = 70, padR = 20, padT = 30, padB = 50;
+  const svg = svgEl('svg', { viewBox: `0 0 ${W} ${H}` }, target);
+  const arms = [
+    { label:'A', mean:a.m, ci_lo: a.m-za*a.s/Math.sqrt(a.n), ci_hi: a.m+za*a.s/Math.sqrt(a.n) },
+    { label:'B', mean:b.m, ci_lo: b.m-za*b.s/Math.sqrt(b.n), ci_hi: b.m+za*b.s/Math.sqrt(b.n) }
+  ];
+  const all = arms.flatMap(x => [x.mean, x.ci_lo, x.ci_hi]);
+  const yMin = Math.min(...all) - (Math.max(...all)-Math.min(...all))*0.2;
+  const yMax = Math.max(...all) + (Math.max(...all)-Math.min(...all))*0.2;
+  const yToPx = y => padT + (yMax-y)/(yMax-yMin)*(H-padT-padB);
+  svgEl('line',{x1:padL,y1:padT,x2:padL,y2:H-padB,stroke:'#CBD5E1'},svg);
+  svgEl('line',{x1:padL,y1:H-padB,x2:W-padR,y2:H-padB,stroke:'#CBD5E1'},svg);
+  // Y ticks
+  const yRange = yMax-yMin;
+  const stepBase = Math.pow(10, Math.floor(Math.log10(yRange)));
+  const step = yRange/stepBase > 5 ? stepBase : stepBase/2;
+  for (let y = Math.ceil(yMin/step)*step; y <= yMax; y += step) {
+    const yPx = yToPx(y);
+    svgEl('line',{x1:padL,y1:yPx,x2:W-padR,y2:yPx,stroke:'#F1F5F9'},svg);
+    txt(svg, padL-8, yPx+3, fmt(y,2), {anchor:'end'});
+  }
+  const stride = (W-padL-padR)/arms.length;
+  const barW = stride*0.4;
+  arms.forEach((arm,i) => {
+    const cx = padL + stride*(i+0.5);
+    const color = i===0 ? '#94A3B8' : (isWinner ? '#059669' : '#5B5FE9');
+    const barTop = yToPx(Math.max(arm.mean, yMin));
+    svgEl('rect',{x:cx-barW/2,y:barTop,width:barW,height:Math.max(0,H-padB-barTop),fill:color,rx:4},svg);
+    const whisk = barW*0.4;
+    svgEl('line',{x1:cx,y1:yToPx(arm.ci_lo),x2:cx,y2:yToPx(arm.ci_hi),stroke:'#0F172A','stroke-width':1.5},svg);
+    svgEl('line',{x1:cx-whisk/2,y1:yToPx(arm.ci_lo),x2:cx+whisk/2,y2:yToPx(arm.ci_lo),stroke:'#0F172A','stroke-width':1.5},svg);
+    svgEl('line',{x1:cx-whisk/2,y1:yToPx(arm.ci_hi),x2:cx+whisk/2,y2:yToPx(arm.ci_hi),stroke:'#0F172A','stroke-width':1.5},svg);
+    txt(svg, cx, yToPx(arm.ci_hi)-8, fmt(arm.mean,3), {weight:'700',fill:'#0F172A',size:'12'});
+    txt(svg, cx, H-padB+18, arm.label, {weight:'600',fill:'#0F172A',size:'13'});
+    if (i === 0) txt(svg, cx, H-padB+30, 'CONTROL', {weight:'600',fill:'#5B5FE9',size:'9'});
+  });
+}
+
+function drawRatioCompChart(deltaZ, naiveZ, deltaSE, naiveSE, lift) {
+  const target = document.getElementById('ratio-comp-chart');
+  if (!target) return;
+  target.innerHTML = '';
+  const W = 640, H = 240, padL = 60, padR = 20, padT = 30, padB = 60;
+  const svg = svgEl('svg', { viewBox: `0 0 ${W} ${H}` }, target);
+  const bars = [
+    { label: 'Naive (WRONG)', value: Math.abs(naiveZ), color: '#E11D48', sub: `SE = ${fmt(naiveSE,4)}` },
+    { label: 'Delta method', value: Math.abs(deltaZ), color: '#5B5FE9', sub: `SE = ${fmt(deltaSE,4)}` }
+  ];
+  const yMax = Math.max(...bars.map(b=>b.value), 2.5)*1.2;
+  const yToPx = y => padT + (yMax-y)/yMax*(H-padT-padB);
+  svgEl('line',{x1:padL,y1:padT,x2:padL,y2:H-padB,stroke:'#CBD5E1'},svg);
+  svgEl('line',{x1:padL,y1:H-padB,x2:W-padR,y2:H-padB,stroke:'#CBD5E1'},svg);
+  // Y axis ticks
+  for (let y = 0; y <= yMax; y += yMax > 8 ? 2 : 1) {
+    const yPx = yToPx(y);
+    svgEl('line',{x1:padL,y1:yPx,x2:W-padR,y2:yPx,stroke:'#F1F5F9'},svg);
+    txt(svg, padL-8, yPx+3, y.toFixed(1), {anchor:'end'});
+  }
+  // 1.96 threshold line
+  const tPx = yToPx(1.96);
+  svgEl('line',{x1:padL,y1:tPx,x2:W-padR,y2:tPx,stroke:'#D97706','stroke-width':1.5,'stroke-dasharray':'5 3'},svg);
+  txt(svg, W-padR-5, tPx-5, 'Z = 1.96 (significance at α=0.05)', {anchor:'end',fill:'#D97706',weight:'600',size:'10'});
+
+  const stride = (W-padL-padR)/bars.length;
+  const barW = stride*0.45;
+  bars.forEach((b,i) => {
+    const cx = padL + stride*(i+0.5);
+    const barTop = yToPx(b.value);
+    svgEl('rect',{x:cx-barW/2,y:barTop,width:barW,height:H-padB-barTop,fill:b.color,rx:4},svg);
+    txt(svg, cx, barTop-6, '|Z| = '+fmt(b.value,2), {weight:'700',fill:'#0F172A',size:'13'});
+    txt(svg, cx, H-padB+18, b.label, {weight:'700',fill:'#0F172A',size:'12'});
+    txt(svg, cx, H-padB+32, b.sub, {fill:'#64748B',size:'10'});
+  });
+  txt(svg, 15, H/2, '|Z-statistic|', {anchor:'middle',size:'11'}).setAttribute('transform', `rotate(-90, 15, ${H/2})`);
+}
+
+function drawMWChart(a, b) {
+  const target = document.getElementById('mw-chart');
+  if (!target) return;
+  target.innerHTML = '';
+  const W = 640, H = 240, padL = 60, padR = 30, padT = 30, padB = 50;
+  const svg = svgEl('svg', { viewBox: `0 0 ${W} ${H}` }, target);
+  const all = [...a, ...b];
+  const xMin = Math.min(...all) - (Math.max(...all)-Math.min(...all))*0.05;
+  const xMax = Math.max(...all) + (Math.max(...all)-Math.min(...all))*0.05;
+  const xToPx = x => padL + (x-xMin)/(xMax-xMin)*(W-padL-padR);
+  const arms = [
+    { label:'A', data:a, y: H*0.35, color:'#94A3B8' },
+    { label:'B', data:b, y: H*0.65, color:'#5B5FE9' }
+  ];
+  // Axis
+  svgEl('line',{x1:padL,y1:H-padB,x2:W-padR,y2:H-padB,stroke:'#CBD5E1'},svg);
+  // X ticks
+  const xRange = xMax - xMin;
+  const stepBase = Math.pow(10, Math.floor(Math.log10(xRange)));
+  const step = xRange/stepBase > 5 ? stepBase : stepBase/2;
+  for (let x = Math.ceil(xMin/step)*step; x <= xMax; x += step) {
+    const xPx = xToPx(x);
+    svgEl('line',{x1:xPx,y1:padT,x2:xPx,y2:H-padB,stroke:'#F1F5F9'},svg);
+    txt(svg, xPx, H-padB+15, fmt(x,2));
+  }
+  arms.forEach(arm => {
+    const med = median(arm.data);
+    const q1 = quantile(arm.data, 0.25);
+    const q3 = quantile(arm.data, 0.75);
+    const min = Math.min(...arm.data), max = Math.max(...arm.data);
+    const cy = arm.y;
+    const h = 24;
+    // Whiskers
+    svgEl('line',{x1:xToPx(min),y1:cy,x2:xToPx(max),y2:cy,stroke:'#64748B','stroke-width':1.2},svg);
+    svgEl('line',{x1:xToPx(min),y1:cy-6,x2:xToPx(min),y2:cy+6,stroke:'#64748B','stroke-width':1.2},svg);
+    svgEl('line',{x1:xToPx(max),y1:cy-6,x2:xToPx(max),y2:cy+6,stroke:'#64748B','stroke-width':1.2},svg);
+    // Box
+    svgEl('rect',{x:xToPx(q1),y:cy-h/2,width:xToPx(q3)-xToPx(q1),height:h,fill:arm.color,'fill-opacity':0.4,stroke:arm.color,'stroke-width':1.5,rx:3},svg);
+    // Median line
+    svgEl('line',{x1:xToPx(med),y1:cy-h/2,x2:xToPx(med),y2:cy+h/2,stroke:arm.color,'stroke-width':2.5},svg);
+    // Individual points (jittered slightly)
+    arm.data.forEach((v,j) => {
+      const jy = cy + ((j%7)/7-0.5)*(h*0.5);
+      svgEl('circle',{cx:xToPx(v),cy:jy,r:2.5,fill:arm.color,'fill-opacity':0.65},svg);
+    });
+    // Labels
+    txt(svg, padL-12, cy+4, arm.label, {anchor:'end',weight:'700',fill:'#0F172A',size:'14'});
+    txt(svg, xToPx(med), cy-h/2-6, `median = ${fmt(med,2)}`, {fill:arm.color,weight:'600',size:'10'});
+  });
+}
+
+/* === TOOLTIP POSITIONING (edge-safe) === */
+document.addEventListener('mouseover', e => {
+  const tip = e.target.closest('.help-tip');
+  if (!tip) return;
+  const content = tip.querySelector('.help-tip-content');
+  if (!content) return;
+  const rect = tip.getBoundingClientRect();
+  const vw = window.innerWidth;
+  // Position above the tip icon
+  content.style.position = 'fixed';
+  content.style.top = (rect.top - 8) + 'px'; // will be adjusted below
+  // Horizontal: centre on tip but clamp to viewport
+  let left = rect.left + rect.width/2 - 120; // 120 = half of 240px width
+  left = Math.max(8, Math.min(left, vw - 248));
+  content.style.left = left + 'px';
+  content.style.transform = 'translateY(-100%)';
+  content.style.marginBottom = '0';
+});
+
+</script>
+</body>
+</html>
