@@ -472,13 +472,13 @@ details code {
         <div class="metric-group">
           <div class="metric-group-label">Ratio (denominator varies)</div>
           <div class="metric-item" data-metric="ratio" data-label="AOV">
-            <span class="name">Average order value</span><span class="test-badge">Delta method</span>
+            <span class="name">Average order value</span><span class="test-badge">Delta + Z-test</span>
           </div>
           <div class="metric-item" data-metric="ratio" data-label="CTR per session">
-            <span class="name">CTR per session</span><span class="test-badge">Delta method</span>
+            <span class="name">CTR per session</span><span class="test-badge">Delta + Z-test</span>
           </div>
           <div class="metric-item" data-metric="ratio" data-label="Items per order">
-            <span class="name">Items per order</span><span class="test-badge">Delta method</span>
+            <span class="name">Items per order</span><span class="test-badge">Delta + Z-test</span>
           </div>
         </div>
       </div>
@@ -653,7 +653,7 @@ details code {
         <div class="metric-group">
           <div class="metric-group-label">Ratio metric</div>
           <div class="metric-item" data-metric="ratio" data-label="AOV / CTR per session">
-            <span class="name">AOV / CTR per session</span><span class="test-badge">Delta method</span>
+            <span class="name">AOV / CTR per session</span><span class="test-badge">Delta + Z-test</span>
           </div>
         </div>
       </div>
@@ -758,11 +758,19 @@ details code {
     </details>
 
     <details>
-      <summary>Ratio metrics → Delta method (NOT a t-test!)</summary>
+      <summary>Ratio metrics → Delta method + Z-test</summary>
       <div class="details-body">
-        <p><strong>What it&rsquo;s for:</strong> Metrics defined as a ratio of two random quantities — AOV (revenue/orders), CTR per session (clicks/sessions) — when the denominator varies per user.</p>
-        <p><strong>The trap:</strong> a t-test on AOV treats each order as independent. Orders from the same user are NOT independent — Type I error inflates to 10-30% instead of 5%.</p>
-        <p><strong>Formula:</strong> <code>Var(R) ≈ (1/n)·[Var(X)/Ȳ² − 2·X̄·Cov(X,Y)/Ȳ³ + X̄²·Var(Y)/Ȳ⁴]</code> where n is users.</p>
+        <p><strong>What the delta method is:</strong> A variance estimation technique — not a separate statistical test. It computes the correct standard error for a ratio metric, which is then used in a standard Z-test.</p>
+        <p><strong>The full flow for ratio metrics:</strong></p>
+        <ol style="margin:8px 0;padding-left:20px;line-height:1.7;">
+          <li>Aggregate to the user level: each user contributes one (X, Y) pair</li>
+          <li>Use the delta method to compute the correct per-user variance of R = mean(X)/mean(Y)</li>
+          <li>Apply a standard Z-test: Z = (R_B − R_A) / √(Var(R_A) + Var(R_B))</li>
+        </ol>
+        <p><strong>The trap (why naive doesn&rsquo;t work):</strong> Pooling all orders and running a t-test treats each order as independent. Two orders from the same user are correlated — the naive SE is 2–10× too small, inflating Type I error to 10–30%.</p>
+        <p><strong>Delta-method variance formula:</strong><br>
+        <code>Var(R) ≈ (1/n)·[Var(X)/Ȳ² − 2·X̄·Cov(X,Y)/Ȳ³ + X̄²·Var(Y)/Ȳ⁴]</code><br>
+        where n = number of users (not orders), X = per-user numerator, Y = per-user denominator.</p>
         <p><strong>Examples:</strong> AOV, CTR per session, items per order, revenue per session.</p>
       </div>
     </details>
@@ -939,7 +947,7 @@ function helpResult(metricKey) {
     'conversion': { test: 'Two-proportion Z-test', why: 'A binary per-user outcome with two arms is the classic conversion test.' },
     'conversion-multi': { test: 'χ² test, then pairwise Z with Bonferroni', why: 'Three or more variants need an omnibus test first to avoid multiple-comparison inflation.' },
     'continuous': { test: "Welch's t-test", why: 'One number per user is a continuous metric. Welch&rsquo;s handles unequal variances safely.' },
-    'ratio': { test: 'Delta method', why: 'When the denominator varies per user, a naive t-test inflates false positives. Delta gives correct variance.' },
+    'ratio': { test: 'Delta method + Z-test', why: 'The delta method computes the correct per-user variance for a ratio metric. Then a standard Z-test is applied. The naive approach (pooling all orders) understates the SE by 2-10x.' },
     'mw': { test: 'Mann-Whitney U test', why: 'Small samples or heavy skew break the CLT. Rank-based tests are robust to both.' }
   };
   const m = map[metricKey];
@@ -1358,7 +1366,7 @@ function analyzeRatio(alpha, sides, mdeRel) {
 
   let vClass = sig ? (lift>0?'win':'lose') : 'warn';
   let verdict = sig ? (lift>0?`Variant ${B.label} wins — ship it`:`Don&rsquo;t ship — variant ${B.label} is significantly worse`) : 'Inconclusive — no significant difference';
-  let body = `Lift in ratio: <strong>${lift>=0?'+':''}${fmt(lift,3)}</strong> (${lift>=0?'+':''}${fmtPct(lift_rel,2)} relative). Delta-method Z = ${fmt(z,2)}, p = ${fmtP(p)}. <em>Naive analysis would have given Z ≈ ${fmt(naiveZ,1)} — that&rsquo;s the bug delta-method exists to fix.</em>`;
+  let body = `Lift in ratio: <strong>${lift>=0?'+':''}${fmt(lift,3)}</strong> (${lift>=0?'+':''}${fmtPct(lift_rel,2)} relative). Z = ${fmt(z,2)}, p = ${fmtP(p)} using delta-method SE. <em>Naive pooled SE would give Z ≈ ${fmt(naiveZ,1)} — the delta method corrects the variance, then the same Z-test is applied.</em>`;
   let steps = sig
     ? `<strong>Before shipping:</strong><ul><li>Also report the per-user version (e.g. ARPU = AOV × orders/user) — that&rsquo;s what the business cares about.</li><li>Watch for composition shifts.</li></ul>`
     : `<strong>Likely causes:</strong><ul><li>Ratio metrics have inflated variance from the denominator — they need more users than you might guess.</li><li>Effect may be real but smaller than detectable.</li></ul>`;
@@ -1375,8 +1383,8 @@ function analyzeRatio(alpha, sides, mdeRel) {
       <div class="stat-box primary"><div class="stat-label">p-value</div><div class="stat-value">${fmtP(p)}</div></div>
     </div>
     <div class="chart-card">
-      <h4>Delta method vs naive (wrong) analysis</h4>
-      <p class="chart-lede">The naive SE treats every event as independent. Delta accounts for within-user correlation — the SE is usually 2-5× larger.</p>
+      <h4>Correct vs naive standard error for ratio metrics</h4>
+      <p class="chart-lede">The delta method computes SE at the user level — the right unit of randomisation. The naive approach pools all orders/sessions, understating SE by 2–10×. Both feed into the same Z-test formula.</p>
       <div id="ratio-comp-chart"></div>
     </div>
     <div class="table-scroll"><table class="results-table">
@@ -1684,8 +1692,8 @@ function drawRatioCompChart(deltaZ, naiveZ, deltaSE, naiveSE, lift) {
   const W = 640, H = 240, padL = 60, padR = 20, padT = 30, padB = 60;
   const svg = svgEl('svg', { viewBox: `0 0 ${W} ${H}` }, target);
   const bars = [
-    { label: 'Naive (WRONG)', value: Math.abs(naiveZ), color: '#E11D48', sub: `SE = ${fmt(naiveSE,4)}` },
-    { label: 'Delta method', value: Math.abs(deltaZ), color: '#5B5FE9', sub: `SE = ${fmt(deltaSE,4)}` }
+    { label: 'Naive SE (biased)', value: Math.abs(naiveZ), color: '#E11D48', sub: `SE = ${fmt(naiveSE,4)} → Z too large` },
+    { label: 'Delta-method SE (correct)', value: Math.abs(deltaZ), color: '#5B5FE9', sub: `SE = ${fmt(deltaSE,4)} → correct Z` }
   ];
   const yMax = Math.max(...bars.map(b=>b.value), 2.5)*1.2;
   const yToPx = y => padT + (yMax-y)/yMax*(H-padT-padB);
