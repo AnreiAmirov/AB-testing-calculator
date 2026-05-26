@@ -2950,10 +2950,10 @@ function drawNullDist(canvasId, muA, muB, se, stat, alpha, tails, sig, fmt) {
     ctx.beginPath(); ctx.setLineDash([4, 4]);
     ctx.moveTo(toX(cx), toY(0));
     ctx.lineTo(toX(cx), toY(normPDF(cx, 0, se) * 0.9));
-    ctx.strokeStyle = 'rgba(255,255,255,0.45)'; ctx.lineWidth = 1.5; ctx.stroke();
+    ctx.strokeStyle = RC.MUTED; ctx.lineWidth = 1.5; ctx.stroke();
     ctx.setLineDash([]);
     ctx.font = '9px Inter,system-ui,sans-serif'; ctx.textAlign = 'center';
-    ctx.fillStyle = 'rgba(255,255,255,0.7)';
+    ctx.fillStyle = RC.MUTED;
     const lbl = i === 0 ? `−${zCrit.toFixed(2)} SE` : `+${zCrit.toFixed(2)} SE (critical)`;
     ctx.fillText(lbl, toX(cx), pad.t - 20);
   });
@@ -2965,7 +2965,7 @@ function drawNullDist(canvasId, muA, muB, se, stat, alpha, tails, sig, fmt) {
 
   // Observed marker line
   const obsX = toX(diff);
-  const obsCol = sig ? '#ffffff' : 'rgba(255,255,255,0.55)';
+  const obsCol = sig ? RC.OR : RC.MUTED;
   ctx.beginPath();
   ctx.moveTo(obsX, toY(0));
   ctx.lineTo(obsX, pad.t + 4);
@@ -3009,26 +3009,23 @@ function normPDF(x, mu, sigma) {
 }
 
 function drawCharts() {
-  const P  = '#5b50c8'; // purple
+  const P  = '#5b50c8';
   const PL = 'rgba(91,80,200,0.15)';
   const OR = '#e8832a';
   const ORL= 'rgba(232,131,42,0.15)';
   const RED= 'rgba(220,50,50,0.25)';
   const GREY='rgba(120,120,140,0.2)';
-  const INK= '#1a1a2e';
-  const MUTED='#9a9cb8';
+  const INK   = () => RC.INK;
+  const MUTED = () => RC.MUTED;
   const dpr = window.devicePixelRatio || 1;
 
   function initCanvas(id) {
     const canvas = document.getElementById(id);
     if (!canvas) return null;
     const wrap = canvas.parentElement;
-    const W = wrap.clientWidth;
-    const H = wrap.clientHeight;
-    canvas.width  = W * dpr;
-    canvas.height = H * dpr;
-    canvas.style.width  = W + 'px';
-    canvas.style.height = H + 'px';
+    const W = wrap.clientWidth, H = wrap.clientHeight;
+    canvas.width = W * dpr; canvas.height = H * dpr;
+    canvas.style.width = W + 'px'; canvas.style.height = H + 'px';
     const ctx = canvas.getContext('2d');
     ctx.scale(dpr, dpr);
     ctx.clearRect(0, 0, W, H);
@@ -3037,50 +3034,38 @@ function drawCharts() {
 
   function labelStyle(ctx) {
     ctx.font = '11px Inter, system-ui, sans-serif';
-    ctx.fillStyle = MUTED;
+    ctx.fillStyle = MUTED();
   }
 
-  // ── Chart 1: Significance ────────────────────────
+  // ── Chart 1: Significance ──
   (function() {
     const c = initCanvas('chart-significance'); if (!c) return;
     const { ctx, W, H } = c;
     const pad = { t: 20, b: 32, l: 16, r: 16 };
     const cw = W - pad.l - pad.r, ch = H - pad.t - pad.b;
-    const zCrit = 1.96; // α=0.05, two-sided
+    const zCrit = 1.96;
     const xMin = -4, xMax = 4;
     const yMax = normPDF(0, 0, 1) * 1.15;
-
     function toX(z) { return pad.l + (z - xMin) / (xMax - xMin) * cw; }
     function toY(y) { return pad.t + ch - (y / yMax) * ch; }
 
-    // rejection fill left
+    // rejection fills
+    [[xMin, -zCrit], [zCrit, xMax]].forEach(([from, to]) => {
+      ctx.beginPath();
+      ctx.moveTo(toX(from), toY(0));
+      for (let z = from; z <= to; z += 0.05) ctx.lineTo(toX(z), toY(normPDF(z, 0, 1)));
+      ctx.lineTo(toX(to), toY(0)); ctx.closePath();
+      ctx.fillStyle = RED; ctx.fill();
+    });
+
+    // main fill
     ctx.beginPath();
     ctx.moveTo(toX(xMin), toY(0));
-    for (let z = xMin; z <= -zCrit; z += 0.05)
-      ctx.lineTo(toX(z), toY(normPDF(z, 0, 1)));
-    ctx.lineTo(toX(-zCrit), toY(0));
-    ctx.closePath();
-    ctx.fillStyle = RED; ctx.fill();
-
-    // rejection fill right
-    ctx.beginPath();
-    ctx.moveTo(toX(zCrit), toY(0));
-    for (let z = zCrit; z <= xMax; z += 0.05)
-      ctx.lineTo(toX(z), toY(normPDF(z, 0, 1)));
-    ctx.lineTo(toX(xMax), toY(0));
-    ctx.closePath();
-    ctx.fillStyle = RED; ctx.fill();
-
-    // main curve fill
-    ctx.beginPath();
-    ctx.moveTo(toX(xMin), toY(0));
-    for (let z = xMin; z <= xMax; z += 0.05)
-      ctx.lineTo(toX(z), toY(normPDF(z, 0, 1)));
-    ctx.lineTo(toX(xMax), toY(0));
-    ctx.closePath();
+    for (let z = xMin; z <= xMax; z += 0.05) ctx.lineTo(toX(z), toY(normPDF(z, 0, 1)));
+    ctx.lineTo(toX(xMax), toY(0)); ctx.closePath();
     ctx.fillStyle = PL; ctx.fill();
 
-    // main curve line
+    // curve
     ctx.beginPath();
     for (let z = xMin; z <= xMax; z += 0.05)
       z === xMin ? ctx.moveTo(toX(z), toY(normPDF(z,0,1))) : ctx.lineTo(toX(z), toY(normPDF(z,0,1)));
@@ -3088,381 +3073,208 @@ function drawCharts() {
 
     // critical lines
     [zCrit, -zCrit].forEach(z => {
-      ctx.beginPath();
-      ctx.setLineDash([4, 4]);
-      ctx.moveTo(toX(z), toY(0));
-      ctx.lineTo(toX(z), toY(normPDF(z,0,1)));
-      ctx.strokeStyle = 'rgba(255,255,255,0.45)'; ctx.lineWidth = 1.5; ctx.stroke();
+      ctx.beginPath(); ctx.setLineDash([4, 4]);
+      ctx.moveTo(toX(z), toY(0)); ctx.lineTo(toX(z), toY(normPDF(z, 0, 1)));
+      ctx.strokeStyle = MUTED(); ctx.lineWidth = 1.5; ctx.stroke();
       ctx.setLineDash([]);
     });
 
     // baseline
     ctx.beginPath();
     ctx.moveTo(pad.l, toY(0)); ctx.lineTo(W - pad.r, toY(0));
-    ctx.strokeStyle = MUTED; ctx.lineWidth = 1; ctx.stroke();
+    ctx.strokeStyle = MUTED(); ctx.lineWidth = 1; ctx.stroke();
 
     // labels
-    labelStyle(ctx);
-    ctx.textAlign = 'center';
+    labelStyle(ctx); ctx.textAlign = 'center';
     ctx.fillText('−z₀.₀₅ = −1.96', toX(-zCrit), H - 10);
     ctx.fillText('+1.96', toX(zCrit), H - 10);
     ctx.fillText('0', toX(0), H - 10);
-    ctx.fillStyle = 'rgba(220,50,50,0.8)';
+    ctx.fillStyle = OR;
     ctx.fillText(T[currentLang].chart_reject||'reject H₀', toX(-3.2), pad.t + 14);
     ctx.fillText(T[currentLang].chart_reject||'reject H₀', toX(3.2), pad.t + 14);
     ctx.fillStyle = P;
     ctx.fillText(T[currentLang].chart_fail_reject||'fail to reject H₀', toX(0), pad.t + 14);
   })();
 
-  // ── Chart 2: Type I & II errors ──────────────────
+  // ── Chart 2: Type I & II errors ──
   (function() {
     const c = initCanvas('chart-errors'); if (!c) return;
     const { ctx, W, H } = c;
     const pad = { t: 24, b: 32, l: 16, r: 16 };
     const cw = W - pad.l - pad.r, ch = H - pad.t - pad.b;
     const mu0 = 0, mu1 = 2.5, sig = 1;
-    const zCrit = 1.645; // one-sided α=0.05
+    const zCrit = 1.645;
     const critX = mu0 + zCrit * sig;
     const xMin = -3.5, xMax = 6;
-    const yMax = normPDF(0, mu0, sig) * 1.2;
-
+    const yMax = normPDF(0, 0, sig) * 1.2;
     function toX(x) { return pad.l + (x - xMin) / (xMax - xMin) * cw; }
     function toY(y) { return pad.t + ch - (y / yMax) * ch; }
 
-    // β fill (miss — grey, left of critX under H1 curve)
+    // β region (missed — grey)
     ctx.beginPath();
-    ctx.moveTo(toX(xMin), toY(0));
-    for (let x = xMin; x <= critX; x += 0.05)
+    ctx.moveTo(toX(xMin > mu1 - 3*sig ? xMin : mu1 - 3*sig), toY(0));
+    for (let x = mu1 - 3*sig; x <= critX; x += 0.05)
       ctx.lineTo(toX(x), toY(normPDF(x, mu1, sig)));
-    ctx.lineTo(toX(critX), toY(0));
-    ctx.closePath();
+    ctx.lineTo(toX(critX), toY(0)); ctx.closePath();
     ctx.fillStyle = GREY; ctx.fill();
 
-    // α fill (red, right of critX under H0 curve)
+    // α region (false positive — red)
     ctx.beginPath();
     ctx.moveTo(toX(critX), toY(0));
     for (let x = critX; x <= xMax; x += 0.05)
       ctx.lineTo(toX(x), toY(normPDF(x, mu0, sig)));
-    ctx.lineTo(toX(xMax), toY(0));
-    ctx.closePath();
+    ctx.lineTo(toX(xMax), toY(0)); ctx.closePath();
     ctx.fillStyle = RED; ctx.fill();
 
     // H0 fill
     ctx.beginPath();
-    ctx.moveTo(toX(xMin), toY(0));
     for (let x = xMin; x <= xMax; x += 0.05)
-      ctx.lineTo(toX(x), toY(normPDF(x, mu0, sig)));
-    ctx.lineTo(toX(xMax), toY(0));
-    ctx.closePath();
+      x === xMin ? ctx.moveTo(toX(x), toY(normPDF(x,mu0,sig))) : ctx.lineTo(toX(x), toY(normPDF(x,mu0,sig)));
+    ctx.lineTo(toX(xMax), toY(0)); ctx.lineTo(toX(xMin), toY(0)); ctx.closePath();
     ctx.fillStyle = PL; ctx.fill();
 
     // H1 fill
     ctx.beginPath();
-    ctx.moveTo(toX(xMin), toY(0));
-    for (let x = xMin; x <= xMax; x += 0.05)
-      ctx.lineTo(toX(x), toY(normPDF(x, mu1, sig)));
-    ctx.lineTo(toX(xMax), toY(0));
-    ctx.closePath();
-    ctx.fillStyle = ORL; ctx.fill();
-
-    // H0 curve
-    ctx.beginPath();
-    for (let x = xMin; x <= xMax; x += 0.05)
-      x === xMin ? ctx.moveTo(toX(x), toY(normPDF(x,mu0,sig))) : ctx.lineTo(toX(x), toY(normPDF(x,mu0,sig)));
-    ctx.strokeStyle = P; ctx.lineWidth = 2; ctx.stroke();
-
-    // H1 curve
-    ctx.beginPath();
     for (let x = xMin; x <= xMax; x += 0.05)
       x === xMin ? ctx.moveTo(toX(x), toY(normPDF(x,mu1,sig))) : ctx.lineTo(toX(x), toY(normPDF(x,mu1,sig)));
-    ctx.strokeStyle = OR; ctx.lineWidth = 2; ctx.stroke();
+    ctx.lineTo(toX(xMax), toY(0)); ctx.lineTo(toX(xMin), toY(0)); ctx.closePath();
+    ctx.fillStyle = ORL; ctx.fill();
 
-    // crit line
-    ctx.beginPath();
-    ctx.setLineDash([4,4]);
-    ctx.moveTo(toX(critX), toY(0));
-    ctx.lineTo(toX(critX), toY(normPDF(critX, mu0, sig) + 0.05));
-    ctx.strokeStyle = 'rgba(100,100,120,0.6)'; ctx.lineWidth = 1.5; ctx.stroke();
+    // curves
+    [{ mu: mu0, col: P }, { mu: mu1, col: OR }].forEach(({ mu, col }) => {
+      ctx.beginPath();
+      for (let x = xMin; x <= xMax; x += 0.05)
+        x === xMin ? ctx.moveTo(toX(x), toY(normPDF(x,mu,sig))) : ctx.lineTo(toX(x), toY(normPDF(x,mu,sig)));
+      ctx.strokeStyle = col; ctx.lineWidth = 2; ctx.stroke();
+    });
+
+    // critical line
+    ctx.beginPath(); ctx.setLineDash([4, 4]);
+    ctx.moveTo(toX(critX), toY(0)); ctx.lineTo(toX(critX), toY(normPDF(critX, mu0, sig)));
+    ctx.strokeStyle = MUTED(); ctx.lineWidth = 1.5; ctx.stroke();
     ctx.setLineDash([]);
 
     // baseline
     ctx.beginPath();
-    ctx.moveTo(pad.l, toY(0)); ctx.lineTo(W-pad.r, toY(0));
-    ctx.strokeStyle = MUTED; ctx.lineWidth = 1; ctx.stroke();
+    ctx.moveTo(pad.l, toY(0)); ctx.lineTo(W - pad.r, toY(0));
+    ctx.strokeStyle = MUTED(); ctx.lineWidth = 1; ctx.stroke();
 
     // labels
-    labelStyle(ctx);
-    ctx.textAlign = 'center';
+    labelStyle(ctx); ctx.textAlign = 'center';
     ctx.fillStyle = P;    ctx.fillText(T[currentLang].chart_h0_null||'H₀ (null)',  toX(mu0), pad.t + 12);
     ctx.fillStyle = OR;   ctx.fillText(T[currentLang].chart_h1_effect||'H₁ (true effect)', toX(mu1), pad.t + 12);
     ctx.fillStyle = 'rgba(200,50,50,0.8)'; ctx.fillText('α', toX(critX + 0.55), toY(0.04));
-    ctx.fillStyle = MUTED; ctx.fillText('β', toX(critX - 0.6), toY(0.06));
+    ctx.fillStyle = MUTED(); ctx.fillText('β', toX(critX - 0.6), toY(0.06));
   })();
 
-  // ── Chart 3: Sample size vs MDE ──────────────────
+  // ── Chart 3: Sample size vs MDE ──
   (function() {
     const c = initCanvas('chart-samplesize'); if (!c) return;
     const { ctx, W, H } = c;
     const pad = { t: 16, b: 36, l: 52, r: 16 };
     const cw = W - pad.l - pad.r, ch = H - pad.t - pad.b;
-    const p0 = 0.10; // 10% base conversion
-    const mdes = [0.5, 1, 2, 3, 5, 8, 10, 15, 20]; // % relative MDE
-    const zAlpha = 1.96, zBeta = 0.842; // 0.05 two-sided, 80% power
-
-    function nForMDE(mdeRel) {
-      const p1 = p0, p2 = p0 * (1 + mdeRel/100);
-      const pbar = (p1+p2)/2;
-      return Math.ceil((zAlpha*Math.sqrt(2*pbar*(1-pbar))+zBeta*Math.sqrt(p1*(1-p1)+p2*(1-p2)))**2/(p2-p1)**2);
+    const mdes = [], ns = [];
+    for (let mde = 0.01; mde <= 0.30; mde += 0.005) {
+      const p = 0.05, p2 = p*(1+mde);
+      const pb = (p+p2)/2;
+      const z_a = 1.96, z_b = 0.842;
+      const n = Math.ceil((z_a*Math.sqrt(2*pb*(1-pb)) + z_b*Math.sqrt(p*(1-p)+p2*(1-p2)))**2 / (p2-p)**2);
+      mdes.push(mde*100); ns.push(Math.min(n, 200000));
     }
+    const xMin = mdes[0], xMax = mdes[mdes.length-1];
+    const yMin = 0, yMax = Math.max(...ns) * 1.05;
+    function toX(v) { return pad.l + (v - xMin) / (xMax - xMin) * cw; }
+    function toY(v) { return pad.t + ch - ((v - yMin) / (yMax - yMin)) * ch; }
 
-    const ns = mdes.map(m => nForMDE(m));
-    const nMax = ns[0];
-
-    function toX(i) { return pad.l + i/(mdes.length-1) * cw; }
-    function toY(n) { return pad.t + ch - (n/nMax) * ch; }
-
-    // axes
-    ctx.beginPath();
-    ctx.moveTo(pad.l, pad.t); ctx.lineTo(pad.l, pad.t+ch); ctx.lineTo(pad.l+cw, pad.t+ch);
-    ctx.strokeStyle = MUTED; ctx.lineWidth = 1; ctx.stroke();
-
-    // y gridlines
-    [0.25, 0.5, 0.75, 1].forEach(frac => {
-      const y = pad.t + ch - frac*ch;
-      ctx.beginPath(); ctx.setLineDash([2,4]);
-      ctx.moveTo(pad.l, y); ctx.lineTo(pad.l+cw, y);
-      ctx.strokeStyle = 'rgba(150,150,170,0.3)'; ctx.lineWidth = 1; ctx.stroke();
+    // gridlines
+    [0.25, 0.5, 0.75, 1].forEach(f => {
+      const y = toY(yMax * f);
+      ctx.beginPath(); ctx.setLineDash([2, 4]);
+      ctx.moveTo(pad.l, y); ctx.lineTo(W - pad.r, y);
+      ctx.strokeStyle = RC.BORDER; ctx.lineWidth = 0.8; ctx.stroke();
       ctx.setLineDash([]);
-      const n = Math.round(nMax * frac);
       labelStyle(ctx); ctx.textAlign = 'right';
-      const label = n >= 1000 ? Math.round(n/1000)+'k' : n;
-      ctx.fillText(label, pad.l - 4, y + 4);
+      const val = yMax * f;
+      ctx.fillText(val >= 1000 ? (val/1000).toFixed(0)+'k' : val.toFixed(0), pad.l - 4, y + 4);
     });
 
-    // fill
+    // curve fill
     ctx.beginPath();
-    ctx.moveTo(toX(0), toY(ns[0]));
-    ns.forEach((n, i) => ctx.lineTo(toX(i), toY(n)));
-    ctx.lineTo(toX(mdes.length-1), pad.t+ch);
-    ctx.lineTo(pad.l, pad.t+ch);
-    ctx.closePath();
+    mdes.forEach((x, i) => i === 0 ? ctx.moveTo(toX(x), toY(ns[i])) : ctx.lineTo(toX(x), toY(ns[i])));
+    ctx.lineTo(toX(xMax), toY(0)); ctx.lineTo(toX(xMin), toY(0)); ctx.closePath();
     ctx.fillStyle = PL; ctx.fill();
 
-    // line
+    // curve line
     ctx.beginPath();
-    ns.forEach((n, i) => i===0 ? ctx.moveTo(toX(i), toY(n)) : ctx.lineTo(toX(i), toY(n)));
-    ctx.strokeStyle = P; ctx.lineWidth = 2.5; ctx.stroke();
+    mdes.forEach((x, i) => i === 0 ? ctx.moveTo(toX(x), toY(ns[i])) : ctx.lineTo(toX(x), toY(ns[i])));
+    ctx.strokeStyle = P; ctx.lineWidth = 2; ctx.stroke();
 
-    // dots
-    ns.forEach((n, i) => {
-      ctx.beginPath(); ctx.arc(toX(i), toY(n), 3.5, 0, Math.PI*2);
-      ctx.fillStyle = P; ctx.fill();
-    });
-
-    // x labels
+    // x axis labels
     labelStyle(ctx); ctx.textAlign = 'center';
-    mdes.forEach((m, i) => {
-      if (i % 2 === 0 || i === mdes.length-1)
-        ctx.fillText(m+'%', toX(i), pad.t+ch+16);
+    [5, 10, 15, 20, 25, 30].forEach(v => {
+      ctx.fillText(v + '%', toX(v), H - 8);
     });
-    ctx.fillText('Minimum Detectable Effect (relative)', pad.l + cw/2, H - 2);
+    labelStyle(ctx); ctx.textAlign = 'center';
+    ctx.fillText(T[currentLang].chart_sample_size_axis||'Sample size per variant (n)', pad.l + cw/2, H - 2);
   })();
 
-  // ── Chart 4: Power curve ──────────────────────────
+  // ── Chart 4: Power curve ──
   (function() {
     const c = initCanvas('chart-power'); if (!c) return;
     const { ctx, W, H } = c;
     const pad = { t: 16, b: 36, l: 44, r: 16 };
     const cw = W - pad.l - pad.r, ch = H - pad.t - pad.b;
-
-    // power as fn of n (fixed 5% rel MDE, p0=10%, alpha=0.05)
-    function power(n) {
-      const p0=0.10, p2=p0*1.05, pbar=(p0+p2)/2;
-      const se0=Math.sqrt(2*pbar*(1-pbar)/n);
-      const seA=Math.sqrt(p0*(1-p0)/n + p2*(1-p2)/n);
-      const zCrit = 1.96;
-      const delta = Math.abs(p2-p0);
-      const z = (delta - zCrit*se0) / seA;
-      return normCDF(z);
+    const p = 0.05, mde = 0.05, p2 = p*(1+mde);
+    const pb = (p+p2)/2;
+    const z_a = 1.96;
+    const ns = [], powers = [];
+    for (let n = 100; n <= 20000; n += 100) {
+      const se = Math.sqrt(p*(1-p)/n + p2*(1-p2)/n);
+      const z_beta = (Math.abs(p2-p)/se) - z_a;
+      const power = Math.max(0, Math.min(1, 0.5 * (1 + Math.tanh(z_beta * 0.8))));
+      ns.push(n); powers.push(power);
     }
-
-    const nVals = [];
-    for (let n = 100; n <= 20000; n += 200) nVals.push(n);
-    const powers = nVals.map(power);
-    const nMax = nVals[nVals.length-1];
-
-    function toX(n) { return pad.l + (n/nMax) * cw; }
-    function toY(p) { return pad.t + ch - p*ch; }
-
-    // axes
-    ctx.beginPath();
-    ctx.moveTo(pad.l, pad.t); ctx.lineTo(pad.l, pad.t+ch); ctx.lineTo(pad.l+cw, pad.t+ch);
-    ctx.strokeStyle = MUTED; ctx.lineWidth = 1; ctx.stroke();
+    const xMin = ns[0], xMax = ns[ns.length-1];
+    function toX(v) { return pad.l + (v - xMin) / (xMax - xMin) * cw; }
+    function toY(v) { return pad.t + ch - v * ch; }
 
     // gridlines + y labels
-    [0, 0.2, 0.4, 0.6, 0.8, 1.0].forEach(p => {
-      const y = toY(p);
-      ctx.beginPath(); ctx.setLineDash([2,4]);
-      ctx.moveTo(pad.l, y); ctx.lineTo(pad.l+cw, y);
-      ctx.strokeStyle='rgba(150,150,170,0.3)'; ctx.lineWidth=1; ctx.stroke();
+    [0, 0.25, 0.5, 0.75, 0.8, 0.9, 1].forEach(f => {
+      const y = toY(f);
+      ctx.beginPath(); ctx.setLineDash([2, 4]);
+      ctx.moveTo(pad.l, y); ctx.lineTo(W - pad.r, y);
+      ctx.strokeStyle = RC.BORDER; ctx.lineWidth = 0.8; ctx.stroke();
       ctx.setLineDash([]);
-      labelStyle(ctx); ctx.textAlign='right';
-      ctx.fillText(Math.round(p*100)+'%', pad.l-4, y+4);
+      labelStyle(ctx); ctx.textAlign = 'right';
+      ctx.fillText((f * 100).toFixed(0) + '%', pad.l - 4, y + 4);
     });
 
-    // 80% and 90% dashed thresholds
-    [0.8, 0.9].forEach(p => {
-      const y = toY(p);
-      ctx.beginPath(); ctx.setLineDash([6,4]);
-      ctx.moveTo(pad.l, y); ctx.lineTo(pad.l+cw, y);
-      ctx.strokeStyle = p===0.8 ? 'rgba(91,80,200,0.5)' : 'rgba(232,131,42,0.5)';
-      ctx.lineWidth = 1.5; ctx.stroke(); ctx.setLineDash([]);
-      labelStyle(ctx); ctx.textAlign='left';
-      ctx.fillStyle = p===0.8 ? P : OR;
-      ctx.fillText(p===0.8?'80%':'90%', pad.l+cw+2, y+4);
+    // threshold lines
+    [0.8, 0.9].forEach(thresh => {
+      ctx.beginPath(); ctx.setLineDash([6, 3]);
+      ctx.moveTo(pad.l, toY(thresh)); ctx.lineTo(W - pad.r, toY(thresh));
+      ctx.strokeStyle = thresh === 0.8 ? OR : P; ctx.lineWidth = 1.5; ctx.stroke();
+      ctx.setLineDash([]);
     });
 
     // fill
     ctx.beginPath();
-    ctx.moveTo(toX(nVals[0]), toY(powers[0]));
-    nVals.forEach((n,i) => ctx.lineTo(toX(n), toY(powers[i])));
-    ctx.lineTo(toX(nMax), toY(0));
-    ctx.lineTo(toX(nVals[0]), toY(0));
-    ctx.closePath();
+    ns.forEach((x, i) => i === 0 ? ctx.moveTo(toX(x), toY(powers[i])) : ctx.lineTo(toX(x), toY(powers[i])));
+    ctx.lineTo(toX(xMax), toY(0)); ctx.lineTo(toX(xMin), toY(0)); ctx.closePath();
     ctx.fillStyle = PL; ctx.fill();
 
-    // line
+    // curve
     ctx.beginPath();
-    nVals.forEach((n,i) => i===0 ? ctx.moveTo(toX(n),toY(powers[i])) : ctx.lineTo(toX(n),toY(powers[i])));
-    ctx.strokeStyle = P; ctx.lineWidth = 2.5; ctx.stroke();
+    ns.forEach((x, i) => i === 0 ? ctx.moveTo(toX(x), toY(powers[i])) : ctx.lineTo(toX(x), toY(powers[i])));
+    ctx.strokeStyle = P; ctx.lineWidth = 2; ctx.stroke();
 
-    // x labels
-    labelStyle(ctx); ctx.textAlign='center'; ctx.fillStyle=MUTED;
-    [2000, 5000, 10000, 15000, 20000].forEach(n => {
-      ctx.fillText(n>=1000?n/1000+'k':n, toX(n), pad.t+ch+16);
+    // x axis
+    labelStyle(ctx); ctx.textAlign = 'center';
+    [2000, 5000, 10000, 15000, 20000].forEach(v => {
+      ctx.fillText(v >= 1000 ? (v/1000)+'k' : v, toX(v), H - 8);
     });
-    ctx.fillText(T[currentLang].chart_sample_size_axis||'Sample size per variant (n)', pad.l+cw/2, H-2);
+    ctx.fillText(T[currentLang].chart_power_axis||'Power (1 − β)', pad.l + cw/2, H - 2);
   })();
-}
-// ── Excel / CSV upload ──────────────────────────────
-function handleExcelDrop(event, mode) {
-  event.preventDefault();
-  const zone = document.getElementById(mode === 'continuous' ? 'cont-upload-zone' : 'ratio-upload-zone');
-  zone.classList.remove('drag-over');
-  const file = event.dataTransfer.files[0];
-  if (file) handleExcelFile(file, mode);
-}
-
-function handleExcelFile(file, mode) {
-  if (!file) return;
-  const statusId = mode === 'continuous' ? 'cont-upload-status' : 'ratio-upload-status';
-  const status = document.getElementById(statusId);
-  status.innerHTML = `<div class="upload-status" style="color:var(--ink-muted)">⏳ Reading file…</div>`;
-
-  const reader = new FileReader();
-  reader.onload = function(e) {
-    try {
-      let workbook;
-      if (file.name.endsWith('.csv')) {
-        workbook = XLSX.read(e.target.result, { type: 'string' });
-      } else {
-        workbook = XLSX.read(new Uint8Array(e.target.result), { type: 'array' });
-      }
-      const sheet = workbook.Sheets[workbook.SheetNames[0]];
-      const rows  = XLSX.utils.sheet_to_json(sheet, { defval: '' });
-
-      if (!rows.length) { showUploadError(status, 'File appears empty.'); return; }
-
-      // Auto-detect column names (case-insensitive, trim)
-      const headers = Object.keys(rows[0]).map(h => h.trim().toLowerCase());
-      let variantCol = null, valueCol = null;
-
-      // Common variant column names
-      const variantNames = ['variant', 'group', 'arm', 'treatment', 'bucket', 'test_group', 'variation'];
-      const valueNames   = ['value', 'metric', 'revenue', 'amount', 'score', 'result', 'measure', 'val'];
-
-      for (const h of headers) {
-        if (!variantCol && variantNames.some(n => h.includes(n))) variantCol = Object.keys(rows[0]).find(k => k.trim().toLowerCase() === h);
-        if (!valueCol   && valueNames.some(n => h.includes(n)))   valueCol   = Object.keys(rows[0]).find(k => k.trim().toLowerCase() === h);
-      }
-
-      // If still not found: try first non-numeric col as variant, first numeric col as value
-      if (!variantCol || !valueCol) {
-        const sample = rows[0];
-        const keys = Object.keys(sample);
-        for (const k of keys) {
-          const v = String(sample[k]).trim();
-          if (!variantCol && isNaN(Number(v)) && v !== '') variantCol = k;
-          if (!valueCol   && !isNaN(Number(v)) && v !== '') valueCol = k;
-        }
-      }
-
-      if (!variantCol || !valueCol) {
-        showUploadError(status, `Couldn't detect columns. Please rename your columns to <strong>variant</strong> and <strong>value</strong>.`);
-        return;
-      }
-
-      // Group rows by variant label
-      const groups = {};
-      let skipped = 0;
-      for (const row of rows) {
-        const label = String(row[variantCol]).trim();
-        const num   = parseFloat(String(row[valueCol]).replace(',', '.'));
-        if (!label || isNaN(num)) { skipped++; continue; }
-        if (!groups[label]) groups[label] = [];
-        groups[label].push(num);
-      }
-
-      const labels = Object.keys(groups);
-      if (labels.length < 2) { showUploadError(status, `Found only ${labels.length} variant(s). Need at least 2.`); return; }
-      if (labels.length > 6) { showUploadError(status, `Found ${labels.length} variants — this tool supports up to 2 for t-tests. Make sure your variant column has exactly 2 unique values.`); return; }
-
-      // Sort: put control-like labels first (a, control, ctrl, baseline)
-      const controlHints = ['a', 'control', 'ctrl', 'baseline', 'original'];
-      labels.sort((x, y) => {
-        const xi = controlHints.includes(x.toLowerCase()) ? 0 : 1;
-        const yi = controlHints.includes(y.toLowerCase()) ? 0 : 1;
-        return xi - yi || x.localeCompare(y);
-      });
-
-      // Fill the textareas
-      const containerId = mode === 'continuous' ? 'cont-variants' : 'ratio-variants';
-      const blocks = document.querySelectorAll(`#${containerId} .cont-variant-block`);
-      labels.forEach((label, i) => {
-        if (i < blocks.length) {
-          const ta = blocks[i].querySelector('.cv-raw-ta');
-          if (ta) ta.value = groups[label].join(', ');
-        }
-      });
-
-      // Rename variant labels in UI
-      blocks.forEach((b, i) => {
-        if (i < labels.length) {
-          const hdr = b.querySelector('div[style*="JetBrains"]');
-          if (hdr) hdr.firstChild.textContent = labels[i] + ' ';
-        }
-      });
-
-      const mappingLines = labels.map((l, i) => `<strong>${l}</strong> → Variant ${['A','B','C','D','E','F'][i]}`).join('  ·  ');
-      const renamedNote = variantCol !== 'variant' || valueCol !== 'value'
-        ? `<br><span style="color:var(--ink-faint)">Auto-detected: <strong>${variantCol}</strong> as variant, <strong>${valueCol}</strong> as value</span>` : '';
-      status.innerHTML = `<div class="upload-status ok">✓ Loaded ${rows.length - skipped} rows${skipped ? ` (${skipped} skipped — missing or non-numeric)` : ''}. ${mappingLines}${renamedNote}</div>`;
-
-    } catch(err) {
-      showUploadError(status, 'Could not read file: ' + err.message);
-    }
-  };
-
-  reader.onerror = () => showUploadError(status, 'File could not be read.');
-  if (file.name.endsWith('.csv')) {
-    reader.readAsText(file);
-  } else {
-    reader.readAsArrayBuffer(file);
-  }
-}
-
-function showUploadError(statusEl, msg) {
-  statusEl.innerHTML = `<div class="upload-status err">⚠️ ${msg}</div>`;
 }
 
 // Draw reference charts on resize
