@@ -41,22 +41,24 @@
 }
 
 [data-theme="dark"] {
-  --bg: #0f1020;
-  --card: #181a30;
-  --border: #2a2d4a;
-  --border-strong: #3a3d5e;
-  --ink: #ebecf5;
-  --ink-muted: #a8aac8;
-  --ink-faint: #6e7090;
-  --pill-bg: #1f2138;
-  --success: #4dd084;
-  --success-bg: #0d2a1a;
-  --warning: #e6b545;
-  --warning-bg: #2a1f00;
-  --info-bg: #1a1c35;
-  --shadow: 0 2px 16px rgba(0,0,0,0.4);
-  --shadow-card: 0 1px 4px rgba(0,0,0,0.3), 0 4px 20px rgba(0,0,0,0.25);
-  --accent-hover-bg: #252848;
+  --bg: #0d0e1f;
+  --card: #161828;
+  --border: #2e3155;
+  --border-strong: #424680;
+  --ink: #f4f5ff;
+  --ink-muted: #c0c4e8;
+  --ink-faint: #8890b8;
+  --pill-bg: #1e2040;
+  --accent: #a59cf7;
+  --accent-hover: #bdb6fa;
+  --accent-hover-bg: #252a58;
+  --success: #66dda0;
+  --success-bg: #082416;
+  --warning: #f7cf50;
+  --warning-bg: #1e1600;
+  --info-bg: #161938;
+  --shadow: 0 2px 20px rgba(0,0,0,0.55);
+  --shadow-card: 0 1px 4px rgba(0,0,0,0.45), 0 4px 24px rgba(0,0,0,0.35);
 }
 
 /* Theme toggle — integrated into header */
@@ -240,8 +242,8 @@
 }
 
 /* Notices */
-[data-theme="dark"] .notice.info { background: #151838; border-left-color: var(--accent); color: #c4bfff; }
-[data-theme="dark"] .notice.warn { background: var(--warning-bg); border-left-color: var(--warning); color: #f0c84a; }
+[data-theme="dark"] .notice.info { background: var(--info-bg); border-left-color: var(--accent); color: #ccc8ff; }
+[data-theme="dark"] .notice.warn { background: var(--warning-bg); border-left-color: var(--warning); color: #f7cf50; }
 [data-theme="dark"] .notice.success { background: var(--success-bg); border-left-color: var(--success); color: var(--success); }
 [data-theme="dark"] .notice strong { color: inherit; }
 
@@ -944,6 +946,14 @@ main {
   position: relative;
   overflow: hidden;
   border-radius: var(--radius-sm);
+  display: block;
+}
+.chart-wrap canvas {
+  display: block;
+  position: absolute;
+  top: 0; left: 0;
+  width: 100% !important;
+  height: 100% !important;
 }
 canvas.chart { width: 100% !important; height: 100% !important; display: block; }
 </style>
@@ -1080,14 +1090,14 @@ canvas.chart { width: 100% !important; height: 100% !important; display: block; 
     </div>
     <hr class="divider">
     <div class="card-heading" style="font-size:0.9rem" data-i18n="plan_duration_heading">How long will it take?</div>
-    <p style="font-size:0.82rem;color:var(--ink-muted);margin:4px 0 12px">Enter your daily eligible traffic to estimate experiment duration.</p>
-    <div class="form-row cols-2">
+    <p style="font-size:0.82rem;color:var(--ink-muted);margin:4px 0 12px" data-i18n="plan_duration_hint">Enter your daily eligible traffic to estimate experiment duration.</p>
+    <div class="form-row cols-2" style="align-items:start">
       <div class="field">
-        <label data-i18n="plan_daily_users">Daily eligible users<span class="tip"> — users who could enter the test</span></label>
+        <label><span data-i18n="plan_daily_users_short">Daily eligible users</span><br><span class="tip" data-i18n="plan_daily_users_tip">users who could enter the test</span></label>
         <input type="number" id="p-daily-users" placeholder="e.g. 2000" min="1" step="1">
       </div>
       <div class="field">
-        <label data-i18n="plan_num_variants">Number of variants<span class="tip"> — including control</span></label>
+        <label><span data-i18n="plan_num_variants_short">Number of variants</span><br><span class="tip" data-i18n="plan_num_variants_tip">including control</span></label>
         <input type="number" id="p-num-variants" value="2" min="2" max="10" step="1">
       </div>
     </div>
@@ -1636,6 +1646,8 @@ const T = {
     plan_step2_heading:'Your numbers', plan_step3_heading:'Test parameters',
     plan_duration_heading:'How long will it take?',
     plan_duration_hint:'Enter your daily eligible traffic to estimate experiment duration.',
+    plan_daily_users_short:'Daily eligible users', plan_daily_users_tip:'users who could enter the test',
+    plan_num_variants_short:'Number of variants', plan_num_variants_tip:'including control',
     plan_daily_users:'Daily eligible users — users who could enter the test',
     plan_num_variants:'Number of variants — including control',
     plan_baseline_conv:'Baseline conversion rate (%) — e.g. 4.8 means 4.8%',
@@ -1781,6 +1793,8 @@ const T = {
     js_before_ship:'Before shipping:',
     js_guardrails:'Check guardrails: did revenue, retention, or other key metrics regress?',
     js_segments:'Check segments: is the lift consistent across mobile/desktop, country, plan?',
+    js_low_data_title:'⚠️ Low data warning',
+    js_low_data_body:'Only {n} total conversions observed. Results may be unreliable — a small number of events makes the test highly sensitive to random fluctuation. Collect more data before making a decision.',
     js_not_sig:'Not significant yet.',
     js_keep_running:'Keep running until you hit your planned sample size. Stopping early inflates false positives.',
     js_control_avg:'Control avg', js_variant_avg:'Variant avg',
@@ -1822,6 +1836,8 @@ const T = {
     plan_step2_heading:'Ваши данные', plan_step3_heading:'Параметры теста',
     plan_duration_heading:'Сколько времени займёт?',
     plan_duration_hint:'Введите ежедневный трафик для расчёта длительности эксперимента.',
+    plan_daily_users_short:'Ежедневный трафик', plan_daily_users_tip:'пользователи, которые могут войти в тест',
+    plan_num_variants_short:'Количество вариантов', plan_num_variants_tip:'включая контроль',
     plan_daily_users:'Ежедневный трафик — пользователи, которые могут войти в тест',
     plan_num_variants:'Количество вариантов — включая контроль',
     plan_baseline_conv:'Базовая конверсия (%) — например, 4.8 означает 4.8%',
@@ -1967,6 +1983,8 @@ const T = {
     js_before_ship:'Перед запуском:',
     js_guardrails:'Проверьте охранные метрики: не упали ли выручка, удержание или другие ключевые показатели?',
     js_segments:'Проверьте сегменты: одинаков ли прирост на мобильных/десктопе, по странам и тарифам?',
+    js_low_data_title:'⚠️ Мало данных',
+    js_low_data_body:'Всего {n} конверсий. Результат может быть ненадёжным — малое число событий делает тест очень чувствительным к случайным колебаниям. Соберите больше данных перед принятием решения.',
     js_not_sig:'Результат ещё не значим.',
     js_keep_running:'Продолжайте тест до достижения запланированного размера выборки. Ранняя остановка завышает долю ложноположительных.',
     js_control_avg:'Среднее контроля', js_variant_avg:'Среднее варианта',
@@ -2041,10 +2059,10 @@ function applyTheme(dark) {
   if (icon) icon.textContent = dark ? '☀️' : '🌙';
   if (lbl)  lbl.textContent  = dark ? (T[currentLang]?.theme_light || 'Light') : (T[currentLang]?.theme_dark || 'Dark');
   if (typeof RC !== 'undefined') {
-    RC.INK    = dark ? '#ebecf5' : '#1a1a2e';
-    RC.MUTED  = dark ? '#6e7090' : '#9a9cb8';
-    RC.BG     = dark ? '#181a30' : '#ffffff';
-    RC.BORDER = dark ? '#2a2d4a' : '#e2e4ef';
+    RC.INK    = dark ? '#f4f5ff' : '#1a1a2e';
+    RC.MUTED  = dark ? '#8890b8' : '#9a9cb8';
+    RC.BG     = dark ? '#161828' : '#ffffff';
+    RC.BORDER = dark ? '#2e3155' : '#e2e4ef';
   }
   try { localStorage.setItem('abcalc-theme', dark ? 'dark' : 'light'); } catch(e) {}
   if (typeof drawCharts === 'function' &&
@@ -2233,6 +2251,15 @@ function analyseConversion() {
     const preregWarn = preregMDE&&Math.abs(liftPct)<preregMDE&&sig
       ?`<div class="notice warn" style="margin-top:12px"><strong>Note:</strong> Significant, but the observed lift (${liftPct.toFixed(1)}%) is below your pre-registered MDE of ${preregMDE}%. Is this lift meaningful for the business?</div>`:'';
 
+    // Low data warning: fewer than 100 conversions total, or fewer than 5 per variant
+    const totalConversions = A.c + B.c;
+    const minConversions = Math.min(A.c, B.c);
+    const lowDataWarn = (totalConversions < 100 || minConversions < 5)
+      ? `<div class="notice warn" style="margin-top:12px">
+          <strong>${T[currentLang].js_low_data_title}</strong>
+          ${T[currentLang].js_low_data_body.replace('{n}', totalConversions)}
+        </div>` : '';
+
     html += `<div class="ar-verdict ${sig?'sig':'insig'}">${sig?T[currentLang].js_ship:T[currentLang].js_no_winner}</div>`;
     html += `<div class="ar-sub">p = ${pVal.toFixed(4)} · α = ${alpha} · ${tails===2?T[currentLang].js_two_sided:T[currentLang].js_one_sided}</div>`;
     html += `<div class="ar-stats">
@@ -2240,7 +2267,7 @@ function analyseConversion() {
       <div class="ar-stat"><strong>${(B.p*100).toFixed(2)}%</strong>${T[currentLang].js_variant_rate}</div>
       <div class="ar-stat"><strong>${liftPct>0?'+':''}${liftPct.toFixed(1)}%</strong>${T[currentLang].js_rel_lift}</div>
       <div class="ar-stat"><strong>±${ci95pp.toFixed(2)} pp</strong>${T[currentLang].js_margin}</div>
-    </div>${preregWarn}`;
+    </div>${lowDataWarn}${preregWarn}`;
 
     // Chart canvases — drawn after innerHTML is set
     html += `<div class="res-chart-grid">
@@ -2923,10 +2950,10 @@ function drawNullDist(canvasId, muA, muB, se, stat, alpha, tails, sig, fmt) {
     ctx.beginPath(); ctx.setLineDash([4, 4]);
     ctx.moveTo(toX(cx), toY(0));
     ctx.lineTo(toX(cx), toY(normPDF(cx, 0, se) * 0.9));
-    ctx.strokeStyle = 'rgba(220,50,50,0.7)'; ctx.lineWidth = 1.5; ctx.stroke();
+    ctx.strokeStyle = 'rgba(255,255,255,0.45)'; ctx.lineWidth = 1.5; ctx.stroke();
     ctx.setLineDash([]);
     ctx.font = '9px Inter,system-ui,sans-serif'; ctx.textAlign = 'center';
-    ctx.fillStyle = 'rgba(220,50,50,0.8)';
+    ctx.fillStyle = 'rgba(255,255,255,0.7)';
     const lbl = i === 0 ? `−${zCrit.toFixed(2)} SE` : `+${zCrit.toFixed(2)} SE (critical)`;
     ctx.fillText(lbl, toX(cx), pad.t - 20);
   });
@@ -2938,7 +2965,7 @@ function drawNullDist(canvasId, muA, muB, se, stat, alpha, tails, sig, fmt) {
 
   // Observed marker line
   const obsX = toX(diff);
-  const obsCol = sig ? '#c84a10' : '#888';
+  const obsCol = sig ? '#ffffff' : 'rgba(255,255,255,0.55)';
   ctx.beginPath();
   ctx.moveTo(obsX, toY(0));
   ctx.lineTo(obsX, pad.t + 4);
@@ -3065,7 +3092,7 @@ function drawCharts() {
       ctx.setLineDash([4, 4]);
       ctx.moveTo(toX(z), toY(0));
       ctx.lineTo(toX(z), toY(normPDF(z,0,1)));
-      ctx.strokeStyle = 'rgba(220,50,50,0.7)'; ctx.lineWidth = 1.5; ctx.stroke();
+      ctx.strokeStyle = 'rgba(255,255,255,0.45)'; ctx.lineWidth = 1.5; ctx.stroke();
       ctx.setLineDash([]);
     });
 
