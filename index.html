@@ -759,9 +759,25 @@ main {
 .ar-verdict.sig  { color: var(--success); }
 .ar-verdict.insig { color: var(--ink-muted); }
 .ar-sub { font-size: 0.82rem; color: var(--ink-muted); }
-.ar-stats { display: flex; gap: 20px; flex-wrap: wrap; margin-top: 16px; }
-.ar-stat { font-size: 0.8rem; color: var(--ink-muted); }
-.ar-stat strong { font-family: 'JetBrains Mono', monospace; font-size: 0.95rem; color: var(--ink); display: block; font-weight: 600; }
+.ar-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 16px 20px;
+  margin-top: 16px;
+}
+.ar-stat {
+  font-size: 0.8rem;
+  color: var(--ink-muted);
+  line-height: 1.4;
+}
+.ar-stat strong {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.95rem;
+  color: var(--ink);
+  display: block;
+  font-weight: 600;
+  margin-bottom: 2px;
+}
 
 /* ── Reference ── */
 .accordion {
@@ -2220,10 +2236,10 @@ function analyseConversion() {
     html += `<div class="ar-verdict ${sig?'sig':'insig'}">${sig?T[currentLang].js_ship:T[currentLang].js_no_winner}</div>`;
     html += `<div class="ar-sub">p = ${pVal.toFixed(4)} · α = ${alpha} · ${tails===2?T[currentLang].js_two_sided:T[currentLang].js_one_sided}</div>`;
     html += `<div class="ar-stats">
-      <div class="ar-stat"><strong>${(A.p*100).toFixed(2)}%</strong>'+T[currentLang].js_control_rate+'</div>
-      <div class="ar-stat"><strong>${(B.p*100).toFixed(2)}%</strong>'+T[currentLang].js_variant_rate+'</div>
-      <div class="ar-stat"><strong>${liftPct>0?'+':''}${liftPct.toFixed(1)}%</strong>'+T[currentLang].js_rel_lift+'</div>
-      <div class="ar-stat"><strong>±${ci95pp.toFixed(2)} pp</strong>'+T[currentLang].js_margin+'</div>
+      <div class="ar-stat"><strong>${(A.p*100).toFixed(2)}%</strong>${T[currentLang].js_control_rate}</div>
+      <div class="ar-stat"><strong>${(B.p*100).toFixed(2)}%</strong>${T[currentLang].js_variant_rate}</div>
+      <div class="ar-stat"><strong>${liftPct>0?'+':''}${liftPct.toFixed(1)}%</strong>${T[currentLang].js_rel_lift}</div>
+      <div class="ar-stat"><strong>±${ci95pp.toFixed(2)} pp</strong>${T[currentLang].js_margin}</div>
     </div>${preregWarn}`;
 
     // Chart canvases — drawn after innerHTML is set
@@ -2231,12 +2247,12 @@ function analyseConversion() {
       <div class="chart-card" style="margin-bottom:0">
         <div class="chart-title">Conversion rates with 95% confidence intervals</div>
         <div class="chart-sub">Bars are observed rates; whiskers are CIs. Non-overlapping intervals roughly imply a significant difference.</div>
-        <div style="position:relative;height:200px"><canvas id="res-chart-conv-bars"></canvas></div>
+        <div class="chart-wrap"><canvas id="res-chart-conv-bars"></canvas></div>
       </div>
       <div class="chart-card" style="margin-bottom:0">
         <div class="chart-title">How your observed difference compares to the null distribution</div>
         <div class="chart-sub">Under H₀ the difference should sit near zero. The orange marker is what you observed — the red areas are rejection zones at α = ${alpha}.</div>
-        <div style="position:relative;height:200px"><canvas id="res-chart-conv-lift"></canvas></div>
+        <div class="chart-wrap"><canvas id="res-chart-conv-lift"></canvas></div>
       </div>
     </div>`;
 
@@ -2285,15 +2301,15 @@ function analyseConversion() {
 
     if (sig) {
       html += `<div class="notice success" style="margin-top:12px">
-        <strong>'+T[currentLang].js_before_ship+'</strong>
+        <strong>${T[currentLang].js_before_ship}</strong>
         <ul style="margin-top:6px;padding-left:16px">
-          <li>Check guardrails: did revenue, retention, or other key metrics regress?</li>
-          <li>Check segments: is the lift consistent across mobile/desktop, country, plan?</li>
+          <li>${T[currentLang].js_guardrails}</li>
+          <li>${T[currentLang].js_segments}</li>
         </ul>
       </div>`;
     } else {
       html += `<div class="notice info" style="margin-top:12px">
-        <strong>'+T[currentLang].js_not_sig+'</strong> '+T[currentLang].js_keep_running+'
+        <strong>${T[currentLang].js_not_sig}</strong> ${T[currentLang].js_keep_running}
       </div>`;
     }
 
@@ -2313,7 +2329,7 @@ function analyseConversion() {
     const seW=Math.sqrt(2/(9*df));
     const pChi=1-normCDF(zChi/seW);
     const sigChi=pChi<alpha;
-    html+=`<div class="ar-verdict ${sigChi?'sig':'insig'}">${sigChi?'✓ Variants are meaningfully different':'✗ No significant difference detected'}</div>`;
+    html+=`<div class="ar-verdict ${sigChi?'sig':'insig'}">${sigChi?T[currentLang].js_variants_diff:T[currentLang].js_no_diff}</div>`;
     html+=`<div class="ar-sub">χ²(${df}) = ${chi2.toFixed(3)}, p = ${pChi.toFixed(4)}</div>`;
 
     // Multi-variant bar chart
@@ -2461,12 +2477,12 @@ function runWelchT(A, B, alpha, tails, resultBoxId, chartBarId, chartNullId, hea
   html += `<div class="ar-verdict ${sig?'sig':'insig'}">${sig ? '✓ Ship it — the variant wins' : '✗ No clear winner yet'}</div>`;
   html += `<div class="ar-sub">p = ${pVal.toFixed(4)} · α = ${alpha} · ${tails===2?T[currentLang].js_two_sided:T[currentLang].js_one_sided}</div>`;
   html += `<div class="ar-stats">
-    <div class="ar-stat"><strong>${fmtFn(A.mean)}</strong>'+T[currentLang].js_control_avg+'</div>
-    <div class="ar-stat"><strong>${fmtFn(B.mean)}</strong>'+T[currentLang].js_variant_avg+'</div>
+    <div class="ar-stat"><strong>${fmtFn(A.mean)}</strong>${T[currentLang].js_control_avg}</div>
+    <div class="ar-stat"><strong>${fmtFn(B.mean)}</strong>${T[currentLang].js_variant_avg}</div>
     <div class="ar-stat"><strong>${liftPct>0?'+':''}${liftPct.toFixed(1)}%</strong>Relative lift</div>
     <div class="ar-stat"><strong>±${fmtFn(ci95)}</strong>95% margin of error</div>
-    <div class="ar-stat"><strong>${A.sd.toFixed(2)} / ${B.sd.toFixed(2)}</strong>'+T[currentLang].js_ctrl_var+'</div>
-    <div class="ar-stat"><strong>${(A.sd/Math.abs(A.mean)).toFixed(2)} / ${(B.sd/Math.abs(B.mean)).toFixed(2)}</strong>'+T[currentLang].js_cv_ctrl_var+'</div>
+    <div class="ar-stat"><strong>${A.sd.toFixed(2)} / ${B.sd.toFixed(2)}</strong>${T[currentLang].js_ctrl_var}</div>
+    <div class="ar-stat"><strong>${(A.sd/Math.abs(A.mean)).toFixed(2)} / ${(B.sd/Math.abs(B.mean)).toFixed(2)}</strong>${T[currentLang].js_cv_ctrl_var}</div>
   </div>`;
 
   html += renderDiagnostics(diags);
@@ -2475,12 +2491,12 @@ function runWelchT(A, B, alpha, tails, resultBoxId, chartBarId, chartNullId, hea
     <div class="chart-card" style="margin-bottom:0">
       <div class="chart-title">Values with 95% confidence intervals</div>
       <div class="chart-sub">Bars are observed averages; whiskers are CIs. Non-overlapping intervals roughly imply a significant difference.</div>
-      <div style="position:relative;height:200px"><canvas id="${chartBarId}"></canvas></div>
+      <div class="chart-wrap"><canvas id="${chartBarId}"></canvas></div>
     </div>
     <div class="chart-card" style="margin-bottom:0">
       <div class="chart-title">How your observed difference compares to the null distribution</div>
       <div class="chart-sub">Under H₀ the difference should sit near zero. The orange marker is what you observed — red areas are rejection zones at α = ${alpha}.</div>
-      <div style="position:relative;height:200px"><canvas id="${chartNullId}"></canvas></div>
+      <div class="chart-wrap"><canvas id="${chartNullId}"></canvas></div>
     </div>
   </div>`;
 
