@@ -416,7 +416,29 @@ main {
   margin-bottom: 16px;
 }
 
-/* ── Plan metric buttons (2-option) ── */
+/* ── Plan tab desktop layout ── */
+.plan-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+}
+.plan-steps { min-width: 0; }
+.plan-result-col { min-width: 0; }
+
+@media (min-width: 900px) {
+  .plan-layout {
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    align-items: start;
+  }
+  .plan-result-col {
+    position: sticky;
+    top: 24px;
+  }
+  .plan-result-col .result-box {
+    margin-top: 0;
+  }
+}
 .plan-metric-btn {
   display: flex;
   align-items: center;
@@ -758,7 +780,8 @@ main {
 }
 .ar-body { padding: 20px; background: var(--card); }
 .ar-verdict { font-size: 1.3rem; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.01em; }
-.ar-verdict.sig  { color: var(--success); }
+.ar-verdict.sig   { color: var(--success); }
+.ar-verdict.worse { color: var(--warning); }
 .ar-verdict.insig { color: var(--ink-muted); }
 .ar-sub { font-size: 0.82rem; color: var(--ink-muted); }
 .ar-stats {
@@ -993,6 +1016,8 @@ canvas.chart { width: 100% !important; height: 100% !important; display: block; 
      ══════════════════════════════ -->
 <div id="tab-plan" class="tab-panel active">
 <main>
+<div class="plan-layout">
+<div class="plan-steps">
 
   <div class="card">
     <div class="card-title" data-i18n="step1">Step 1</div>
@@ -1106,6 +1131,8 @@ canvas.chart { width: 100% !important; height: 100% !important; display: block; 
     </div>
   </div>
 
+  </div><!-- end plan-steps -->
+  <div class="plan-result-col">
   <div id="plan-result" class="result-box hidden">
     <div class="result-label" data-i18n="res_sample_size">Required sample size per variant</div>
     <div><span class="result-number" id="res-n">—</span><span class="result-unit" data-i18n="res_users">users</span></div>
@@ -1124,6 +1151,8 @@ canvas.chart { width: 100% !important; height: 100% !important; display: block; 
       <div id="res-duration-tips" style="margin-top:14px"></div>
     </div>
   </div>
+  </div><!-- end plan-result-col -->
+</div><!-- end plan-layout -->
 
 </main>
 </div>
@@ -1786,6 +1815,8 @@ const T = {
     tbl_p5c1:'One-sided test',tbl_p5c5:'All α budget on one tail',
     tbl_p6c1:'Pre-register hypothesis',tbl_p6c5:'Prevents post-hoc shopping',
     // JS result strings
+    js_variant_worse:'✗ Do not ship — variant B is significantly worse',
+    js_variant_worse_cont:'✗ Do not ship — variant B performs significantly worse',
     js_ship:'✓ Ship it — the variant wins', js_no_winner:'✗ No clear winner yet',
     js_control_rate:'Control rate', js_variant_rate:'Variant rate',
     js_rel_lift:'Relative lift', js_margin:'95% margin of error',
@@ -1976,6 +2007,8 @@ const T = {
     tbl_p5c1:'Односторонний тест',tbl_p5c5:'Весь бюджет α — в один хвост',
     tbl_p6c1:'Зарегистрировать гипотезу заранее',tbl_p6c5:'Предотвращает выбор гипотезы post-hoc',
     // JS result strings
+    js_variant_worse:'✗ Не запускать — вариант B значимо хуже',
+    js_variant_worse_cont:'✗ Не запускать — вариант B значимо хуже контроля',
     js_ship:'✓ Запускаем — вариант победил', js_no_winner:'✗ Победитель не определён',
     js_control_rate:'Конверсия контроля', js_variant_rate:'Конверсия варианта',
     js_rel_lift:'Относительный прирост', js_margin:'Погрешность 95%',
@@ -2260,7 +2293,13 @@ function analyseConversion() {
           ${T[currentLang].js_low_data_body.replace('{n}', totalConversions)}
         </div>` : '';
 
-    html += `<div class="ar-verdict ${sig?'sig':'insig'}">${sig?T[currentLang].js_ship:T[currentLang].js_no_winner}</div>`;
+    const sigBetter = sig && liftPct > 0;  // significant AND variant is better
+    const sigWorse  = sig && liftPct < 0;  // significant AND variant is worse
+    const verdictClass = sigBetter ? 'sig' : sigWorse ? 'worse' : 'insig';
+    const verdictText  = sigBetter ? T[currentLang].js_ship
+                       : sigWorse  ? T[currentLang].js_variant_worse
+                       : T[currentLang].js_no_winner;
+    html += `<div class="ar-verdict ${verdictClass}">${verdictText}</div>`;
     html += `<div class="ar-sub">p = ${pVal.toFixed(4)} · α = ${alpha} · ${tails===2?T[currentLang].js_two_sided:T[currentLang].js_one_sided}</div>`;
     html += `<div class="ar-stats">
       <div class="ar-stat"><strong>${(A.p*100).toFixed(2)}%</strong>${T[currentLang].js_control_rate}</div>
@@ -2312,8 +2351,8 @@ function analyseConversion() {
             <td>[${ciAlo}%, ${ciAhi}%]</td>
             <td>—</td><td>—</td>
           </tr>
-          <tr style="background:${sig?'rgba(26,122,74,0.06)':'rgba(91,80,200,0.04)'}">
-            <td><span style="color:${sig?RC.GR:RC.P};font-weight:700">${sig?'★':'◆'} B</span></td>
+          <tr style="background:${sigBetter?'rgba(26,122,74,0.06)':sigWorse?'rgba(220,50,50,0.06)':'rgba(91,80,200,0.04)'}">
+            <td><span style="color:${sigBetter?RC.GR:sigWorse?RC.RED:RC.P};font-weight:700">${sigBetter?'★':sigWorse?'▼':'◆'} B</span></td>
             <td>${B.n.toLocaleString()}</td>
             <td><strong>${(B.p*100).toFixed(2)}%</strong></td>
             <td>${(sdB*100).toFixed(2)}%</td>
@@ -2326,7 +2365,7 @@ function analyseConversion() {
       </table>
     </div>`;
 
-    if (sig) {
+    if (sigBetter) {
       html += `<div class="notice success" style="margin-top:12px">
         <strong>${T[currentLang].js_before_ship}</strong>
         <ul style="margin-top:6px;padding-left:16px">
@@ -2497,6 +2536,8 @@ function runWelchT(A, B, alpha, tails, resultBoxId, chartBarId, chartNullId, hea
   const pVal = tails === 2 ? 2*(1-normCDF(Math.abs(t))) : 1-normCDF(t);
   const sig  = pVal < alpha;
   const liftPct = (B.mean - A.mean) / A.mean * 100;
+  const sigBetter = sig && liftPct > 0;
+  const sigWorse  = sig && liftPct < 0;
   const ci95 = 1.96 * se;
   const diags = varianceDiagnostics(A, B);
 
@@ -2554,7 +2595,7 @@ function runWelchT(A, B, alpha, tails, resultBoxId, chartBarId, chartNullId, hea
     </table>
   </div>`;
 
-  html += sig
+  html += sigBetter
     ? `<div class="notice success" style="margin-top:12px"><strong>Before shipping:</strong><ul style="margin-top:6px;padding-left:16px"><li>Check guardrails: did revenue, retention, or other key metrics regress?</li><li>Check segments: is the lift consistent across mobile/desktop, country, plan?</li></ul></div>`
     : `<div class="notice info" style="margin-top:12px"><strong>Not significant yet.</strong> Keep running until you hit your planned sample size. Stopping early inflates false positives.</div>`;
 
