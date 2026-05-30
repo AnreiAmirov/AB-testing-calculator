@@ -367,9 +367,9 @@ body {
 .tab-btn {
   background: none;
   border: none;
-  padding: 10px 8px;
+  padding: 9px 8px;
   font-family: 'Inter', sans-serif;
-  font-size: 0.875rem;
+  font-size: 0.82rem;
   font-weight: 500;
   color: var(--ink-muted);
   cursor: pointer;
@@ -379,11 +379,16 @@ body {
   flex: 1;
   text-align: center;
   min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
 }
+.tab-icon { display: flex; align-items: center; flex-shrink: 0; }
+.tab-label { overflow: hidden; text-overflow: ellipsis; }
 @media (max-width: 400px) {
-  .tab-btn { font-size: 0.75rem; padding: 9px 4px; }
+  .tab-btn { font-size: 0.72rem; padding: 8px 4px; gap: 4px; }
+  .tab-icon svg { width: 13px; height: 13px; }
 }
 .tab-btn:hover { color: var(--accent); background: var(--pill-bg); }
 .tab-btn.active {
@@ -391,6 +396,54 @@ body {
   color: var(--pill-active-text);
   font-weight: 600;
   box-shadow: 0 2px 8px rgba(91,80,200,0.3);
+}
+
+/* ── Bottom tab bar (mobile only ≤640px) ── */
+.bottom-tab-bar {
+  display: none; /* hidden by default; shown on mobile */
+}
+@media (max-width: 640px) {
+  /* Hide the floating top tabs pill on mobile */
+  .tabs-bar { display: none; }
+
+  /* Show bottom bar */
+  .bottom-tab-bar {
+    display: flex;
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    z-index: 200;
+    background: var(--card);
+    border-top: 1px solid var(--border);
+    box-shadow: 0 -2px 16px rgba(0,0,0,0.08);
+    padding: 6px 0 max(6px, env(safe-area-inset-bottom));
+  }
+  .btab {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    background: none;
+    border: none;
+    padding: 6px 4px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.68rem;
+    font-weight: 500;
+    color: var(--ink-faint);
+    cursor: pointer;
+    transition: color 0.15s;
+  }
+  .btab svg { transition: stroke 0.15s; }
+  .btab.active { color: var(--accent); }
+  .btab.active svg { stroke: var(--accent); }
+  .btab:hover { color: var(--accent); }
+  [data-theme="dark"] .bottom-tab-bar {
+    background: var(--card);
+    border-top-color: var(--border);
+  }
+
+  /* Add bottom padding so content isn't hidden behind tab bar */
+  main { padding-bottom: 80px !important; }
 }
 
 /* ── Main content ── */
@@ -467,6 +520,65 @@ main {
     gap: 32px;
   }
 }
+
+/* ── Revenue projection card ── */
+.revenue-card {
+  margin-top: 16px;
+  background: linear-gradient(135deg, rgba(91,80,200,0.05) 0%, rgba(26,122,74,0.05) 100%);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 16px 18px 14px;
+}
+.revenue-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-muted);
+  margin-bottom: 12px;
+}
+.revenue-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.rev-col { text-align: center; }
+.rev-col-mid { border-left: 1px solid var(--border); border-right: 1px solid var(--border); }
+.rev-val { font-family: 'JetBrains Mono', monospace; font-size: 1.1rem; font-weight: 700; }
+.rev-lo  { color: var(--ink-muted); }
+.rev-mid { color: var(--success); font-size: 1.3rem; }
+.rev-hi  { color: var(--accent); }
+.rev-label { font-size: 0.72rem; color: var(--ink-muted); margin-top: 3px; }
+.rev-note { font-size: 0.75rem; color: var(--ink-faint); border-top: 1px solid var(--border); padding-top: 8px; }
+[data-theme="dark"] .revenue-card { background: rgba(91,80,200,0.09); }
+
+/* ── Sticky verdict bar (mobile only) ── */
+@media (max-width: 640px) {
+  .ar-sticky-verdict {
+    position: sticky;
+    bottom: 0;
+    z-index: 100;
+    background: var(--card);
+    border-top: 2px solid var(--border);
+    padding: 10px 16px;
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    box-shadow: 0 -4px 16px rgba(0,0,0,0.07);
+    margin: 0 -20px;
+  }
+  .ar-sticky-verdict .ar-verdict { font-size: 1rem; margin: 0; }
+  .ar-sticky-verdict .ar-sub { font-size: 0.75rem; }
+}
+@media (min-width: 641px) {
+  .ar-sticky-verdict { display: none; }
+}
+
+/* ── Revenue inputs toggle ── */
+.revenue-inputs > summary { list-style: none; }
+.revenue-inputs > summary::-webkit-details-marker { display: none; }
+
 .plan-metric-btn {
   display: flex;
   align-items: center;
@@ -1037,9 +1149,34 @@ canvas.chart { width: 100% !important; height: 100% !important; display: block; 
 <!-- ── Tab strip ── -->
 <div class="tabs-wrap">
   <div class="tabs-bar">
-    <button class="tab-btn active" onclick="showTab('plan', this)" data-tab="plan" data-i18n="tab_plan">Plan a test</button>
-    <button class="tab-btn" onclick="showTab('analyse', this)" data-tab="analyse" data-i18n="tab_analyse">Analyse results</button>
-    <button class="tab-btn" onclick="showTab('reference', this)" data-tab="reference" data-i18n="tab_reference">Reference</button>
+    <button class="tab-btn active" onclick="showTab('plan', this)" data-tab="plan">
+      <span class="tab-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="13" y2="16"/></svg></span>
+      <span class="tab-label" data-i18n="tab_plan">Plan a test</span>
+    </button>
+    <button class="tab-btn" onclick="showTab('analyse', this)" data-tab="analyse">
+      <span class="tab-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="18" y="3" width="4" height="18"/><rect x="10" y="8" width="4" height="13"/><rect x="2" y="13" width="4" height="8"/></svg></span>
+      <span class="tab-label" data-i18n="tab_analyse">Analyse results</span>
+    </button>
+    <button class="tab-btn" onclick="showTab('reference', this)" data-tab="reference">
+      <span class="tab-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></span>
+      <span class="tab-label" data-i18n="tab_reference">Reference</span>
+    </button>
+  </div>
+
+  <!-- Mobile bottom tab bar (shown ≤640px, hidden on desktop via CSS) -->
+  <div class="bottom-tab-bar" id="bottom-tab-bar">
+    <button class="btab active" onclick="showTab('plan', this)" data-tab="plan">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="13" y2="16"/></svg>
+      <span data-i18n="tab_plan">Plan</span>
+    </button>
+    <button class="btab" onclick="showTab('analyse', this)" data-tab="analyse">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="18" y="3" width="4" height="18"/><rect x="10" y="8" width="4" height="13"/><rect x="2" y="13" width="4" height="8"/></svg>
+      <span data-i18n="tab_analyse">Analyse</span>
+    </button>
+    <button class="btab" onclick="showTab('reference', this)" data-tab="reference">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+      <span data-i18n="tab_reference">Reference</span>
+    </button>
   </div>
 </div>
 
@@ -1280,6 +1417,22 @@ canvas.chart { width: 100% !important; height: 100% !important; display: block; 
             <label data-i18n="lbl_prereg_mde">Pre-registered MDE (%, optional)<span class="tip"> — your upfront minimum</span></label>
             <input type="number" id="a-prereg-mde" placeholder="e.g. 5" min="0" step="0.1" style="max-width:160px">
           </div>
+          <details class="revenue-inputs" style="margin-top:14px">
+            <summary style="font-size:0.82rem;font-weight:600;color:var(--ink-muted);cursor:pointer;list-style:none;display:flex;align-items:center;gap:6px">
+              <span style="font-size:0.9rem">💰</span>
+              <span data-i18n="lbl_revenue_toggle">Revenue projection (optional)</span>
+            </summary>
+            <div style="margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:10px">
+              <div class="field">
+                <label data-i18n="lbl_monthly_visitors">Monthly visitors</label>
+                <input type="number" id="a-monthly-visitors" placeholder="e.g. 50000" min="1" step="1">
+              </div>
+              <div class="field">
+                <label data-i18n="lbl_avg_order">Avg. order value ($)</label>
+                <input type="number" id="a-avg-order" placeholder="e.g. 80" min="0" step="0.01">
+              </div>
+            </div>
+          </details>
           <div class="mt-20 flex-end">
             <button class="btn-primary" onclick="analyseConversion()" data-i18n="btn_analyse">Analyse results</button>
           </div>
@@ -1772,6 +1925,14 @@ const T = {
     chart_h0_null:'H₀ (null)', chart_h1_effect:'H₁ (true effect)',
     chart_sample_size_axis:'Sample size per variant (n)',
     chart_power_axis:'Power (1 − β)',
+    lbl_revenue_toggle:'Revenue projection (optional)',
+    lbl_monthly_visitors:'Monthly visitors',
+    lbl_avg_order:'Avg. order value ($)',
+    js_revenue_title:'Projected annual revenue impact',
+    js_rev_conservative:'Conservative',
+    js_rev_expected:'Expected',
+    js_rev_optimistic:'Optimistic',
+    js_rev_note:'+{lift}pp lift × {visitors} visitors/mo × ${aov} AOV × 12 months. Based on 95% CI of the lift.',
     btn_share:'Share', share_copied:'✓ Link copied!',
     footer_privacy:'All calculations run locally in your browser — no data leaves your device.',
     // Accordion body — shared bold labels
@@ -1965,6 +2126,14 @@ const T = {
     chart_h0_null:'H₀ (нуль)', chart_h1_effect:'H₁ (реальный эффект)',
     chart_sample_size_axis:'Размер выборки на вариант (n)',
     chart_power_axis:'Мощность (1 − β)',
+    lbl_revenue_toggle:'Прогноз выручки (необязательно)',
+    lbl_monthly_visitors:'Посетителей в месяц',
+    lbl_avg_order:'Средний чек ($)',
+    js_revenue_title:'Прогнозируемый прирост выручки за год',
+    js_rev_conservative:'Консервативный',
+    js_rev_expected:'Ожидаемый',
+    js_rev_optimistic:'Оптимистичный',
+    js_rev_note:'+{lift}pp прирост × {visitors} посетителей/мес × ${aov} средний чек × 12 мес. На основе 95% ДИ прироста.',
     btn_share:'Поделиться', share_copied:'✓ Ссылка скопирована!',
     footer_privacy:'Все расчёты выполняются локально в браузере — данные не покидают устройство.',
     // Accordion body — shared bold labels
@@ -2196,8 +2365,11 @@ function decodeState() {
     if (tabBtn) {
       document.querySelectorAll('.tab-panel').forEach(el => el.classList.remove('active'));
       document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.btab').forEach(el => el.classList.remove('active'));
       document.getElementById('tab-' + tab)?.classList.add('active');
       tabBtn.classList.add('active');
+      const btab = document.querySelector(`.btab[data-tab="${tab}"]`);
+      if (btab) btab.classList.add('active');
       if (tab === 'reference') setTimeout(drawCharts, 30);
     }
     if (tab === 'plan') {
@@ -2259,10 +2431,20 @@ document.addEventListener('DOMContentLoaded', () => {
 // ── Tabs ──
 function showTab(name, btn) {
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('tab-' + name).classList.add('active');
+  // Sync top tab buttons
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  // Sync bottom tab buttons
+  document.querySelectorAll('.btab').forEach(b => b.classList.remove('active'));
+  // Mark the clicked button active (could be .tab-btn or .btab)
   btn.classList.add('active');
+  // Also mark the counterpart button active
+  const counterpart = document.querySelector(
+    btn.classList.contains('btab') ? `.tab-btn[data-tab="${name}"]` : `.btab[data-tab="${name}"]`
+  );
+  if (counterpart) counterpart.classList.add('active');
   if (name === 'reference') setTimeout(drawCharts, 30);
+  if (typeof encodeState === 'function') encodeState();
 }
 
 // ── Plan metric select ──
@@ -2429,6 +2611,11 @@ function analyseConversion() {
                        : T[currentLang].js_no_winner;
     html += `<div class="ar-verdict ${verdictClass}">${verdictText}</div>`;
     html += `<div class="ar-sub">p = ${pVal.toFixed(4)} · α = ${alpha} · ${tails===2?T[currentLang].js_two_sided:T[currentLang].js_one_sided}</div>`;
+    // Sticky verdict bar — visible only on mobile (CSS hides it on desktop)
+    html += `<div class="ar-sticky-verdict">
+      <div class="ar-verdict ${verdictClass}">${verdictText}</div>
+      <div class="ar-sub">p=${pVal.toFixed(4)}</div>
+    </div>`;
     html += `<div class="ar-stats">
       <div class="ar-stat"><strong>${(A.p*100).toFixed(2)}%</strong>${T[currentLang].js_control_rate}</div>
       <div class="ar-stat"><strong>${(B.p*100).toFixed(2)}%</strong>${T[currentLang].js_variant_rate}</div>
@@ -2504,6 +2691,48 @@ function analyseConversion() {
     } else {
       html += `<div class="notice info" style="margin-top:12px">
         <strong>${T[currentLang].js_not_sig}</strong> ${T[currentLang].js_keep_running}
+      </div>`;
+    }
+
+    // ── Revenue projection ──────────────────────────────────────────────
+    const monthlyVisitors = parseFloat(document.getElementById('a-monthly-visitors')?.value);
+    const avgOrder        = parseFloat(document.getElementById('a-avg-order')?.value);
+    if (monthlyVisitors > 0 && avgOrder > 0) {
+      const liftAbs    = B.p - A.p;                          // absolute lift in conversion rate
+      const extraConvPerMonth = liftAbs * monthlyVisitors;   // extra conversions per month
+      const extraRevMonth  = extraConvPerMonth * avgOrder;   // extra revenue per month
+      const extraRevYear   = extraRevMonth * 12;             // annualised
+      // Conservative / expected / optimistic based on 95% CI of the lift
+      const liftLo   = liftAbs - 1.96 * se;
+      const liftHi   = liftAbs + 1.96 * se;
+      const revLo    = Math.max(0, liftLo) * monthlyVisitors * avgOrder * 12;
+      const revHi    = liftHi  * monthlyVisitors * avgOrder * 12;
+      const fmt = (n) => n >= 1e6
+        ? '$' + (n/1e6).toFixed(1) + 'M'
+        : n >= 1e3
+          ? '$' + Math.round(n/1e3) + 'k'
+          : '$' + Math.round(n);
+
+      html += `<div class="revenue-card">
+        <div class="revenue-title">${T[currentLang].js_revenue_title}</div>
+        <div class="revenue-cols">
+          <div class="rev-col">
+            <div class="rev-val rev-lo">${fmt(revLo)}</div>
+            <div class="rev-label">${T[currentLang].js_rev_conservative}</div>
+          </div>
+          <div class="rev-col rev-col-mid">
+            <div class="rev-val rev-mid">${fmt(extraRevYear)}</div>
+            <div class="rev-label">${T[currentLang].js_rev_expected}</div>
+          </div>
+          <div class="rev-col">
+            <div class="rev-val rev-hi">${fmt(revHi)}</div>
+            <div class="rev-label">${T[currentLang].js_rev_optimistic}</div>
+          </div>
+        </div>
+        <div class="rev-note">${T[currentLang].js_rev_note
+          .replace('{lift}', (liftAbs*100).toFixed(2))
+          .replace('{visitors}', monthlyVisitors.toLocaleString())
+          .replace('{aov}', avgOrder.toFixed(0))}</div>
       </div>`;
     }
 
@@ -2670,13 +2899,17 @@ function runWelchT(A, B, alpha, tails, resultBoxId, chartBarId, chartNullId, hea
   const diags = varianceDiagnostics(A, B);
 
   let html = `<div class='ar-header'>${headerLabel}</div><div class='ar-body'>`;
-  html += `<div class="ar-verdict ${sig?'sig':'insig'}">${sig ? '✓ Ship it — the variant wins' : '✗ No clear winner yet'}</div>`;
+  const verdictClassW = sigBetter ? 'sig' : sigWorse ? 'worse' : 'insig';
+  const verdictTextW  = sigBetter ? T[currentLang].js_ship
+                      : sigWorse  ? T[currentLang].js_variant_worse
+                      : T[currentLang].js_no_winner;
+  html += `<div class="ar-verdict ${verdictClassW}">${verdictTextW}</div>`;
   html += `<div class="ar-sub">p = ${pVal.toFixed(4)} · α = ${alpha} · ${tails===2?T[currentLang].js_two_sided:T[currentLang].js_one_sided}</div>`;
   html += `<div class="ar-stats">
     <div class="ar-stat"><strong>${fmtFn(A.mean)}</strong>${T[currentLang].js_control_avg}</div>
     <div class="ar-stat"><strong>${fmtFn(B.mean)}</strong>${T[currentLang].js_variant_avg}</div>
-    <div class="ar-stat"><strong>${liftPct>0?'+':''}${liftPct.toFixed(1)}%</strong>Relative lift</div>
-    <div class="ar-stat"><strong>±${fmtFn(ci95)}</strong>95% margin of error</div>
+    <div class="ar-stat"><strong>${liftPct>0?'+':''}${liftPct.toFixed(1)}%</strong>${T[currentLang].js_rel_lift}</div>
+    <div class="ar-stat"><strong>±${fmtFn(ci95)}</strong>${T[currentLang].js_margin}</div>
     <div class="ar-stat"><strong>${A.sd.toFixed(2)} / ${B.sd.toFixed(2)}</strong>${T[currentLang].js_ctrl_var}</div>
     <div class="ar-stat"><strong>${(A.sd/Math.abs(A.mean)).toFixed(2)} / ${(B.sd/Math.abs(B.mean)).toFixed(2)}</strong>${T[currentLang].js_cv_ctrl_var}</div>
   </div>`;
@@ -2711,21 +2944,21 @@ function runWelchT(A, B, alpha, tails, resultBoxId, chartBarId, chartNullId, hea
           <td>${A.sd.toFixed(3)}</td><td>${(A.sd/Math.abs(A.mean)).toFixed(2)}</td>
           <td>[${ciAlo}, ${ciAhi}]</td><td>—</td><td>—</td>
         </tr>
-        <tr style="background:${sig?'rgba(26,122,74,0.06)':'rgba(91,80,200,0.04)'}">
-          <td><span style="color:${sig?RC.GR:RC.P};font-weight:700">${sig?'★':'◆'} B</span></td>
+        <tr style="background:${sigBetter?'rgba(26,122,74,0.06)':sigWorse?'rgba(220,50,50,0.06)':'rgba(91,80,200,0.04)'}">
+          <td><span style="color:${sigBetter?RC.GR:sigWorse?RC.RED:RC.P};font-weight:700">${sigBetter?'★':sigWorse?'▼':'◆'} B</span></td>
           <td>${B.n.toLocaleString()}</td><td><strong>${fmtFn(B.mean)}</strong></td>
           <td>${B.sd.toFixed(3)}</td><td>${(B.sd/Math.abs(B.mean)).toFixed(2)}</td>
           <td>[${ciBlo}, ${ciBhi}]</td>
-          <td style="color:${sig?RC.GR:RC.MUTED};font-weight:600">${liftPct>0?'+':''}${liftPct.toFixed(2)}%</td>
-          <td style="color:${sig?RC.GR:RC.MUTED};font-weight:600">${pDisplay}</td>
+          <td style="color:${sigBetter?RC.GR:sigWorse?RC.RED:RC.MUTED};font-weight:600">${liftPct>0?'+':''}${liftPct.toFixed(2)}%</td>
+          <td style="color:${sigBetter?RC.GR:sigWorse?RC.RED:RC.MUTED};font-weight:600">${pDisplay}</td>
         </tr>
       </tbody>
     </table>
   </div>`;
 
   html += sigBetter
-    ? `<div class="notice success" style="margin-top:12px"><strong>Before shipping:</strong><ul style="margin-top:6px;padding-left:16px"><li>Check guardrails: did revenue, retention, or other key metrics regress?</li><li>Check segments: is the lift consistent across mobile/desktop, country, plan?</li></ul></div>`
-    : `<div class="notice info" style="margin-top:12px"><strong>Not significant yet.</strong> Keep running until you hit your planned sample size. Stopping early inflates false positives.</div>`;
+    ? `<div class="notice success" style="margin-top:12px"><strong>${T[currentLang].js_before_ship}</strong><ul style="margin-top:6px;padding-left:16px"><li>${T[currentLang].js_guardrails}</li><li>${T[currentLang].js_segments}</li></ul></div>`
+    : `<div class="notice info" style="margin-top:12px"><strong>${T[currentLang].js_not_sig}</strong> ${T[currentLang].js_keep_running}</div>`;
 
   html += '</div>';
   const box = document.getElementById(resultBoxId);
