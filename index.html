@@ -1653,6 +1653,30 @@ canvas.chart { width: 100% !important; height: 100% !important; display: block; 
     <div class="chart-wrap"><canvas id="chart-power"></canvas></div>
   </div>
 
+  <!-- Chart 5: CUPED variance reduction (interactive) -->
+  <div class="chart-card">
+    <div class="chart-title" data-i18n="ref_chart5_title">CUPED: how variance reduction shrinks the sample you need</div>
+    <div class="chart-sub" data-i18n="ref_chart5_sub">CUPED removes pre-experiment noise. Drag the slider to see how the variance-reduction percentage cuts the required sample size.</div>
+    <div style="display:flex;align-items:center;gap:12px;margin:8px 0 4px;flex-wrap:wrap">
+      <label style="font-size:0.8rem;color:var(--ink-muted);font-weight:600" data-i18n="ref_cuped_slider_label">Variance reduction:</label>
+      <input type="range" id="cuped-slider" min="0" max="60" value="30" step="5" style="flex:1;min-width:140px;accent-color:var(--accent)">
+      <span id="cuped-slider-val" style="font-family:'JetBrains Mono',monospace;font-weight:600;color:var(--accent);min-width:42px">30%</span>
+    </div>
+    <div class="chart-wrap"><canvas id="chart-cuped"></canvas></div>
+  </div>
+
+  <!-- Chart 6: Peeking inflation (interactive) -->
+  <div class="chart-card">
+    <div class="chart-title" data-i18n="ref_chart6_title">Why peeking inflates your false-positive rate</div>
+    <div class="chart-sub" data-i18n="ref_chart6_sub">Each extra look at the data gives the false-positive rate another chance to cross 5%. Drag to see how the true error rate climbs with the number of peeks.</div>
+    <div style="display:flex;align-items:center;gap:12px;margin:8px 0 4px;flex-wrap:wrap">
+      <label style="font-size:0.8rem;color:var(--ink-muted);font-weight:600" data-i18n="ref_peek_slider_label">Number of peeks:</label>
+      <input type="range" id="peek-slider" min="1" max="30" value="5" step="1" style="flex:1;min-width:140px;accent-color:var(--accent)">
+      <span id="peek-slider-val" style="font-family:'JetBrains Mono',monospace;font-weight:600;color:var(--accent);min-width:42px">5</span>
+    </div>
+    <div class="chart-wrap"><canvas id="chart-peeking"></canvas></div>
+  </div>
+
   <div class="card">
     <div class="card-title" data-i18n="ref_tests_title">Tests at a glance</div>
     <div style="overflow-x:auto;-webkit-overflow-scrolling:touch;">
@@ -1790,6 +1814,43 @@ canvas.chart { width: 100% !important; height: 100% !important; display: block; 
   </div>
 
   <div class="card">
+    <div class="card-title" data-i18n="ref_deepdive_title">Deep dive: CUPED, step by step</div>
+    <div class="accordion-body" style="padding:0;background:none">
+      <p data-i18n="dd_cuped_p1">CUPED (Controlled-experiment Using Pre-Experiment Data) is the single highest-leverage trick in modern experimentation. The idea: a user who spent a lot last month will probably spend a lot this month regardless of your change. That predictable part is noise you can subtract.</p>
+      <div class="tip-row"><span class="tip-icon">1️⃣</span><div><strong data-i18n="dd_cuped_s1_b">Pick a covariate X</strong> — <span data-i18n="dd_cuped_s1">a pre-experiment measurement correlated with your metric Y. Prior-period revenue is the classic choice for ARPU tests.</span></div></div>
+      <div class="tip-row"><span class="tip-icon">2️⃣</span><div><strong data-i18n="dd_cuped_s2_b">Estimate θ</strong> — <span data-i18n="dd_cuped_s2">θ = Cov(Y, X) / Var(X). This is just the slope of a regression of Y on X, computed across all users in the experiment.</span></div></div>
+      <div class="tip-row"><span class="tip-icon">3️⃣</span><div><strong data-i18n="dd_cuped_s3_b">Transform Y</strong> — <span data-i18n="dd_cuped_s3">Y_cuped = Y − θ·(X − X̄). The mean is unchanged (so your lift estimate stays unbiased), but the variance drops.</span></div></div>
+      <div class="tip-row"><span class="tip-icon">4️⃣</span><div><strong data-i18n="dd_cuped_s4_b">Run your test on Y_cuped</strong> — <span data-i18n="dd_cuped_s4">The variance reduction equals ρ², where ρ is the correlation between Y and X. A correlation of 0.7 cuts variance by ~49%.</span></div></div>
+      <p data-i18n="dd_cuped_p2">Because required sample size scales linearly with variance, a 50% variance reduction means you reach significance in half the time — or detect an effect half the size in the same time. That is why every large experimentation platform uses it.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title" data-i18n="ref_lifecycle_title">The experiment lifecycle</div>
+    <div class="accordion-body" style="padding:0;background:none">
+      <div class="tip-row"><span class="tip-icon">🎯</span><div><strong data-i18n="dd_lc_1_b">1. Hypothesis</strong> — <span data-i18n="dd_lc_1">State the change, the metric it should move, and the direction. "Bigger CTA button → higher signup rate."</span></div></div>
+      <div class="tip-row"><span class="tip-icon">📐</span><div><strong data-i18n="dd_lc_2_b">2. Power analysis</strong> — <span data-i18n="dd_lc_2">Decide the MDE that matters for the business, then compute the sample size and duration before launch. (That's what the Plan tab is for.)</span></div></div>
+      <div class="tip-row"><span class="tip-icon">🚀</span><div><strong data-i18n="dd_lc_3_b">3. Run</strong> — <span data-i18n="dd_lc_3">Launch, check for SRM in the first hours, then leave it alone for at least one full business cycle (usually 1–2 weeks). No peeking.</span></div></div>
+      <div class="tip-row"><span class="tip-icon">📊</span><div><strong data-i18n="dd_lc_4_b">4. Analyse</strong> — <span data-i18n="dd_lc_4">At the planned sample size, run the right test for your metric type, check guardrails, and look at key segments. (That's the Analyse tab.)</span></div></div>
+      <div class="tip-row"><span class="tip-icon">✅</span><div><strong data-i18n="dd_lc_5_b">5. Decide & document</strong> — <span data-i18n="dd_lc_5">Ship, iterate, or abandon. Write down the result either way — negative results stop your team from repeating dead ideas.</span></div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title" data-i18n="ref_glossary_title">Glossary of key terms</div>
+    <div class="accordion-body" style="padding:0;background:none">
+      <div class="tip-row"><div><strong>p-value</strong> — <span data-i18n="gl_pvalue">The probability of seeing a difference at least this large if there were truly no effect. Small p = the data is surprising under "no effect."</span></div></div>
+      <div class="tip-row"><div><strong>α (alpha)</strong> — <span data-i18n="gl_alpha">Your false-positive tolerance — the chance you'll call a winner when there's no real effect. Usually 5%.</span></div></div>
+      <div class="tip-row"><div><strong>β (beta) / power</strong> — <span data-i18n="gl_beta">β is the chance of missing a real effect. Power = 1 − β is the chance of catching it. Aim for 80%+.</span></div></div>
+      <div class="tip-row"><div><strong>MDE</strong> — <span data-i18n="gl_mde">Minimum Detectable Effect: the smallest lift your test is powered to detect. Smaller MDE needs much more data.</span></div></div>
+      <div class="tip-row"><div><strong>Confidence interval</strong> — <span data-i18n="gl_ci">A range that would contain the true effect 95% of the time across repeated experiments. If it excludes zero, the result is significant.</span></div></div>
+      <div class="tip-row"><div><strong>Standard error (SE)</strong> — <span data-i18n="gl_se">How much your estimate would bounce around from sample to sample. Shrinks as 1/√n.</span></div></div>
+      <div class="tip-row"><div><strong data-i18n="gl_cv_b">Coefficient of variation (CV)</strong> — <span data-i18n="gl_cv">SD ÷ mean. A unit-free measure of spread; high CV means a noisy metric that needs more data.</span></div></div>
+      <div class="tip-row"><div><strong>SRM</strong> — <span data-i18n="gl_srm">Sample Ratio Mismatch: the actual traffic split differs from the intended one, signalling a bug that invalidates results.</span></div></div>
+    </div>
+  </div>
+
+  <div class="card">
     <div class="card-title" data-i18n="ref_abp_title">How α, β, and power interact</div>
     <div style="overflow-x:auto;-webkit-overflow-scrolling:touch;">
       <table class="ref-table" style="min-width:440px;table-layout:fixed">
@@ -1897,6 +1958,36 @@ const T = {
     ref_chart3_sub:'Detecting smaller effects requires exponentially more users. Halving the MDE roughly quadruples the required sample size (α = 0.05, power = 80%).',
     ref_chart4_title:'How power grows with sample size',
     ref_chart4_sub:'For a fixed 5% relative MDE and α = 0.05, power rises with n. The dashed lines mark the standard 80% and 90% thresholds.',
+    ref_chart5_title:'CUPED: how variance reduction shrinks the sample you need',
+    ref_chart5_sub:'CUPED removes pre-experiment noise. Drag the slider to see how the variance-reduction percentage cuts the required sample size.',
+    ref_cuped_slider_label:'Variance reduction:',
+    ref_chart6_title:'Why peeking inflates your false-positive rate',
+    ref_chart6_sub:'Each extra look at the data gives the false-positive rate another chance to cross 5%. Drag to see how the true error rate climbs with the number of peeks.',
+    ref_peek_slider_label:'Number of peeks:',
+    cuped_bar_base:'Without CUPED', cuped_bar_cuped:'With CUPED', cuped_savings:'fewer users',
+    peek_actual:'actual FP rate', peek_axis:'Number of times you peek',
+    ref_deepdive_title:'Deep dive: CUPED, step by step',
+    dd_cuped_p1:'CUPED (Controlled-experiment Using Pre-Experiment Data) is the single highest-leverage trick in modern experimentation. The idea: a user who spent a lot last month will probably spend a lot this month regardless of your change. That predictable part is noise you can subtract.',
+    dd_cuped_s1_b:'Pick a covariate X', dd_cuped_s1:'a pre-experiment measurement correlated with your metric Y. Prior-period revenue is the classic choice for ARPU tests.',
+    dd_cuped_s2_b:'Estimate θ', dd_cuped_s2:'θ = Cov(Y, X) / Var(X). This is just the slope of a regression of Y on X, computed across all users in the experiment.',
+    dd_cuped_s3_b:'Transform Y', dd_cuped_s3:'Y_cuped = Y − θ·(X − X̄). The mean is unchanged (so your lift estimate stays unbiased), but the variance drops.',
+    dd_cuped_s4_b:'Run your test on Y_cuped', dd_cuped_s4:'The variance reduction equals ρ², where ρ is the correlation between Y and X. A correlation of 0.7 cuts variance by ~49%.',
+    dd_cuped_p2:'Because required sample size scales linearly with variance, a 50% variance reduction means you reach significance in half the time — or detect an effect half the size in the same time. That is why every large experimentation platform uses it.',
+    ref_lifecycle_title:'The experiment lifecycle',
+    dd_lc_1_b:'1. Hypothesis', dd_lc_1:'State the change, the metric it should move, and the direction. "Bigger CTA button → higher signup rate."',
+    dd_lc_2_b:'2. Power analysis', dd_lc_2:'Decide the MDE that matters for the business, then compute the sample size and duration before launch. (That\'s what the Plan tab is for.)',
+    dd_lc_3_b:'3. Run', dd_lc_3:'Launch, check for SRM in the first hours, then leave it alone for at least one full business cycle (usually 1–2 weeks). No peeking.',
+    dd_lc_4_b:'4. Analyse', dd_lc_4:'At the planned sample size, run the right test for your metric type, check guardrails, and look at key segments. (That\'s the Analyse tab.)',
+    dd_lc_5_b:'5. Decide & document', dd_lc_5:'Ship, iterate, or abandon. Write down the result either way — negative results stop your team from repeating dead ideas.',
+    ref_glossary_title:'Glossary of key terms',
+    gl_pvalue:'The probability of seeing a difference at least this large if there were truly no effect. Small p = the data is surprising under "no effect."',
+    gl_alpha:'Your false-positive tolerance — the chance you\'ll call a winner when there\'s no real effect. Usually 5%.',
+    gl_beta:'β is the chance of missing a real effect. Power = 1 − β is the chance of catching it. Aim for 80%+.',
+    gl_mde:'Minimum Detectable Effect: the smallest lift your test is powered to detect. Smaller MDE needs much more data.',
+    gl_ci:'A range that would contain the true effect 95% of the time across repeated experiments. If it excludes zero, the result is significant.',
+    gl_se:'How much your estimate would bounce around from sample to sample. Shrinks as 1/√n.',
+    gl_cv_b:'Coefficient of variation (CV)', gl_cv:'SD ÷ mean. A unit-free measure of spread; high CV means a noisy metric that needs more data.',
+    gl_srm:'Sample Ratio Mismatch: the actual traffic split differs from the intended one, signalling a bug that invalidates results.',
     th_metric_type:'Metric type', th_test:'Test', th_when:'When to use',
     th_lever:'Lever', th_mechanism:'Mechanism',
     acc_ztest:'Z-test for conversion rates',
@@ -2098,6 +2189,36 @@ const T = {
     ref_chart3_sub:'Обнаружение меньших эффектов требует экспоненциально больше пользователей. Уменьшение MDE вдвое примерно учетверяет объём выборки (α = 0.05, мощность = 80%).',
     ref_chart4_title:'Как мощность растёт с размером выборки',
     ref_chart4_sub:'При фиксированном MDE 5% и α = 0.05 мощность растёт с n. Пунктирные линии — стандартные пороги 80% и 90%.',
+    ref_chart5_title:'CUPED: как снижение дисперсии уменьшает нужную выборку',
+    ref_chart5_sub:'CUPED убирает доэкспериментальный шум. Двигайте ползунок, чтобы увидеть, как процент снижения дисперсии сокращает необходимый размер выборки.',
+    ref_cuped_slider_label:'Снижение дисперсии:',
+    ref_chart6_title:'Почему подглядывание завышает долю ложноположительных',
+    ref_chart6_sub:'Каждый лишний взгляд на данные даёт ложноположительному результату ещё один шанс превысить 5%. Двигайте ползунок, чтобы увидеть рост реальной ошибки.',
+    ref_peek_slider_label:'Число подглядываний:',
+    cuped_bar_base:'Без CUPED', cuped_bar_cuped:'С CUPED', cuped_savings:'меньше пользователей',
+    peek_actual:'реальная доля FP', peek_axis:'Сколько раз вы подглядываете',
+    ref_deepdive_title:'Подробно: CUPED шаг за шагом',
+    dd_cuped_p1:'CUPED (использование доэкспериментальных данных) — самый мощный приём в современном экспериментировании. Идея: пользователь, много потративший в прошлом месяце, вероятно много потратит и сейчас, независимо от вашего изменения. Эту предсказуемую часть — шум — можно вычесть.',
+    dd_cuped_s1_b:'Выберите ковариату X', dd_cuped_s1:'доэкспериментальное измерение, коррелирующее с метрикой Y. Выручка предыдущего периода — классический выбор для тестов ARPU.',
+    dd_cuped_s2_b:'Оцените θ', dd_cuped_s2:'θ = Cov(Y, X) / Var(X). Это просто наклон регрессии Y на X по всем пользователям эксперимента.',
+    dd_cuped_s3_b:'Преобразуйте Y', dd_cuped_s3:'Y_cuped = Y − θ·(X − X̄). Среднее не меняется (оценка прироста остаётся несмещённой), но дисперсия падает.',
+    dd_cuped_s4_b:'Запустите тест на Y_cuped', dd_cuped_s4:'Снижение дисперсии равно ρ², где ρ — корреляция между Y и X. Корреляция 0.7 снижает дисперсию на ~49%.',
+    dd_cuped_p2:'Поскольку нужный размер выборки линейно зависит от дисперсии, снижение дисперсии на 50% означает достижение значимости вдвое быстрее — или обнаружение вдвое меньшего эффекта за то же время. Поэтому CUPED используют все крупные платформы.',
+    ref_lifecycle_title:'Жизненный цикл эксперимента',
+    dd_lc_1_b:'1. Гипотеза', dd_lc_1:'Сформулируйте изменение, метрику и направление. «Крупнее кнопка CTA → выше конверсия в регистрацию».',
+    dd_lc_2_b:'2. Анализ мощности', dd_lc_2:'Определите бизнес-значимый MDE, затем рассчитайте размер выборки и длительность до запуска. (Для этого есть вкладка «Спланировать».)',
+    dd_lc_3_b:'3. Запуск', dd_lc_3:'Запустите, проверьте SRM в первые часы, затем не трогайте минимум один полный бизнес-цикл (обычно 1–2 недели). Без подглядывания.',
+    dd_lc_4_b:'4. Анализ', dd_lc_4:'При запланированном размере выборки запустите нужный тест, проверьте охранные метрики и ключевые сегменты. (Вкладка «Анализ».)',
+    dd_lc_5_b:'5. Решение и документация', dd_lc_5:'Внедрить, доработать или отказаться. Записывайте результат в любом случае — отрицательные результаты избавляют команду от повторения мёртвых идей.',
+    ref_glossary_title:'Глоссарий ключевых терминов',
+    gl_pvalue:'Вероятность увидеть различие хотя бы такого размера, если эффекта на самом деле нет. Малое p = данные удивительны при гипотезе «эффекта нет».',
+    gl_alpha:'Ваша терпимость к ложноположительным — шанс объявить победителя, когда реального эффекта нет. Обычно 5%.',
+    gl_beta:'β — шанс пропустить реальный эффект. Мощность = 1 − β — шанс его поймать. Стремитесь к 80%+.',
+    gl_mde:'Минимальный детектируемый эффект: наименьший прирост, который тест способен обнаружить. Меньший MDE требует гораздо больше данных.',
+    gl_ci:'Диапазон, который в 95% повторных экспериментов содержит истинный эффект. Если он не включает ноль — результат значим.',
+    gl_se:'Насколько ваша оценка колеблется от выборки к выборке. Убывает как 1/√n.',
+    gl_cv_b:'Коэффициент вариации (CV)', gl_cv:'SD ÷ среднее. Безразмерная мера разброса; высокий CV — шумная метрика, требующая больше данных.',
+    gl_srm:'Sample Ratio Mismatch: фактическое распределение трафика отличается от задуманного, что сигнализирует о баге, делающем результаты недействительными.',
     th_metric_type:'Тип метрики', th_test:'Тест', th_when:'Когда применять',
     th_lever:'Инструмент', th_mechanism:'Механизм',
     acc_ztest:'Z-тест для конверсий',
@@ -2296,12 +2417,24 @@ function applyTheme(dark) {
   if (icon) icon.textContent = dark ? '☀️' : '🌙';
   if (lbl)  lbl.textContent  = dark ? (T[currentLang]?.theme_light || 'Light') : (T[currentLang]?.theme_dark || 'Dark');
   if (typeof RC !== 'undefined') {
+    // Core neutrals
     RC.INK    = dark ? '#f4f5ff' : '#1a1a2e';
     RC.MUTED  = dark ? '#8890b8' : '#9a9cb8';
     RC.BG     = dark ? '#161828' : '#ffffff';
     RC.BORDER = dark ? '#2e3155' : '#e2e4ef';
+    // Semantic chart colours — must match the CSS variables for each theme
+    RC.P    = dark ? '#a59cf7' : '#5b50c8';   // accent / purple
+    RC.PL   = dark ? 'rgba(165,156,247,0.20)' : 'rgba(91,80,200,0.18)';
+    RC.GR   = dark ? '#66dda0' : '#1a7a4a';   // success green
+    RC.GRL  = dark ? 'rgba(102,221,160,0.20)' : 'rgba(26,122,74,0.15)';
+    RC.OR   = dark ? '#f7a850' : '#e8832a';   // observed-marker orange
+    RC.ORL  = dark ? 'rgba(247,168,80,0.20)' : 'rgba(232,131,42,0.18)';
+    RC.RED  = dark ? '#ff6b6b' : '#dc3232';   // worse / rejection
+    RC.REDL = dark ? 'rgba(255,107,107,0.20)' : 'rgba(220,50,50,0.15)';
+    RC.WARN = dark ? '#f7cf50' : '#7a5500';   // warning
   }
   try { localStorage.setItem('abcalc-theme', dark ? 'dark' : 'light'); } catch(e) {}
+  // Redraw any visible charts so they pick up the new colours immediately
   if (typeof drawCharts === 'function' &&
       document.getElementById('tab-reference')?.classList.contains('active')) {
     drawCharts();
@@ -2316,6 +2449,9 @@ function toggleTheme() {
     if (localStorage.getItem('abcalc-theme') === 'dark') {
       document.documentElement.setAttribute('data-theme', 'dark');
       window.addEventListener('DOMContentLoaded', () => applyTheme(true));
+    } else {
+      // Explicitly initialise RC for light mode so charts match the UI
+      window.addEventListener('DOMContentLoaded', () => applyTheme(false));
     }
   } catch(e) {}
 })();
@@ -2968,8 +3104,8 @@ function runWelchT(A, B, alpha, tails, resultBoxId, chartBarId, chartNullId, hea
     const ciA = 1.96 * A.sd / Math.sqrt(A.n);
     const ciB = 1.96 * B.sd / Math.sqrt(B.n);
     drawBarsCI(chartBarId,
-      [{label:'A', subLabel:'CONTROL', val:A.mean, ci:ciA, col:RC.P, colFill:'rgba(91,80,200,0.25)'},
-       {label:'B', subLabel:'', val:B.mean, ci:ciB, col:sig?RC.GR:RC.P, colFill:sig?'rgba(26,122,74,0.3)':'rgba(91,80,200,0.55)'}],
+      [{label:'A', subLabel:'CONTROL', val:A.mean, ci:ciA, col:RC.P, colFill:RC.PL},
+       {label:'B', subLabel:'', val:B.mean, ci:ciB, col:sig?RC.GR:RC.P, colFill:sig?RC.GRL:RC.PL}],
       fmtFn);
     drawNullDist(chartNullId, A.mean, B.mean, se, t, alpha, tails, sig, fmtFn);
   }, 20);
@@ -3196,8 +3332,8 @@ function drawConvCharts(A, B, se, z, pVal, sig, alpha, tails) {
   const ciA = 1.96 * Math.sqrt(A.p*(1-A.p)/A.n);
   const ciB = 1.96 * Math.sqrt(B.p*(1-B.p)/B.n);
   drawBarsCI('res-chart-conv-bars',
-    [{label:'A', subLabel:'CONTROL', val:A.p, ci:ciA, col:RC.P, colFill:'rgba(91,80,200,0.25)'},
-     {label:'B', subLabel:'', val:B.p, ci:ciB, col:sig?RC.GR:RC.P, colFill:sig?'rgba(26,122,74,0.3)':'rgba(91,80,200,0.55)'}],
+    [{label:'A', subLabel:'CONTROL', val:A.p, ci:ciA, col:RC.P, colFill:RC.PL},
+     {label:'B', subLabel:'', val:B.p, ci:ciB, col:sig?RC.GR:RC.P, colFill:sig?RC.GRL:RC.PL}],
     v => (v*100).toFixed(2)+'%');
   drawNullDist('res-chart-conv-lift', A.p, B.p, se, z, alpha, tails, sig,
     v => (v*100).toFixed(2)+'%');
@@ -3408,12 +3544,13 @@ function drawNullDist(canvasId, muA, muB, se, stat, alpha, tails, sig, fmt) {
 // ── Charts ──────────────────────────────────────────
 
 function drawCharts() {
-  const P  = '#5b50c8';
-  const PL = 'rgba(91,80,200,0.15)';
-  const OR = '#e8832a';
-  const ORL= 'rgba(232,131,42,0.15)';
-  const RED= 'rgba(220,50,50,0.25)';
-  const GREY='rgba(120,120,140,0.2)';
+  // Theme-aware colours — read from RC at draw time
+  const P    = RC.P;
+  const PL   = RC.PL;
+  const OR   = RC.OR;
+  const ORL  = RC.ORL;
+  const RED  = RC.REDL || 'rgba(220,50,50,0.25)';
+  const GREY = 'rgba(120,120,140,0.2)';
   const INK   = () => RC.INK;
   const MUTED = () => RC.MUTED;
   const dpr = window.devicePixelRatio || 1;
@@ -3674,12 +3811,122 @@ function drawCharts() {
     });
     ctx.fillText(T[currentLang].chart_power_axis||'Power (1 − β)', pad.l + cw/2, H - 2);
   })();
+
+  // ── Chart 5: CUPED variance reduction ──
+  (function() {
+    const c = initCanvas('chart-cuped'); if (!c) return;
+    const { ctx, W, H } = c;
+    const pad = { t: 18, b: 38, l: 44, r: 16 };
+    const cw = W - pad.l - pad.r, ch = H - pad.t - pad.b;
+    const reduction = (parseFloat(document.getElementById('cuped-slider')?.value) || 30) / 100;
+    // baseline sample size (arbitrary units) vs CUPED-adjusted
+    const baseN = 100;
+    const cupedN = baseN * (1 - reduction);
+    const bars = [
+      { label: T[currentLang].cuped_bar_base || 'Without CUPED', val: baseN, col: RC.MUTED, fill: 'rgba(120,120,140,0.25)' },
+      { label: T[currentLang].cuped_bar_cuped || 'With CUPED', val: cupedN, col: RC.GR, fill: RC.GRL },
+    ];
+    const yMax = baseN * 1.15;
+    const barW = Math.min(90, cw / 2 * 0.55);
+    const gap = (cw - barW * 2) / 3;
+    function toY(v) { return pad.t + ch - (v / yMax) * ch; }
+    // baseline axis
+    ctx.beginPath(); ctx.moveTo(pad.l, toY(0)); ctx.lineTo(W - pad.r, toY(0));
+    ctx.strokeStyle = RC.MUTED; ctx.lineWidth = 1; ctx.stroke();
+    bars.forEach((b, i) => {
+      const x = pad.l + gap + i * (barW + gap);
+      const y = toY(b.val);
+      ctx.fillStyle = b.fill;
+      ctx.strokeStyle = b.col; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.roundRect(x, y, barW, toY(0) - y, 8); ctx.fill(); ctx.stroke();
+      labelStyle(ctx); ctx.textAlign = 'center';
+      ctx.fillStyle = RC.INK; ctx.font = '600 13px Inter, sans-serif';
+      ctx.fillText(Math.round(b.val) + '%', x + barW/2, y - 8);
+      ctx.fillStyle = RC.MUTED; ctx.font = '11px Inter, sans-serif';
+      ctx.fillText(b.label, x + barW/2, H - 8);
+    });
+    // savings callout
+    if (reduction > 0) {
+      ctx.fillStyle = RC.GR; ctx.font = '600 12px Inter, sans-serif'; ctx.textAlign = 'center';
+      ctx.fillText('−' + Math.round(reduction*100) + '% ' + (T[currentLang].cuped_savings || 'fewer users'), pad.l + cw/2, pad.t + 4);
+    }
+  })();
+
+  // ── Chart 6: Peeking false-positive inflation ──
+  (function() {
+    const c = initCanvas('chart-peeking'); if (!c) return;
+    const { ctx, W, H } = c;
+    const pad = { t: 18, b: 38, l: 44, r: 16 };
+    const cw = W - pad.l - pad.r, ch = H - pad.t - pad.b;
+    const maxPeeks = parseInt(document.getElementById('peek-slider')?.value) || 5;
+    // Approximate inflated FP rate with k independent-ish looks: 1-(1-α)^effective
+    // Use a damped model (looks are correlated): effective looks ≈ sqrt-ish growth
+    function fpRate(k) {
+      // empirically, daily peeking ~ alpha * (1 + ln(k)) capped; use a smooth approximation
+      return Math.min(0.5, 1 - Math.pow(1 - 0.05, Math.sqrt(k) * 1.6));
+    }
+    const yMax = 0.5;
+    function toX(k) { return pad.l + (k - 1) / (30 - 1) * cw; }
+    function toY(v) { return pad.t + ch - (v / yMax) * ch; }
+    // gridlines
+    [0.05, 0.1, 0.2, 0.3, 0.4, 0.5].forEach(f => {
+      const y = toY(f);
+      ctx.beginPath(); ctx.setLineDash([2,4]);
+      ctx.moveTo(pad.l, y); ctx.lineTo(W - pad.r, y);
+      ctx.strokeStyle = f === 0.05 ? RC.GR : RC.BORDER;
+      ctx.lineWidth = f === 0.05 ? 1.5 : 0.8; ctx.stroke(); ctx.setLineDash([]);
+      labelStyle(ctx); ctx.textAlign = 'right';
+      ctx.fillStyle = f === 0.05 ? RC.GR : RC.MUTED;
+      ctx.fillText((f*100).toFixed(0) + '%', pad.l - 4, y + 4);
+    });
+    // curve fill
+    ctx.beginPath();
+    for (let k = 1; k <= 30; k++) (k === 1 ? ctx.moveTo(toX(k), toY(fpRate(k))) : ctx.lineTo(toX(k), toY(fpRate(k))));
+    ctx.lineTo(toX(30), toY(0)); ctx.lineTo(toX(1), toY(0)); ctx.closePath();
+    ctx.fillStyle = RC.REDL || 'rgba(220,50,50,0.15)'; ctx.fill();
+    // curve
+    ctx.beginPath();
+    for (let k = 1; k <= 30; k++) (k === 1 ? ctx.moveTo(toX(k), toY(fpRate(k))) : ctx.lineTo(toX(k), toY(fpRate(k))));
+    ctx.strokeStyle = RC.RED; ctx.lineWidth = 2; ctx.stroke();
+    // marker at current slider value
+    const fx = toX(maxPeeks), fy = toY(fpRate(maxPeeks));
+    ctx.beginPath(); ctx.moveTo(fx, toY(0)); ctx.lineTo(fx, fy);
+    ctx.strokeStyle = RC.INK; ctx.lineWidth = 1.5; ctx.setLineDash([3,3]); ctx.stroke(); ctx.setLineDash([]);
+    ctx.beginPath(); ctx.arc(fx, fy, 5, 0, 2*Math.PI); ctx.fillStyle = RC.RED; ctx.fill();
+    ctx.fillStyle = RC.INK; ctx.font = '600 12px Inter, sans-serif'; ctx.textAlign = 'center';
+    ctx.fillText((fpRate(maxPeeks)*100).toFixed(0) + '% ' + (T[currentLang].peek_actual || 'actual FP rate'), fx, fy - 12);
+    // x axis
+    labelStyle(ctx); ctx.textAlign = 'center'; ctx.fillStyle = RC.MUTED;
+    [1, 10, 20, 30].forEach(k => ctx.fillText(k, toX(k), H - 8));
+    ctx.fillText(T[currentLang].peek_axis || 'Number of times you peek', pad.l + cw/2, H - 0);
+  })();
 }
 
 // Draw reference charts on resize
 window.addEventListener('resize', () => {
   if (document.getElementById('tab-reference').classList.contains('active')) drawCharts();
 });
+
+// Interactive slider handlers for the CUPED and peeking charts
+document.addEventListener('DOMContentLoaded', () => {
+  const cupedSlider = document.getElementById('cuped-slider');
+  const cupedVal = document.getElementById('cuped-slider-val');
+  if (cupedSlider) {
+    cupedSlider.addEventListener('input', () => {
+      if (cupedVal) cupedVal.textContent = cupedSlider.value + '%';
+      if (document.getElementById('tab-reference')?.classList.contains('active')) drawCharts();
+    });
+  }
+  const peekSlider = document.getElementById('peek-slider');
+  const peekVal = document.getElementById('peek-slider-val');
+  if (peekSlider) {
+    peekSlider.addEventListener('input', () => {
+      if (peekVal) peekVal.textContent = peekSlider.value;
+      if (document.getElementById('tab-reference')?.classList.contains('active')) drawCharts();
+    });
+  }
+});
+
 </script>
 </body>
 </html>
