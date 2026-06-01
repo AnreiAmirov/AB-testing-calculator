@@ -1279,12 +1279,59 @@ main {
   font-weight: 700;
   color: var(--ink);
   margin-bottom: 4px;
+  padding-right: 80px; /* reserve room for the PNG button so text never runs under it */
 }
 .chart-sub {
   font-size: 0.78rem;
   color: var(--ink-muted);
   margin-bottom: 14px;
   line-height: 1.5;
+}
+
+/* ── Table of contents (Reference) ── */
+.toc-card { border-left: 4px solid var(--accent); }
+.toc-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px 24px;
+  margin-top: 12px;
+}
+.toc-group { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.toc-group-h {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--accent);
+  margin-bottom: 6px;
+}
+.toc-link {
+  font-size: 0.8rem;
+  color: var(--ink-muted);
+  text-decoration: none;
+  padding: 4px 0;
+  line-height: 1.35;
+  border-bottom: 1px solid transparent;
+  transition: color 0.15s;
+}
+.toc-link:hover { color: var(--accent); }
+/* anchored sections shouldn't hide under sticky chrome when jumped to */
+[id^="sec-"] { scroll-margin-top: 80px; }
+
+@media (max-width: 900px) {
+  .toc-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 560px) {
+  .toc-grid { grid-template-columns: 1fr; gap: 14px; }
+  [id^="sec-"] { scroll-margin-top: 64px; }
+}
+
+/* PNG button: shrink to icon-only on mobile so it never overlaps the title */
+@media (max-width: 640px) {
+  .chart-dl { padding: 5px 8px; top: 12px; right: 12px; }
+  .chart-dl .dl-label { display: none; }
+  .chart-dl svg { width: 15px; height: 15px; }
+  .chart-title { padding-right: 44px; }
 }
 .chart-wrap {
   width: 100%;
@@ -1817,40 +1864,75 @@ canvas.chart { width: 100% !important; height: 100% !important; display: block; 
 <div id="tab-reference" class="tab-panel">
 <main>
 
+  <!-- Table of contents -->
+  <div class="card toc-card">
+    <div class="card-title" data-i18n="toc_title">On this page</div>
+    <div class="toc-grid">
+      <div class="toc-group">
+        <div class="toc-group-h" data-i18n="toc_g1">Core concepts</div>
+        <a class="toc-link" href="#sec-significance" data-i18n="ref_chart1_title">How statistical significance works</a>
+        <a class="toc-link" href="#sec-errors" data-i18n="ref_chart2_title">Type I &amp; Type II errors</a>
+        <a class="toc-link" href="#sec-samplesize" data-i18n="ref_chart3_title">Sample size vs MDE</a>
+        <a class="toc-link" href="#sec-power" data-i18n="ref_chart4_title">How power grows with sample size</a>
+      </div>
+      <div class="toc-group">
+        <div class="toc-group-h" data-i18n="toc_g2">Advanced techniques</div>
+        <a class="toc-link" href="#sec-cuped" data-i18n="toc_cuped_short">CUPED variance reduction</a>
+        <a class="toc-link" href="#sec-peeking" data-i18n="toc_peeking_short">Why peeking inflates errors</a>
+      </div>
+      <div class="toc-group">
+        <div class="toc-group-h" data-i18n="toc_g3">Distributions &amp; theory</div>
+        <a class="toc-link" href="#sec-distshapes" data-i18n="toc_distshapes_short">Catalog of distribution shapes</a>
+        <a class="toc-link" href="#sec-fieldguide" data-i18n="ref_disttypes_title">A field guide to distributions</a>
+        <a class="toc-link" href="#sec-dice" data-i18n="toc_dice_short">Worked example: two dice</a>
+        <a class="toc-link" href="#sec-clt" data-i18n="toc_clt_short">The Central Limit Theorem</a>
+        <a class="toc-link" href="#sec-theory" data-i18n="ref_theory_title">The theory that ties it together</a>
+      </div>
+      <div class="toc-group">
+        <div class="toc-group-h" data-i18n="toc_g4">Practical guidance</div>
+        <a class="toc-link" href="#sec-checknorm" data-i18n="toc_checknorm_short">When to check for normality</a>
+        <a class="toc-link" href="#sec-distcases" data-i18n="toc_distcases_short">Case studies: checking distributions</a>
+        <a class="toc-link" href="#sec-usecases" data-i18n="toc_usecases_short">Matching the test to the situation</a>
+        <a class="toc-link" href="#sec-tests" data-i18n="ref_tests_title">Tests at a glance</a>
+        <a class="toc-link" href="#sec-how" data-i18n="ref_how_title">How each test works</a>
+      </div>
+    </div>
+  </div>
+
   <!-- Chart 1: Significance / normal distribution -->
-  <div class="chart-card">
+  <div class="chart-card" id="sec-significance">
     <div class="chart-title" data-i18n="ref_chart1_title">How statistical significance works</div>
     <div class="chart-sub" data-i18n="ref_chart1_sub">The null hypothesis assumes no real effect. If your test statistic lands in the shaded rejection region (|Z| &gt; z<sub>α</sub>), you reject it. α = 0.05 shown.</div>
-    <button class="chart-dl" onclick="downloadChart('chart-significance','significance')"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></span><span data-i18n="btn_dl_png">PNG</span></button>
+    <button class="chart-dl" onclick="downloadChart('chart-significance','significance')"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></span><span class="dl-label" data-i18n="btn_dl_png">PNG</span></button>
     <div class="chart-wrap"><canvas id="chart-significance"></canvas></div>
   </div>
 
   <!-- Chart 2: Type I and II errors -->
-  <div class="chart-card">
+  <div class="chart-card" id="sec-errors">
     <div class="chart-title" data-i18n="ref_chart2_title">Type I &amp; Type II errors</div>
     <div class="chart-sub" data-i18n="ref_chart2_sub">H₀ (blue) and H₁ (orange) distributions overlap. Red tail = α (false positive). Grey area = β (missed effect). Power = 1 − β.</div>
-    <button class="chart-dl" onclick="downloadChart('chart-errors','type-I-II-errors')"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></span><span data-i18n="btn_dl_png">PNG</span></button>
+    <button class="chart-dl" onclick="downloadChart('chart-errors','type-I-II-errors')"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></span><span class="dl-label" data-i18n="btn_dl_png">PNG</span></button>
     <div class="chart-wrap"><canvas id="chart-errors"></canvas></div>
   </div>
 
   <!-- Chart 3: Sample size vs MDE -->
-  <div class="chart-card">
+  <div class="chart-card" id="sec-samplesize">
     <div class="chart-title" data-i18n="ref_chart3_title">Sample size vs Minimum Detectable Effect</div>
     <div class="chart-sub" data-i18n="ref_chart3_sub">Detecting smaller effects requires exponentially more users. Halving the MDE roughly quadruples the required sample size (α = 0.05, power = 80%).</div>
-    <button class="chart-dl" onclick="downloadChart('chart-samplesize','sample-size-vs-mde')"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></span><span data-i18n="btn_dl_png">PNG</span></button>
+    <button class="chart-dl" onclick="downloadChart('chart-samplesize','sample-size-vs-mde')"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></span><span class="dl-label" data-i18n="btn_dl_png">PNG</span></button>
     <div class="chart-wrap"><canvas id="chart-samplesize"></canvas></div>
   </div>
 
   <!-- Chart 4: Power curve -->
-  <div class="chart-card">
+  <div class="chart-card" id="sec-power">
     <div class="chart-title" data-i18n="ref_chart4_title">How power grows with sample size</div>
     <div class="chart-sub" data-i18n="ref_chart4_sub">For a fixed 5% relative MDE and α = 0.05, power rises with n. The dashed lines mark the standard 80% and 90% thresholds.</div>
-    <button class="chart-dl" onclick="downloadChart('chart-power','power-curve')"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></span><span data-i18n="btn_dl_png">PNG</span></button>
+    <button class="chart-dl" onclick="downloadChart('chart-power','power-curve')"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></span><span class="dl-label" data-i18n="btn_dl_png">PNG</span></button>
     <div class="chart-wrap"><canvas id="chart-power"></canvas></div>
   </div>
 
   <!-- Chart 5: CUPED variance reduction (interactive) -->
-  <div class="chart-card">
+  <div class="chart-card" id="sec-cuped">
     <div class="chart-title" data-i18n="ref_chart5_title">CUPED: how variance reduction shrinks the sample you need</div>
     <div class="chart-sub" data-i18n="ref_chart5_sub">CUPED removes pre-experiment noise. Drag the slider to see how the variance-reduction percentage cuts the required sample size.</div>
     <div style="display:flex;align-items:center;gap:12px;margin:8px 0 4px;flex-wrap:wrap">
@@ -1858,12 +1940,12 @@ canvas.chart { width: 100% !important; height: 100% !important; display: block; 
       <input type="range" id="cuped-slider" min="0" max="60" value="30" step="5" style="flex:1;min-width:140px;accent-color:var(--accent)">
       <span id="cuped-slider-val" style="font-family:'JetBrains Mono',monospace;font-weight:600;color:var(--accent);min-width:42px">30%</span>
     </div>
-    <button class="chart-dl" onclick="downloadChart('chart-cuped','cuped-variance-reduction')"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></span><span data-i18n="btn_dl_png">PNG</span></button>
+    <button class="chart-dl" onclick="downloadChart('chart-cuped','cuped-variance-reduction')"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></span><span class="dl-label" data-i18n="btn_dl_png">PNG</span></button>
     <div class="chart-wrap"><canvas id="chart-cuped"></canvas></div>
   </div>
 
   <!-- Chart 6: Peeking inflation (interactive) -->
-  <div class="chart-card">
+  <div class="chart-card" id="sec-peeking">
     <div class="chart-title" data-i18n="ref_chart6_title">Why peeking inflates your false-positive rate</div>
     <div class="chart-sub" data-i18n="ref_chart6_sub">Each extra look at the data gives the false-positive rate another chance to cross 5%. Drag to see how the true error rate climbs with the number of peeks.</div>
     <div style="display:flex;align-items:center;gap:12px;margin:8px 0 4px;flex-wrap:wrap">
@@ -1871,20 +1953,20 @@ canvas.chart { width: 100% !important; height: 100% !important; display: block; 
       <input type="range" id="peek-slider" min="1" max="30" value="5" step="1" style="flex:1;min-width:140px;accent-color:var(--accent)">
       <span id="peek-slider-val" style="font-family:'JetBrains Mono',monospace;font-weight:600;color:var(--accent);min-width:42px">5</span>
     </div>
-    <button class="chart-dl" onclick="downloadChart('chart-peeking','peeking-false-positives')"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></span><span data-i18n="btn_dl_png">PNG</span></button>
+    <button class="chart-dl" onclick="downloadChart('chart-peeking','peeking-false-positives')"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></span><span class="dl-label" data-i18n="btn_dl_png">PNG</span></button>
     <div class="chart-wrap"><canvas id="chart-peeking"></canvas></div>
   </div>
 
   <!-- Chart 7: Distribution shapes -->
-  <div class="chart-card">
+  <div class="chart-card" id="sec-distshapes">
     <div class="chart-title" data-i18n="ref_dist_title">A catalog of distribution shapes</div>
     <div class="chart-sub" data-i18n="ref_dist_sub">Real metrics rarely look like a textbook bell curve. Here are the eight shapes you will meet most often — smooth curves for continuous metrics, bars for discrete counts.</div>
-    <button class="chart-dl" onclick="downloadChart('chart-distshapes','distribution-shapes')"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></span><span data-i18n="btn_dl_png">PNG</span></button>
+    <button class="chart-dl" onclick="downloadChart('chart-distshapes','distribution-shapes')"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></span><span class="dl-label" data-i18n="btn_dl_png">PNG</span></button>
     <div class="chart-wrap" style="height:360px"><canvas id="chart-distshapes"></canvas></div>
   </div>
 
   <!-- Distribution explainer card -->
-  <div class="card">
+  <div class="card" id="sec-fieldguide">
     <div class="card-title" data-i18n="ref_disttypes_title">A field guide to distributions</div>
     <div class="accordion-body" style="padding:0;background:none">
       <div class="tip-row"><span class="tip-icon">🔔</span><div><strong data-i18n="dt_normal_b">Normal (symmetric).</strong> <span data-i18n="dt_normal">The classic bell curve — values cluster around the mean and tail off evenly on both sides. Heights, measurement errors, and sample averages look like this. Most textbook tests assume it.</span></div></div>
@@ -1900,7 +1982,7 @@ canvas.chart { width: 100% !important; height: 100% !important; display: block; 
   </div>
 
   <!-- The dice example explained -->
-  <div class="card">
+  <div class="card" id="sec-dice">
     <div class="card-title" data-i18n="ref_dice_title">Worked example: why two dice make a triangle</div>
     <div class="accordion-body" style="padding:0;background:none">
       <p data-i18n="dice_p1">A single die is <strong>uniform</strong> — each face 1–6 is equally likely. But sum <em>two</em> dice and the result is no longer flat: it peaks at 7 and falls away symmetrically toward 2 and 12. This is a <strong>triangular distribution</strong>.</p>
@@ -1913,7 +1995,7 @@ canvas.chart { width: 100% !important; height: 100% !important; display: block; 
   </div>
 
   <!-- Chart 8: CLT demo -->
-  <div class="chart-card">
+  <div class="chart-card" id="sec-clt">
     <div class="chart-title" data-i18n="ref_clt_title">Why skew usually doesn't break your test: the Central Limit Theorem</div>
     <div class="chart-sub" data-i18n="ref_clt_sub">Your test cares about the distribution of the average, not the raw data. Even from a very skewed population, the average of a sample becomes bell-shaped as the sample grows. Drag the sample size and watch it happen.</div>
     <div style="display:flex;align-items:center;gap:12px;margin:8px 0 4px;flex-wrap:wrap">
@@ -1921,12 +2003,12 @@ canvas.chart { width: 100% !important; height: 100% !important; display: block; 
       <input type="range" id="clt-slider" min="1" max="100" value="1" step="1" style="flex:1;min-width:140px;accent-color:var(--accent)">
       <span id="clt-slider-val" style="font-family:'JetBrains Mono',monospace;font-weight:600;color:var(--accent);min-width:42px">1</span>
     </div>
-    <button class="chart-dl" onclick="downloadChart('chart-clt','central-limit-theorem')"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></span><span data-i18n="btn_dl_png">PNG</span></button>
+    <button class="chart-dl" onclick="downloadChart('chart-clt','central-limit-theorem')"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></span><span class="dl-label" data-i18n="btn_dl_png">PNG</span></button>
     <div class="chart-wrap"><canvas id="chart-clt"></canvas></div>
   </div>
 
   <!-- The theory behind it all -->
-  <div class="card">
+  <div class="card" id="sec-theory">
     <div class="card-title" data-i18n="ref_theory_title">The theory that ties it together</div>
     <div class="accordion-body" style="padding:0;background:none">
       <div class="tip-row"><span class="tip-icon">🎯</span><div><strong data-i18n="th_clt_b">Central Limit Theorem (CLT).</strong> <span data-i18n="th_clt">The headline result of statistics: if you take many independent samples and average each one, those averages follow a normal distribution — no matter what shape the original data had. This is why tests built on the normal curve work on messy, skewed real-world metrics, as long as the sample is large enough.</span></div></div>
@@ -1937,7 +2019,7 @@ canvas.chart { width: 100% !important; height: 100% !important; display: block; 
   </div>
 
   <!-- When to check normality card -->
-  <div class="card">
+  <div class="card" id="sec-checknorm">
     <div class="card-title" data-i18n="ref_checknorm_title">When should you actually check for normality?</div>
     <div class="accordion-body" style="padding:0;background:none">
       <p data-i18n="cn_intro">The most common misconception in A/B testing is that your raw data must be normally distributed. It usually doesn't. The t-test and Z-test assume the <em>sampling distribution of the mean</em> is roughly normal — and thanks to the Central Limit Theorem, that happens automatically once your sample is large enough, no matter how skewed the underlying data is.</p>
@@ -1953,7 +2035,7 @@ canvas.chart { width: 100% !important; height: 100% !important; display: block; 
   </div>
 
   <!-- Distribution case studies -->
-  <div class="card">
+  <div class="card" id="sec-distcases">
     <div class="card-title" data-i18n="ref_distcases_title">Case studies: should you check the distribution?</div>
     <div class="accordion-body" style="padding:0;background:none">
 
@@ -1988,7 +2070,7 @@ canvas.chart { width: 100% !important; height: 100% !important; display: block; 
   </div>
 
   <!-- Other applied use cases -->
-  <div class="card">
+  <div class="card" id="sec-usecases">
     <div class="card-title" data-i18n="ref_usecases_title">Matching the test to the situation</div>
     <div class="accordion-body" style="padding:0;background:none">
       <p data-i18n="uc_intro" style="margin-bottom:10px">Beyond normality, the distribution shape often tells you which test or metric to reach for. A few common product situations:</p>
@@ -2000,7 +2082,7 @@ canvas.chart { width: 100% !important; height: 100% !important; display: block; 
     </div>
   </div>
 
-  <div class="card">
+  <div class="card" id="sec-tests">
     <div class="card-title" data-i18n="ref_tests_title">Tests at a glance</div>
     <div style="overflow-x:auto;-webkit-overflow-scrolling:touch;">
       <table class="ref-table" style="min-width:420px">
@@ -2018,7 +2100,7 @@ canvas.chart { width: 100% !important; height: 100% !important; display: block; 
     </div>
   </div>
 
-  <div class="card">
+  <div class="card" id="sec-how">
     <div class="card-title" data-i18n="ref_how_title">How each test works</div>
 
     <details class="accordion" id="acc-body-ztest">
@@ -2514,6 +2596,12 @@ const T = {
     js_low_data_title:'⚠️ Low data warning',
     ri_control:'Control (A)', ri_variant:'Variant (B)', ri_settings:'Settings',
     ri_users:'users', ri_conv:'conv', ri_mean:'mean', recent_no_inputs:'Parameters not available for this entry',
+    toc_title:'On this page',
+    toc_g1:'Core concepts', toc_g2:'Advanced techniques', toc_g3:'Distributions & theory', toc_g4:'Practical guidance',
+    toc_cuped_short:'CUPED variance reduction', toc_peeking_short:'Why peeking inflates errors',
+    toc_distshapes_short:'Catalog of distribution shapes', toc_dice_short:'Worked example: two dice',
+    toc_clt_short:'The Central Limit Theorem', toc_checknorm_short:'When to check for normality',
+    toc_distcases_short:'Case studies: checking distributions', toc_usecases_short:'Matching the test to the situation',
     btn_dl_png:'PNG', recent_title:'Recent results', recent_clear:'Clear',
     recent_just_now:'just now', recent_min:'min ago', recent_hr:'h ago', recent_day:'d ago',
     js_err_fill_variant:'Please fill in all variant data (users and conversions) before analysing.',
@@ -2820,6 +2908,12 @@ const T = {
     js_low_data_title:'⚠️ Мало данных',
     ri_control:'Контроль (A)', ri_variant:'Вариант (B)', ri_settings:'Настройки',
     ri_users:'польз.', ri_conv:'конв.', ri_mean:'среднее', recent_no_inputs:'Параметры для этой записи недоступны',
+    toc_title:'На этой странице',
+    toc_g1:'Основные понятия', toc_g2:'Продвинутые техники', toc_g3:'Распределения и теория', toc_g4:'Практические советы',
+    toc_cuped_short:'Снижение дисперсии CUPED', toc_peeking_short:'Почему подглядывание завышает ошибки',
+    toc_distshapes_short:'Каталог форм распределений', toc_dice_short:'Пример: две кости',
+    toc_clt_short:'Центральная предельная теорема', toc_checknorm_short:'Когда проверять нормальность',
+    toc_distcases_short:'Кейсы: проверка распределений', toc_usecases_short:'Подбор теста под ситуацию',
     btn_dl_png:'PNG', recent_title:'Недавние результаты', recent_clear:'Очистить',
     recent_just_now:'только что', recent_min:'мин назад', recent_hr:'ч назад', recent_day:'дн назад',
     js_err_fill_variant:'Заполните данные по всем вариантам (пользователи и конверсии) перед анализом.',
