@@ -1252,7 +1252,28 @@ main {
   padding: 20px 24px 16px;
   margin-bottom: 16px;
   box-shadow: var(--shadow-card);
+  position: relative;
 }
+.chart-dl {
+  position: absolute;
+  top: 14px; right: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--pill-bg);
+  border: 1px solid var(--border);
+  color: var(--ink-muted);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 5px 10px;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+  z-index: 2;
+}
+.chart-dl:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+.chart-dl svg { width: 13px; height: 13px; }
 .chart-title {
   font-size: 0.82rem;
   font-weight: 700;
@@ -1800,6 +1821,7 @@ canvas.chart { width: 100% !important; height: 100% !important; display: block; 
   <div class="chart-card">
     <div class="chart-title" data-i18n="ref_chart1_title">How statistical significance works</div>
     <div class="chart-sub" data-i18n="ref_chart1_sub">The null hypothesis assumes no real effect. If your test statistic lands in the shaded rejection region (|Z| &gt; z<sub>α</sub>), you reject it. α = 0.05 shown.</div>
+    <button class="chart-dl" onclick="downloadChart('chart-significance','significance')"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></span><span data-i18n="btn_dl_png">PNG</span></button>
     <div class="chart-wrap"><canvas id="chart-significance"></canvas></div>
   </div>
 
@@ -1807,6 +1829,7 @@ canvas.chart { width: 100% !important; height: 100% !important; display: block; 
   <div class="chart-card">
     <div class="chart-title" data-i18n="ref_chart2_title">Type I &amp; Type II errors</div>
     <div class="chart-sub" data-i18n="ref_chart2_sub">H₀ (blue) and H₁ (orange) distributions overlap. Red tail = α (false positive). Grey area = β (missed effect). Power = 1 − β.</div>
+    <button class="chart-dl" onclick="downloadChart('chart-errors','type-I-II-errors')"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></span><span data-i18n="btn_dl_png">PNG</span></button>
     <div class="chart-wrap"><canvas id="chart-errors"></canvas></div>
   </div>
 
@@ -1814,6 +1837,7 @@ canvas.chart { width: 100% !important; height: 100% !important; display: block; 
   <div class="chart-card">
     <div class="chart-title" data-i18n="ref_chart3_title">Sample size vs Minimum Detectable Effect</div>
     <div class="chart-sub" data-i18n="ref_chart3_sub">Detecting smaller effects requires exponentially more users. Halving the MDE roughly quadruples the required sample size (α = 0.05, power = 80%).</div>
+    <button class="chart-dl" onclick="downloadChart('chart-samplesize','sample-size-vs-mde')"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></span><span data-i18n="btn_dl_png">PNG</span></button>
     <div class="chart-wrap"><canvas id="chart-samplesize"></canvas></div>
   </div>
 
@@ -1821,6 +1845,7 @@ canvas.chart { width: 100% !important; height: 100% !important; display: block; 
   <div class="chart-card">
     <div class="chart-title" data-i18n="ref_chart4_title">How power grows with sample size</div>
     <div class="chart-sub" data-i18n="ref_chart4_sub">For a fixed 5% relative MDE and α = 0.05, power rises with n. The dashed lines mark the standard 80% and 90% thresholds.</div>
+    <button class="chart-dl" onclick="downloadChart('chart-power','power-curve')"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></span><span data-i18n="btn_dl_png">PNG</span></button>
     <div class="chart-wrap"><canvas id="chart-power"></canvas></div>
   </div>
 
@@ -1833,6 +1858,7 @@ canvas.chart { width: 100% !important; height: 100% !important; display: block; 
       <input type="range" id="cuped-slider" min="0" max="60" value="30" step="5" style="flex:1;min-width:140px;accent-color:var(--accent)">
       <span id="cuped-slider-val" style="font-family:'JetBrains Mono',monospace;font-weight:600;color:var(--accent);min-width:42px">30%</span>
     </div>
+    <button class="chart-dl" onclick="downloadChart('chart-cuped','cuped-variance-reduction')"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></span><span data-i18n="btn_dl_png">PNG</span></button>
     <div class="chart-wrap"><canvas id="chart-cuped"></canvas></div>
   </div>
 
@@ -1845,6 +1871,7 @@ canvas.chart { width: 100% !important; height: 100% !important; display: block; 
       <input type="range" id="peek-slider" min="1" max="30" value="5" step="1" style="flex:1;min-width:140px;accent-color:var(--accent)">
       <span id="peek-slider-val" style="font-family:'JetBrains Mono',monospace;font-weight:600;color:var(--accent);min-width:42px">5</span>
     </div>
+    <button class="chart-dl" onclick="downloadChart('chart-peeking','peeking-false-positives')"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></span><span data-i18n="btn_dl_png">PNG</span></button>
     <div class="chart-wrap"><canvas id="chart-peeking"></canvas></div>
   </div>
 
@@ -1852,6 +1879,7 @@ canvas.chart { width: 100% !important; height: 100% !important; display: block; 
   <div class="chart-card">
     <div class="chart-title" data-i18n="ref_dist_title">A catalog of distribution shapes</div>
     <div class="chart-sub" data-i18n="ref_dist_sub">Real metrics rarely look like a textbook bell curve. Here are the eight shapes you will meet most often — smooth curves for continuous metrics, bars for discrete counts.</div>
+    <button class="chart-dl" onclick="downloadChart('chart-distshapes','distribution-shapes')"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></span><span data-i18n="btn_dl_png">PNG</span></button>
     <div class="chart-wrap" style="height:360px"><canvas id="chart-distshapes"></canvas></div>
   </div>
 
@@ -1893,6 +1921,7 @@ canvas.chart { width: 100% !important; height: 100% !important; display: block; 
       <input type="range" id="clt-slider" min="1" max="100" value="1" step="1" style="flex:1;min-width:140px;accent-color:var(--accent)">
       <span id="clt-slider-val" style="font-family:'JetBrains Mono',monospace;font-weight:600;color:var(--accent);min-width:42px">1</span>
     </div>
+    <button class="chart-dl" onclick="downloadChart('chart-clt','central-limit-theorem')"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></span><span data-i18n="btn_dl_png">PNG</span></button>
     <div class="chart-wrap"><canvas id="chart-clt"></canvas></div>
   </div>
 
@@ -1920,6 +1949,54 @@ canvas.chart { width: 100% !important; height: 100% !important; display: block; 
       <div class="tip-row"><span class="tip-icon">⚠️</span><div><strong data-i18n="cn_do_b">You should check (or switch tests) when:</strong> <span data-i18n="cn_do">your sample is small (under ~100–200 per arm), your metric is extremely skewed or dominated by a few outliers, or your data is clearly bimodal. In those cases the CLT may not have kicked in yet.</span></div></div>
       <div class="tip-row"><span class="tip-icon">🔍</span><div><strong data-i18n="cn_how_b">How to check:</strong> <span data-i18n="cn_how">plot a histogram and look at the shape; compare the mean and median (far apart = skewed); or use a Q–Q plot. Formal tests like Shapiro–Wilk exist but are over-sensitive on large samples, so the eyeball test is usually more useful.</span></div></div>
       <div class="tip-row"><span class="tip-icon">🔧</span><div><strong data-i18n="cn_fix_b">What to do if it's not normal and n is small:</strong> <span data-i18n="cn_fix">use the Mann–Whitney U test (compares ranks, no normality assumption), apply a log transform to tame right-skew, or cap/winsorize extreme outliers. Collecting more data is the simplest fix of all.</span></div></div>
+    </div>
+  </div>
+
+  <!-- Distribution case studies -->
+  <div class="card">
+    <div class="card-title" data-i18n="ref_distcases_title">Case studies: should you check the distribution?</div>
+    <div class="accordion-body" style="padding:0;background:none">
+
+      <div class="case-study">
+        <div class="case-study-tag" data-i18n="dc1_tag">✅ Case 1 · Safe to skip</div>
+        <div class="case-study-title" data-i18n="dc1_title">Checkout conversion rate, 40,000 users per arm</div>
+        <p data-i18n="dc1_p">A team tests a new checkout button. The metric is binary — converted or not — and each arm has 40,000 users. Someone asks whether they need to check normality first.</p>
+        <div class="cs-step"><strong data-i18n="dc1_s1_b">The data:</strong> <span data-i18n="dc1_s1">A proportion (≈3% convert). The raw data is just 0s and 1s — about as far from a bell curve as possible.</span></div>
+        <div class="cs-step"><strong data-i18n="dc1_s2_b">The decision:</strong> <span data-i18n="dc1_s2">No check needed. With tens of thousands of users, the sampling distribution of the proportion is essentially normal by the CLT. The Z-test is valid.</span></div>
+        <div class="cs-takeaway"><strong data-i18n="dc1_t_b">Lesson:</strong> <span data-i18n="dc1_t">For proportions at scale, normality of the raw data is irrelevant — only the sample size matters, and here it is huge.</span></div>
+      </div>
+
+      <div class="case-study" style="margin-top:14px">
+        <div class="case-study-tag" data-i18n="dc2_tag">⚠️ Case 2 · You must check</div>
+        <div class="case-study-title" data-i18n="dc2_title">Revenue per user, 80 users in a B2B pilot</div>
+        <p data-i18n="dc2_p">A B2B company pilots a pricing change with only 80 customers per arm. The metric is revenue per account — and two enterprise deals dwarf everyone else.</p>
+        <div class="cs-step"><strong data-i18n="dc2_s1_b">The data:</strong> <span data-i18n="dc2_s1">Extremely right-skewed with heavy outliers, and the sample is small (n = 80). The CLT has not reliably kicked in for such a skewed metric at this size.</span></div>
+        <div class="cs-step"><strong data-i18n="dc2_s2_b">The decision:</strong> <span data-i18n="dc2_s2">Check the shape. A histogram shows the skew; mean and median are far apart. A plain t-test here is fragile — one more whale could flip the result.</span></div>
+        <div class="cs-takeaway"><strong data-i18n="dc2_t_b">Lesson:</strong> <span data-i18n="dc2_t">Use Mann–Whitney U, or a log transform, or report the median. Small n plus heavy skew is the one combination where you genuinely must look.</span></div>
+      </div>
+
+      <div class="case-study" style="margin-top:14px">
+        <div class="case-study-tag" data-i18n="dc3_tag">🐫 Case 3 · The hidden trap</div>
+        <div class="case-study-title" data-i18n="dc3_title">Session duration that looked fine but wasn't</div>
+        <p data-i18n="dc3_p">A team analysed average session duration with 5,000 users per arm — comfortably large — and trusted the t-test. The result was significant, but the rollout didn't move the needle.</p>
+        <div class="cs-step"><strong data-i18n="dc3_s1_b">What they missed:</strong> <span data-i18n="dc3_s1">The distribution was bimodal — a spike of bounces near 0 seconds and a second hump of engaged users. The "average" sat in an empty valley between the two groups, describing nobody.</span></div>
+        <div class="cs-step"><strong data-i18n="dc3_s2_b">The fix:</strong> <span data-i18n="dc3_s2">Segment first. Splitting bounced vs engaged sessions revealed the change only affected one group. The headline average had hidden it.</span></div>
+        <div class="cs-takeaway"><strong data-i18n="dc3_t_b">Lesson:</strong> <span data-i18n="dc3_t">A large sample protects the <em>test's</em> validity, but not your interpretation. Always eyeball the shape — bimodality is a signal to segment, not to average.</span></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Other applied use cases -->
+  <div class="card">
+    <div class="card-title" data-i18n="ref_usecases_title">Matching the test to the situation</div>
+    <div class="accordion-body" style="padding:0;background:none">
+      <p data-i18n="uc_intro" style="margin-bottom:10px">Beyond normality, the distribution shape often tells you which test or metric to reach for. A few common product situations:</p>
+      <div class="tip-row"><span class="tip-icon">💰</span><div><strong data-i18n="uc1_b">Revenue / order value (right-skewed):</strong> <span data-i18n="uc1">Report the mean for business impact, but pair it with the median and consider CUPED to cut variance. With large n the t-test is fine; with small n switch to Mann–Whitney.</span></div></div>
+      <div class="tip-row"><span class="tip-icon">⏱️</span><div><strong data-i18n="uc2_b">Time-to-event / latency (exponential):</strong> <span data-i18n="uc2">Averages are dominated by the tail. Prefer percentiles (p50, p95) and consider a log transform before testing means.</span></div></div>
+      <div class="tip-row"><span class="tip-icon">🔢</span><div><strong data-i18n="uc3_b">Counts per user (Poisson-like):</strong> <span data-i18n="uc3">Orders per user, errors per session. The mean is meaningful, but variance grows with the mean — Welch's t (unequal variances) is a safe default.</span></div></div>
+      <div class="tip-row"><span class="tip-icon">🐫</span><div><strong data-i18n="uc4_b">Mixed populations (bimodal):</strong> <span data-i18n="uc4">Segment before you test. A single average across two distinct groups is usually misleading, however large the sample.</span></div></div>
+      <div class="tip-row"><span class="tip-icon">✅</span><div><strong data-i18n="uc5_b">Binary outcomes (proportions):</strong> <span data-i18n="uc5">Conversion, click, signup. Use the Z-test; normality of raw data never matters, only that you have enough events (a rule of thumb: at least ~10 conversions in each arm).</span></div></div>
     </div>
   </div>
 
@@ -2204,6 +2281,29 @@ const T = {
     ratio_hint:"Each value = one user's computed ratio (e.g. their AOV or their CTR).",
     ratio_agg_title:'Aggregate to one value per user before pasting.',
     lbl_power:'Power (1 − β)',
+    ref_distcases_title:'Case studies: should you check the distribution?',
+    dc1_tag:'✅ Case 1 · Safe to skip', dc1_title:'Checkout conversion rate, 40,000 users per arm',
+    dc1_p:'A team tests a new checkout button. The metric is binary — converted or not — and each arm has 40,000 users. Someone asks whether they need to check normality first.',
+    dc1_s1_b:'The data:', dc1_s1:'A proportion (≈3% convert). The raw data is just 0s and 1s — about as far from a bell curve as possible.',
+    dc1_s2_b:'The decision:', dc1_s2:'No check needed. With tens of thousands of users, the sampling distribution of the proportion is essentially normal by the CLT. The Z-test is valid.',
+    dc1_t_b:'Lesson:', dc1_t:'For proportions at scale, normality of the raw data is irrelevant — only the sample size matters, and here it is huge.',
+    dc2_tag:'⚠️ Case 2 · You must check', dc2_title:'Revenue per user, 80 users in a B2B pilot',
+    dc2_p:'A B2B company pilots a pricing change with only 80 customers per arm. The metric is revenue per account — and two enterprise deals dwarf everyone else.',
+    dc2_s1_b:'The data:', dc2_s1:'Extremely right-skewed with heavy outliers, and the sample is small (n = 80). The CLT has not reliably kicked in for such a skewed metric at this size.',
+    dc2_s2_b:'The decision:', dc2_s2:'Check the shape. A histogram shows the skew; mean and median are far apart. A plain t-test here is fragile — one more whale could flip the result.',
+    dc2_t_b:'Lesson:', dc2_t:'Use Mann–Whitney U, or a log transform, or report the median. Small n plus heavy skew is the one combination where you genuinely must look.',
+    dc3_tag:'🐫 Case 3 · The hidden trap', dc3_title:'Session duration that looked fine but wasn\'t',
+    dc3_p:'A team analysed average session duration with 5,000 users per arm — comfortably large — and trusted the t-test. The result was significant, but the rollout didn\'t move the needle.',
+    dc3_s1_b:'What they missed:', dc3_s1:'The distribution was bimodal — a spike of bounces near 0 seconds and a second hump of engaged users. The "average" sat in an empty valley between the two groups, describing nobody.',
+    dc3_s2_b:'The fix:', dc3_s2:'Segment first. Splitting bounced vs engaged sessions revealed the change only affected one group. The headline average had hidden it.',
+    dc3_t_b:'Lesson:', dc3_t:'A large sample protects the <em>test\'s</em> validity, but not your interpretation. Always eyeball the shape — bimodality is a signal to segment, not to average.',
+    ref_usecases_title:'Matching the test to the situation',
+    uc_intro:'Beyond normality, the distribution shape often tells you which test or metric to reach for. A few common product situations:',
+    uc1_b:'Revenue / order value (right-skewed):', uc1:'Report the mean for business impact, but pair it with the median and consider CUPED to cut variance. With large n the t-test is fine; with small n switch to Mann–Whitney.',
+    uc2_b:'Time-to-event / latency (exponential):', uc2:'Averages are dominated by the tail. Prefer percentiles (p50, p95) and consider a log transform before testing means.',
+    uc3_b:'Counts per user (Poisson-like):', uc3:'Orders per user, errors per session. The mean is meaningful, but variance grows with the mean — Welch\'s t (unequal variances) is a safe default.',
+    uc4_b:'Mixed populations (bimodal):', uc4:'Segment before you test. A single average across two distinct groups is usually misleading, however large the sample.',
+    uc5_b:'Binary outcomes (proportions):', uc5:'Conversion, click, signup. Use the Z-test; normality of raw data never matters, only that you have enough events (a rule of thumb: at least ~10 conversions in each arm).',
     ref_tests_title:'Tests at a glance', ref_how_title:'How each test works',
     ref_limits_title:'Limitations & how to overcome them',
     ref_abp_title:'How α, β, and power interact',
@@ -2414,7 +2514,7 @@ const T = {
     js_low_data_title:'⚠️ Low data warning',
     ri_control:'Control (A)', ri_variant:'Variant (B)', ri_settings:'Settings',
     ri_users:'users', ri_conv:'conv', ri_mean:'mean', recent_no_inputs:'Parameters not available for this entry',
-    recent_title:'Recent results', recent_clear:'Clear',
+    btn_dl_png:'PNG', recent_title:'Recent results', recent_clear:'Clear',
     recent_just_now:'just now', recent_min:'min ago', recent_hr:'h ago', recent_day:'d ago',
     js_err_fill_variant:'Please fill in all variant data (users and conversions) before analysing.',
     js_err_need_two:'You need at least 2 variants to run a comparison.',
@@ -2487,6 +2587,29 @@ const T = {
     ratio_hint:'Каждое значение = отношение одного пользователя (например, его AOV или CTR).',
     ratio_agg_title:'Сначала агрегируйте данные до одного значения на пользователя.',
     lbl_power:'Мощность (1 − β)',
+    ref_distcases_title:'Кейсы: нужно ли проверять распределение?',
+    dc1_tag:'✅ Кейс 1 · Можно пропустить', dc1_title:'Конверсия оформления, 40 000 пользователей на группу',
+    dc1_p:'Команда тестирует новую кнопку оформления. Метрика бинарная — конвертировал или нет — и в каждой группе 40 000 пользователей. Кто-то спрашивает, нужно ли сначала проверить нормальность.',
+    dc1_s1_b:'Данные:', dc1_s1:'Доля (≈3% конвертируют). Сырые данные — это просто нули и единицы, максимально далеко от колокола.',
+    dc1_s2_b:'Решение:', dc1_s2:'Проверка не нужна. При десятках тысяч пользователей выборочное распределение доли практически нормально по ЦПТ. Z-тест корректен.',
+    dc1_t_b:'Урок:', dc1_t:'Для долей в масштабе нормальность сырых данных не важна — важен только размер выборки, а здесь он огромен.',
+    dc2_tag:'⚠️ Кейс 2 · Проверять обязательно', dc2_title:'Выручка на пользователя, 80 клиентов в B2B-пилоте',
+    dc2_p:'B2B-компания пилотирует изменение цены всего на 80 клиентах в группе. Метрика — выручка на аккаунт, и две корпоративные сделки затмевают всех остальных.',
+    dc2_s1_b:'Данные:', dc2_s1:'Сильно скошены вправо с тяжёлыми выбросами, и выборка мала (n = 80). ЦПТ для такой скошенной метрики при таком размере надёжно не сработала.',
+    dc2_s2_b:'Решение:', dc2_s2:'Проверьте форму. Гистограмма показывает скос; среднее и медиана далеки друг от друга. Обычный t-тест здесь хрупок — ещё один «кит» может перевернуть результат.',
+    dc2_t_b:'Урок:', dc2_t:'Используйте Манна–Уитни, логарифм или отчитывайтесь медианой. Малое n плюс тяжёлый скос — единственная комбинация, когда смотреть действительно обязательно.',
+    dc3_tag:'🐫 Кейс 3 · Скрытая ловушка', dc3_title:'Длительность сессии, которая казалась нормальной',
+    dc3_p:'Команда анализировала среднюю длительность сессии при 5 000 пользователей на группу — вполне много — и доверилась t-тесту. Результат был значим, но раскатка ничего не изменила.',
+    dc3_s1_b:'Что они упустили:', dc3_s1:'Распределение было бимодальным — пик отказов около 0 секунд и второй горб вовлечённых пользователей. «Среднее» оказалось в пустой долине между двумя группами, не описывая никого.',
+    dc3_s2_b:'Исправление:', dc3_s2:'Сначала сегментируйте. Разделение отказов и вовлечённых сессий показало, что изменение затронуло лишь одну группу. Общее среднее это скрыло.',
+    dc3_t_b:'Урок:', dc3_t:'Большая выборка защищает корректность <em>теста</em>, но не вашу интерпретацию. Всегда смотрите на форму — бимодальность это сигнал сегментировать, а не усреднять.',
+    ref_usecases_title:'Подбор теста под ситуацию',
+    uc_intro:'Помимо нормальности, форма распределения часто подсказывает, какой тест или метрику выбрать. Несколько типичных продуктовых ситуаций:',
+    uc1_b:'Выручка / средний чек (скошено вправо):', uc1:'Отчитывайтесь средним для бизнес-эффекта, но добавляйте медиану и рассмотрите CUPED для снижения дисперсии. При большом n t-тест подходит; при малом — Манна–Уитни.',
+    uc2_b:'Время до события / задержка (экспоненциальное):', uc2:'Средние определяются хвостом. Предпочитайте перцентили (p50, p95) и рассмотрите логарифм перед тестом средних.',
+    uc3_b:'Счётчики на пользователя (как Пуассон):', uc3:'Заказы на пользователя, ошибки за сессию. Среднее осмысленно, но дисперсия растёт со средним — Welch t (неравные дисперсии) безопасный выбор по умолчанию.',
+    uc4_b:'Смешанные популяции (бимодальное):', uc4:'Сегментируйте перед тестом. Единое среднее по двум разным группам обычно вводит в заблуждение, какой бы большой ни была выборка.',
+    uc5_b:'Бинарные исходы (доли):', uc5:'Конверсия, клик, регистрация. Используйте Z-тест; нормальность сырых данных не важна, важно лишь достаточно событий (правило: хотя бы ~10 конверсий в каждой группе).',
     ref_tests_title:'Тесты: краткий обзор', ref_how_title:'Как работает каждый тест',
     ref_limits_title:'Ограничения и как их преодолеть',
     ref_abp_title:'Как связаны α, β и мощность',
@@ -2697,7 +2820,7 @@ const T = {
     js_low_data_title:'⚠️ Мало данных',
     ri_control:'Контроль (A)', ri_variant:'Вариант (B)', ri_settings:'Настройки',
     ri_users:'польз.', ri_conv:'конв.', ri_mean:'среднее', recent_no_inputs:'Параметры для этой записи недоступны',
-    recent_title:'Недавние результаты', recent_clear:'Очистить',
+    btn_dl_png:'PNG', recent_title:'Недавние результаты', recent_clear:'Очистить',
     recent_just_now:'только что', recent_min:'мин назад', recent_hr:'ч назад', recent_day:'дн назад',
     js_err_fill_variant:'Заполните данные по всем вариантам (пользователи и конверсии) перед анализом.',
     js_err_need_two:'Для сравнения нужно минимум 2 варианта.',
@@ -3624,6 +3747,36 @@ let RC = {
   BORDER: '#e2e4ef'
 };
 
+// ── Download a chart canvas as a PNG (with solid background + padding) ──
+function downloadChart(canvasId, filename) {
+  const src = document.getElementById(canvasId);
+  if (!src) return;
+  const pad = 24;
+  const out = document.createElement('canvas');
+  out.width = src.width + pad * 2;
+  out.height = src.height + pad * 2;
+  const ctx = out.getContext('2d');
+  // solid background matching the current theme card colour
+  ctx.fillStyle = RC.BG || '#ffffff';
+  ctx.fillRect(0, 0, out.width, out.height);
+  ctx.drawImage(src, pad, pad);
+  // small watermark
+  ctx.fillStyle = RC.MUTED || '#9a9cb8';
+  ctx.font = '12px Inter, sans-serif';
+  ctx.textAlign = 'right';
+  ctx.fillText('A/B Testing Calculator', out.width - pad, out.height - 8);
+  out.toBlob(blob => {
+    if (!blob) return;
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = (filename || 'chart') + '.png';
+    document.body.appendChild(a); a.click();
+    document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }, 'image/png');
+}
+
 // Bar chart with CI whiskers — conversion rates or means
 function drawBarCI(canvasId, labels, values, cis, colors, yLabel) {
   const c = resCanvas(canvasId); if (!c) return;
@@ -4029,11 +4182,28 @@ function drawCharts() {
     const ctx = canvas.getContext('2d');
     ctx.scale(dpr, dpr);
     ctx.clearRect(0, 0, W, H);
+    // Modern rendering defaults: smooth joins/caps for all strokes
+    ctx.lineJoin = 'round';
+    ctx.lineCap = 'round';
     return { ctx, W, H };
   }
 
+  // Vertical gradient from a solid colour (top) fading to transparent (bottom)
+  function vGrad(ctx, hex, topY, botY, topAlpha, botAlpha) {
+    const g = ctx.createLinearGradient(0, topY, 0, botY);
+    const rgb = hexToRgb(hex);
+    g.addColorStop(0, `rgba(${rgb},${topAlpha != null ? topAlpha : 0.32})`);
+    g.addColorStop(1, `rgba(${rgb},${botAlpha != null ? botAlpha : 0.02})`);
+    return g;
+  }
+  function hexToRgb(hex) {
+    const h = hex.replace('#','');
+    const n = parseInt(h.length === 3 ? h.split('').map(c=>c+c).join('') : h, 16);
+    return `${(n>>16)&255},${(n>>8)&255},${n&255}`;
+  }
+
   function labelStyle(ctx) {
-    ctx.font = '11px Inter, system-ui, sans-serif';
+    ctx.font = '600 11px Inter, system-ui, sans-serif';
     ctx.fillStyle = MUTED();
   }
 
@@ -4389,40 +4559,44 @@ function drawCharts() {
     items.forEach((item, i) => {
       const col = i % cols, row = Math.floor(i / cols);
       const ox = col * cellW, oy = row * cellH;
-      const pad = { t: 22, b: 14, l: 12, r: 12 };
+      const pad = { t: 24, b: 14, l: 12, r: 12 };
       const pw = cellW - pad.l - pad.r, ph = cellH - pad.t - pad.b;
       const bx = ox + pad.l, by = oy + pad.t;
       // baseline
       const drawBaseline = () => { ctx.beginPath(); ctx.moveTo(bx, by+ph); ctx.lineTo(bx+pw, by+ph); ctx.strokeStyle = RC.BORDER; ctx.lineWidth = 1; ctx.stroke(); };
       if (item.kind === 'curve') {
-        const N = 60; const ys = []; let maxY = 0;
+        const N = 80; const ys = []; let maxY = 0;
         for (let j=0; j<=N; j++){ const y = Math.max(0, item.f(j/N)); ys.push(y); if (y>maxY) maxY=y; }
         const toX = j => bx + (j/N)*pw;
-        const toY = y => by + ph - (y/maxY)*ph*0.92;
+        const toY = y => by + ph - (y/maxY)*ph*0.90;
+        // gradient fill under the curve
         ctx.beginPath(); ctx.moveTo(toX(0), by+ph);
         ys.forEach((y,j) => ctx.lineTo(toX(j), toY(y)));
         ctx.lineTo(toX(N), by+ph); ctx.closePath();
-        ctx.fillStyle = RC.PL; ctx.fill();
+        ctx.fillStyle = vGrad(ctx, RC.P, by, by+ph, 0.34, 0.03); ctx.fill();
+        // smooth curve line
         ctx.beginPath();
         ys.forEach((y,j) => j===0 ? ctx.moveTo(toX(j), toY(y)) : ctx.lineTo(toX(j), toY(y)));
-        ctx.strokeStyle = RC.P; ctx.lineWidth = 2; ctx.stroke();
+        ctx.strokeStyle = RC.P; ctx.lineWidth = 2.5; ctx.stroke();
         drawBaseline();
       } else {
         const bars = item.bars; const m = bars.length; const maxY = Math.max(...bars);
-        const gap = pw / m * 0.18;
+        const gap = pw / m * 0.16;
         const bw = (pw - gap*(m+1)) / m;
+        const grad = vGrad(ctx, RC.P, by, by+ph, 0.55, 0.12);
         bars.forEach((v,j) => {
           const x = bx + gap + j*(bw+gap);
-          const h = (v/maxY)*ph*0.92;
+          const h = (v/maxY)*ph*0.90;
           const y = by + ph - h;
-          ctx.fillStyle = RC.PL; ctx.strokeStyle = RC.P; ctx.lineWidth = 1.2;
-          ctx.beginPath(); ctx.roundRect(x, y, bw, h, 2); ctx.fill(); ctx.stroke();
+          ctx.fillStyle = grad; ctx.strokeStyle = RC.P; ctx.lineWidth = 1.4;
+          const r = Math.min(3, bw/2);
+          ctx.beginPath(); ctx.roundRect(x, y, bw, h, r); ctx.fill(); ctx.stroke();
         });
         drawBaseline();
       }
       // title
-      ctx.fillStyle = RC.INK; ctx.font = '600 10px Inter, sans-serif'; ctx.textAlign = 'center';
-      ctx.fillText(item.title, ox + cellW/2, oy + 14);
+      ctx.fillStyle = RC.INK; ctx.font = '700 10.5px Inter, sans-serif'; ctx.textAlign = 'center';
+      ctx.fillText(item.title, ox + cellW/2, oy + 15);
     });
   })();
 
@@ -4461,15 +4635,16 @@ function drawCharts() {
     ctx.strokeStyle = RC.GR; ctx.lineWidth = 1.5; ctx.setLineDash([4,4]); ctx.stroke(); ctx.setLineDash([]);
     ctx.fillStyle = RC.GR; ctx.font = '600 10px Inter, sans-serif'; ctx.textAlign = 'center';
     ctx.fillText(T[currentLang].clt_truemean || 'true mean', toX(popMean), pad.t - 6);
-    // fill
+    // fill (gradient)
+    const fillHex = (n===1) ? RC.OR : RC.GR;
     ctx.beginPath(); ctx.moveTo(toX(xLo), pad.t+ch);
     vals.forEach(p => ctx.lineTo(toX(p.x), toY(p.y)));
     ctx.lineTo(toX(xHi), pad.t+ch); ctx.closePath();
-    ctx.fillStyle = (n===1) ? (RC.ORL || RC.PL) : RC.GRL; ctx.fill();
+    ctx.fillStyle = vGrad(ctx, fillHex, pad.t, pad.t+ch, 0.30, 0.03); ctx.fill();
     // line
     ctx.beginPath();
     vals.forEach((p,i) => i===0 ? ctx.moveTo(toX(p.x), toY(p.y)) : ctx.lineTo(toX(p.x), toY(p.y)));
-    ctx.strokeStyle = (n===1) ? RC.OR : RC.GR; ctx.lineWidth = 2; ctx.stroke();
+    ctx.strokeStyle = fillHex; ctx.lineWidth = 2.5; ctx.stroke();
     // baseline
     ctx.beginPath(); ctx.moveTo(pad.l, pad.t+ch); ctx.lineTo(pad.l+cw, pad.t+ch);
     ctx.strokeStyle = RC.MUTED; ctx.lineWidth = 1; ctx.stroke();
