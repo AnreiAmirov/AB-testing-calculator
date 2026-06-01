@@ -553,6 +553,22 @@ main {
 .rev-note { font-size: 0.75rem; color: var(--ink-faint); border-top: 1px solid var(--border); padding-top: 8px; }
 [data-theme="dark"] .revenue-card { background: rgba(91,80,200,0.09); }
 
+/* ── Callout box (used in normality explainer) ── */
+.callout-box {
+  background: var(--success-bg);
+  border-left: 4px solid var(--success);
+  border-radius: var(--radius-sm);
+  padding: 12px 16px;
+  margin: 12px 0;
+}
+.callout-title {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--success);
+  margin-bottom: 4px;
+}
+.callout-box p { font-size: 0.85rem; color: var(--ink-muted); line-height: 1.55; }
+
 /* ── Case study block ── */
 .case-study {
   margin-top: 16px;
@@ -1145,14 +1161,29 @@ main {
 }
 .btn-ghost-sm:hover { background: var(--pill-bg); color: var(--accent); }
 .recent-item {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--card);
+  overflow: hidden;
+}
+.recent-item-summary {
   display: flex;
   align-items: center;
   gap: 10px;
   padding: 10px 12px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  background: var(--card);
+  cursor: pointer;
+  list-style: none;
 }
+.recent-item-summary::-webkit-details-marker { display: none; }
+.recent-item-summary::after {
+  content: '▾';
+  flex-shrink: 0;
+  color: var(--ink-faint);
+  font-size: 0.7rem;
+  transition: transform 0.15s;
+}
+.recent-item[open] .recent-item-summary::after { transform: rotate(180deg); }
+.recent-item-summary:hover { background: var(--pill-bg); }
 .recent-item-dot {
   flex-shrink: 0;
   width: 8px; height: 8px;
@@ -1162,6 +1193,20 @@ main {
 .recent-item-verdict { font-size: 0.84rem; font-weight: 600; color: var(--ink); }
 .recent-item-meta { font-size: 0.72rem; color: var(--ink-muted); margin-top: 1px; }
 .recent-item-time { font-size: 0.7rem; color: var(--ink-faint); flex-shrink: 0; }
+.recent-item-inputs {
+  padding: 4px 12px 12px 30px;
+  border-top: 1px solid var(--border);
+  background: var(--pill-bg);
+}
+.recent-input-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 0.74rem;
+  padding: 4px 0;
+}
+.recent-input-k { color: var(--ink-muted); font-weight: 600; flex-shrink: 0; }
+.recent-input-v { color: var(--ink); text-align: right; font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; }
 
 /* ── Horizontal scroll hint for wide result tables (mobile) ── */
 .scroll-x {
@@ -1803,6 +1848,52 @@ canvas.chart { width: 100% !important; height: 100% !important; display: block; 
     <div class="chart-wrap"><canvas id="chart-peeking"></canvas></div>
   </div>
 
+  <!-- Chart 7: Distribution shapes -->
+  <div class="chart-card">
+    <div class="chart-title" data-i18n="ref_dist_title">Common distribution shapes</div>
+    <div class="chart-sub" data-i18n="ref_dist_sub">Real metrics rarely look like a textbook bell curve. These are the four shapes you will meet most often in product data.</div>
+    <div class="chart-wrap" style="height:300px"><canvas id="chart-distshapes"></canvas></div>
+  </div>
+
+  <!-- Distribution explainer card -->
+  <div class="card">
+    <div class="card-title" data-i18n="ref_disttypes_title">A field guide to distributions</div>
+    <div class="accordion-body" style="padding:0;background:none">
+      <div class="tip-row"><span class="tip-icon">🔔</span><div><strong data-i18n="dt_normal_b">Normal (symmetric).</strong> <span data-i18n="dt_normal">The classic bell curve — values cluster around the mean and tail off evenly on both sides. Heights, measurement errors, and many averages look like this. Most textbook tests assume it.</span></div></div>
+      <div class="tip-row"><span class="tip-icon">📈</span><div><strong data-i18n="dt_skew_b">Right-skewed.</strong> <span data-i18n="dt_skew">A long tail to the right. Revenue, order value, time-on-page, and lifetime value almost always look like this — most users spend a little, a few spend a lot. The mean is dragged above the median.</span></div></div>
+      <div class="tip-row"><span class="tip-icon">🐫</span><div><strong data-i18n="dt_bimodal_b">Bimodal.</strong> <span data-i18n="dt_bimodal">Two peaks, usually meaning two hidden sub-populations mixed together — e.g. free vs paid users, or mobile vs desktop. Often a signal you should segment before analysing.</span></div></div>
+      <div class="tip-row"><span class="tip-icon">🎯</span><div><strong data-i18n="dt_heavy_b">Heavy-tailed.</strong> <span data-i18n="dt_heavy">Mostly normal-looking but with rare extreme outliers far from the centre. A single whale purchase or a bot session can sit way out in the tail and distort the mean and variance.</span></div></div>
+    </div>
+  </div>
+
+  <!-- Chart 8: CLT demo -->
+  <div class="chart-card">
+    <div class="chart-title" data-i18n="ref_clt_title">Why skew usually doesn't break your test: the Central Limit Theorem</div>
+    <div class="chart-sub" data-i18n="ref_clt_sub">Your test cares about the distribution of the average, not the raw data. Even from a very skewed population, the average of a sample becomes bell-shaped as the sample grows. Drag the sample size and watch it happen.</div>
+    <div style="display:flex;align-items:center;gap:12px;margin:8px 0 4px;flex-wrap:wrap">
+      <label style="font-size:0.8rem;color:var(--ink-muted);font-weight:600" data-i18n="ref_clt_slider_label">Sample size (n):</label>
+      <input type="range" id="clt-slider" min="1" max="100" value="1" step="1" style="flex:1;min-width:140px;accent-color:var(--accent)">
+      <span id="clt-slider-val" style="font-family:'JetBrains Mono',monospace;font-weight:600;color:var(--accent);min-width:42px">1</span>
+    </div>
+    <div class="chart-wrap"><canvas id="chart-clt"></canvas></div>
+  </div>
+
+  <!-- When to check normality card -->
+  <div class="card">
+    <div class="card-title" data-i18n="ref_checknorm_title">When should you actually check for normality?</div>
+    <div class="accordion-body" style="padding:0;background:none">
+      <p data-i18n="cn_intro">The most common misconception in A/B testing is that your raw data must be normally distributed. It usually doesn't. The t-test and Z-test assume the <em>sampling distribution of the mean</em> is roughly normal — and thanks to the Central Limit Theorem, that happens automatically once your sample is large enough, no matter how skewed the underlying data is.</p>
+      <div class="callout-box">
+        <div class="callout-title" data-i18n="cn_rule_title">✅ The practical rule</div>
+        <p data-i18n="cn_rule_body" style="margin:0">With more than ~30–50 users per group for a fairly tame metric, or a few hundred for a heavily skewed one like revenue, you do not need to check normality at all. The CLT has you covered.</p>
+      </div>
+      <div class="tip-row"><span class="tip-icon">✔️</span><div><strong data-i18n="cn_skip_b">You can skip the check when:</strong> <span data-i18n="cn_skip">your sample is large (hundreds+ per arm) and your metric is a mean or proportion. This covers the large majority of online experiments.</span></div></div>
+      <div class="tip-row"><span class="tip-icon">⚠️</span><div><strong data-i18n="cn_do_b">You should check (or switch tests) when:</strong> <span data-i18n="cn_do">your sample is small (under ~100–200 per arm), your metric is extremely skewed or dominated by a few outliers, or your data is clearly bimodal. In those cases the CLT may not have kicked in yet.</span></div></div>
+      <div class="tip-row"><span class="tip-icon">🔍</span><div><strong data-i18n="cn_how_b">How to check:</strong> <span data-i18n="cn_how">plot a histogram and look at the shape; compare the mean and median (far apart = skewed); or use a Q–Q plot. Formal tests like Shapiro–Wilk exist but are over-sensitive on large samples, so the eyeball test is usually more useful.</span></div></div>
+      <div class="tip-row"><span class="tip-icon">🔧</span><div><strong data-i18n="cn_fix_b">What to do if it's not normal and n is small:</strong> <span data-i18n="cn_fix">use the Mann–Whitney U test (compares ranks, no normality assumption), apply a log transform to tame right-skew, or cap/winsorize extreme outliers. Collecting more data is the simplest fix of all.</span></div></div>
+    </div>
+  </div>
+
   <div class="card">
     <div class="card-title" data-i18n="ref_tests_title">Tests at a glance</div>
     <div style="overflow-x:auto;-webkit-overflow-scrolling:touch;">
@@ -2124,6 +2215,26 @@ const T = {
     dd_lc_3_b:'3. Run', dd_lc_3:'Launch, check for SRM in the first hours, then leave it alone for at least one full business cycle (usually 1–2 weeks). No peeking.',
     dd_lc_4_b:'4. Analyse', dd_lc_4:'At the planned sample size, run the right test for your metric type, check guardrails, and look at key segments. (That\'s the Analyse tab.)',
     dd_lc_5_b:'5. Decide & document', dd_lc_5:'Ship, iterate, or abandon. Write down the result either way — negative results stop your team from repeating dead ideas.',
+    ref_dist_title:'Common distribution shapes',
+    ref_dist_sub:'Real metrics rarely look like a textbook bell curve. These are the four shapes you will meet most often in product data.',
+    dist_normal:'Normal (symmetric)', dist_skew:'Right-skewed (revenue)', dist_bimodal:'Bimodal (two groups)', dist_heavy:'Heavy-tailed (outliers)',
+    ref_disttypes_title:'A field guide to distributions',
+    dt_normal_b:'Normal (symmetric).', dt_normal:'The classic bell curve — values cluster around the mean and tail off evenly on both sides. Heights, measurement errors, and many averages look like this. Most textbook tests assume it.',
+    dt_skew_b:'Right-skewed.', dt_skew:'A long tail to the right. Revenue, order value, time-on-page, and lifetime value almost always look like this — most users spend a little, a few spend a lot. The mean is dragged above the median.',
+    dt_bimodal_b:'Bimodal.', dt_bimodal:'Two peaks, usually meaning two hidden sub-populations mixed together — e.g. free vs paid users, or mobile vs desktop. Often a signal you should segment before analysing.',
+    dt_heavy_b:'Heavy-tailed.', dt_heavy:'Mostly normal-looking but with rare extreme outliers far from the centre. A single whale purchase or a bot session can sit way out in the tail and distort the mean and variance.',
+    ref_clt_title:'Why skew usually doesn\'t break your test: the Central Limit Theorem',
+    ref_clt_sub:'Your test cares about the distribution of the average, not the raw data. Even from a very skewed population, the average of a sample becomes bell-shaped as the sample grows. Drag the sample size and watch it happen.',
+    ref_clt_slider_label:'Sample size (n):',
+    clt_truemean:'true mean', clt_cap_pop:'n = 1: the raw population (very skewed)', clt_cap_mean:'distribution of the sample mean (n = {n})',
+    ref_checknorm_title:'When should you actually check for normality?',
+    cn_intro:'The most common misconception in A/B testing is that your raw data must be normally distributed. It usually doesn\'t. The t-test and Z-test assume the <em>sampling distribution of the mean</em> is roughly normal — and thanks to the Central Limit Theorem, that happens automatically once your sample is large enough, no matter how skewed the underlying data is.',
+    cn_rule_title:'✅ The practical rule',
+    cn_rule_body:'With more than ~30–50 users per group for a fairly tame metric, or a few hundred for a heavily skewed one like revenue, you do not need to check normality at all. The CLT has you covered.',
+    cn_skip_b:'You can skip the check when:', cn_skip:'your sample is large (hundreds+ per arm) and your metric is a mean or proportion. This covers the large majority of online experiments.',
+    cn_do_b:'You should check (or switch tests) when:', cn_do:'your sample is small (under ~100–200 per arm), your metric is extremely skewed or dominated by a few outliers, or your data is clearly bimodal. In those cases the CLT may not have kicked in yet.',
+    cn_how_b:'How to check:', cn_how:'plot a histogram and look at the shape; compare the mean and median (far apart = skewed); or use a Q–Q plot. Formal tests like Shapiro–Wilk exist but are over-sensitive on large samples, so the eyeball test is usually more useful.',
+    cn_fix_b:'What to do if it\'s not normal and n is small:', cn_fix:'use the Mann–Whitney U test (compares ranks, no normality assumption), apply a log transform to tame right-skew, or cap/winsorize extreme outliers. Collecting more data is the simplest fix of all.',
     ref_glossary_title:'Glossary of key terms',
     gl_pvalue:'The probability of seeing a difference at least this large if there were truly no effect. Small p = the data is surprising under "no effect."',
     gl_alpha:'Your false-positive tolerance — the chance you\'ll call a winner when there\'s no real effect. Usually 5%.',
@@ -2257,6 +2368,8 @@ const T = {
     js_guardrails:'Check guardrails: did revenue, retention, or other key metrics regress?',
     js_segments:'Check segments: is the lift consistent across mobile/desktop, country, plan?',
     js_low_data_title:'⚠️ Low data warning',
+    ri_control:'Control (A)', ri_variant:'Variant (B)', ri_settings:'Settings',
+    ri_users:'users', ri_conv:'conv', ri_mean:'mean', recent_no_inputs:'Parameters not available for this entry',
     recent_title:'Recent results', recent_clear:'Clear',
     recent_just_now:'just now', recent_min:'min ago', recent_hr:'h ago', recent_day:'d ago',
     js_err_fill_variant:'Please fill in all variant data (users and conversions) before analysing.',
@@ -2370,6 +2483,26 @@ const T = {
     dd_lc_3_b:'3. Запуск', dd_lc_3:'Запустите, проверьте SRM в первые часы, затем не трогайте минимум один полный бизнес-цикл (обычно 1–2 недели). Без подглядывания.',
     dd_lc_4_b:'4. Анализ', dd_lc_4:'При запланированном размере выборки запустите нужный тест, проверьте охранные метрики и ключевые сегменты. (Вкладка «Анализ».)',
     dd_lc_5_b:'5. Решение и документация', dd_lc_5:'Внедрить, доработать или отказаться. Записывайте результат в любом случае — отрицательные результаты избавляют команду от повторения мёртвых идей.',
+    ref_dist_title:'Распространённые формы распределений',
+    ref_dist_sub:'Реальные метрики редко выглядят как учебный колокол. Вот четыре формы, которые чаще всего встречаются в продуктовых данных.',
+    dist_normal:'Нормальное (симметричное)', dist_skew:'Скошенное вправо (выручка)', dist_bimodal:'Бимодальное (две группы)', dist_heavy:'Тяжёлые хвосты (выбросы)',
+    ref_disttypes_title:'Путеводитель по распределениям',
+    dt_normal_b:'Нормальное (симметричное).', dt_normal:'Классический колокол — значения группируются вокруг среднего и симметрично убывают в обе стороны. Рост, ошибки измерений и многие средние выглядят так. Большинство учебных тестов предполагают именно его.',
+    dt_skew_b:'Скошенное вправо.', dt_skew:'Длинный хвост справа. Выручка, средний чек, время на странице и LTV почти всегда такие — большинство тратит мало, немногие много. Среднее оказывается выше медианы.',
+    dt_bimodal_b:'Бимодальное.', dt_bimodal:'Два пика, обычно означающих две скрытые подгруппы — например, бесплатные и платные пользователи или мобайл и десктоп. Часто сигнал, что нужно сегментировать перед анализом.',
+    dt_heavy_b:'Тяжёлые хвосты.', dt_heavy:'В целом похоже на нормальное, но с редкими крайними выбросами далеко от центра. Одна крупная покупка или сессия бота может оказаться далеко в хвосте и исказить среднее и дисперсию.',
+    ref_clt_title:'Почему скошенность обычно не ломает тест: центральная предельная теорема',
+    ref_clt_sub:'Тесту важно распределение среднего, а не сырых данных. Даже из очень скошенной популяции среднее по выборке становится колоколообразным по мере роста выборки. Двигайте размер выборки и смотрите.',
+    ref_clt_slider_label:'Размер выборки (n):',
+    clt_truemean:'истинное среднее', clt_cap_pop:'n = 1: сырая популяция (сильно скошена)', clt_cap_mean:'распределение среднего по выборке (n = {n})',
+    ref_checknorm_title:'Когда действительно нужно проверять нормальность?',
+    cn_intro:'Самое частое заблуждение в A/B-тестировании — что сырые данные обязаны быть нормально распределены. Обычно это не так. T-тест и Z-тест предполагают, что примерно нормально <em>выборочное распределение среднего</em> — и благодаря центральной предельной теореме это происходит автоматически при достаточно большой выборке, как бы ни были скошены исходные данные.',
+    cn_rule_title:'✅ Практическое правило',
+    cn_rule_body:'При более чем ~30–50 пользователях на группу для умеренной метрики или нескольких сотнях для сильно скошенной (как выручка) проверять нормальность вообще не нужно. ЦПТ всё покрывает.',
+    cn_skip_b:'Проверку можно пропустить, когда:', cn_skip:'выборка большая (сотни+ на группу) и метрика — среднее или доля. Это покрывает подавляющее большинство онлайн-экспериментов.',
+    cn_do_b:'Проверять (или менять тест) стоит, когда:', cn_do:'выборка мала (менее ~100–200 на группу), метрика крайне скошена или определяется несколькими выбросами, либо данные явно бимодальны. В этих случаях ЦПТ может ещё не сработать.',
+    cn_how_b:'Как проверить:', cn_how:'постройте гистограмму и посмотрите на форму; сравните среднее и медиану (далеко друг от друга = скошенность); или используйте Q–Q график. Формальные тесты вроде Шапиро–Уилка существуют, но слишком чувствительны на больших выборках, поэтому визуальная оценка обычно полезнее.',
+    cn_fix_b:'Что делать, если не нормально и n мало:', cn_fix:'используйте тест Манна–Уитни (сравнивает ранги, без предположения о нормальности), примените логарифм для укрощения правой скошенности или ограничьте/винзоризуйте крайние выбросы. Собрать больше данных — самое простое решение.',
     ref_glossary_title:'Глоссарий ключевых терминов',
     gl_pvalue:'Вероятность увидеть различие хотя бы такого размера, если эффекта на самом деле нет. Малое p = данные удивительны при гипотезе «эффекта нет».',
     gl_alpha:'Ваша терпимость к ложноположительным — шанс объявить победителя, когда реального эффекта нет. Обычно 5%.',
@@ -2503,6 +2636,8 @@ const T = {
     js_guardrails:'Проверьте охранные метрики: не упали ли выручка, удержание или другие ключевые показатели?',
     js_segments:'Проверьте сегменты: одинаков ли прирост на мобильных/десктопе, по странам и тарифам?',
     js_low_data_title:'⚠️ Мало данных',
+    ri_control:'Контроль (A)', ri_variant:'Вариант (B)', ri_settings:'Настройки',
+    ri_users:'польз.', ri_conv:'конв.', ri_mean:'среднее', recent_no_inputs:'Параметры для этой записи недоступны',
     recent_title:'Недавние результаты', recent_clear:'Очистить',
     recent_just_now:'только что', recent_min:'мин назад', recent_hr:'ч назад', recent_day:'дн назад',
     js_err_fill_variant:'Заполните данные по всем вариантам (пользователи и конверсии) перед анализом.',
@@ -2926,15 +3061,25 @@ function renderRecentResults() {
   if (!list.length) { card.style.display = 'none'; return; }
   card.style.display = '';
   const colorFor = (st) => st === 'win' ? RC.GR : st === 'lose' ? RC.RED : RC.MUTED;
-  listEl.innerHTML = list.map(item => `
-    <div class="recent-item">
-      <span class="recent-item-dot" style="background:${colorFor(item.status)}"></span>
-      <div class="recent-item-main">
-        <div class="recent-item-verdict">${item.verdict}</div>
-        <div class="recent-item-meta">${item.type} · ${item.meta}</div>
-      </div>
-      <span class="recent-item-time">${timeAgo(item.ts)}</span>
-    </div>`).join('');
+  listEl.innerHTML = list.map(item => {
+    const inputsHtml = (item.inputs && item.inputs.length)
+      ? `<div class="recent-item-inputs">${item.inputs.map(p =>
+          `<div class="recent-input-row"><span class="recent-input-k">${p.k}</span><span class="recent-input-v">${p.v}</span></div>`
+        ).join('')}</div>`
+      : `<div class="recent-item-inputs"><div class="recent-input-row" style="color:var(--ink-faint)">${T[currentLang].recent_no_inputs}</div></div>`;
+    return `
+    <details class="recent-item">
+      <summary class="recent-item-summary">
+        <span class="recent-item-dot" style="background:${colorFor(item.status)}"></span>
+        <div class="recent-item-main">
+          <div class="recent-item-verdict">${item.verdict}</div>
+          <div class="recent-item-meta">${item.type} · ${item.meta}</div>
+        </div>
+        <span class="recent-item-time">${timeAgo(item.ts)}</span>
+      </summary>
+      ${inputsHtml}
+    </details>`;
+  }).join('');
 }
 
 // ── Analyse conversion ──
@@ -3116,6 +3261,11 @@ function analyseConversion() {
       verdict: verdictText,
       status: sigBetter ? 'win' : sigWorse ? 'lose' : 'neutral',
       meta: `${(B.p*100).toFixed(2)}% vs ${(A.p*100).toFixed(2)}% · ${liftPct>0?'+':''}${liftPct.toFixed(1)}% · p=${pVal.toFixed(3)}`,
+      inputs: [
+        { k: T[currentLang].ri_control, v: `${A.n.toLocaleString()} ${T[currentLang].ri_users}, ${A.c.toLocaleString()} ${T[currentLang].ri_conv} (${(A.p*100).toFixed(2)}%)` },
+        { k: T[currentLang].ri_variant, v: `${B.n.toLocaleString()} ${T[currentLang].ri_users}, ${B.c.toLocaleString()} ${T[currentLang].ri_conv} (${(B.p*100).toFixed(2)}%)` },
+        { k: T[currentLang].ri_settings, v: `α=${alpha}, ${tails===2?T[currentLang].js_two_sided:T[currentLang].js_one_sided}` },
+      ],
     });
 
   } else {
@@ -3348,6 +3498,11 @@ function runWelchT(A, B, alpha, tails, resultBoxId, chartBarId, chartNullId, hea
     verdict: verdictTextW,
     status: sigBetter ? 'win' : sigWorse ? 'lose' : 'neutral',
     meta: `${fmtFn(B.mean)} vs ${fmtFn(A.mean)} · ${liftPct>0?'+':''}${liftPct.toFixed(1)}% · p=${pVal.toFixed(3)}`,
+    inputs: [
+      { k: T[currentLang].ri_control, v: `${T[currentLang].ri_mean} ${fmtFn(A.mean)}, SD ${A.sd.toFixed(2)}, n=${A.n.toLocaleString()}` },
+      { k: T[currentLang].ri_variant, v: `${T[currentLang].ri_mean} ${fmtFn(B.mean)}, SD ${B.sd.toFixed(2)}, n=${B.n.toLocaleString()}` },
+      { k: T[currentLang].ri_settings, v: `α=${alpha}, ${tails===2?T[currentLang].js_two_sided:T[currentLang].js_one_sided}` },
+    ],
   });
 
   setTimeout(() => {
@@ -4154,6 +4309,111 @@ function drawCharts() {
     ctx.fillStyle = RC.MUTED; ctx.font = '600 10px Inter, sans-serif';
     ctx.fillText(T[currentLang].peek_axis || 'Number of times you peek', pad.l + cw/2, H - 3);
   })();
+
+  // ── Chart 7: Common distribution shapes ──
+  (function() {
+    const c = initCanvas('chart-distshapes'); if (!c) return;
+    const { ctx, W, H } = c;
+    // 2x2 grid of mini distributions
+    const cols = 2, rows = 2;
+    const cellW = W / cols, cellH = H / rows;
+    const titles = [
+      T[currentLang].dist_normal || 'Normal (symmetric)',
+      T[currentLang].dist_skew || 'Right-skewed (revenue)',
+      T[currentLang].dist_bimodal || 'Bimodal (two groups)',
+      T[currentLang].dist_heavy || 'Heavy-tailed (outliers)',
+    ];
+    // shape functions over t in [0,1] returning height in [0,1]
+    const shapes = [
+      t => Math.exp(-Math.pow((t-0.5)/0.16, 2) / 2),                       // normal
+      t => { const x=t*4; return (x*x*Math.exp(-x))/0.55; },                // right-skew (gamma-like)
+      t => Math.exp(-Math.pow((t-0.30)/0.12,2)/2) + 0.85*Math.exp(-Math.pow((t-0.72)/0.12,2)/2), // bimodal
+      t => { const c0=Math.exp(-Math.pow((t-0.5)/0.10,2)/2); const tail=0.18/(1+Math.pow((t-0.5)/0.30,2)); return c0+tail; }, // heavy tail
+    ];
+    for (let i = 0; i < 4; i++) {
+      const col = i % cols, row = Math.floor(i / cols);
+      const ox = col * cellW, oy = row * cellH;
+      const pad = { t: 24, b: 22, l: 16, r: 16 };
+      const pw = cellW - pad.l - pad.r, ph = cellH - pad.t - pad.b;
+      const bx = ox + pad.l, by = oy + pad.t;
+      // sample shape
+      const N = 60; const ys = [];
+      let maxY = 0;
+      for (let j = 0; j <= N; j++) { const y = Math.max(0, shapes[i](j/N)); ys.push(y); if (y>maxY) maxY=y; }
+      const toX = j => bx + (j/N)*pw;
+      const toY = y => by + ph - (y/maxY)*ph;
+      // fill
+      ctx.beginPath(); ctx.moveTo(toX(0), by+ph);
+      ys.forEach((y,j) => ctx.lineTo(toX(j), toY(y)));
+      ctx.lineTo(toX(N), by+ph); ctx.closePath();
+      ctx.fillStyle = RC.PL; ctx.fill();
+      // line
+      ctx.beginPath();
+      ys.forEach((y,j) => j===0 ? ctx.moveTo(toX(j), toY(y)) : ctx.lineTo(toX(j), toY(y)));
+      ctx.strokeStyle = RC.P; ctx.lineWidth = 2; ctx.stroke();
+      // baseline
+      ctx.beginPath(); ctx.moveTo(bx, by+ph); ctx.lineTo(bx+pw, by+ph);
+      ctx.strokeStyle = RC.BORDER; ctx.lineWidth = 1; ctx.stroke();
+      // title
+      ctx.fillStyle = RC.INK; ctx.font = '600 11px Inter, sans-serif'; ctx.textAlign = 'center';
+      ctx.fillText(titles[i], ox + cellW/2, oy + 15);
+    }
+  })();
+
+  // ── Chart 8: Central Limit Theorem demo (interactive) ──
+  (function() {
+    const c = initCanvas('chart-clt'); if (!c) return;
+    const { ctx, W, H } = c;
+    const n = parseInt(document.getElementById('clt-slider')?.value) || 1;
+    const pad = { t: 30, b: 40, l: 16, r: 16 };
+    const cw = W - pad.l - pad.r, ch = H - pad.t - pad.b;
+    // Population is strongly right-skewed (exponential-like).
+    // We show the distribution of the SAMPLE MEAN for sample size n.
+    // Mean of exp(1) = 1; sampling dist of mean has mean 1, sd = 1/sqrt(n).
+    // As n grows it becomes tight + normal-shaped (CLT).
+    const popMean = 1;
+    const binN = 70;
+    const sd = 1 / Math.sqrt(n);
+    // For n=1 show the skewed population itself; for n>1 show normal approx of the mean
+    const vals = [];
+    let maxY = 0;
+    const xLo = 0, xHi = 2.6;
+    for (let j = 0; j <= binN; j++) {
+      const x = xLo + (j/binN)*(xHi-xLo);
+      let y;
+      if (n === 1) {
+        y = x >= 0 ? Math.exp(-x) : 0;           // exponential population
+      } else {
+        y = Math.exp(-Math.pow((x-popMean)/sd, 2) / 2); // normal sampling dist of the mean
+      }
+      vals.push({x, y}); if (y>maxY) maxY=y;
+    }
+    const toX = x => pad.l + ((x-xLo)/(xHi-xLo))*cw;
+    const toY = y => pad.t + ch - (y/maxY)*ch;
+    // true-mean reference line
+    ctx.beginPath(); ctx.moveTo(toX(popMean), pad.t); ctx.lineTo(toX(popMean), pad.t+ch);
+    ctx.strokeStyle = RC.GR; ctx.lineWidth = 1.5; ctx.setLineDash([4,4]); ctx.stroke(); ctx.setLineDash([]);
+    ctx.fillStyle = RC.GR; ctx.font = '600 10px Inter, sans-serif'; ctx.textAlign = 'center';
+    ctx.fillText(T[currentLang].clt_truemean || 'true mean', toX(popMean), pad.t - 6);
+    // fill
+    ctx.beginPath(); ctx.moveTo(toX(xLo), pad.t+ch);
+    vals.forEach(p => ctx.lineTo(toX(p.x), toY(p.y)));
+    ctx.lineTo(toX(xHi), pad.t+ch); ctx.closePath();
+    ctx.fillStyle = (n===1) ? (RC.ORL || RC.PL) : RC.GRL; ctx.fill();
+    // line
+    ctx.beginPath();
+    vals.forEach((p,i) => i===0 ? ctx.moveTo(toX(p.x), toY(p.y)) : ctx.lineTo(toX(p.x), toY(p.y)));
+    ctx.strokeStyle = (n===1) ? RC.OR : RC.GR; ctx.lineWidth = 2; ctx.stroke();
+    // baseline
+    ctx.beginPath(); ctx.moveTo(pad.l, pad.t+ch); ctx.lineTo(pad.l+cw, pad.t+ch);
+    ctx.strokeStyle = RC.MUTED; ctx.lineWidth = 1; ctx.stroke();
+    // caption
+    ctx.fillStyle = RC.INK; ctx.font = '600 11px Inter, sans-serif'; ctx.textAlign = 'center';
+    const cap = (n===1)
+      ? (T[currentLang].clt_cap_pop || 'n = 1: the raw population (very skewed)')
+      : (T[currentLang].clt_cap_mean || 'distribution of the sample mean').replace('{n}', n);
+    ctx.fillText(cap, pad.l + cw/2, H - 8);
+  })();
 }
 
 // Draw reference charts on resize
@@ -4176,6 +4436,14 @@ document.addEventListener('DOMContentLoaded', () => {
   if (peekSlider) {
     peekSlider.addEventListener('input', () => {
       if (peekVal) peekVal.textContent = peekSlider.value;
+      if (document.getElementById('tab-reference')?.classList.contains('active')) drawCharts();
+    });
+  }
+  const cltSlider = document.getElementById('clt-slider');
+  const cltVal = document.getElementById('clt-slider-val');
+  if (cltSlider) {
+    cltSlider.addEventListener('input', () => {
+      if (cltVal) cltVal.textContent = cltSlider.value;
       if (document.getElementById('tab-reference')?.classList.contains('active')) drawCharts();
     });
   }
