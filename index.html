@@ -1850,19 +1850,37 @@ canvas.chart { width: 100% !important; height: 100% !important; display: block; 
 
   <!-- Chart 7: Distribution shapes -->
   <div class="chart-card">
-    <div class="chart-title" data-i18n="ref_dist_title">Common distribution shapes</div>
-    <div class="chart-sub" data-i18n="ref_dist_sub">Real metrics rarely look like a textbook bell curve. These are the four shapes you will meet most often in product data.</div>
-    <div class="chart-wrap" style="height:300px"><canvas id="chart-distshapes"></canvas></div>
+    <div class="chart-title" data-i18n="ref_dist_title">A catalog of distribution shapes</div>
+    <div class="chart-sub" data-i18n="ref_dist_sub">Real metrics rarely look like a textbook bell curve. Here are the eight shapes you will meet most often — smooth curves for continuous metrics, bars for discrete counts.</div>
+    <div class="chart-wrap" style="height:360px"><canvas id="chart-distshapes"></canvas></div>
   </div>
 
   <!-- Distribution explainer card -->
   <div class="card">
     <div class="card-title" data-i18n="ref_disttypes_title">A field guide to distributions</div>
     <div class="accordion-body" style="padding:0;background:none">
-      <div class="tip-row"><span class="tip-icon">🔔</span><div><strong data-i18n="dt_normal_b">Normal (symmetric).</strong> <span data-i18n="dt_normal">The classic bell curve — values cluster around the mean and tail off evenly on both sides. Heights, measurement errors, and many averages look like this. Most textbook tests assume it.</span></div></div>
-      <div class="tip-row"><span class="tip-icon">📈</span><div><strong data-i18n="dt_skew_b">Right-skewed.</strong> <span data-i18n="dt_skew">A long tail to the right. Revenue, order value, time-on-page, and lifetime value almost always look like this — most users spend a little, a few spend a lot. The mean is dragged above the median.</span></div></div>
+      <div class="tip-row"><span class="tip-icon">🔔</span><div><strong data-i18n="dt_normal_b">Normal (symmetric).</strong> <span data-i18n="dt_normal">The classic bell curve — values cluster around the mean and tail off evenly on both sides. Heights, measurement errors, and sample averages look like this. Most textbook tests assume it.</span></div></div>
+      <div class="tip-row"><span class="tip-icon">📈</span><div><strong data-i18n="dt_skew_b">Right-skewed (positive skew).</strong> <span data-i18n="dt_skew">A long tail to the right. Revenue, order value, time-on-page, and lifetime value almost always look like this — most users spend a little, a few spend a lot. The mean is dragged above the median.</span></div></div>
+      <div class="tip-row"><span class="tip-icon">📉</span><div><strong data-i18n="dt_leftskew_b">Left-skewed (negative skew).</strong> <span data-i18n="dt_leftskew">A long tail to the left. Rarer in product data, but appears in things like exam scores near a ceiling or days-until-churn for a loyal base — most values are high, a few are very low.</span></div></div>
       <div class="tip-row"><span class="tip-icon">🐫</span><div><strong data-i18n="dt_bimodal_b">Bimodal.</strong> <span data-i18n="dt_bimodal">Two peaks, usually meaning two hidden sub-populations mixed together — e.g. free vs paid users, or mobile vs desktop. Often a signal you should segment before analysing.</span></div></div>
+      <div class="tip-row"><span class="tip-icon">🟰</span><div><strong data-i18n="dt_uniform_b">Uniform.</strong> <span data-i18n="dt_uniform">Every value is equally likely — a flat line. A single fair die is the textbook case. Rare in real metrics, but the building block for simulations and randomisation.</span></div></div>
+      <div class="tip-row"><span class="tip-icon">🎲</span><div><strong data-i18n="dt_triangular_b">Triangular (sum of dice).</strong> <span data-i18n="dt_triangular">The shape in the question above: roll two dice and sum them, and the totals form a triangle peaking at 7. It comes from adding two uniform variables — and hints at the deeper rule that summing things pushes you toward a bell.</span></div></div>
+      <div class="tip-row"><span class="tip-icon">⏳</span><div><strong data-i18n="dt_exponential_b">Exponential.</strong> <span data-i18n="dt_exponential">A steep drop from a peak at zero. Models waiting times — time between purchases, time to first action, session gaps. Memoryless: the past doesn't change the expected wait.</span></div></div>
+      <div class="tip-row"><span class="tip-icon">🔢</span><div><strong data-i18n="dt_poisson_b">Poisson (counts).</strong> <span data-i18n="dt_poisson">For counts of rare events in a fixed window — orders per day, errors per session, support tickets per hour. Discrete, right-leaning, and defined by a single rate parameter.</span></div></div>
       <div class="tip-row"><span class="tip-icon">🎯</span><div><strong data-i18n="dt_heavy_b">Heavy-tailed.</strong> <span data-i18n="dt_heavy">Mostly normal-looking but with rare extreme outliers far from the centre. A single whale purchase or a bot session can sit way out in the tail and distort the mean and variance.</span></div></div>
+    </div>
+  </div>
+
+  <!-- The dice example explained -->
+  <div class="card">
+    <div class="card-title" data-i18n="ref_dice_title">Worked example: why two dice make a triangle</div>
+    <div class="accordion-body" style="padding:0;background:none">
+      <p data-i18n="dice_p1">A single die is <strong>uniform</strong> — each face 1–6 is equally likely. But sum <em>two</em> dice and the result is no longer flat: it peaks at 7 and falls away symmetrically toward 2 and 12. This is a <strong>triangular distribution</strong>.</p>
+      <p data-i18n="dice_p2">The reason is simple counting. There is only one way to roll a 2 (1+1) and one way to roll a 12 (6+6), but six different ways to roll a 7 (1+6, 2+5, 3+4, 4+3, 5+2, 6+1). More combinations means higher probability, so the middle towers over the edges.</p>
+      <div class="callout-box">
+        <div class="callout-title" data-i18n="dice_callout_title">🎯 The deeper lesson</div>
+        <p data-i18n="dice_callout_body" style="margin:0">Adding just two uniform dice already bends a flat distribution toward a peak. Add more dice and it gets smoother and more bell-shaped. This is the Central Limit Theorem in miniature — sums and averages of random things tend toward a normal distribution, whatever the original shape.</p>
+      </div>
     </div>
   </div>
 
@@ -1876,6 +1894,17 @@ canvas.chart { width: 100% !important; height: 100% !important; display: block; 
       <span id="clt-slider-val" style="font-family:'JetBrains Mono',monospace;font-weight:600;color:var(--accent);min-width:42px">1</span>
     </div>
     <div class="chart-wrap"><canvas id="chart-clt"></canvas></div>
+  </div>
+
+  <!-- The theory behind it all -->
+  <div class="card">
+    <div class="card-title" data-i18n="ref_theory_title">The theory that ties it together</div>
+    <div class="accordion-body" style="padding:0;background:none">
+      <div class="tip-row"><span class="tip-icon">🎯</span><div><strong data-i18n="th_clt_b">Central Limit Theorem (CLT).</strong> <span data-i18n="th_clt">The headline result of statistics: if you take many independent samples and average each one, those averages follow a normal distribution — no matter what shape the original data had. This is why tests built on the normal curve work on messy, skewed real-world metrics, as long as the sample is large enough.</span></div></div>
+      <div class="tip-row"><span class="tip-icon">📊</span><div><strong data-i18n="th_lln_b">Law of Large Numbers.</strong> <span data-i18n="th_lln">As your sample grows, its average converges to the true population average. The CLT describes the <em>shape</em> of the estimate's uncertainty; the Law of Large Numbers says that uncertainty shrinks toward zero with more data. Together they justify why bigger experiments are more trustworthy.</span></div></div>
+      <div class="tip-row"><span class="tip-icon">📐</span><div><strong data-i18n="th_se_b">Standard error and √n.</strong> <span data-i18n="th_se">The spread of the sample mean is the standard deviation divided by √n. Quadrupling your sample only halves your uncertainty — which is exactly why detecting tiny effects needs disproportionately large samples.</span></div></div>
+      <div class="tip-row"><span class="tip-icon">🧱</span><div><strong data-i18n="th_build_b">Distributions build on each other.</strong> <span data-i18n="th_build">Sum two uniforms → triangular. Sum many of almost anything → normal. Count rare events → Poisson. Time between those events → exponential. The shapes aren't arbitrary; they arise from how the underlying randomness is generated.</span></div></div>
+    </div>
   </div>
 
   <!-- When to check normality card -->
@@ -2215,14 +2244,29 @@ const T = {
     dd_lc_3_b:'3. Run', dd_lc_3:'Launch, check for SRM in the first hours, then leave it alone for at least one full business cycle (usually 1–2 weeks). No peeking.',
     dd_lc_4_b:'4. Analyse', dd_lc_4:'At the planned sample size, run the right test for your metric type, check guardrails, and look at key segments. (That\'s the Analyse tab.)',
     dd_lc_5_b:'5. Decide & document', dd_lc_5:'Ship, iterate, or abandon. Write down the result either way — negative results stop your team from repeating dead ideas.',
-    ref_dist_title:'Common distribution shapes',
-    ref_dist_sub:'Real metrics rarely look like a textbook bell curve. These are the four shapes you will meet most often in product data.',
-    dist_normal:'Normal (symmetric)', dist_skew:'Right-skewed (revenue)', dist_bimodal:'Bimodal (two groups)', dist_heavy:'Heavy-tailed (outliers)',
+    ref_dist_title:'A catalog of distribution shapes',
+    ref_dist_sub:'Real metrics rarely look like a textbook bell curve. Here are the eight shapes you will meet most often — smooth curves for continuous metrics, bars for discrete counts.',
+    dist_normal:'Normal', dist_skew:'Right-skewed', dist_leftskew:'Left-skewed', dist_bimodal:'Bimodal', dist_uniform:'Uniform', dist_triangular:'Triangular (2 dice)', dist_exponential:'Exponential', dist_poisson:'Poisson (counts)', dist_heavy:'Heavy-tailed (outliers)',
     ref_disttypes_title:'A field guide to distributions',
-    dt_normal_b:'Normal (symmetric).', dt_normal:'The classic bell curve — values cluster around the mean and tail off evenly on both sides. Heights, measurement errors, and many averages look like this. Most textbook tests assume it.',
-    dt_skew_b:'Right-skewed.', dt_skew:'A long tail to the right. Revenue, order value, time-on-page, and lifetime value almost always look like this — most users spend a little, a few spend a lot. The mean is dragged above the median.',
+    dt_normal_b:'Normal (symmetric).', dt_normal:'The classic bell curve — values cluster around the mean and tail off evenly on both sides. Heights, measurement errors, and sample averages look like this. Most textbook tests assume it.',
+    dt_skew_b:'Right-skewed (positive skew).', dt_skew:'A long tail to the right. Revenue, order value, time-on-page, and lifetime value almost always look like this — most users spend a little, a few spend a lot. The mean is dragged above the median.',
+    dt_leftskew_b:'Left-skewed (negative skew).', dt_leftskew:'A long tail to the left. Rarer in product data, but appears in things like exam scores near a ceiling or days-until-churn for a loyal base — most values are high, a few are very low.',
     dt_bimodal_b:'Bimodal.', dt_bimodal:'Two peaks, usually meaning two hidden sub-populations mixed together — e.g. free vs paid users, or mobile vs desktop. Often a signal you should segment before analysing.',
+    dt_uniform_b:'Uniform.', dt_uniform:'Every value is equally likely — a flat line. A single fair die is the textbook case. Rare in real metrics, but the building block for simulations and randomisation.',
+    dt_triangular_b:'Triangular (sum of dice).', dt_triangular:'The shape in the question above: roll two dice and sum them, and the totals form a triangle peaking at 7. It comes from adding two uniform variables — and hints at the deeper rule that summing things pushes you toward a bell.',
+    dt_exponential_b:'Exponential.', dt_exponential:'A steep drop from a peak at zero. Models waiting times — time between purchases, time to first action, session gaps. Memoryless: the past does not change the expected wait.',
+    dt_poisson_b:'Poisson (counts).', dt_poisson:'For counts of rare events in a fixed window — orders per day, errors per session, support tickets per hour. Discrete, right-leaning, and defined by a single rate parameter.',
     dt_heavy_b:'Heavy-tailed.', dt_heavy:'Mostly normal-looking but with rare extreme outliers far from the centre. A single whale purchase or a bot session can sit way out in the tail and distort the mean and variance.',
+    ref_dice_title:'Worked example: why two dice make a triangle',
+    dice_p1:'A single die is <strong>uniform</strong> — each face 1–6 is equally likely. But sum <em>two</em> dice and the result is no longer flat: it peaks at 7 and falls away symmetrically toward 2 and 12. This is a <strong>triangular distribution</strong>.',
+    dice_p2:'The reason is simple counting. There is only one way to roll a 2 (1+1) and one way to roll a 12 (6+6), but six different ways to roll a 7 (1+6, 2+5, 3+4, 4+3, 5+2, 6+1). More combinations means higher probability, so the middle towers over the edges.',
+    dice_callout_title:'🎯 The deeper lesson',
+    dice_callout_body:'Adding just two uniform dice already bends a flat distribution toward a peak. Add more dice and it gets smoother and more bell-shaped. This is the Central Limit Theorem in miniature — sums and averages of random things tend toward a normal distribution, whatever the original shape.',
+    ref_theory_title:'The theory that ties it together',
+    th_clt_b:'Central Limit Theorem (CLT).', th_clt:'The headline result of statistics: if you take many independent samples and average each one, those averages follow a normal distribution — no matter what shape the original data had. This is why tests built on the normal curve work on messy, skewed real-world metrics, as long as the sample is large enough.',
+    th_lln_b:'Law of Large Numbers.', th_lln:'As your sample grows, its average converges to the true population average. The CLT describes the <em>shape</em> of the estimate\'s uncertainty; the Law of Large Numbers says that uncertainty shrinks toward zero with more data. Together they justify why bigger experiments are more trustworthy.',
+    th_se_b:'Standard error and √n.', th_se:'The spread of the sample mean is the standard deviation divided by √n. Quadrupling your sample only halves your uncertainty — which is exactly why detecting tiny effects needs disproportionately large samples.',
+    th_build_b:'Distributions build on each other.', th_build:'Sum two uniforms → triangular. Sum many of almost anything → normal. Count rare events → Poisson. Time between those events → exponential. The shapes are not arbitrary; they arise from how the underlying randomness is generated.',
     ref_clt_title:'Why skew usually doesn\'t break your test: the Central Limit Theorem',
     ref_clt_sub:'Your test cares about the distribution of the average, not the raw data. Even from a very skewed population, the average of a sample becomes bell-shaped as the sample grows. Drag the sample size and watch it happen.',
     ref_clt_slider_label:'Sample size (n):',
@@ -2483,14 +2527,29 @@ const T = {
     dd_lc_3_b:'3. Запуск', dd_lc_3:'Запустите, проверьте SRM в первые часы, затем не трогайте минимум один полный бизнес-цикл (обычно 1–2 недели). Без подглядывания.',
     dd_lc_4_b:'4. Анализ', dd_lc_4:'При запланированном размере выборки запустите нужный тест, проверьте охранные метрики и ключевые сегменты. (Вкладка «Анализ».)',
     dd_lc_5_b:'5. Решение и документация', dd_lc_5:'Внедрить, доработать или отказаться. Записывайте результат в любом случае — отрицательные результаты избавляют команду от повторения мёртвых идей.',
-    ref_dist_title:'Распространённые формы распределений',
-    ref_dist_sub:'Реальные метрики редко выглядят как учебный колокол. Вот четыре формы, которые чаще всего встречаются в продуктовых данных.',
-    dist_normal:'Нормальное (симметричное)', dist_skew:'Скошенное вправо (выручка)', dist_bimodal:'Бимодальное (две группы)', dist_heavy:'Тяжёлые хвосты (выбросы)',
+    ref_dist_title:'Каталог форм распределений',
+    ref_dist_sub:'Реальные метрики редко выглядят как учебный колокол. Вот восемь форм, которые встречаются чаще всего — плавные кривые для непрерывных метрик, столбцы для дискретных счётчиков.',
+    dist_normal:'Нормальное', dist_skew:'Скошенное вправо', dist_leftskew:'Скошенное влево', dist_bimodal:'Бимодальное', dist_uniform:'Равномерное', dist_triangular:'Треугольное (2 кости)', dist_exponential:'Экспоненциальное', dist_poisson:'Пуассона (счётчики)', dist_heavy:'Тяжёлые хвосты (выбросы)',
     ref_disttypes_title:'Путеводитель по распределениям',
-    dt_normal_b:'Нормальное (симметричное).', dt_normal:'Классический колокол — значения группируются вокруг среднего и симметрично убывают в обе стороны. Рост, ошибки измерений и многие средние выглядят так. Большинство учебных тестов предполагают именно его.',
-    dt_skew_b:'Скошенное вправо.', dt_skew:'Длинный хвост справа. Выручка, средний чек, время на странице и LTV почти всегда такие — большинство тратит мало, немногие много. Среднее оказывается выше медианы.',
+    dt_normal_b:'Нормальное (симметричное).', dt_normal:'Классический колокол — значения группируются вокруг среднего и симметрично убывают в обе стороны. Рост, ошибки измерений и выборочные средние выглядят так. Большинство учебных тестов предполагают именно его.',
+    dt_skew_b:'Скошенное вправо (положительная асимметрия).', dt_skew:'Длинный хвост справа. Выручка, средний чек, время на странице и LTV почти всегда такие — большинство тратит мало, немногие много. Среднее оказывается выше медианы.',
+    dt_leftskew_b:'Скошенное влево (отрицательная асимметрия).', dt_leftskew:'Длинный хвост слева. Реже в продуктовых данных, но встречается, например, в оценках экзамена у потолка или днях до оттока у лояльной базы — большинство значений высокие, немногие очень низкие.',
     dt_bimodal_b:'Бимодальное.', dt_bimodal:'Два пика, обычно означающих две скрытые подгруппы — например, бесплатные и платные пользователи или мобайл и десктоп. Часто сигнал, что нужно сегментировать перед анализом.',
+    dt_uniform_b:'Равномерное.', dt_uniform:'Каждое значение равновероятно — плоская линия. Одна честная кость — классический пример. Редко в реальных метриках, но основа для симуляций и рандомизации.',
+    dt_triangular_b:'Треугольное (сумма костей).', dt_triangular:'Форма из вопроса выше: бросьте две кости и сложите — суммы образуют треугольник с пиком на 7. Возникает при сложении двух равномерных величин — и намекает на глубинное правило, что суммирование толкает к колоколу.',
+    dt_exponential_b:'Экспоненциальное.', dt_exponential:'Резкий спад от пика в нуле. Моделирует время ожидания — между покупками, до первого действия, паузы между сессиями. Без памяти: прошлое не меняет ожидаемое время.',
+    dt_poisson_b:'Пуассона (счётчики).', dt_poisson:'Для подсчёта редких событий в фиксированном окне — заказы в день, ошибки за сессию, тикеты в час. Дискретное, с уклоном вправо, задаётся одним параметром интенсивности.',
     dt_heavy_b:'Тяжёлые хвосты.', dt_heavy:'В целом похоже на нормальное, но с редкими крайними выбросами далеко от центра. Одна крупная покупка или сессия бота может оказаться далеко в хвосте и исказить среднее и дисперсию.',
+    ref_dice_title:'Разбор примера: почему две кости дают треугольник',
+    dice_p1:'Одна кость — <strong>равномерная</strong>: каждая грань 1–6 равновероятна. Но сложите <em>две</em> кости — и результат уже не плоский: пик на 7 и симметричный спад к 2 и 12. Это <strong>треугольное распределение</strong>.',
+    dice_p2:'Причина — простой подсчёт. Есть лишь один способ выбросить 2 (1+1) и один способ выбросить 12 (6+6), но шесть способов выбросить 7 (1+6, 2+5, 3+4, 4+3, 5+2, 6+1). Больше комбинаций — выше вероятность, поэтому середина возвышается над краями.',
+    dice_callout_title:'🎯 Более глубокий урок',
+    dice_callout_body:'Сложение всего двух равномерных костей уже изгибает плоское распределение к пику. Добавьте больше костей — и оно станет глаже и ближе к колоколу. Это центральная предельная теорема в миниатюре: суммы и средние случайных величин стремятся к нормальному распределению, какой бы ни была исходная форма.',
+    ref_theory_title:'Теория, которая всё связывает',
+    th_clt_b:'Центральная предельная теорема (ЦПТ).', th_clt:'Главный результат статистики: если взять много независимых выборок и усреднить каждую, эти средние следуют нормальному распределению — независимо от формы исходных данных. Поэтому тесты на основе нормальной кривой работают на шумных скошенных реальных метриках, если выборка достаточно велика.',
+    th_lln_b:'Закон больших чисел.', th_lln:'По мере роста выборки её среднее сходится к истинному среднему популяции. ЦПТ описывает <em>форму</em> неопределённости оценки; закон больших чисел говорит, что эта неопределённость стремится к нулю с ростом данных. Вместе они обосновывают, почему крупные эксперименты надёжнее.',
+    th_se_b:'Стандартная ошибка и √n.', th_se:'Разброс выборочного среднего — это стандартное отклонение, делённое на √n. Увеличение выборки вчетверо уменьшает неопределённость лишь вдвое — именно поэтому обнаружение крошечных эффектов требует непропорционально больших выборок.',
+    th_build_b:'Распределения строятся друг на друге.', th_build:'Сумма двух равномерных → треугольное. Сумма многих почти любых → нормальное. Подсчёт редких событий → Пуассона. Время между ними → экспоненциальное. Формы не произвольны; они вытекают из того, как порождается случайность.',
     ref_clt_title:'Почему скошенность обычно не ломает тест: центральная предельная теорема',
     ref_clt_sub:'Тесту важно распределение среднего, а не сырых данных. Даже из очень скошенной популяции среднее по выборке становится колоколообразным по мере роста выборки. Двигайте размер выборки и смотрите.',
     ref_clt_slider_label:'Размер выборки (n):',
@@ -4310,54 +4369,61 @@ function drawCharts() {
     ctx.fillText(T[currentLang].peek_axis || 'Number of times you peek', pad.l + cw/2, H - 3);
   })();
 
-  // ── Chart 7: Common distribution shapes ──
+  // ── Chart 7: Common distribution shapes (8 in a 4x2 grid) ──
   (function() {
     const c = initCanvas('chart-distshapes'); if (!c) return;
     const { ctx, W, H } = c;
-    // 2x2 grid of mini distributions
-    const cols = 2, rows = 2;
+    const cols = (W < 520) ? 2 : 4;
+    const items = [
+      { title: T[currentLang].dist_normal   || 'Normal',        kind:'curve', f: t => Math.exp(-Math.pow((t-0.5)/0.16,2)/2) },
+      { title: T[currentLang].dist_skew     || 'Right-skewed',  kind:'curve', f: t => { const x=t*4; return (x*x*Math.exp(-x))/0.55; } },
+      { title: T[currentLang].dist_leftskew || 'Left-skewed',   kind:'curve', f: t => { const x=(1-t)*4; return (x*x*Math.exp(-x))/0.55; } },
+      { title: T[currentLang].dist_bimodal  || 'Bimodal',       kind:'curve', f: t => Math.exp(-Math.pow((t-0.30)/0.11,2)/2) + 0.85*Math.exp(-Math.pow((t-0.72)/0.11,2)/2) },
+      { title: T[currentLang].dist_uniform  || 'Uniform',       kind:'bars',  bars:[1,1,1,1,1,1] },
+      { title: T[currentLang].dist_triangular || 'Triangular (2 dice)', kind:'bars', bars:[1,2,3,4,5,6,5,4,3,2,1] },
+      { title: T[currentLang].dist_exponential || 'Exponential',kind:'curve', f: t => Math.exp(-t*3.2) },
+      { title: T[currentLang].dist_poisson  || 'Poisson (counts)', kind:'bars', bars:[2.2,4.2,5,3.8,2.2,1.0,0.4,0.15] },
+    ];
+    const rows = Math.ceil(items.length / cols);
     const cellW = W / cols, cellH = H / rows;
-    const titles = [
-      T[currentLang].dist_normal || 'Normal (symmetric)',
-      T[currentLang].dist_skew || 'Right-skewed (revenue)',
-      T[currentLang].dist_bimodal || 'Bimodal (two groups)',
-      T[currentLang].dist_heavy || 'Heavy-tailed (outliers)',
-    ];
-    // shape functions over t in [0,1] returning height in [0,1]
-    const shapes = [
-      t => Math.exp(-Math.pow((t-0.5)/0.16, 2) / 2),                       // normal
-      t => { const x=t*4; return (x*x*Math.exp(-x))/0.55; },                // right-skew (gamma-like)
-      t => Math.exp(-Math.pow((t-0.30)/0.12,2)/2) + 0.85*Math.exp(-Math.pow((t-0.72)/0.12,2)/2), // bimodal
-      t => { const c0=Math.exp(-Math.pow((t-0.5)/0.10,2)/2); const tail=0.18/(1+Math.pow((t-0.5)/0.30,2)); return c0+tail; }, // heavy tail
-    ];
-    for (let i = 0; i < 4; i++) {
+    items.forEach((item, i) => {
       const col = i % cols, row = Math.floor(i / cols);
       const ox = col * cellW, oy = row * cellH;
-      const pad = { t: 24, b: 22, l: 16, r: 16 };
+      const pad = { t: 22, b: 14, l: 12, r: 12 };
       const pw = cellW - pad.l - pad.r, ph = cellH - pad.t - pad.b;
       const bx = ox + pad.l, by = oy + pad.t;
-      // sample shape
-      const N = 60; const ys = [];
-      let maxY = 0;
-      for (let j = 0; j <= N; j++) { const y = Math.max(0, shapes[i](j/N)); ys.push(y); if (y>maxY) maxY=y; }
-      const toX = j => bx + (j/N)*pw;
-      const toY = y => by + ph - (y/maxY)*ph;
-      // fill
-      ctx.beginPath(); ctx.moveTo(toX(0), by+ph);
-      ys.forEach((y,j) => ctx.lineTo(toX(j), toY(y)));
-      ctx.lineTo(toX(N), by+ph); ctx.closePath();
-      ctx.fillStyle = RC.PL; ctx.fill();
-      // line
-      ctx.beginPath();
-      ys.forEach((y,j) => j===0 ? ctx.moveTo(toX(j), toY(y)) : ctx.lineTo(toX(j), toY(y)));
-      ctx.strokeStyle = RC.P; ctx.lineWidth = 2; ctx.stroke();
       // baseline
-      ctx.beginPath(); ctx.moveTo(bx, by+ph); ctx.lineTo(bx+pw, by+ph);
-      ctx.strokeStyle = RC.BORDER; ctx.lineWidth = 1; ctx.stroke();
+      const drawBaseline = () => { ctx.beginPath(); ctx.moveTo(bx, by+ph); ctx.lineTo(bx+pw, by+ph); ctx.strokeStyle = RC.BORDER; ctx.lineWidth = 1; ctx.stroke(); };
+      if (item.kind === 'curve') {
+        const N = 60; const ys = []; let maxY = 0;
+        for (let j=0; j<=N; j++){ const y = Math.max(0, item.f(j/N)); ys.push(y); if (y>maxY) maxY=y; }
+        const toX = j => bx + (j/N)*pw;
+        const toY = y => by + ph - (y/maxY)*ph*0.92;
+        ctx.beginPath(); ctx.moveTo(toX(0), by+ph);
+        ys.forEach((y,j) => ctx.lineTo(toX(j), toY(y)));
+        ctx.lineTo(toX(N), by+ph); ctx.closePath();
+        ctx.fillStyle = RC.PL; ctx.fill();
+        ctx.beginPath();
+        ys.forEach((y,j) => j===0 ? ctx.moveTo(toX(j), toY(y)) : ctx.lineTo(toX(j), toY(y)));
+        ctx.strokeStyle = RC.P; ctx.lineWidth = 2; ctx.stroke();
+        drawBaseline();
+      } else {
+        const bars = item.bars; const m = bars.length; const maxY = Math.max(...bars);
+        const gap = pw / m * 0.18;
+        const bw = (pw - gap*(m+1)) / m;
+        bars.forEach((v,j) => {
+          const x = bx + gap + j*(bw+gap);
+          const h = (v/maxY)*ph*0.92;
+          const y = by + ph - h;
+          ctx.fillStyle = RC.PL; ctx.strokeStyle = RC.P; ctx.lineWidth = 1.2;
+          ctx.beginPath(); ctx.roundRect(x, y, bw, h, 2); ctx.fill(); ctx.stroke();
+        });
+        drawBaseline();
+      }
       // title
-      ctx.fillStyle = RC.INK; ctx.font = '600 11px Inter, sans-serif'; ctx.textAlign = 'center';
-      ctx.fillText(titles[i], ox + cellW/2, oy + 15);
-    }
+      ctx.fillStyle = RC.INK; ctx.font = '600 10px Inter, sans-serif'; ctx.textAlign = 'center';
+      ctx.fillText(item.title, ox + cellW/2, oy + 14);
+    });
   })();
 
   // ── Chart 8: Central Limit Theorem demo (interactive) ──
