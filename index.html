@@ -611,6 +611,20 @@ main {
   line-height: 1.6;
 }
 .cs-takeaway strong { color: var(--success); }
+.cs-chart-wrap {
+  width: 100%;
+  height: 130px;
+  position: relative;
+  margin: 10px 0 4px;
+  border-radius: var(--radius-sm);
+}
+.cs-chart-wrap canvas {
+  display: block;
+  position: absolute;
+  inset: 0;
+  width: 100% !important;
+  height: 100% !important;
+}
 
 
 /* ── Sticky verdict bar (mobile only) ── */
@@ -1360,10 +1374,12 @@ main {
     gap: 32px;
     align-items: start;
   }
-  .toc-sidebar { position: relative; }
-  .toc-sidebar-inner {
+  /* The grid child itself is the sticky element and must self-align to start
+     so its height equals its content (otherwise it stretches and can't stick). */
+  .toc-sidebar {
     position: sticky;
     top: 24px;
+    align-self: start;
     max-height: calc(100vh - 48px);
     overflow-y: auto;
     background: var(--card);
@@ -1372,6 +1388,7 @@ main {
     padding: 18px 16px;
     box-shadow: var(--shadow-card);
   }
+  .toc-sidebar-inner { padding: 0; }
 }
 
 /* Tablet & mobile: collapsible TOC card at the top */
@@ -2135,6 +2152,7 @@ canvas.chart { width: 100% !important; height: 100% !important; display: block; 
         <div class="case-study-tag" data-i18n="dc1_tag">✅ Case 1 · Safe to skip</div>
         <div class="case-study-title" data-i18n="dc1_title">Checkout conversion rate, 40,000 users per arm</div>
         <p data-i18n="dc1_p">A team tests a new checkout button. The metric is binary — converted or not — and each arm has 40,000 users. Someone asks whether they need to check normality first.</p>
+        <div class="cs-chart-wrap"><canvas id="cs-chart-1"></canvas></div>
         <div class="cs-step"><strong data-i18n="dc1_s1_b">The data:</strong> <span data-i18n="dc1_s1">A proportion (≈3% convert). The raw data is just 0s and 1s — about as far from a bell curve as possible.</span></div>
         <div class="cs-step"><strong data-i18n="dc1_s2_b">The decision:</strong> <span data-i18n="dc1_s2">No check needed. With tens of thousands of users, the sampling distribution of the proportion is essentially normal by the CLT. The Z-test is valid.</span></div>
         <div class="cs-takeaway"><strong data-i18n="dc1_t_b">Lesson:</strong> <span data-i18n="dc1_t">For proportions at scale, normality of the raw data is irrelevant — only the sample size matters, and here it is huge.</span></div>
@@ -2144,6 +2162,7 @@ canvas.chart { width: 100% !important; height: 100% !important; display: block; 
         <div class="case-study-tag" data-i18n="dc2_tag">⚠️ Case 2 · You must check</div>
         <div class="case-study-title" data-i18n="dc2_title">Revenue per user, 80 users in a B2B pilot</div>
         <p data-i18n="dc2_p">A B2B company pilots a pricing change with only 80 customers per arm. The metric is revenue per account — and two enterprise deals dwarf everyone else.</p>
+        <div class="cs-chart-wrap"><canvas id="cs-chart-2"></canvas></div>
         <div class="cs-step"><strong data-i18n="dc2_s1_b">The data:</strong> <span data-i18n="dc2_s1">Extremely right-skewed with heavy outliers, and the sample is small (n = 80). The CLT has not reliably kicked in for such a skewed metric at this size.</span></div>
         <div class="cs-step"><strong data-i18n="dc2_s2_b">The decision:</strong> <span data-i18n="dc2_s2">Check the shape. A histogram shows the skew; mean and median are far apart. A plain t-test here is fragile — one more whale could flip the result.</span></div>
         <div class="cs-takeaway"><strong data-i18n="dc2_t_b">Lesson:</strong> <span data-i18n="dc2_t">Use Mann–Whitney U, or a log transform, or report the median. Small n plus heavy skew is the one combination where you genuinely must look.</span></div>
@@ -2153,6 +2172,7 @@ canvas.chart { width: 100% !important; height: 100% !important; display: block; 
         <div class="case-study-tag" data-i18n="dc3_tag">🐫 Case 3 · The hidden trap</div>
         <div class="case-study-title" data-i18n="dc3_title">Session duration that looked fine but wasn't</div>
         <p data-i18n="dc3_p">A team analysed average session duration with 5,000 users per arm — comfortably large — and trusted the t-test. The result was significant, but the rollout didn't move the needle.</p>
+        <div class="cs-chart-wrap"><canvas id="cs-chart-3"></canvas></div>
         <div class="cs-step"><strong data-i18n="dc3_s1_b">What they missed:</strong> <span data-i18n="dc3_s1">The distribution was bimodal — a spike of bounces near 0 seconds and a second hump of engaged users. The "average" sat in an empty valley between the two groups, describing nobody.</span></div>
         <div class="cs-step"><strong data-i18n="dc3_s2_b">The fix:</strong> <span data-i18n="dc3_s2">Segment first. Splitting bounced vs engaged sessions revealed the change only affected one group. The headline average had hidden it.</span></div>
         <div class="cs-takeaway"><strong data-i18n="dc3_t_b">Lesson:</strong> <span data-i18n="dc3_t">A large sample protects the <em>test's</em> validity, but not your interpretation. Always eyeball the shape — bimodality is a signal to segment, not to average.</span></div>
@@ -3044,7 +3064,13 @@ function applyLang(lang) {
   const dict = T[lang];
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const key = el.getAttribute('data-i18n');
-    if (dict[key] !== undefined) el.textContent = dict[key];
+    const val = dict[key];
+    if (val !== undefined) {
+      // Some translation strings intentionally contain inline markup (<strong>, <em>, <sub>).
+      // These are author-controlled (not user input), so rendering them as HTML is safe.
+      if (/<[a-z][\s\S]*>/i.test(val)) el.innerHTML = val;
+      else el.textContent = val;
+    }
   });
   // Update lang button: always shows the OTHER language as the switch target
   document.getElementById('lang-label').textContent = lang === 'en' ? 'RU' : 'EN';
@@ -3965,6 +3991,93 @@ function downloadChart(canvasId, filename) {
   }, 'image/png');
 }
 
+// ── Case-study mini distribution charts ──
+function drawCaseStudyCharts() {
+  const dpr = window.devicePixelRatio || 1;
+  function csInit(id) {
+    const canvas = document.getElementById(id);
+    if (!canvas) return null;
+    const wrap = canvas.parentElement;
+    const W = wrap.clientWidth, H = wrap.clientHeight;
+    if (!W || !H) return null;
+    canvas.width = W * dpr; canvas.height = H * dpr;
+    const ctx = canvas.getContext('2d');
+    ctx.scale(dpr, dpr);
+    ctx.clearRect(0, 0, W, H);
+    ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+    return { ctx, W, H };
+  }
+  function grad(ctx, hex, topY, botY) {
+    const g = ctx.createLinearGradient(0, topY, 0, botY);
+    const h = hex.replace('#',''); const n = parseInt(h, 16);
+    const rgb = `${(n>>16)&255},${(n>>8)&255},${n&255}`;
+    g.addColorStop(0, `rgba(${rgb},0.34)`);
+    g.addColorStop(1, `rgba(${rgb},0.03)`);
+    return g;
+  }
+  function curve(ctx, W, H, f, hex, opts) {
+    opts = opts || {};
+    const pad = { t: 14, b: 16, l: 12, r: 12 };
+    const pw = W - pad.l - pad.r, ph = H - pad.t - pad.b;
+    const N = 90; const ys = []; let maxY = 0;
+    for (let j=0;j<=N;j++){ const y=Math.max(0,f(j/N)); ys.push(y); if(y>maxY)maxY=y; }
+    const toX = j => pad.l + (j/N)*pw;
+    const toY = y => pad.t + ph - (y/maxY)*ph*0.9;
+    ctx.beginPath(); ctx.moveTo(toX(0), pad.t+ph);
+    ys.forEach((y,j)=>ctx.lineTo(toX(j),toY(y)));
+    ctx.lineTo(toX(N), pad.t+ph); ctx.closePath();
+    ctx.fillStyle = grad(ctx, hex, pad.t, pad.t+ph); ctx.fill();
+    ctx.beginPath();
+    ys.forEach((y,j)=>j===0?ctx.moveTo(toX(j),toY(y)):ctx.lineTo(toX(j),toY(y)));
+    ctx.strokeStyle = hex; ctx.lineWidth = 2.4; ctx.stroke();
+    // baseline
+    ctx.beginPath(); ctx.moveTo(pad.l, pad.t+ph); ctx.lineTo(pad.l+pw, pad.t+ph);
+    ctx.strokeStyle = RC.BORDER; ctx.lineWidth = 1; ctx.stroke();
+    // optional vertical markers at given t positions: [{t, color, label}]
+    (opts.markers || []).forEach(m => {
+      const x = toX(m.t * N);
+      ctx.beginPath(); ctx.moveTo(x, pad.t); ctx.lineTo(x, pad.t+ph);
+      ctx.strokeStyle = m.color; ctx.lineWidth = 1.5; ctx.setLineDash([3,3]); ctx.stroke(); ctx.setLineDash([]);
+      ctx.fillStyle = m.color; ctx.font = '600 9.5px Inter, sans-serif'; ctx.textAlign = 'center';
+      ctx.fillText(m.label, x, pad.t + 9);
+    });
+  }
+  function bars(ctx, W, H, vals, hex) {
+    const pad = { t: 14, b: 16, l: 12, r: 12 };
+    const pw = W - pad.l - pad.r, ph = H - pad.t - pad.b;
+    const m = vals.length; const maxY = Math.max(...vals);
+    const gap = pw/m*0.22; const bw = (pw - gap*(m+1))/m;
+    const g = grad(ctx, hex, pad.t, pad.t+ph);
+    vals.forEach((v,j)=>{
+      const x = pad.l + gap + j*(bw+gap);
+      const h = (v/maxY)*ph*0.9; const y = pad.t+ph-h;
+      ctx.fillStyle = g; ctx.strokeStyle = hex; ctx.lineWidth = 1.3;
+      ctx.beginPath(); ctx.roundRect(x, y, bw, h, Math.min(3,bw/2)); ctx.fill(); ctx.stroke();
+    });
+    ctx.beginPath(); ctx.moveTo(pad.l, pad.t+ph); ctx.lineTo(pad.l+pw, pad.t+ph);
+    ctx.strokeStyle = RC.BORDER; ctx.lineWidth = 1; ctx.stroke();
+  }
+
+  // Case 1: binary proportion — two bars (did not convert vs converted)
+  (function(){ const c = csInit('cs-chart-1'); if(!c) return;
+    bars(c.ctx, c.W, c.H, [97, 3], RC.P);
+    c.ctx.fillStyle = RC.MUTED; c.ctx.font = '600 9.5px Inter, sans-serif'; c.ctx.textAlign='center';
+    const pad=12, pw=c.W-pad*2, bw=(pw-(pw/2*0.22)*3)/2, gap=pw/2*0.22;
+    c.ctx.fillText('0 (no)', pad+gap+bw/2, c.H-4);
+    c.ctx.fillText('1 (yes)', pad+gap*2+bw+bw/2, c.H-4);
+  })();
+  // Case 2: extreme right-skew with a far outlier — mean ≫ median
+  (function(){ const c = csInit('cs-chart-2'); if(!c) return;
+    curve(c.ctx, c.W, c.H, t => { const x=t*5; return (x*Math.exp(-x))/0.37 + 0.04/(1+Math.pow((t-0.86)/0.05,2)); }, RC.OR,
+      { markers: [ {t:0.16, color:RC.GR, label:'median'}, {t:0.40, color:RC.RED, label:'mean'} ] });
+  })();
+  // Case 3: bimodal — two humps with the misleading mean in the empty valley
+  (function(){ const c = csInit('cs-chart-3'); if(!c) return;
+    curve(c.ctx, c.W, c.H, t => Math.exp(-Math.pow((t-0.22)/0.10,2)/2) + 0.9*Math.exp(-Math.pow((t-0.78)/0.10,2)/2), RC.P,
+      { markers: [ {t:0.5, color:RC.RED, label:'mean'} ] });
+  })();
+}
+
 // Bar chart with CI whiskers — conversion rates or means
 function drawBarCI(canvasId, labels, values, cis, colors, yLabel) {
   const c = resCanvas(canvasId); if (!c) return;
@@ -4843,6 +4956,9 @@ function drawCharts() {
       : (T[currentLang].clt_cap_mean || 'distribution of the sample mean').replace('{n}', n);
     ctx.fillText(cap, pad.l + cw/2, H - 8);
   })();
+
+  // Case-study mini charts live in the same Reference tab
+  if (typeof drawCaseStudyCharts === 'function') drawCaseStudyCharts();
 }
 
 // Draw reference charts on resize
