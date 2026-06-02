@@ -456,7 +456,7 @@ main {
   padding: 24px 16px 80px;
 }
 #tab-analyse main { max-width: 1100px; }
-#tab-reference main { max-width: 1100px; }
+#tab-reference main { max-width: 1280px; }
 
 @media (min-width: 1024px) {
   main { padding: 32px 24px 96px; }
@@ -1288,42 +1288,128 @@ main {
   line-height: 1.5;
 }
 
-/* ── Table of contents (Reference) ── */
-.toc-card { border-left: 4px solid var(--accent); }
-.toc-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 18px 24px;
-  margin-top: 12px;
+/* ── Reference sidebar TOC layout ── */
+.ref-layout { display: block; }
+.ref-content { min-width: 0; }
+
+.toc-sidebar-title {
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: var(--ink);
+  margin-bottom: 12px;
+  letter-spacing: -0.01em;
 }
-.toc-group { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
 .toc-group-h {
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: var(--accent);
-  margin-bottom: 6px;
+  margin: 14px 0 4px;
 }
+.toc-group-h:first-of-type { margin-top: 0; }
+.toc-nav { display: flex; flex-direction: column; }
 .toc-link {
+  display: flex;
+  align-items: center;
+  gap: 9px;
   font-size: 0.8rem;
   color: var(--ink-muted);
   text-decoration: none;
-  padding: 4px 0;
-  line-height: 1.35;
-  border-bottom: 1px solid transparent;
-  transition: color 0.15s;
+  padding: 7px 11px;
+  line-height: 1.3;
+  border-radius: 9px;
+  border-left: 2px solid transparent;
+  position: relative;
+  transition: background 0.18s, color 0.18s, border-color 0.18s, transform 0.12s;
 }
-.toc-link:hover { color: var(--accent); }
-/* anchored sections shouldn't hide under sticky chrome when jumped to */
-[id^="sec-"] { scroll-margin-top: 80px; }
+.toc-link .toc-emoji {
+  flex-shrink: 0;
+  font-size: 0.95rem;
+  width: 20px;
+  text-align: center;
+  transition: transform 0.18s;
+  filter: grayscale(0.35);
+  opacity: 0.8;
+}
+.toc-link:hover {
+  background: var(--pill-bg);
+  color: var(--ink);
+  transform: translateX(2px);
+}
+.toc-link:hover .toc-emoji { filter: grayscale(0); opacity: 1; transform: scale(1.12); }
+.toc-link.active {
+  background: var(--pill-bg);
+  background: linear-gradient(90deg, color-mix(in srgb, var(--accent) 14%, transparent), transparent);
+  color: var(--accent);
+  font-weight: 700;
+  border-left-color: var(--accent);
+}
+.toc-link.active .toc-emoji { filter: grayscale(0); opacity: 1; transform: scale(1.12); }
+.toc-mobile-toggle { display: none; }
+.toc-chevron { width: 16px; height: 16px; transition: transform 0.2s; }
 
-@media (max-width: 900px) {
-  .toc-grid { grid-template-columns: repeat(2, 1fr); }
+/* anchored sections shouldn't hide under sticky chrome when jumped to */
+[id^="sec-"] { scroll-margin-top: 24px; }
+
+/* Desktop: two-column with a sticky sidebar that stays in view while scrolling */
+@media (min-width: 1024px) {
+  .ref-layout {
+    display: grid;
+    grid-template-columns: 248px minmax(0, 1fr);
+    gap: 32px;
+    align-items: start;
+  }
+  .toc-sidebar { position: relative; }
+  .toc-sidebar-inner {
+    position: sticky;
+    top: 24px;
+    max-height: calc(100vh - 48px);
+    overflow-y: auto;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 18px 16px;
+    box-shadow: var(--shadow-card);
+  }
 }
-@media (max-width: 560px) {
-  .toc-grid { grid-template-columns: 1fr; gap: 14px; }
-  [id^="sec-"] { scroll-margin-top: 64px; }
+
+/* Tablet & mobile: collapsible TOC card at the top */
+@media (max-width: 1023px) {
+  .toc-sidebar {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--accent);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+    margin-bottom: 16px;
+    overflow: hidden;
+  }
+  .toc-sidebar-inner { padding: 0; }
+  .toc-sidebar-title { display: none; }
+  .toc-mobile-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    background: none;
+    border: none;
+    padding: 16px 18px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--ink);
+    cursor: pointer;
+  }
+  .toc-nav {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.28s ease;
+    padding: 0 12px;
+  }
+  .toc-sidebar.open .toc-nav { max-height: 1200px; padding: 0 12px 14px; }
+  .toc-sidebar.open .toc-chevron { transform: rotate(180deg); }
+  [id^="sec-"] { scroll-margin-top: 16px; }
 }
 
 /* PNG button: shrink to icon-only on mobile so it never overlaps the title */
@@ -1863,41 +1949,47 @@ canvas.chart { width: 100% !important; height: 100% !important; display: block; 
      ══════════════════════════════ -->
 <div id="tab-reference" class="tab-panel">
 <main>
+<div class="ref-layout">
 
-  <!-- Table of contents -->
-  <div class="card toc-card">
-    <div class="card-title" data-i18n="toc_title">On this page</div>
-    <div class="toc-grid">
-      <div class="toc-group">
-        <div class="toc-group-h" data-i18n="toc_g1">Core concepts</div>
-        <a class="toc-link" href="#sec-significance" data-i18n="ref_chart1_title">How statistical significance works</a>
-        <a class="toc-link" href="#sec-errors" data-i18n="ref_chart2_title">Type I &amp; Type II errors</a>
-        <a class="toc-link" href="#sec-samplesize" data-i18n="ref_chart3_title">Sample size vs MDE</a>
-        <a class="toc-link" href="#sec-power" data-i18n="ref_chart4_title">How power grows with sample size</a>
-      </div>
-      <div class="toc-group">
-        <div class="toc-group-h" data-i18n="toc_g2">Advanced techniques</div>
-        <a class="toc-link" href="#sec-cuped" data-i18n="toc_cuped_short">CUPED variance reduction</a>
-        <a class="toc-link" href="#sec-peeking" data-i18n="toc_peeking_short">Why peeking inflates errors</a>
-      </div>
-      <div class="toc-group">
-        <div class="toc-group-h" data-i18n="toc_g3">Distributions &amp; theory</div>
-        <a class="toc-link" href="#sec-distshapes" data-i18n="toc_distshapes_short">Catalog of distribution shapes</a>
-        <a class="toc-link" href="#sec-fieldguide" data-i18n="ref_disttypes_title">A field guide to distributions</a>
-        <a class="toc-link" href="#sec-dice" data-i18n="toc_dice_short">Worked example: two dice</a>
-        <a class="toc-link" href="#sec-clt" data-i18n="toc_clt_short">The Central Limit Theorem</a>
-        <a class="toc-link" href="#sec-theory" data-i18n="ref_theory_title">The theory that ties it together</a>
-      </div>
-      <div class="toc-group">
-        <div class="toc-group-h" data-i18n="toc_g4">Practical guidance</div>
-        <a class="toc-link" href="#sec-checknorm" data-i18n="toc_checknorm_short">When to check for normality</a>
-        <a class="toc-link" href="#sec-distcases" data-i18n="toc_distcases_short">Case studies: checking distributions</a>
-        <a class="toc-link" href="#sec-usecases" data-i18n="toc_usecases_short">Matching the test to the situation</a>
-        <a class="toc-link" href="#sec-tests" data-i18n="ref_tests_title">Tests at a glance</a>
-        <a class="toc-link" href="#sec-how" data-i18n="ref_how_title">How each test works</a>
-      </div>
+  <!-- Fixed sidebar table of contents -->
+  <aside class="toc-sidebar" id="toc-sidebar">
+    <div class="toc-sidebar-inner">
+      <button class="toc-mobile-toggle" id="toc-mobile-toggle" aria-expanded="false">
+        <span data-i18n="toc_title">On this page</span>
+        <svg class="toc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <nav class="toc-nav" id="toc-nav">
+        <div class="toc-sidebar-title" data-i18n="toc_title">On this page</div>
+
+        <div class="toc-group-h" data-i18n="toc_g1">🧠 Core concepts</div>
+        <a class="toc-link" href="#sec-significance"><span class="toc-emoji">📊</span><span data-i18n="ref_chart1_title">How statistical significance works</span></a>
+        <a class="toc-link" href="#sec-errors"><span class="toc-emoji">⚖️</span><span data-i18n="ref_chart2_title">Type I &amp; Type II errors</span></a>
+        <a class="toc-link" href="#sec-samplesize"><span class="toc-emoji">📐</span><span data-i18n="toc_samplesize_short">Sample size vs MDE</span></a>
+        <a class="toc-link" href="#sec-power"><span class="toc-emoji">🔋</span><span data-i18n="ref_chart4_title">How power grows with sample size</span></a>
+
+        <div class="toc-group-h" data-i18n="toc_g2">🚀 Advanced techniques</div>
+        <a class="toc-link" href="#sec-cuped"><span class="toc-emoji">✂️</span><span data-i18n="toc_cuped_short">CUPED variance reduction</span></a>
+        <a class="toc-link" href="#sec-peeking"><span class="toc-emoji">👀</span><span data-i18n="toc_peeking_short">Why peeking inflates errors</span></a>
+
+        <div class="toc-group-h" data-i18n="toc_g3">📈 Distributions &amp; theory</div>
+        <a class="toc-link" href="#sec-distshapes"><span class="toc-emoji">🗂️</span><span data-i18n="toc_distshapes_short">Catalog of distribution shapes</span></a>
+        <a class="toc-link" href="#sec-fieldguide"><span class="toc-emoji">🧭</span><span data-i18n="ref_disttypes_title">A field guide to distributions</span></a>
+        <a class="toc-link" href="#sec-dice"><span class="toc-emoji">🎲</span><span data-i18n="toc_dice_short">Worked example: two dice</span></a>
+        <a class="toc-link" href="#sec-clt"><span class="toc-emoji">🔔</span><span data-i18n="toc_clt_short">The Central Limit Theorem</span></a>
+        <a class="toc-link" href="#sec-theory"><span class="toc-emoji">🧩</span><span data-i18n="ref_theory_title">The theory that ties it together</span></a>
+
+        <div class="toc-group-h" data-i18n="toc_g4">🛠️ Practical guidance</div>
+        <a class="toc-link" href="#sec-checknorm"><span class="toc-emoji">🔍</span><span data-i18n="toc_checknorm_short">When to check for normality</span></a>
+        <a class="toc-link" href="#sec-distcases"><span class="toc-emoji">📘</span><span data-i18n="toc_distcases_short">Case studies: checking distributions</span></a>
+        <a class="toc-link" href="#sec-usecases"><span class="toc-emoji">🎯</span><span data-i18n="toc_usecases_short">Matching the test to the situation</span></a>
+        <a class="toc-link" href="#sec-tests"><span class="toc-emoji">📋</span><span data-i18n="ref_tests_title">Tests at a glance</span></a>
+        <a class="toc-link" href="#sec-how"><span class="toc-emoji">⚙️</span><span data-i18n="ref_how_title">How each test works</span></a>
+      </nav>
     </div>
-  </div>
+  </aside>
+
+  <!-- Scrolling content -->
+  <div class="ref-content">
 
   <!-- Chart 1: Significance / normal distribution -->
   <div class="chart-card" id="sec-significance">
@@ -2297,6 +2389,8 @@ canvas.chart { width: 100% !important; height: 100% !important; display: block; 
     <p style="margin-top:12px;font-size:0.78rem;color:var(--ink-faint)"><span data-i18n="footer_privacy">All calculations run locally in your browser — no data leaves your device.</span></p>
   </div>
 
+  </div><!-- /.ref-content -->
+</div><!-- /.ref-layout -->
 </main>
 </div>
 
@@ -2599,7 +2693,7 @@ const T = {
     toc_title:'On this page',
     toc_g1:'Core concepts', toc_g2:'Advanced techniques', toc_g3:'Distributions & theory', toc_g4:'Practical guidance',
     toc_cuped_short:'CUPED variance reduction', toc_peeking_short:'Why peeking inflates errors',
-    toc_distshapes_short:'Catalog of distribution shapes', toc_dice_short:'Worked example: two dice',
+    toc_samplesize_short:'Sample size vs MDE', toc_distshapes_short:'Catalog of distribution shapes', toc_dice_short:'Worked example: two dice',
     toc_clt_short:'The Central Limit Theorem', toc_checknorm_short:'When to check for normality',
     toc_distcases_short:'Case studies: checking distributions', toc_usecases_short:'Matching the test to the situation',
     btn_dl_png:'PNG', recent_title:'Recent results', recent_clear:'Clear',
@@ -2911,7 +3005,7 @@ const T = {
     toc_title:'На этой странице',
     toc_g1:'Основные понятия', toc_g2:'Продвинутые техники', toc_g3:'Распределения и теория', toc_g4:'Практические советы',
     toc_cuped_short:'Снижение дисперсии CUPED', toc_peeking_short:'Почему подглядывание завышает ошибки',
-    toc_distshapes_short:'Каталог форм распределений', toc_dice_short:'Пример: две кости',
+    toc_samplesize_short:'Размер выборки vs MDE', toc_distshapes_short:'Каталог форм распределений', toc_dice_short:'Пример: две кости',
     toc_clt_short:'Центральная предельная теорема', toc_checknorm_short:'Когда проверять нормальность',
     toc_distcases_short:'Кейсы: проверка распределений', toc_usecases_short:'Подбор теста под ситуацию',
     btn_dl_png:'PNG', recent_title:'Недавние результаты', recent_clear:'Очистить',
@@ -4782,6 +4876,79 @@ document.addEventListener('DOMContentLoaded', () => {
       if (document.getElementById('tab-reference')?.classList.contains('active')) drawCharts();
     });
   }
+});
+
+// ── Table-of-contents: scroll-spy highlighting + mobile toggle ──
+document.addEventListener('DOMContentLoaded', () => {
+  const sidebar = document.getElementById('toc-sidebar');
+  const toggle  = document.getElementById('toc-mobile-toggle');
+  const links   = Array.from(document.querySelectorAll('.toc-nav .toc-link'));
+  if (!links.length) return;
+
+  // Map each section id -> its TOC link
+  const linkFor = {};
+  links.forEach(a => {
+    const id = a.getAttribute('href').slice(1);
+    linkFor[id] = a;
+  });
+  const sections = Object.keys(linkFor)
+    .map(id => document.getElementById(id))
+    .filter(Boolean);
+
+  function setActive(id) {
+    links.forEach(a => a.classList.remove('active'));
+    const a = linkFor[id];
+    if (a) {
+      a.classList.add('active');
+      // keep the active item visible inside a scrollable desktop sidebar
+      if (window.innerWidth >= 1024) {
+        const nav = document.getElementById('toc-nav');
+        if (nav && nav.scrollHeight > nav.clientHeight) {
+          const top = a.offsetTop - nav.clientHeight / 2;
+          nav.scrollTo({ top, behavior: 'smooth' });
+        }
+      }
+    }
+  }
+
+  // IntersectionObserver highlights whichever section is nearest the top
+  let visible = new Map();
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) visible.set(e.target.id, e.intersectionRatio);
+      else visible.delete(e.target.id);
+    });
+    if (visible.size) {
+      // pick the section closest to the top of the viewport
+      let best = null, bestTop = Infinity;
+      visible.forEach((ratio, id) => {
+        const rect = document.getElementById(id).getBoundingClientRect();
+        const dist = Math.abs(rect.top - 90);
+        if (dist < bestTop) { bestTop = dist; best = id; }
+      });
+      if (best) setActive(best);
+    }
+  }, { rootMargin: '-80px 0px -55% 0px', threshold: [0, 0.25, 0.5, 1] });
+
+  sections.forEach(s => observer.observe(s));
+
+  // Mobile collapsible toggle
+  if (toggle && sidebar) {
+    toggle.addEventListener('click', () => {
+      const open = sidebar.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    // tapping a link closes the drawer on mobile
+    links.forEach(a => a.addEventListener('click', () => {
+      if (window.innerWidth < 1024) {
+        sidebar.classList.remove('open');
+        toggle.setAttribute('aria-expanded', 'false');
+      }
+    }));
+  }
+
+  // Highlight the first section initially
+  setActive(sections[0]?.id);
 });
 
 </script>
