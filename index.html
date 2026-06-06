@@ -625,6 +625,106 @@ main {
   width: 100% !important;
   height: 100% !important;
 }
+/* ── Distribution anatomy blocks ── */
+.anat-block { padding: 14px 0; border-top: 1px solid var(--border); }
+.anat-block:first-of-type { border-top: none; padding-top: 4px; }
+.anat-h {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 6px;
+}
+.anat-block p {
+  font-size: 0.85rem;
+  color: var(--ink-muted);
+  line-height: 1.6;
+  margin-top: 8px;
+}
+.anat-block p strong { color: var(--ink); }
+.anat-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin: 8px 0 2px;
+  font-size: 0.76rem;
+  color: var(--ink-muted);
+}
+.anat-legend-item { display: inline-flex; align-items: center; gap: 6px; }
+.anat-legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+
+/* ── Interactive A/B process stepper ── */
+.process-track {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+.process-step {
+  flex: 1 1 0;
+  min-width: 86px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 6px;
+  background: var(--pill-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, transform 0.12s;
+  text-align: center;
+}
+.process-step:hover { transform: translateY(-2px); border-color: var(--accent); }
+.process-step.active { background: var(--accent); border-color: var(--accent); }
+.process-step.active .process-step-num,
+.process-step.active .process-step-label { color: #fff; }
+.process-step.active .process-step-emoji { filter: none; transform: scale(1.1); }
+.process-step-emoji { font-size: 1.3rem; line-height: 1; transition: transform 0.15s; }
+.process-step-num {
+  font-size: 0.62rem; font-weight: 700; letter-spacing: 0.04em;
+  text-transform: uppercase; color: var(--ink-faint);
+}
+.process-step-label { font-size: 0.72rem; font-weight: 600; color: var(--ink-muted); line-height: 1.25; }
+.process-progress {
+  height: 4px; background: var(--border); border-radius: 100px; overflow: hidden; margin-bottom: 16px;
+}
+.process-progress-bar {
+  height: 100%; width: 0%; background: var(--accent);
+  border-radius: 100px; transition: width 0.3s ease;
+}
+.process-panel {
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--accent);
+  border-radius: var(--radius-sm);
+  padding: 16px 18px;
+  background: var(--card);
+}
+.process-panel-title { font-size: 1rem; font-weight: 700; color: var(--ink); margin-bottom: 4px; display: flex; align-items: center; gap: 8px; }
+.process-panel-goal { font-size: 0.78rem; color: var(--accent); font-weight: 600; margin-bottom: 10px; }
+.process-panel-body { font-size: 0.86rem; color: var(--ink-muted); line-height: 1.6; }
+.process-panel-body strong { color: var(--ink); }
+.process-example {
+  margin-top: 12px; padding: 10px 14px;
+  background: var(--pill-bg); border-radius: var(--radius-sm);
+  font-size: 0.82rem; color: var(--ink-muted); line-height: 1.5;
+}
+.process-example strong { color: var(--accent); }
+.process-nav { display: flex; justify-content: space-between; gap: 10px; margin-top: 14px; }
+.process-nav button {
+  flex: 1; padding: 9px 14px; border-radius: var(--radius-pill);
+  border: 1px solid var(--border); background: var(--card);
+  font-family: 'Inter', sans-serif; font-size: 0.8rem; font-weight: 600;
+  color: var(--ink); cursor: pointer; transition: background 0.15s, opacity 0.15s;
+}
+.process-nav button:hover:not(:disabled) { background: var(--pill-bg); }
+.process-nav button.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+.process-nav button:disabled { opacity: 0.4; cursor: default; }
+@media (max-width: 560px) {
+  .process-step { min-width: calc(33.33% - 6px); flex: 0 0 calc(33.33% - 6px); }
+}
 
 
 /* ── Sticky verdict bar (mobile only) ── */
@@ -1991,6 +2091,7 @@ canvas.chart { width: 100% !important; height: 100% !important; display: block; 
         <div class="toc-group-h" data-i18n="toc_g3">📈 Distributions &amp; theory</div>
         <a class="toc-link" href="#sec-distshapes"><span class="toc-emoji">🗂️</span><span data-i18n="toc_distshapes_short">Catalog of distribution shapes</span></a>
         <a class="toc-link" href="#sec-fieldguide"><span class="toc-emoji">🧭</span><span data-i18n="ref_disttypes_title">A field guide to distributions</span></a>
+        <a class="toc-link" href="#sec-anatomy"><span class="toc-emoji">📐</span><span data-i18n="toc_anatomy_short">Anatomy: mean, median, mode &amp; SD</span></a>
         <a class="toc-link" href="#sec-dice"><span class="toc-emoji">🎲</span><span data-i18n="toc_dice_short">Worked example: two dice</span></a>
         <a class="toc-link" href="#sec-clt"><span class="toc-emoji">🔔</span><span data-i18n="toc_clt_short">The Central Limit Theorem</span></a>
         <a class="toc-link" href="#sec-theory"><span class="toc-emoji">🧩</span><span data-i18n="ref_theory_title">The theory that ties it together</span></a>
@@ -2001,6 +2102,10 @@ canvas.chart { width: 100% !important; height: 100% !important; display: block; 
         <a class="toc-link" href="#sec-usecases"><span class="toc-emoji">🎯</span><span data-i18n="toc_usecases_short">Matching the test to the situation</span></a>
         <a class="toc-link" href="#sec-tests"><span class="toc-emoji">📋</span><span data-i18n="ref_tests_title">Tests at a glance</span></a>
         <a class="toc-link" href="#sec-how"><span class="toc-emoji">⚙️</span><span data-i18n="ref_how_title">How each test works</span></a>
+
+        <div class="toc-group-h" data-i18n="toc_g5">🚦 Running an experiment</div>
+        <a class="toc-link" href="#sec-aatest"><span class="toc-emoji">🅰️</span><span data-i18n="toc_aatest_short">Start here: the A/A test</span></a>
+        <a class="toc-link" href="#sec-process"><span class="toc-emoji">🧭</span><span data-i18n="toc_process_short">The full A/B test process</span></a>
       </nav>
     </div>
   </aside>
@@ -2087,6 +2192,50 @@ canvas.chart { width: 100% !important; height: 100% !important; display: block; 
       <div class="tip-row"><span class="tip-icon">⏳</span><div><strong data-i18n="dt_exponential_b">Exponential.</strong> <span data-i18n="dt_exponential">A steep drop from a peak at zero. Models waiting times — time between purchases, time to first action, session gaps. Memoryless: the past doesn't change the expected wait.</span></div></div>
       <div class="tip-row"><span class="tip-icon">🔢</span><div><strong data-i18n="dt_poisson_b">Poisson (counts).</strong> <span data-i18n="dt_poisson">For counts of rare events in a fixed window — orders per day, errors per session, support tickets per hour. Discrete, right-leaning, and defined by a single rate parameter.</span></div></div>
       <div class="tip-row"><span class="tip-icon">🎯</span><div><strong data-i18n="dt_heavy_b">Heavy-tailed.</strong> <span data-i18n="dt_heavy">Mostly normal-looking but with rare extreme outliers far from the centre. A single whale purchase or a bot session can sit way out in the tail and distort the mean and variance.</span></div></div>
+    </div>
+  </div>
+
+  <!-- Anatomy of distributions: mean/median/mode and the SD rule -->
+  <div class="card" id="sec-anatomy">
+    <div class="card-title" data-i18n="ref_anatomy_title">Anatomy of a distribution: mean, median, mode &amp; the spread</div>
+    <div class="chart-sub" style="margin-bottom:16px" data-i18n="ref_anatomy_sub">Three "centres" describe a distribution — the mode (the peak), the median (the middle value), and the mean (the average). Where they sit relative to each other tells you the shape at a glance. The spread is measured in standard deviations (SD).</div>
+
+    <!-- Normal -->
+    <div class="anat-block">
+      <div class="anat-h"><span class="tip-icon">🔔</span><span data-i18n="anat_normal_h">Normal — the 68–95–99.7 rule</span></div>
+      <div class="cs-chart-wrap" style="height:200px"><canvas id="anat-chart-normal"></canvas></div>
+      <p data-i18n="anat_normal_p">In a perfectly symmetric normal distribution, <strong>mean = median = mode</strong> — all three sit dead centre. The spread follows the empirical rule: about <strong>68%</strong> of values fall within ±1 SD of the mean, <strong>95%</strong> within ±2 SD, and <strong>99.7%</strong> within ±3 SD. Only ~0.3% lie beyond ±3 SD, which is why a 3-sigma event is considered rare.</p>
+    </div>
+
+    <!-- Right-skewed -->
+    <div class="anat-block">
+      <div class="anat-h"><span class="tip-icon">📈</span><span data-i18n="anat_right_h">Right-skewed — the mean is pulled toward the tail</span></div>
+      <div class="cs-chart-wrap" style="height:200px"><canvas id="anat-chart-right"></canvas></div>
+      <div class="anat-legend">
+        <span class="anat-legend-item"><span class="anat-legend-dot" style="background:#5b50c8"></span><span data-i18n="anat_mode">mode</span></span>
+        <span class="anat-legend-item"><span class="anat-legend-dot" style="background:#0d9488"></span><span data-i18n="anat_median">median</span></span>
+        <span class="anat-legend-item"><span class="anat-legend-dot" style="background:#dc3232"></span><span data-i18n="anat_mean">mean</span></span>
+      </div>
+      <p data-i18n="anat_right_p">With a long right tail, the order is <strong>mode &lt; median &lt; mean</strong>. The peak (mode) sits on the left where most values cluster; the few large values in the tail drag the mean rightward, past the median. Revenue and order value behave this way — which is why the average revenue per user is almost always higher than what a typical user spends. The spread is asymmetric: values stretch much further above the mean than below it.</p>
+    </div>
+
+    <!-- Left-skewed -->
+    <div class="anat-block">
+      <div class="anat-h"><span class="tip-icon">📉</span><span data-i18n="anat_left_h">Left-skewed — the mirror image</span></div>
+      <div class="cs-chart-wrap" style="height:200px"><canvas id="anat-chart-left"></canvas></div>
+      <div class="anat-legend">
+        <span class="anat-legend-item"><span class="anat-legend-dot" style="background:#5b50c8"></span><span data-i18n="anat_mode">mode</span></span>
+        <span class="anat-legend-item"><span class="anat-legend-dot" style="background:#0d9488"></span><span data-i18n="anat_median">median</span></span>
+        <span class="anat-legend-item"><span class="anat-legend-dot" style="background:#dc3232"></span><span data-i18n="anat_mean">mean</span></span>
+      </div>
+      <p data-i18n="anat_left_p">A long left tail flips the order to <strong>mean &lt; median &lt; mode</strong>. The peak sits on the right where most values bunch up, and a few small values pull the mean leftward. Think of exam scores where most students do well but a handful fail badly, or the age at which a loyal cohort finally churns. Here the typical value (mode) is higher than the average.</p>
+    </div>
+
+    <!-- Binomial -->
+    <div class="anat-block">
+      <div class="anat-h"><span class="tip-icon">🪙</span><span data-i18n="anat_binom_h">Binomial — counting successes</span></div>
+      <div class="cs-chart-wrap" style="height:200px"><canvas id="anat-chart-binom"></canvas></div>
+      <p data-i18n="anat_binom_p">The binomial distribution counts how many successes occur in a fixed number of yes/no trials — e.g. how many of 20 visitors convert. It is <strong>discrete</strong> (bars, not a curve) with mean = <strong>n × p</strong> (trials × probability). When p = 0.5 it is symmetric like a normal; when p is small it leans right. The key fact for A/B testing: as n grows, the binomial is well-approximated by a normal distribution — which is exactly why the Z-test works on conversion rates.</p>
     </div>
   </div>
 
@@ -2409,6 +2558,34 @@ canvas.chart { width: 100% !important; height: 100% !important; display: block; 
     <p style="margin-top:12px;font-size:0.78rem;color:var(--ink-faint)"><span data-i18n="footer_privacy">All calculations run locally in your browser — no data leaves your device.</span></p>
   </div>
 
+  <!-- A/A test -->
+  <div class="card" id="sec-aatest">
+    <div class="card-title" data-i18n="ref_aatest_title">Start here: the A/A test</div>
+    <div class="chart-sub" style="margin-bottom:14px" data-i18n="ref_aatest_sub">Before you trust any A/B result, prove your splitting platform is fair. An A/A test sends two identical experiences to two randomly split groups — and expects to find no difference.</div>
+    <div class="accordion-body" style="padding:0;background:none">
+      <div class="tip-row"><span class="tip-icon">❓</span><div><strong data-i18n="aa_what_b">What it is.</strong> <span data-i18n="aa_what">You run an experiment where A and B are exactly the same. Since nothing differs, any "winner" your tool reports is pure noise. It is the experiment equivalent of weighing an empty scale to check it reads zero.</span></div></div>
+      <div class="tip-row"><span class="tip-icon">🎯</span><div><strong data-i18n="aa_why_b">Why juniors should start here.</strong> <span data-i18n="aa_why">Most splitting bugs are invisible until you look: a broken randomiser, users landing in both groups, bots skewing one side, or logging that double-counts. An A/A test surfaces all of these before a real test misleads you.</span></div></div>
+      <div class="tip-row"><span class="tip-icon">📊</span><div><strong data-i18n="aa_read_b">How to read it.</strong> <span data-i18n="aa_read">Expect a non-significant result (p &gt; 0.05) roughly 95% of the time. A single significant A/A result is not alarming — at α = 0.05, about 1 in 20 will trip by chance. Run several. If significants come up far more often than ~5%, your platform has a problem.</span></div></div>
+      <div class="tip-row"><span class="tip-icon">⚖️</span><div><strong data-i18n="aa_srm_b">Check the split ratio (SRM).</strong> <span data-i18n="aa_srm">If you asked for a 50/50 split, the group sizes should be very close. A large imbalance — a Sample Ratio Mismatch — means assignment is broken, and no result from that platform can be trusted until it is fixed.</span></div></div>
+      <div class="callout-box">
+        <div class="callout-title" data-i18n="aa_tip_title">✅ Practical starting checklist</div>
+        <p data-i18n="aa_tip_body" style="margin:0">1. Run an A/A test on your platform. 2. Confirm the split ratio matches what you configured. 3. Confirm the p-value is non-significant across a few runs. 4. Only then start real A/B tests. You can paste the two A/A group numbers into the Analyse tab and confirm "no clear winner" — exactly what you want to see.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Interactive A/B process walkthrough -->
+  <div class="card" id="sec-process">
+    <div class="card-title" data-i18n="ref_process_title">The full A/B test process — step by step</div>
+    <div class="chart-sub" style="margin-bottom:14px" data-i18n="ref_process_sub">Tap each step to expand it. This is the path from a vague idea to a decision you can defend.</div>
+
+    <div class="process-track" id="process-track">
+      <!-- steps injected by JS -->
+    </div>
+    <div class="process-progress"><div class="process-progress-bar" id="process-progress-bar"></div></div>
+    <div class="process-panel" id="process-panel"></div>
+  </div>
+
   </div><!-- /.ref-content -->
 </div><!-- /.ref-layout -->
 </main>
@@ -2553,6 +2730,19 @@ const T = {
     dt_exponential_b:'Exponential.', dt_exponential:'A steep drop from a peak at zero. Models waiting times — time between purchases, time to first action, session gaps. Memoryless: the past does not change the expected wait.',
     dt_poisson_b:'Poisson (counts).', dt_poisson:'For counts of rare events in a fixed window — orders per day, errors per session, support tickets per hour. Discrete, right-leaning, and defined by a single rate parameter.',
     dt_heavy_b:'Heavy-tailed.', dt_heavy:'Mostly normal-looking but with rare extreme outliers far from the centre. A single whale purchase or a bot session can sit way out in the tail and distort the mean and variance.',
+    toc_anatomy_short:'Anatomy: mean, median, mode & SD',
+    ref_anatomy_title:'Anatomy of a distribution: mean, median, mode & the spread',
+    ref_anatomy_sub:'Three "centres" describe a distribution — the mode (the peak), the median (the middle value), and the mean (the average). Where they sit relative to each other tells you the shape at a glance. The spread is measured in standard deviations (SD).',
+    anat_normal_h:'Normal — the 68–95–99.7 rule',
+    anat_normal_p:'In a perfectly symmetric normal distribution, <strong>mean = median = mode</strong> — all three sit dead centre. The spread follows the empirical rule: about <strong>68%</strong> of values fall within ±1 SD of the mean, <strong>95%</strong> within ±2 SD, and <strong>99.7%</strong> within ±3 SD. Only ~0.3% lie beyond ±3 SD, which is why a 3-sigma event is considered rare.',
+    anat_right_h:'Right-skewed — the mean is pulled toward the tail',
+    anat_right_p:'With a long right tail, the order is <strong>mode &lt; median &lt; mean</strong>. The peak (mode) sits on the left where most values cluster; the few large values in the tail drag the mean rightward, past the median. Revenue and order value behave this way — which is why the average revenue per user is almost always higher than what a typical user spends. The spread is asymmetric: values stretch much further above the mean than below it.',
+    anat_left_h:'Left-skewed — the mirror image',
+    anat_left_p:'A long left tail flips the order to <strong>mean &lt; median &lt; mode</strong>. The peak sits on the right where most values bunch up, and a few small values pull the mean leftward. Think of exam scores where most students do well but a handful fail badly, or the age at which a loyal cohort finally churns. Here the typical value (mode) is higher than the average.',
+    anat_binom_h:'Binomial — counting successes',
+    anat_binom_p:'The binomial distribution counts how many successes occur in a fixed number of yes/no trials — e.g. how many of 20 visitors convert. It is <strong>discrete</strong> (bars, not a curve) with mean = <strong>n × p</strong> (trials × probability). When p = 0.5 it is symmetric like a normal; when p is small it leans right. The key fact for A/B testing: as n grows, the binomial is well-approximated by a normal distribution — which is exactly why the Z-test works on conversion rates.',
+    anat_mmm:'mean = median = mode', anat_mode:'mode', anat_median:'median', anat_mean:'mean',
+    anat_binom_mean:'mean = n·p = 6', anat_binom_x:'number of successes (k)',
     ref_dice_title:'Worked example: why two dice make a triangle',
     dice_p1:'A single die is <strong>uniform</strong> — each face 1–6 is equally likely. But sum <em>two</em> dice and the result is no longer flat: it peaks at 7 and falls away symmetrically toward 2 and 12. This is a <strong>triangular distribution</strong>.',
     dice_p2:'The reason is simple counting. There is only one way to roll a 2 (1+1) and one way to roll a 12 (6+6), but six different ways to roll a 7 (1+6, 2+5, 3+4, 4+3, 5+2, 6+1). More combinations means higher probability, so the middle towers over the edges.',
@@ -2622,6 +2812,39 @@ const T = {
     js_rev_optimistic:'Optimistic',
     js_rev_note:'+{lift}pp lift × {visitors} visitors/mo × ${aov} AOV × 12 months. Based on 95% CI of the lift.',
     btn_share:'Share', share_copied:'✓ Link copied!',
+    toc_g5:'🚦 Running an experiment', toc_aatest_short:'Start here: the A/A test', toc_process_short:'The full A/B test process',
+    ref_aatest_title:'Start here: the A/A test',
+    ref_aatest_sub:'Before you trust any A/B result, prove your splitting platform is fair. An A/A test sends two identical experiences to two randomly split groups — and expects to find no difference.',
+    aa_what_b:'What it is.', aa_what:'You run an experiment where A and B are exactly the same. Since nothing differs, any "winner" your tool reports is pure noise. It is the experiment equivalent of weighing an empty scale to check it reads zero.',
+    aa_why_b:'Why juniors should start here.', aa_why:'Most splitting bugs are invisible until you look: a broken randomiser, users landing in both groups, bots skewing one side, or logging that double-counts. An A/A test surfaces all of these before a real test misleads you.',
+    aa_read_b:'How to read it.', aa_read:'Expect a non-significant result (p &gt; 0.05) roughly 95% of the time. A single significant A/A result is not alarming — at α = 0.05, about 1 in 20 will trip by chance. Run several. If significants come up far more often than ~5%, your platform has a problem.',
+    aa_srm_b:'Check the split ratio (SRM).', aa_srm:'If you asked for a 50/50 split, the group sizes should be very close. A large imbalance — a Sample Ratio Mismatch — means assignment is broken, and no result from that platform can be trusted until it is fixed.',
+    aa_tip_title:'✅ Practical starting checklist',
+    aa_tip_body:'1. Run an A/A test on your platform. 2. Confirm the split ratio matches what you configured. 3. Confirm the p-value is non-significant across a few runs. 4. Only then start real A/B tests. You can paste the two A/A group numbers into the Analyse tab and confirm "no clear winner" — exactly what you want to see.',
+    ref_process_title:'The full A/B test process — step by step',
+    ref_process_sub:'Tap each step to expand it. This is the path from a vague idea to a decision you can defend.',
+    proc_step:'Step', proc_goal:'Goal', proc_example:'Example', proc_prev:'Back', proc_next:'Next',
+    proc_hypo_t:'Form a hypothesis', proc_hypo_g:'Turn a hunch into a testable, falsifiable statement',
+    proc_hypo_b:'A good hypothesis names the <strong>change</strong>, the <strong>expected effect</strong>, the <strong>metric</strong>, and a <strong>reason</strong>. "Because X, changing Y will move metric Z." Without this you cannot tell success from a story told after the fact.',
+    proc_hypo_e:'Because the checkout button is easy to miss, making it larger and high-contrast will increase checkout conversion, because more users will notice it.',
+    proc_metric_t:'Choose the metric', proc_metric_g:'Pick one primary metric, plus guardrails',
+    proc_metric_b:'Decide your <strong>primary metric</strong> in advance (the one the decision rests on) and a few <strong>guardrail metrics</strong> that must not get worse. Choosing the metric after seeing data is how teams fool themselves.',
+    proc_metric_e:'Primary: checkout conversion rate. Guardrails: average order value and refund rate (a bigger button should not attract accidental low-quality orders).',
+    proc_size_t:'Plan the sample size', proc_size_g:'Decide how many users and for how long, before starting',
+    proc_size_b:'Use the <strong>Plan tab</strong> to compute the sample size for your minimum detectable effect, α, and power. This fixes your stopping point in advance — the single most important defence against peeking and false positives.',
+    proc_size_e:'To detect a 5% relative lift at α = 0.05 and 80% power, the calculator says you need ~30,000 users per arm — about two weeks at your traffic.',
+    proc_aacheck_t:'Validate with an A/A test', proc_aacheck_g:'Prove the platform splits fairly before trusting it',
+    proc_aacheck_b:'Run an <strong>A/A test</strong> (two identical groups). Confirm the split ratio matches what you set and that results are non-significant across a few runs. This catches randomiser bugs and tracking errors before they corrupt a real test.',
+    proc_aacheck_e:'You split 50/50 and get 19,980 vs 20,020 users with p = 0.62 — balanced and non-significant. The platform is trustworthy.',
+    proc_run_t:'Run the experiment', proc_run_g:'Collect data to the planned size without peeking',
+    proc_run_b:'Launch both variants simultaneously to randomly assigned users and <strong>wait</strong>. Do not stop early because it "looks significant" — that inflates false positives. Run full business cycles (include weekends) to avoid day-of-week bias.',
+    proc_run_e:'You run for the full two weeks even though day 3 looked promising — because stopping at the first good-looking moment is how noise gets mistaken for signal.',
+    proc_analyse_t:'Analyse the results', proc_analyse_g:'Apply the right test and read it honestly',
+    proc_analyse_b:'Paste your numbers into the <strong>Analyse tab</strong>. Use the Z-test for conversion, Welch\'s t for continuous metrics. Look at the confidence interval, not just the p-value — it tells you the plausible range of the true effect.',
+    proc_analyse_e:'Variant B converts 3.4% vs 3.0%, a +13% relative lift, p = 0.01, CI [+4%, +22%]. Significant — and the whole interval is positive.',
+    proc_decide_t:'Decide & interpret', proc_decide_g:'Translate statistics into a business decision',
+    proc_decide_b:'A significant result is not automatically a <strong>ship</strong>. Weigh the effect size against implementation cost, check the guardrails held, and consider whether the lift is practically meaningful. A tiny but significant gain may not be worth the engineering.',
+    proc_decide_e:'The +13% lift is significant and guardrails held, so you ship B — and document the result so the next person does not re-run the same test.',
     footer_privacy:'All calculations run locally in your browser — no data leaves your device.',
     // Accordion body — shared bold labels
     ab_formula:'Formula:',ab_assumptions:'Assumptions:',ab_examples:'Examples:',
@@ -2865,6 +3088,19 @@ const T = {
     dt_exponential_b:'Экспоненциальное.', dt_exponential:'Резкий спад от пика в нуле. Моделирует время ожидания — между покупками, до первого действия, паузы между сессиями. Без памяти: прошлое не меняет ожидаемое время.',
     dt_poisson_b:'Пуассона (счётчики).', dt_poisson:'Для подсчёта редких событий в фиксированном окне — заказы в день, ошибки за сессию, тикеты в час. Дискретное, с уклоном вправо, задаётся одним параметром интенсивности.',
     dt_heavy_b:'Тяжёлые хвосты.', dt_heavy:'В целом похоже на нормальное, но с редкими крайними выбросами далеко от центра. Одна крупная покупка или сессия бота может оказаться далеко в хвосте и исказить среднее и дисперсию.',
+    toc_anatomy_short:'Анатомия: среднее, медиана, мода и SD',
+    ref_anatomy_title:'Анатомия распределения: среднее, медиана, мода и разброс',
+    ref_anatomy_sub:'Распределение описывают три «центра» — мода (пик), медиана (срединное значение) и среднее. Их взаимное расположение сразу выдаёт форму. Разброс измеряется в стандартных отклонениях (SD).',
+    anat_normal_h:'Нормальное — правило 68–95–99,7',
+    anat_normal_p:'В идеально симметричном нормальном распределении <strong>среднее = медиана = мода</strong> — все три в центре. Разброс подчиняется эмпирическому правилу: около <strong>68%</strong> значений попадают в ±1 SD от среднего, <strong>95%</strong> — в ±2 SD, и <strong>99,7%</strong> — в ±3 SD. Лишь ~0,3% лежат за пределами ±3 SD — поэтому событие в три сигмы считается редким.',
+    anat_right_h:'Скошенное вправо — среднее тянется к хвосту',
+    anat_right_p:'При длинном правом хвосте порядок такой: <strong>мода &lt; медиана &lt; среднее</strong>. Пик (мода) слева, где сгруппировано большинство значений; немногие большие значения в хвосте тянут среднее вправо, за медиану. Так ведут себя выручка и средний чек — поэтому средняя выручка на пользователя почти всегда выше, чем тратит типичный пользователь. Разброс асимметричен: значения уходят гораздо дальше вверх от среднего, чем вниз.',
+    anat_left_h:'Скошенное влево — зеркальное отражение',
+    anat_left_p:'Длинный левый хвост переворачивает порядок: <strong>среднее &lt; медиана &lt; мода</strong>. Пик справа, где скучивается большинство значений, а немногие малые значения тянут среднее влево. Представьте оценки экзамена, где большинство справляется хорошо, но несколько проваливаются, или возраст, в котором лояльная когорта наконец уходит. Здесь типичное значение (мода) выше среднего.',
+    anat_binom_h:'Биномиальное — подсчёт успехов',
+    anat_binom_p:'Биномиальное распределение считает число успехов в фиксированном количестве испытаний «да/нет» — например, сколько из 20 посетителей конвертируются. Оно <strong>дискретное</strong> (столбцы, а не кривая) со средним = <strong>n × p</strong> (испытания × вероятность). При p = 0,5 оно симметрично, как нормальное; при малом p — с уклоном вправо. Ключевой факт для A/B-тестов: с ростом n биномиальное хорошо приближается нормальным — именно поэтому Z-тест работает на конверсиях.',
+    anat_mmm:'среднее = медиана = мода', anat_mode:'мода', anat_median:'медиана', anat_mean:'среднее',
+    anat_binom_mean:'среднее = n·p = 6', anat_binom_x:'число успехов (k)',
     ref_dice_title:'Разбор примера: почему две кости дают треугольник',
     dice_p1:'Одна кость — <strong>равномерная</strong>: каждая грань 1–6 равновероятна. Но сложите <em>две</em> кости — и результат уже не плоский: пик на 7 и симметричный спад к 2 и 12. Это <strong>треугольное распределение</strong>.',
     dice_p2:'Причина — простой подсчёт. Есть лишь один способ выбросить 2 (1+1) и один способ выбросить 12 (6+6), но шесть способов выбросить 7 (1+6, 2+5, 3+4, 4+3, 5+2, 6+1). Больше комбинаций — выше вероятность, поэтому середина возвышается над краями.',
@@ -2934,6 +3170,39 @@ const T = {
     js_rev_optimistic:'Оптимистичный',
     js_rev_note:'+{lift}pp прирост × {visitors} посетителей/мес × ${aov} средний чек × 12 мес. На основе 95% ДИ прироста.',
     btn_share:'Поделиться', share_copied:'✓ Ссылка скопирована!',
+    toc_g5:'🚦 Проведение эксперимента', toc_aatest_short:'Начните здесь: A/A-тест', toc_process_short:'Полный процесс A/B-теста',
+    ref_aatest_title:'Начните здесь: A/A-тест',
+    ref_aatest_sub:'Прежде чем доверять любому A/B-результату, докажите, что платформа разбиения честная. A/A-тест отправляет два одинаковых варианта двум случайно разбитым группам — и ожидает отсутствия различий.',
+    aa_what_b:'Что это.', aa_what:'Вы запускаете эксперимент, где A и B полностью одинаковы. Раз ничего не отличается, любой «победитель» — это чистый шум. Это как взвесить пустые весы, чтобы проверить, что они показывают ноль.',
+    aa_why_b:'Почему джунам стоит начать здесь.', aa_why:'Большинство багов разбиения невидимы, пока не посмотришь: сломанный рандомайзер, пользователи в обеих группах, боты на одной стороне или двойной учёт в логах. A/A-тест выявляет всё это до того, как реальный тест введёт вас в заблуждение.',
+    aa_read_b:'Как читать.', aa_read:'Ожидайте незначимый результат (p &gt; 0,05) примерно в 95% случаев. Один значимый A/A-результат не тревожен — при α = 0,05 примерно 1 из 20 сработает случайно. Запустите несколько. Если значимых заметно больше ~5%, у платформы проблема.',
+    aa_srm_b:'Проверьте соотношение разбиения (SRM).', aa_srm:'Если вы просили разбиение 50/50, размеры групп должны быть очень близки. Большой дисбаланс — Sample Ratio Mismatch — означает, что назначение сломано, и ни одному результату с этой платформы нельзя доверять, пока это не исправят.',
+    aa_tip_title:'✅ Практический стартовый чек-лист',
+    aa_tip_body:'1. Запустите A/A-тест на платформе. 2. Убедитесь, что соотношение разбиения совпадает с настроенным. 3. Убедитесь, что p-value незначим на нескольких запусках. 4. Только потом запускайте реальные A/B-тесты. Можно вставить два числа A/A-групп во вкладку «Анализ» и убедиться, что «явного победителя нет» — именно то, что нужно.',
+    ref_process_title:'Полный процесс A/B-теста — шаг за шагом',
+    ref_process_sub:'Нажмите на каждый шаг, чтобы раскрыть его. Это путь от размытой идеи до решения, которое можно защитить.',
+    proc_step:'Шаг', proc_goal:'Цель', proc_example:'Пример', proc_prev:'Назад', proc_next:'Далее',
+    proc_hypo_t:'Сформулируйте гипотезу', proc_hypo_g:'Превратите догадку в проверяемое, опровержимое утверждение',
+    proc_hypo_b:'Хорошая гипотеза называет <strong>изменение</strong>, <strong>ожидаемый эффект</strong>, <strong>метрику</strong> и <strong>причину</strong>. «Поскольку X, изменение Y сдвинет метрику Z». Без этого нельзя отличить успех от истории, придуманной задним числом.',
+    proc_hypo_e:'Поскольку кнопку оформления легко не заметить, увеличение её размера и контраста повысит конверсию оформления, так как больше пользователей её заметят.',
+    proc_metric_t:'Выберите метрику', proc_metric_g:'Одна основная метрика плюс охранные',
+    proc_metric_b:'Определите <strong>основную метрику</strong> заранее (на ней основано решение) и несколько <strong>охранных метрик</strong>, которые не должны ухудшиться. Выбор метрики после просмотра данных — способ обмануть себя.',
+    proc_metric_e:'Основная: конверсия оформления. Охранные: средний чек и доля возвратов (большая кнопка не должна привлекать случайные некачественные заказы).',
+    proc_size_t:'Спланируйте размер выборки', proc_size_g:'Решите, сколько пользователей и как долго, до старта',
+    proc_size_b:'Используйте <strong>вкладку «План»</strong>, чтобы рассчитать размер выборки для вашего MDE, α и мощности. Это фиксирует точку остановки заранее — главная защита от подглядывания и ложных срабатываний.',
+    proc_size_e:'Чтобы обнаружить относительный прирост 5% при α = 0,05 и мощности 80%, калькулятор говорит, что нужно ~30 000 пользователей на группу — около двух недель при вашем трафике.',
+    proc_aacheck_t:'Проверьте A/A-тестом', proc_aacheck_g:'Докажите честность разбиения, прежде чем доверять',
+    proc_aacheck_b:'Запустите <strong>A/A-тест</strong> (две одинаковые группы). Убедитесь, что соотношение разбиения совпадает с заданным и результаты незначимы на нескольких запусках. Это ловит баги рандомайзера и ошибки трекинга до того, как они испортят реальный тест.',
+    proc_aacheck_e:'Вы разбили 50/50 и получили 19 980 против 20 020 пользователей при p = 0,62 — сбалансировано и незначимо. Платформе можно доверять.',
+    proc_run_t:'Проведите эксперимент', proc_run_g:'Соберите данные до планового размера без подглядывания',
+    proc_run_b:'Запустите оба варианта одновременно для случайно назначенных пользователей и <strong>ждите</strong>. Не останавливайте раньше из-за того, что «выглядит значимо» — это завышает ложные срабатывания. Проводите полные бизнес-циклы (включая выходные), чтобы избежать смещения по дням недели.',
+    proc_run_e:'Вы работаете все две недели, хотя на 3-й день выглядело многообещающе — потому что остановка в первый красивый момент превращает шум в мнимый сигнал.',
+    proc_analyse_t:'Проанализируйте результаты', proc_analyse_g:'Примените правильный тест и читайте честно',
+    proc_analyse_b:'Вставьте числа во <strong>вкладку «Анализ»</strong>. Z-тест для конверсии, t-тест Уэлча для непрерывных метрик. Смотрите на доверительный интервал, а не только на p-value — он показывает правдоподобный диапазон истинного эффекта.',
+    proc_analyse_e:'Вариант B конвертирует 3,4% против 3,0%, относительный прирост +13%, p = 0,01, ДИ [+4%, +22%]. Значимо — и весь интервал положительный.',
+    proc_decide_t:'Решите и интерпретируйте', proc_decide_g:'Переведите статистику в бизнес-решение',
+    proc_decide_b:'Значимый результат — не автоматический <strong>запуск</strong>. Взвесьте размер эффекта против стоимости внедрения, проверьте, что охранные метрики удержались, и подумайте, практически ли значим прирост. Крошечный, но значимый выигрыш может не стоить разработки.',
+    proc_decide_e:'Прирост +13% значим и охранные метрики удержались, поэтому вы запускаете B — и документируете результат, чтобы следующий не запускал тот же тест заново.',
     footer_privacy:'Все расчёты выполняются локально в браузере — данные не покидают устройство.',
     // Accordion body — shared bold labels
     ab_formula:'Формула:',ab_assumptions:'Допущения:',ab_examples:'Примеры:',
@@ -3085,6 +3354,8 @@ function applyLang(lang) {
       document.getElementById('tab-reference')?.classList.contains('active')) {
     setTimeout(drawCharts, 10);
   }
+  // Re-render the interactive process stepper (its content is i18n-driven)
+  if (typeof renderProcess === 'function') renderProcess();
 }
 
 function toggleLang() {
@@ -4078,6 +4349,176 @@ function drawCaseStudyCharts() {
   })();
 }
 
+// ── Distribution anatomy charts (mean/median/mode + SD rule) ──
+function drawAnatomyCharts() {
+  const dpr = window.devicePixelRatio || 1;
+  function aInit(id) {
+    const canvas = document.getElementById(id);
+    if (!canvas) return null;
+    const wrap = canvas.parentElement;
+    const W = wrap.clientWidth, H = wrap.clientHeight;
+    if (!W || !H) return null;
+    canvas.width = W * dpr; canvas.height = H * dpr;
+    const ctx = canvas.getContext('2d');
+    ctx.scale(dpr, dpr); ctx.clearRect(0, 0, W, H);
+    ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+    return { ctx, W, H };
+  }
+  function grad(ctx, hex, topY, botY, ta, ba) {
+    const g = ctx.createLinearGradient(0, topY, 0, botY);
+    const h = hex.replace('#',''); const n = parseInt(h, 16);
+    const rgb = `${(n>>16)&255},${(n>>8)&255},${n&255}`;
+    g.addColorStop(0, `rgba(${rgb},${ta})`); g.addColorStop(1, `rgba(${rgb},${ba})`);
+    return g;
+  }
+  const L = T[currentLang];
+
+  // Normal with 68-95-99.7 shaded bands
+  (function(){ const c = aInit('anat-chart-normal'); if(!c) return;
+    const { ctx, W, H } = c;
+    const pad = { t: 18, b: 40, l: 16, r: 16 };
+    const pw = W - pad.l - pad.r, ph = H - pad.t - pad.b;
+    const mu = pad.l + pw/2;                 // centre x
+    const sd = pw / 7.2;                      // px per 1 SD (so ±3.6 SD fits)
+    const f = x => Math.exp(-0.5 * Math.pow((x-mu)/sd, 2));
+    const toY = v => pad.t + ph - v*ph*0.9;
+    // shaded SD bands (lightest at ±3, darker toward centre)
+    const bands = [
+      { k: 3, a: 0.08 }, { k: 2, a: 0.14 }, { k: 1, a: 0.24 },
+    ];
+    bands.forEach(b => {
+      ctx.beginPath();
+      const x0 = mu - b.k*sd, x1 = mu + b.k*sd;
+      ctx.moveTo(x0, toY(0));
+      for (let x = x0; x <= x1; x += 1) ctx.lineTo(x, toY(f(x)));
+      ctx.lineTo(x1, toY(0)); ctx.closePath();
+      const h = RC.P.replace('#',''); const n = parseInt(h,16);
+      ctx.fillStyle = `rgba(${(n>>16)&255},${(n>>8)&255},${n&255},${b.a})`;
+      ctx.fill();
+    });
+    // SD gridlines + labels
+    ctx.textAlign = 'center';
+    for (let k = -3; k <= 3; k++) {
+      const x = mu + k*sd;
+      ctx.beginPath(); ctx.moveTo(x, pad.t); ctx.lineTo(x, toY(0));
+      ctx.strokeStyle = k===0 ? RC.GR : RC.BORDER;
+      ctx.lineWidth = k===0 ? 1.5 : 0.8;
+      if (k!==0) ctx.setLineDash([2,3]);
+      ctx.stroke(); ctx.setLineDash([]);
+      ctx.fillStyle = RC.MUTED; ctx.font = '600 9.5px Inter, sans-serif';
+      ctx.fillText(k===0?'μ':(k>0?`+${k}σ`:`${k}σ`), x, H - 24);
+    }
+    // curve
+    ctx.beginPath();
+    for (let x = pad.l; x <= pad.l+pw; x += 1) (x===pad.l?ctx.moveTo(x,toY(f(x))):ctx.lineTo(x,toY(f(x))));
+    ctx.strokeStyle = RC.P; ctx.lineWidth = 2.5; ctx.stroke();
+    // percentage labels for the bands — placed clearly within each band
+    ctx.fillStyle = RC.INK; ctx.font = '700 11px Inter, sans-serif'; ctx.textAlign='center';
+    ctx.fillText('68%', mu, toY(0.50));
+    ctx.fillStyle = RC.P; ctx.font = '600 9.5px Inter, sans-serif';
+    ctx.fillText('95%', mu + 1.5*sd, toY(0.18));
+    ctx.fillText('99.7%', mu - 2.5*sd, toY(0.10));
+    // mean=median=mode marker
+    ctx.fillStyle = RC.GR; ctx.font = '700 10px Inter, sans-serif'; ctx.textAlign = 'center';
+    ctx.fillText(L.anat_mmm || 'mean = median = mode', mu, pad.t + 2);
+  })();
+
+  // Skewed helper: gamma-like shape, with mode/median/mean markers
+  function drawSkew(id, mirror) {
+    const c = aInit(id); if(!c) return;
+    const { ctx, W, H } = c;
+    const pad = { t: 18, b: 40, l: 16, r: 16 };
+    const pw = W - pad.l - pad.r, ph = H - pad.t - pad.b;
+    // gamma-ish density on t in [0,1]
+    const dens = u => { const x = u*6; return x*x*Math.exp(-x); };
+    const N = 160;
+    const raw = [];
+    let maxY = 0;
+    for (let i=0;i<=N;i++){ const u=i/N; const y=dens(u); raw.push(y); if(y>maxY)maxY=y; }
+    // compute mode/median/mean in u-space
+    let modeU = 0, best=-1;
+    raw.forEach((y,i)=>{ if(y>best){best=y;modeU=i/N;} });
+    const total = raw.reduce((s,y)=>s+y,0);
+    let cum=0, medianU=0;
+    for (let i=0;i<=N;i++){ cum+=raw[i]; if(cum>=total/2){ medianU=i/N; break; } }
+    let meanNum=0; raw.forEach((y,i)=>meanNum+=y*(i/N)); const meanU=meanNum/total;
+    const tx = u => mirror ? (1-u) : u;
+    const toX = u => pad.l + tx(u)*pw;
+    const toY = y => pad.t + ph - (y/maxY)*ph*0.9;
+    const hex = mirror ? RC.GR : RC.OR;
+    // fill
+    ctx.beginPath(); ctx.moveTo(toX(0), toY(0));
+    for (let i=0;i<=N;i++) ctx.lineTo(toX(i/N), toY(raw[i]));
+    ctx.lineTo(toX(1), toY(0)); ctx.closePath();
+    ctx.fillStyle = grad(ctx, hex, pad.t, pad.t+ph, 0.30, 0.03); ctx.fill();
+    // curve
+    ctx.beginPath();
+    for (let i=0;i<=N;i++) (i===0?ctx.moveTo(toX(0),toY(raw[0])):ctx.lineTo(toX(i/N),toY(raw[i])));
+    ctx.strokeStyle = hex; ctx.lineWidth = 2.5; ctx.stroke();
+    // baseline
+    ctx.beginPath(); ctx.moveTo(pad.l, toY(0)); ctx.lineTo(pad.l+pw, toY(0));
+    ctx.strokeStyle = RC.BORDER; ctx.lineWidth = 1; ctx.stroke();
+    // markers — ordered by position so labels stagger cleanly
+    const marks = [
+      { u: modeU,  color: RC.P,  label: L.anat_mode   || 'mode' },
+      { u: medianU,color: RC.GR2 || '#0d9488', label: L.anat_median || 'median' },
+      { u: meanU,  color: RC.RED, label: L.anat_mean  || 'mean' },
+    ].sort((a,b)=> tx(a.u) - tx(b.u)); // left-to-right on screen
+    marks.forEach((m, idx) => {
+      const x = toX(m.u);
+      ctx.beginPath(); ctx.moveTo(x, pad.t+2); ctx.lineTo(x, toY(0));
+      ctx.strokeStyle = m.color; ctx.lineWidth = 1.6; ctx.setLineDash([3,3]); ctx.stroke(); ctx.setLineDash([]);
+      ctx.fillStyle = m.color; ctx.font = '700 9.5px Inter, sans-serif';
+      // stack labels top-to-bottom (each ~13px lower) and align away from the crowded centre
+      const labelY = pad.t + 9 + idx*13;
+      // nudge left-most label left, right-most right, so they don't sit on the lines
+      ctx.textAlign = idx===0 ? 'end' : (idx===marks.length-1 ? 'start' : 'center');
+      const dx = idx===0 ? -3 : (idx===marks.length-1 ? 3 : 0);
+      ctx.fillText(m.label, x + dx, labelY);
+    });
+  }
+  drawSkew('anat-chart-right', false);
+  drawSkew('anat-chart-left', true);
+
+  // Binomial: discrete bars, n=20 p=0.3, mean=np marker
+  (function(){ const c = aInit('anat-chart-binom'); if(!c) return;
+    const { ctx, W, H } = c;
+    const pad = { t: 18, b: 40, l: 16, r: 16 };
+    const pw = W - pad.l - pad.r, ph = H - pad.t - pad.b;
+    const n = 20, p = 0.3;
+    // binomial pmf
+    function choose(n,k){ let r=1; for(let i=0;i<k;i++) r=r*(n-i)/(i+1); return r; }
+    const pmf = [];
+    let maxY = 0;
+    for (let k=0;k<=n;k++){ const v = choose(n,k)*Math.pow(p,k)*Math.pow(1-p,n-k); pmf.push(v); if(v>maxY)maxY=v; }
+    const m = n+1;
+    const gap = pw/m*0.22; const bw = (pw - gap*(m+1))/m;
+    const toY = v => pad.t + ph - (v/maxY)*ph*0.9;
+    const g = grad(ctx, RC.P, pad.t, pad.t+ph, 0.5, 0.12);
+    for (let k=0;k<=n;k++){
+      const x = pad.l + gap + k*(bw+gap);
+      const h = (pmf[k]/maxY)*ph*0.9; const y = pad.t+ph-h;
+      ctx.fillStyle = g; ctx.strokeStyle = RC.P; ctx.lineWidth = 1.2;
+      ctx.beginPath(); ctx.roundRect(x, y, bw, h, Math.min(2.5,bw/2)); ctx.fill(); ctx.stroke();
+    }
+    // baseline
+    ctx.beginPath(); ctx.moveTo(pad.l, toY(0)); ctx.lineTo(pad.l+pw, toY(0));
+    ctx.strokeStyle = RC.MUTED; ctx.lineWidth = 1; ctx.stroke();
+    // mean = n*p marker
+    const meanK = n*p;
+    const xMean = pad.l + gap + meanK*(bw+gap) + bw/2;
+    ctx.beginPath(); ctx.moveTo(xMean, pad.t+6); ctx.lineTo(xMean, toY(0));
+    ctx.strokeStyle = RC.RED; ctx.lineWidth = 1.6; ctx.setLineDash([3,3]); ctx.stroke(); ctx.setLineDash([]);
+    ctx.fillStyle = RC.RED; ctx.font = '700 9.5px Inter, sans-serif'; ctx.textAlign='center';
+    ctx.fillText((L.anat_binom_mean || 'mean = n·p = 6'), xMean, pad.t + 4);
+    // x ticks
+    ctx.fillStyle = RC.MUTED; ctx.font = '600 9px Inter, sans-serif';
+    [0,5,10,15,20].forEach(k=>{ const x=pad.l+gap+k*(bw+gap)+bw/2; ctx.fillText(k, x, H-24); });
+    ctx.fillText(L.anat_binom_x || 'number of successes (k)', pad.l+pw/2, H-8);
+  })();
+}
+
+
 // Bar chart with CI whiskers — conversion rates or means
 function drawBarCI(canvasId, labels, values, cis, colors, yLabel) {
   const c = resCanvas(canvasId); if (!c) return;
@@ -4959,6 +5400,7 @@ function drawCharts() {
 
   // Case-study mini charts live in the same Reference tab
   if (typeof drawCaseStudyCharts === 'function') drawCaseStudyCharts();
+  if (typeof drawAnatomyCharts === 'function') drawAnatomyCharts();
 }
 
 // Draw reference charts on resize
@@ -5066,6 +5508,60 @@ document.addEventListener('DOMContentLoaded', () => {
   // Highlight the first section initially
   setActive(sections[0]?.id);
 });
+
+// ── Interactive A/B process walkthrough ──
+const PROCESS_STEPS = [
+  { emoji: '💡', key: 'hypo' },
+  { emoji: '📐', key: 'metric' },
+  { emoji: '🔢', key: 'size' },
+  { emoji: '🅰️', key: 'aacheck' },
+  { emoji: '🚀', key: 'run' },
+  { emoji: '📊', key: 'analyse' },
+  { emoji: '🧭', key: 'decide' },
+];
+let processCurrent = 0;
+
+function renderProcess() {
+  const track = document.getElementById('process-track');
+  const panel = document.getElementById('process-panel');
+  const bar = document.getElementById('process-progress-bar');
+  if (!track || !panel) return;
+  const L = T[currentLang];
+
+  // build step chips
+  track.innerHTML = PROCESS_STEPS.map((s, i) => `
+    <div class="process-step ${i===processCurrent?'active':''}" data-step="${i}">
+      <span class="process-step-emoji">${s.emoji}</span>
+      <span class="process-step-num">${(L.proc_step || 'Step')} ${i+1}</span>
+      <span class="process-step-label">${L['proc_'+s.key+'_t'] || s.key}</span>
+    </div>`).join('');
+
+  // progress bar
+  if (bar) bar.style.width = ((processCurrent+1) / PROCESS_STEPS.length * 100) + '%';
+
+  // panel
+  const s = PROCESS_STEPS[processCurrent];
+  panel.innerHTML = `
+    <div class="process-panel-title">${s.emoji} ${L['proc_'+s.key+'_t'] || ''}</div>
+    <div class="process-panel-goal">${(L.proc_goal || 'Goal')}: ${L['proc_'+s.key+'_g'] || ''}</div>
+    <div class="process-panel-body">${L['proc_'+s.key+'_b'] || ''}</div>
+    <div class="process-example"><strong>${L.proc_example || 'Example'}:</strong> ${L['proc_'+s.key+'_e'] || ''}</div>
+    <div class="process-nav">
+      <button id="proc-prev" ${processCurrent===0?'disabled':''}>← ${L.proc_prev || 'Back'}</button>
+      <button id="proc-next" class="primary" ${processCurrent===PROCESS_STEPS.length-1?'disabled':''}>${L.proc_next || 'Next'} →</button>
+    </div>`;
+
+  // wire chips + nav
+  track.querySelectorAll('.process-step').forEach(el => {
+    el.addEventListener('click', () => { processCurrent = parseInt(el.dataset.step); renderProcess(); });
+  });
+  const prev = document.getElementById('proc-prev');
+  const next = document.getElementById('proc-next');
+  if (prev) prev.addEventListener('click', () => { if (processCurrent>0){ processCurrent--; renderProcess(); } });
+  if (next) next.addEventListener('click', () => { if (processCurrent<PROCESS_STEPS.length-1){ processCurrent++; renderProcess(); } });
+}
+
+document.addEventListener('DOMContentLoaded', renderProcess);
 
 </script>
 </body>
