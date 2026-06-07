@@ -2105,6 +2105,7 @@ canvas.chart { width: 100% !important; height: 100% !important; display: block; 
 
         <div class="toc-group-h" data-i18n="toc_g5">🚦 Running an experiment</div>
         <a class="toc-link" href="#sec-aatest"><span class="toc-emoji">🅰️</span><span data-i18n="toc_aatest_short">Start here: the A/A test</span></a>
+        <a class="toc-link" href="#sec-multiple"><span class="toc-emoji">🎰</span><span data-i18n="toc_multiple_short">Multiple testing & error inflation</span></a>
         <a class="toc-link" href="#sec-process"><span class="toc-emoji">🧭</span><span data-i18n="toc_process_short">The full A/B test process</span></a>
       </nav>
     </div>
@@ -2574,6 +2575,33 @@ canvas.chart { width: 100% !important; height: 100% !important; display: block; 
     </div>
   </div>
 
+  <!-- Multiple testing & error inflation -->
+  <div class="card" id="sec-multiple">
+    <div class="card-title" data-i18n="ref_multiple_title">Multiple testing: why more comparisons inflate false positives</div>
+    <div class="chart-sub" style="margin-bottom:14px" data-i18n="ref_multiple_sub">The classic α = 0.05 threshold protects a single comparison. The moment you test several hypotheses at once, the chance of at least one false positive climbs fast — and you must correct for it.</div>
+
+    <div class="accordion-body" style="padding:0;background:none">
+      <p data-i18n="mt_problem"><strong>The problem.</strong> If you fix α = 0.05 and test one hypothesis, your chance of a false positive is 5%. But test several independent hypotheses and the probability of at least one false positive — the family-wise error rate (FWER) — is 1 − (1 − α)<sup>m</sup>. With 3 comparisons it is already ~14%; with 10 it is ~40%. More variants, more metrics, or repeated peeking all multiply your chances of being fooled.</p>
+    </div>
+
+    <div class="chart-card" style="box-shadow:none;border:1px solid var(--border);margin:14px 0 4px">
+      <div class="chart-title" style="padding-right:80px" data-i18n="mt_chart_title">False-positive risk vs number of comparisons</div>
+      <div class="chart-sub" data-i18n="mt_chart_sub">The orange line is the uncorrected family-wise error rate; the dashed line shows how Bonferroni holds it at 5%.</div>
+      <button class="chart-dl" onclick="downloadChart('chart-fwer','multiple-testing-fwer')"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></span><span class="dl-label" data-i18n="btn_dl_png">PNG</span></button>
+      <div class="chart-wrap" style="height:220px"><canvas id="chart-fwer"></canvas></div>
+    </div>
+
+    <div class="accordion-body" style="padding:0;background:none;margin-top:14px">
+      <div class="tip-row"><span class="tip-icon">➗</span><div><strong data-i18n="mt_bonf_b">Bonferroni correction.</strong> <span data-i18n="mt_bonf">Divide your target α by the number of comparisons m (e.g. 0.05 / 10 = 0.005); only p-values below that count as significant. Dead simple and strictly controls FWER — but over-conservative, so it costs you power and can miss real effects.</span></div></div>
+      <div class="tip-row"><span class="tip-icon">📶</span><div><strong data-i18n="mt_holm_b">Holm–Bonferroni (step-down).</strong> <span data-i18n="mt_holm">Sort the p-values smallest to largest and test them in order against progressively looser thresholds (α/m, then α/(m−1), …). Uniformly more powerful than plain Bonferroni while giving the same FWER guarantee. A sensible default.</span></div></div>
+      <div class="tip-row"><span class="tip-icon">📊</span><div><strong data-i18n="mt_bh_b">Benjamini–Hochberg (FDR control).</strong> <span data-i18n="mt_bh">Instead of guarding against even one false positive, it controls the expected <em>fraction</em> of false positives among your significant results (the False Discovery Rate). Much more powerful when you screen many metrics, at the cost of allowing a controlled share of errors. The standard choice for large dashboards and exploratory analyses.</span></div></div>
+      <div class="callout-box">
+        <div class="callout-title" data-i18n="mt_pick_title">✅ Which to use</div>
+        <p data-i18n="mt_pick_body" style="margin:0">A few pre-planned comparisons where any false positive is costly → <strong>Holm–Bonferroni</strong> (the recommended default). Screening many metrics where you can tolerate a small false-positive share for more discoveries → <strong>Benjamini–Hochberg</strong>. Plain Bonferroni is fine when m is small and you want the simplest defensible rule. Guardrail metrics that protect against regressions are usually left <em>uncorrected</em> — there you want maximum sensitivity.</p>
+      </div>
+    </div>
+  </div>
+
   <!-- Interactive A/B process walkthrough -->
   <div class="card" id="sec-process">
     <div class="card-title" data-i18n="ref_process_title">The full A/B test process — step by step</div>
@@ -2813,6 +2841,18 @@ const T = {
     js_rev_note:'+{lift}pp lift × {visitors} visitors/mo × ${aov} AOV × 12 months. Based on 95% CI of the lift.',
     btn_share:'Share', share_copied:'✓ Link copied!',
     toc_g5:'🚦 Running an experiment', toc_aatest_short:'Start here: the A/A test', toc_process_short:'The full A/B test process',
+    toc_multiple_short:'Multiple testing & error inflation',
+    ref_multiple_title:'Multiple testing: why more comparisons inflate false positives',
+    ref_multiple_sub:'The classic α = 0.05 threshold protects a single comparison. The moment you test several hypotheses at once, the chance of at least one false positive climbs fast — and you must correct for it.',
+    mt_problem:'<strong>The problem.</strong> If you fix α = 0.05 and test one hypothesis, your chance of a false positive is 5%. But test several independent hypotheses and the probability of at least one false positive — the family-wise error rate (FWER) — is 1 − (1 − α)<sup>m</sup>. With 3 comparisons it is already ~14%; with 10 it is ~40%. More variants, more metrics, or repeated peeking all multiply your chances of being fooled.',
+    mt_chart_title:'False-positive risk vs number of comparisons',
+    mt_chart_sub:'The orange line is the uncorrected family-wise error rate; the dashed line shows how Bonferroni holds it at 5%.',
+    mt_lbl_bonf:'with Bonferroni (5%)', mt_lbl_fwer:'uncorrected FWER', mt_axis:'number of simultaneous comparisons (m)',
+    mt_bonf_b:'Bonferroni correction.', mt_bonf:'Divide your target α by the number of comparisons m (e.g. 0.05 / 10 = 0.005); only p-values below that count as significant. Dead simple and strictly controls FWER — but over-conservative, so it costs you power and can miss real effects.',
+    mt_holm_b:'Holm–Bonferroni (step-down).', mt_holm:'Sort the p-values smallest to largest and test them in order against progressively looser thresholds (α/m, then α/(m−1), …). Uniformly more powerful than plain Bonferroni while giving the same FWER guarantee. A sensible default.',
+    mt_bh_b:'Benjamini–Hochberg (FDR control).', mt_bh:'Instead of guarding against even one false positive, it controls the expected <em>fraction</em> of false positives among your significant results (the False Discovery Rate). Much more powerful when you screen many metrics, at the cost of allowing a controlled share of errors. The standard choice for large dashboards and exploratory analyses.',
+    mt_pick_title:'✅ Which to use',
+    mt_pick_body:'A few pre-planned comparisons where any false positive is costly → <strong>Holm–Bonferroni</strong> (the recommended default). Screening many metrics where you can tolerate a small false-positive share for more discoveries → <strong>Benjamini–Hochberg</strong>. Plain Bonferroni is fine when m is small and you want the simplest defensible rule. Guardrail metrics that protect against regressions are usually left <em>uncorrected</em> — there you want maximum sensitivity.',
     ref_aatest_title:'Start here: the A/A test',
     ref_aatest_sub:'Before you trust any A/B result, prove your splitting platform is fair. An A/A test sends two identical experiences to two randomly split groups — and expects to find no difference.',
     aa_what_b:'What it is.', aa_what:'You run an experiment where A and B are exactly the same. Since nothing differs, any "winner" your tool reports is pure noise. It is the experiment equivalent of weighing an empty scale to check it reads zero.',
@@ -3171,6 +3211,18 @@ const T = {
     js_rev_note:'+{lift}pp прирост × {visitors} посетителей/мес × ${aov} средний чек × 12 мес. На основе 95% ДИ прироста.',
     btn_share:'Поделиться', share_copied:'✓ Ссылка скопирована!',
     toc_g5:'🚦 Проведение эксперимента', toc_aatest_short:'Начните здесь: A/A-тест', toc_process_short:'Полный процесс A/B-теста',
+    toc_multiple_short:'Множественное тестирование и рост ошибок',
+    ref_multiple_title:'Множественное тестирование: почему больше сравнений завышают ложные срабатывания',
+    ref_multiple_sub:'Классический порог α = 0,05 защищает одно сравнение. Как только вы проверяете несколько гипотез сразу, вероятность хотя бы одного ложного срабатывания быстро растёт — и её нужно корректировать.',
+    mt_problem:'<strong>Проблема.</strong> При α = 0,05 и одной гипотезе шанс ложного срабатывания — 5%. Но при проверке нескольких независимых гипотез вероятность хотя бы одного ложного срабатывания — групповая вероятность ошибки (FWER) — равна 1 − (1 − α)<sup>m</sup>. При 3 сравнениях это уже ~14%, при 10 — ~40%. Больше вариантов, больше метрик или повторное подглядывание умножают шанс обмануться.',
+    mt_chart_title:'Риск ложного срабатывания и число сравнений',
+    mt_chart_sub:'Оранжевая линия — нескорректированная групповая ошибка; пунктир показывает, как Бонферрони удерживает её на 5%.',
+    mt_lbl_bonf:'с Бонферрони (5%)', mt_lbl_fwer:'без поправки (FWER)', mt_axis:'число одновременных сравнений (m)',
+    mt_bonf_b:'Поправка Бонферрони.', mt_bonf:'Разделите целевой α на число сравнений m (например, 0,05 / 10 = 0,005); значимыми считаются только p-value ниже этого порога. Очень просто и строго контролирует FWER — но слишком консервативно, теряет мощность и может пропустить реальные эффекты.',
+    mt_holm_b:'Холма–Бонферрони (пошаговая).', mt_holm:'Отсортируйте p-value от меньшего к большему и проверяйте по очереди против всё более мягких порогов (α/m, затем α/(m−1), …). Равномерно мощнее обычного Бонферрони при той же гарантии FWER. Разумный выбор по умолчанию.',
+    mt_bh_b:'Бенджамини–Хохберга (контроль FDR).', mt_bh:'Вместо защиты даже от одного ложного срабатывания контролирует ожидаемую <em>долю</em> ложных среди значимых результатов (False Discovery Rate). Гораздо мощнее при просмотре многих метрик ценой допустимой доли ошибок. Стандартный выбор для больших дашбордов и разведочного анализа.',
+    mt_pick_title:'✅ Что выбрать',
+    mt_pick_body:'Несколько заранее запланированных сравнений, где любое ложное срабатывание дорого → <strong>Холма–Бонферрони</strong> (рекомендуемый выбор). Просмотр многих метрик, где допустима малая доля ложных ради большего числа находок → <strong>Бенджамини–Хохберга</strong>. Обычный Бонферрони подходит при малом m и желании простейшего защитимого правила. Охранные метрики против регрессий обычно оставляют <em>без поправки</em> — там нужна максимальная чувствительность.',
     ref_aatest_title:'Начните здесь: A/A-тест',
     ref_aatest_sub:'Прежде чем доверять любому A/B-результату, докажите, что платформа разбиения честная. A/A-тест отправляет два одинаковых варианта двум случайно разбитым группам — и ожидает отсутствия различий.',
     aa_what_b:'Что это.', aa_what:'Вы запускаете эксперимент, где A и B полностью одинаковы. Раз ничего не отличается, любой «победитель» — это чистый шум. Это как взвесить пустые весы, чтобы проверить, что они показывают ноль.',
@@ -3583,7 +3635,13 @@ function calcSampleSize() {
   const alpha = parseFloat(document.querySelector('input[name="p-alpha"]:checked').value);
   const power = parseFloat(document.querySelector('input[name="p-power"]:checked').value);
   const tails = parseInt(document.querySelector('input[name="p-tails"]:checked').value);
-  const zAlpha = normInvCDF(tails===2 ? 1-alpha/2 : 1-alpha);
+  // With 3+ variants you compare each variant to control: (m-1) comparisons.
+  // To hold the family-wise error rate, the per-comparison alpha is Bonferroni-adjusted,
+  // which raises the required sample size per arm.
+  const numVariants = parseInt(document.getElementById('p-num-variants').value) || 2;
+  const numComparisons = Math.max(1, numVariants - 1);
+  const alphaAdj = alpha / numComparisons;
+  const zAlpha = normInvCDF(tails===2 ? 1-alphaAdj/2 : 1-alphaAdj);
   const zBeta  = normInvCDF(power);
   let n, mdeAbs, testName, baseRate, mdeRel;
 
@@ -3610,14 +3668,13 @@ function calcSampleSize() {
   }
 
   document.getElementById('res-n').textContent = n.toLocaleString();
-  document.getElementById('res-total').textContent = (n*2).toLocaleString();
+  document.getElementById('res-total').textContent = (n*numVariants).toLocaleString();
   document.getElementById('res-mde-abs').textContent = mdeAbs;
   document.getElementById('res-test').textContent = testName;
   document.getElementById('plan-result').classList.remove('hidden');
 
   // Duration calculation
   const dailyRaw = parseFloat(document.getElementById('p-daily-users').value);
-  const numVariants = parseInt(document.getElementById('p-num-variants').value) || 2;
   const durationWrap = document.getElementById('res-duration-wrap');
 
   if (!isNaN(dailyRaw) && dailyRaw > 0) {
@@ -3637,7 +3694,7 @@ function calcSampleSize() {
     if (weeks > 8)  tips.push({ icon: '⚠️', text: 'Over 8 weeks is a long test. Consider raising α to 0.10 for faster iteration, or narrowing scope to a higher-traffic surface.' });
     if (weeks < 2)  tips.push({ icon: '⚠️', text: 'Always run for at least 2 full weeks to capture weekly seasonality. Short tests often produce misleading results.' });
     if (mdeRel && mdeRel < 0.03) tips.push({ icon: '💡', text: 'Detecting a sub-3% lift requires a very large sample. Consider whether this effect size is truly worth shipping — or raise the MDE threshold.' });
-    if (numVariants > 3) tips.push({ icon: '💡', text: `Testing ${numVariants} variants splits traffic thinly. Pairwise tests will need Bonferroni correction — consider whether all variants are truly distinct hypotheses.` });
+    if (numVariants > 2) tips.push({ icon: '🔢', text: `With ${numVariants} variants you make ${numComparisons} comparisons vs control. The sample size above already applies a Bonferroni-adjusted α = ${alphaAdj.toFixed(4)} per comparison, which is why each arm needs more users than a simple 2-group test.` });
     if (planMetric === 'conversion' && baseRate < 0.02) tips.push({ icon: '⚠️', text: 'Very low baseline (<2%) means you need huge samples. Consider testing on a higher-converting funnel step first, or using a one-sided test if you only care about improvement.' });
     tips.push({ icon: '📅', text: 'Start on a Monday and end on a Sunday to ensure full weekly coverage. Avoid launching during atypical periods: holidays, campaigns, or major product changes.' });
     tips.push({ icon: '🔒', text: 'Pre-register your MDE and analysis plan before launch. Checking results daily and stopping early inflates false positives by up to 5×.' });
@@ -3943,9 +4000,9 @@ function analyseConversion() {
     let chi2=0;
     for(const v of variants){const exp=v.n*pPool;chi2+=(v.c-exp)**2/exp+((v.n-v.c)-v.n*(1-pPool))**2/(v.n*(1-pPool));}
     const df=variants.length-1;
-    const zChi=Math.cbrt(chi2/df)-(1-2/(9*df));
-    const seW=Math.sqrt(2/(9*df));
-    const pChi=1-normCDF(zChi/seW);
+    // Wilson–Hilferty approximation: ((χ²/df)^(1/3) - (1 - 2/(9df))) / sqrt(2/(9df)) ~ N(0,1)
+    const zChi=((Math.cbrt(chi2/df))-(1-2/(9*df)))/Math.sqrt(2/(9*df));
+    const pChi=1-normCDF(zChi);
     const sigChi=pChi<alpha;
     html+=`<div class="ar-verdict ${sigChi?'sig':'insig'}">${sigChi?T[currentLang].js_variants_diff:T[currentLang].js_no_diff}</div>`;
     html+=`<div class="ar-sub">χ²(${df}) = ${chi2.toFixed(3)}, p = ${pChi.toFixed(4)}</div>`;
@@ -3957,7 +4014,9 @@ function analyseConversion() {
     </div>`;
 
     if(sigChi){
-      const k=variants.length*(variants.length-1)/2;
+      // The tool reports each variant vs control A, so there are (m-1) comparisons.
+      // Bonferroni divides alpha by the number of comparisons actually made.
+      const k=variants.length-1;
       const aBonf=alpha/k;
       // Full table for all variants
       html += `<div class="scroll-x" style="margin-top:16px">
@@ -3995,7 +4054,7 @@ function analyseConversion() {
         </tr>`;
       });
       html += `</tbody></table></div>`;
-      html += `<p style="font-size:0.78rem;color:var(--ink-faint);margin-top:8px">Pairwise p-values use Bonferroni correction (α = ${aBonf.toFixed(4)} per comparison).</p>`;
+      html += `<p style="font-size:0.78rem;color:var(--ink-faint);margin-top:8px">Pairwise p-values (each variant vs control A) use Bonferroni correction: α = ${aBonf.toFixed(4)} per comparison (${alpha} ÷ ${k} comparisons).</p>`;
     }
     html+='</div>';
     const box=document.getElementById('conv-result');
@@ -5396,6 +5455,47 @@ function drawCharts() {
       ? (T[currentLang].clt_cap_pop || 'n = 1: the raw population (very skewed)')
       : (T[currentLang].clt_cap_mean || 'distribution of the sample mean').replace('{n}', n);
     ctx.fillText(cap, pad.l + cw/2, H - 8);
+  })();
+
+  // ── FWER vs number of comparisons (multiple testing) ──
+  (function(){
+    const c = initCanvas('chart-fwer'); if(!c) return;
+    const { ctx, W, H } = c;
+    const pad = { t: 18, b: 42, l: 44, r: 16 };
+    const cw = W - pad.l - pad.r, ch = H - pad.t - pad.b;
+    const mMax = 20, a = 0.05;
+    const toX = m => pad.l + ((m-1)/(mMax-1))*cw;
+    const toY = y => pad.t + ch - y*ch;          // y in [0,1]
+    // horizontal gridlines + y labels (0,25,50,75,100%)
+    ctx.textAlign = 'right'; ctx.font = '600 9.5px Inter, sans-serif';
+    [0,0.25,0.5,0.75,1].forEach(g => {
+      const y = toY(g);
+      ctx.beginPath(); ctx.moveTo(pad.l, y); ctx.lineTo(pad.l+cw, y);
+      ctx.strokeStyle = RC.BORDER; ctx.lineWidth = 0.8; ctx.setLineDash([2,3]); ctx.stroke(); ctx.setLineDash([]);
+      ctx.fillStyle = RC.MUTED; ctx.fillText((g*100)+'%', pad.l-8, y+3);
+    });
+    // Bonferroni flat line at 5%
+    const yB = toY(a);
+    ctx.beginPath(); ctx.moveTo(pad.l, yB); ctx.lineTo(pad.l+cw, yB);
+    ctx.strokeStyle = RC.GR; ctx.lineWidth = 2; ctx.setLineDash([5,4]); ctx.stroke(); ctx.setLineDash([]);
+    ctx.fillStyle = RC.GR; ctx.font = '700 9.5px Inter, sans-serif'; ctx.textAlign='left';
+    ctx.fillText(T[currentLang].mt_lbl_bonf || 'with Bonferroni (5%)', pad.l+6, yB-5);
+    // FWER curve 1-(1-a)^m with gradient fill
+    const pts = [];
+    for (let m=1;m<=mMax;m++){ pts.push({ m, y: 1-Math.pow(1-a, m) }); }
+    ctx.beginPath(); ctx.moveTo(toX(1), toY(0));
+    pts.forEach(p=>ctx.lineTo(toX(p.m), toY(p.y)));
+    ctx.lineTo(toX(mMax), toY(0)); ctx.closePath();
+    ctx.fillStyle = vGrad(ctx, RC.OR, pad.t, pad.t+ch, 0.26, 0.02); ctx.fill();
+    ctx.beginPath();
+    pts.forEach((p,i)=> i===0?ctx.moveTo(toX(p.m),toY(p.y)):ctx.lineTo(toX(p.m),toY(p.y)));
+    ctx.strokeStyle = RC.OR; ctx.lineWidth = 2.5; ctx.stroke();
+    ctx.fillStyle = RC.OR; ctx.font = '700 9.5px Inter, sans-serif'; ctx.textAlign='left';
+    ctx.fillText(T[currentLang].mt_lbl_fwer || 'uncorrected FWER', toX(8), toY(pts[7].y)-8);
+    // x axis ticks + label
+    ctx.fillStyle = RC.MUTED; ctx.font = '600 9.5px Inter, sans-serif'; ctx.textAlign='center';
+    [1,5,10,15,20].forEach(m => ctx.fillText(m, toX(m), H-24));
+    ctx.fillText(T[currentLang].mt_axis || 'number of simultaneous comparisons (m)', pad.l+cw/2, H-8);
   })();
 
   // Case-study mini charts live in the same Reference tab
