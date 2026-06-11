@@ -5,7 +5,69 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="color-scheme" content="light dark">
 <meta name="supported-color-schemes" content="light dark">
-<title>A/B Testing Calculator</title>
+
+<!-- ── SEO ── -->
+<title>Free A/B Test Calculator: Sample Size & Significance</title>
+<meta name="description" content="Free A/B testing calculator for sample size planning and statistical significance. Z-test, t-test, multiple variants, plus a plain-English guide to p-values, confidence intervals and power. Runs in your browser — no signup.">
+<meta name="keywords" content="A/B test calculator, sample size calculator, statistical significance calculator, Z-test, t-test, p-value, confidence interval, conversion rate test, experiment power calculator">
+<meta name="author" content="Andrei Amirov">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://anreiamirov.github.io/AB-testing-calculator/">
+
+<!-- ── Open Graph (link previews on LinkedIn, Slack, Facebook) ── -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Free A/B Test Calculator: Sample Size & Significance">
+<meta property="og:description" content="Plan sample size and check statistical significance for A/B tests — Z-test, t-test, multiple variants — with a clear guide to p-values, confidence intervals and power. Free, no signup.">
+<meta property="og:url" content="https://anreiamirov.github.io/AB-testing-calculator/">
+<meta property="og:site_name" content="A/B Test Calculator">
+
+<!-- ── Twitter / X card ── -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Free A/B Test Calculator: Sample Size & Significance">
+<meta name="twitter:description" content="Plan sample size and check significance for A/B tests, with a plain-English guide to p-values, confidence intervals and power. Free, runs in your browser.">
+
+<!-- ── Structured data: identifies the page as a free web app + an FAQ ── -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "A/B Test Calculator",
+  "url": "https://anreiamirov.github.io/AB-testing-calculator/",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Any (web browser)",
+  "description": "Free A/B testing calculator for sample size planning and statistical significance analysis, with an educational reference covering p-values, confidence intervals, power and distributions.",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "featureList": [
+    "Sample size and test duration planning",
+    "Statistical significance analysis (Z-test, Welch's t-test)",
+    "Multiple-variant testing with Holm-Bonferroni correction",
+    "Educational reference on p-values, confidence intervals and power"
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is a p-value in A/B testing?",
+      "acceptedAnswer": { "@type": "Answer", "text": "A p-value is the probability of seeing a difference at least as large as the one observed if the two variants were actually identical. A small p-value (typically below 0.05) means the result is unlikely to be due to chance alone." }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I calculate the sample size for an A/B test?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Sample size depends on your baseline rate, the minimum detectable effect you care about, the significance level (alpha) and the desired statistical power. This calculator computes it for you and estimates test duration from your traffic." }
+    },
+    {
+      "@type": "Question",
+      "name": "What is a confidence interval?",
+      "acceptedAnswer": { "@type": "Answer", "text": "A confidence interval is a range of plausible values for the true effect. A 95% confidence interval means that if the experiment were repeated many times, about 95% of such intervals would contain the true value." }
+    }
+  ]
+}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
@@ -569,6 +631,59 @@ main {
 }
 .callout-box p { font-size: 0.85rem; color: var(--ink-muted); line-height: 1.55; }
 
+/* ── Interactive FWER formula box ── */
+.fwer-formula {
+  margin: 12px 0 4px;
+  padding: 12px 16px;
+  background: linear-gradient(135deg, rgba(91,80,200,0.08), rgba(232,131,42,0.06));
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.fwer-formula-label {
+  font-size: 0.68rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.05em; color: var(--ink-muted);
+}
+.fwer-eq {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.92rem; color: var(--ink); font-weight: 600;
+  line-height: 1.5;
+}
+.fwer-hl {
+  background: rgba(91,80,200,0.16);
+  color: var(--accent);
+  padding: 0 4px; border-radius: 4px; font-weight: 700;
+}
+.fwer-result {
+  background: var(--accent); color: #fff;
+  padding: 1px 8px; border-radius: 5px; font-weight: 700;
+  transition: background 0.2s;
+}
+
+/* ── Beginner glossary ── */
+.glossary { display: flex; flex-direction: column; gap: 2px; }
+.gloss-item {
+  padding: 14px 0;
+  border-top: 1px solid var(--border);
+}
+.gloss-item:first-child { border-top: none; padding-top: 2px; }
+.gloss-term {
+  display: flex; align-items: center; gap: 9px;
+  font-size: 0.98rem; font-weight: 700; color: var(--ink);
+  margin-bottom: 6px;
+}
+.gloss-emoji { font-size: 1.15rem; line-height: 1; flex-shrink: 0; }
+.gloss-def { font-size: 0.86rem; color: var(--ink-muted); line-height: 1.6; }
+.gloss-def strong { color: var(--ink); }
+.gloss-eg {
+  margin-top: 8px; padding: 9px 13px;
+  background: var(--pill-bg); border-radius: var(--radius-sm);
+  font-size: 0.82rem; color: var(--ink-muted); line-height: 1.55;
+}
+.gloss-eg strong { color: var(--accent); }
+
 /* ── Case study block ── */
 .case-study {
   margin-top: 16px;
@@ -1094,6 +1209,20 @@ main {
 }
 .ar-body { padding: 20px; background: var(--card); }
 .ar-verdict { font-size: 1.3rem; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.01em; }
+.best-variant-banner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 14px;
+  padding: 10px 14px;
+  background: var(--success-bg, rgba(26,122,74,0.1));
+  border: 1px solid var(--success, #1a7a4a);
+  border-left: 4px solid var(--success, #1a7a4a);
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  color: var(--success, #1a7a4a);
+  font-weight: 600;
+}
 .ar-verdict.sig   { color: var(--success); }
 .ar-verdict.worse { color: var(--warning); }
 .ar-verdict.insig { color: var(--ink-muted); }
@@ -2079,6 +2208,7 @@ canvas.chart { width: 100% !important; height: 100% !important; display: block; 
         <div class="toc-sidebar-title" data-i18n="toc_title">On this page</div>
 
         <div class="toc-group-h" data-i18n="toc_g1">🧠 Core concepts</div>
+        <a class="toc-link" href="#sec-glossary"><span class="toc-emoji">📖</span><span data-i18n="toc_glossary_short">Plain-English glossary</span></a>
         <a class="toc-link" href="#sec-significance"><span class="toc-emoji">📊</span><span data-i18n="ref_chart1_title">How statistical significance works</span></a>
         <a class="toc-link" href="#sec-errors"><span class="toc-emoji">⚖️</span><span data-i18n="ref_chart2_title">Type I &amp; Type II errors</span></a>
         <a class="toc-link" href="#sec-samplesize"><span class="toc-emoji">📐</span><span data-i18n="toc_samplesize_short">Sample size vs MDE</span></a>
@@ -2113,6 +2243,68 @@ canvas.chart { width: 100% !important; height: 100% !important; display: block; 
 
   <!-- Scrolling content -->
   <div class="ref-content">
+
+  <!-- Beginner glossary -->
+  <div class="card" id="sec-glossary">
+    <div class="card-title" data-i18n="ref_glossary_title">Plain-English glossary: the terms, with examples</div>
+    <div class="chart-sub" style="margin-bottom:14px" data-i18n="ref_glossary_sub">Every A/B testing term you'll meet, explained without jargon — each with a concrete example. Start here if the vocabulary feels intimidating.</div>
+
+    <div class="glossary">
+      <div class="gloss-item">
+        <div class="gloss-term"><span class="gloss-emoji">🎯</span><span data-i18n="gl_null_t">Null hypothesis (H₀)</span></div>
+        <div class="gloss-def" data-i18n="gl_null_d">The starting assumption that there is <strong>no real difference</strong> between your variants — any gap you see is just chance. A test tries to gather enough evidence to reject it.</div>
+        <div class="gloss-eg"><strong data-i18n="gl_eg">Example:</strong> <span data-i18n="gl_null_e">"The new checkout button converts exactly the same as the old one." You run the test hoping to disprove this.</span></div>
+      </div>
+
+      <div class="gloss-item">
+        <div class="gloss-term"><span class="gloss-emoji">🎲</span><span data-i18n="gl_pval_t">P-value</span></div>
+        <div class="gloss-def" data-i18n="gl_pval_d">The probability of seeing a difference <strong>at least as big</strong> as the one you observed <em>if the variants were actually identical</em>. A small p-value means "this gap would be surprising if nothing were really going on" — so you start to believe something is.</div>
+        <div class="gloss-eg"><strong data-i18n="gl_eg">Example:</strong> <span data-i18n="gl_pval_e">p = 0.03 means: if the button truly made no difference, you'd see a gap this large only 3% of the time by luck. That's rare enough to call it a real effect. <strong>It does not</strong> mean "97% chance the button is better" — a common trap.</span></div>
+      </div>
+
+      <div class="gloss-item">
+        <div class="gloss-term"><span class="gloss-emoji">🚦</span><span data-i18n="gl_alpha_t">Significance level (α)</span></div>
+        <div class="gloss-def" data-i18n="gl_alpha_d">The bar you set <em>in advance</em> for how small the p-value must be to call a result "significant." It is also your accepted false-positive rate. Usually 0.05.</div>
+        <div class="gloss-eg"><strong data-i18n="gl_eg">Example:</strong> <span data-i18n="gl_alpha_e">α = 0.05 means you accept a 1-in-20 chance of being fooled by noise into declaring a winner that isn't real.</span></div>
+      </div>
+
+      <div class="gloss-item">
+        <div class="gloss-term"><span class="gloss-emoji">✅</span><span data-i18n="gl_sig_t">Statistical significance</span></div>
+        <div class="gloss-def" data-i18n="gl_sig_d">A result is "statistically significant" when its p-value falls below your α. It means the difference is unlikely to be pure chance — <strong>not</strong> that it is large or important.</div>
+        <div class="gloss-eg"><strong data-i18n="gl_eg">Example:</strong> <span data-i18n="gl_sig_e">A 0.1% lift can be significant with millions of users, yet be too small to matter for the business. Significant ≠ meaningful.</span></div>
+      </div>
+
+      <div class="gloss-item">
+        <div class="gloss-term"><span class="gloss-emoji">📏</span><span data-i18n="gl_ci_t">Confidence interval (CI)</span></div>
+        <div class="gloss-def" data-i18n="gl_ci_d">A <strong>range of plausible values</strong> for the true effect, instead of a single number. A 95% CI means: if you repeated the experiment many times, about 95% of the intervals you'd build would contain the true value. Wider interval = more uncertainty.</div>
+        <div class="gloss-eg"><strong data-i18n="gl_ci_e">Example:</strong> <span data-i18n="gl_ci_e2">A lift of "+8% with 95% CI [+2%, +14%]" says the real effect is probably between +2% and +14%. Because the whole range is above zero, you can be confident it's a genuine improvement. If the CI were [−3%, +19%], it crosses zero — you couldn't rule out no effect (or even harm).</span></div>
+      </div>
+
+      <div class="gloss-item">
+        <div class="gloss-term"><span class="gloss-emoji">💪</span><span data-i18n="gl_power_t">Statistical power</span></div>
+        <div class="gloss-def" data-i18n="gl_power_d">The chance your test will <strong>detect a real effect</strong> if one truly exists. Low power means you might miss a genuine winner. The standard target is 80%.</div>
+        <div class="gloss-eg"><strong data-i18n="gl_eg">Example:</strong> <span data-i18n="gl_power_e">80% power means: if the new button really is better, you have an 80% chance of your test catching it — and a 20% chance of missing it because your sample was too small.</span></div>
+      </div>
+
+      <div class="gloss-item">
+        <div class="gloss-term"><span class="gloss-emoji">📐</span><span data-i18n="gl_mde_t">Minimum detectable effect (MDE)</span></div>
+        <div class="gloss-def" data-i18n="gl_mde_d">The <strong>smallest improvement worth catching</strong>. You decide it before the test — it drives how many users you need. Smaller MDE = much larger sample.</div>
+        <div class="gloss-eg"><strong data-i18n="gl_eg">Example:</strong> <span data-i18n="gl_mde_e">"I only care if the button lifts conversion by at least 5%." Detecting a 5% lift needs far fewer users than detecting a 1% lift.</span></div>
+      </div>
+
+      <div class="gloss-item">
+        <div class="gloss-term"><span class="gloss-emoji">👥</span><span data-i18n="gl_ss_t">Sample size</span></div>
+        <div class="gloss-def" data-i18n="gl_ss_d">How many users you need per variant to reliably detect your MDE at your chosen α and power. Too few and the test is underpowered; the Plan tab computes this for you.</div>
+        <div class="gloss-eg"><strong data-i18n="gl_eg">Example:</strong> <span data-i18n="gl_ss_e">To spot a 5% lift on a 3% baseline at 80% power, you might need ~50,000 users per arm — roughly two weeks at typical traffic.</span></div>
+      </div>
+
+      <div class="gloss-item">
+        <div class="gloss-term"><span class="gloss-emoji">⚠️</span><span data-i18n="gl_errors_t">Type I & Type II errors</span></div>
+        <div class="gloss-def" data-i18n="gl_errors_d">A <strong>Type I error</strong> (false positive) is declaring a winner that isn't real. A <strong>Type II error</strong> (false negative) is missing a real winner. α controls the first; power controls the second.</div>
+        <div class="gloss-eg"><strong data-i18n="gl_eg">Example:</strong> <span data-i18n="gl_errors_e">Shipping a button that actually does nothing = Type I. Killing a button that actually worked = Type II.</span></div>
+      </div>
+    </div>
+  </div>
 
   <!-- Chart 1: Significance / normal distribution -->
   <div class="chart-card" id="sec-significance">
@@ -2586,8 +2778,19 @@ canvas.chart { width: 100% !important; height: 100% !important; display: block; 
 
     <div class="chart-card" style="box-shadow:none;border:1px solid var(--border);margin:14px 0 4px">
       <div class="chart-title" style="padding-right:80px" data-i18n="mt_chart_title">False-positive risk vs number of comparisons</div>
-      <div class="chart-sub" data-i18n="mt_chart_sub">The orange line is the uncorrected family-wise error rate; the dashed line shows how Bonferroni holds it at 5%.</div>
+      <div class="chart-sub" data-i18n="mt_chart_sub">The orange line is the uncorrected family-wise error rate; the dashed line shows how Bonferroni holds it at 5%. Drag the slider to set how many comparisons you run.</div>
       <button class="chart-dl" onclick="downloadChart('chart-fwer','multiple-testing-fwer')"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></span><span class="dl-label" data-i18n="btn_dl_png">PNG</span></button>
+
+      <div class="fwer-formula" id="fwer-formula">
+        <span class="fwer-formula-label" data-i18n="mt_formula_label">Family-wise error rate</span>
+        <span class="fwer-eq">FWER = 1 − (1 − α)<sup>m</sup> = 1 − (1 − <span class="fwer-hl">0.05</span>)<sup><span class="fwer-hl" id="fwer-m">3</span></sup> = <span class="fwer-result" id="fwer-val">14.3%</span></span>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:12px;margin:10px 0 4px;flex-wrap:wrap">
+        <label style="font-size:0.8rem;color:var(--ink-muted);font-weight:600" data-i18n="mt_slider_label">Comparisons (m):</label>
+        <input type="range" id="fwer-slider" min="1" max="20" value="3" step="1" style="flex:1;min-width:140px;accent-color:var(--accent)">
+        <span id="fwer-slider-val" style="font-family:'JetBrains Mono',monospace;font-weight:600;color:var(--accent);min-width:32px">3</span>
+      </div>
       <div class="chart-wrap" style="height:220px"><canvas id="chart-fwer"></canvas></div>
     </div>
 
@@ -2595,6 +2798,10 @@ canvas.chart { width: 100% !important; height: 100% !important; display: block; 
       <div class="tip-row"><span class="tip-icon">➗</span><div><strong data-i18n="mt_bonf_b">Bonferroni correction.</strong> <span data-i18n="mt_bonf">Divide your target α by the number of comparisons m (e.g. 0.05 / 10 = 0.005); only p-values below that count as significant. Dead simple and strictly controls FWER — but over-conservative, so it costs you power and can miss real effects.</span></div></div>
       <div class="tip-row"><span class="tip-icon">📶</span><div><strong data-i18n="mt_holm_b">Holm–Bonferroni (step-down).</strong> <span data-i18n="mt_holm">Sort the p-values smallest to largest and test them in order against progressively looser thresholds (α/m, then α/(m−1), …). Uniformly more powerful than plain Bonferroni while giving the same FWER guarantee. A sensible default.</span></div></div>
       <div class="tip-row"><span class="tip-icon">📊</span><div><strong data-i18n="mt_bh_b">Benjamini–Hochberg (FDR control).</strong> <span data-i18n="mt_bh">Instead of guarding against even one false positive, it controls the expected <em>fraction</em> of false positives among your significant results (the False Discovery Rate). Much more powerful when you screen many metrics, at the cost of allowing a controlled share of errors. The standard choice for large dashboards and exploratory analyses.</span></div></div>
+      <div class="callout-box" style="background:rgba(91,80,200,0.07);border-left-color:var(--accent)">
+        <div class="callout-title" style="color:var(--accent)" data-i18n="mt_omnibus_title">🧪 Run the omnibus test first</div>
+        <p data-i18n="mt_omnibus_body" style="margin:0">With 3+ variants, don't jump straight to pairwise comparisons. First run a single <strong>omnibus test</strong> — χ² for conversion, one-way ANOVA for continuous metrics — that asks one question: "is <em>any</em> variant different from the others?" Only if that comes back significant do you proceed to corrected pairwise tests to find <em>which</em> ones. This two-stage gate (the protected procedure) controls the error rate and stops you from fishing through pairs that the data never justified. This calculator follows exactly that order: χ² first, then Holm-corrected pairwise comparisons vs control.</p>
+      </div>
       <div class="callout-box">
         <div class="callout-title" data-i18n="mt_pick_title">✅ Which to use</div>
         <p data-i18n="mt_pick_body" style="margin:0">A few pre-planned comparisons where any false positive is costly → <strong>Holm–Bonferroni</strong> (the recommended default). Screening many metrics where you can tolerate a small false-positive share for more discoveries → <strong>Benjamini–Hochberg</strong>. Plain Bonferroni is fine when m is small and you want the simplest defensible rule. Guardrail metrics that protect against regressions are usually left <em>uncorrected</em> — there you want maximum sensitivity.</p>
@@ -2708,6 +2915,38 @@ const T = {
     ref_tests_title:'Tests at a glance', ref_how_title:'How each test works',
     ref_limits_title:'Limitations & how to overcome them',
     ref_abp_title:'How α, β, and power interact',
+    toc_glossary_short:'Plain-English glossary',
+    ref_glossary_title:'Plain-English glossary: the terms, with examples',
+    ref_glossary_sub:"Every A/B testing term you'll meet, explained without jargon — each with a concrete example. Start here if the vocabulary feels intimidating.",
+    gl_eg:'Example:',
+    gl_null_t:'Null hypothesis (H₀)',
+    gl_null_d:'The starting assumption that there is <strong>no real difference</strong> between your variants — any gap you see is just chance. A test tries to gather enough evidence to reject it.',
+    gl_null_e:'"The new checkout button converts exactly the same as the old one." You run the test hoping to disprove this.',
+    gl_pval_t:'P-value',
+    gl_pval_d:'The probability of seeing a difference <strong>at least as big</strong> as the one you observed <em>if the variants were actually identical</em>. A small p-value means "this gap would be surprising if nothing were really going on" — so you start to believe something is.',
+    gl_pval_e:"p = 0.03 means: if the button truly made no difference, you'd see a gap this large only 3% of the time by luck. That's rare enough to call it a real effect. <strong>It does not</strong> mean \"97% chance the button is better\" — a common trap.",
+    gl_alpha_t:'Significance level (α)',
+    gl_alpha_d:'The bar you set <em>in advance</em> for how small the p-value must be to call a result "significant." It is also your accepted false-positive rate. Usually 0.05.',
+    gl_alpha_e:'α = 0.05 means you accept a 1-in-20 chance of being fooled by noise into declaring a winner that isn\'t real.',
+    gl_sig_t:'Statistical significance',
+    gl_sig_d:'A result is "statistically significant" when its p-value falls below your α. It means the difference is unlikely to be pure chance — <strong>not</strong> that it is large or important.',
+    gl_sig_e:'A 0.1% lift can be significant with millions of users, yet be too small to matter for the business. Significant ≠ meaningful.',
+    gl_ci_t:'Confidence interval (CI)',
+    gl_ci_d:'A <strong>range of plausible values</strong> for the true effect, instead of a single number. A 95% CI means: if you repeated the experiment many times, about 95% of the intervals you\'d build would contain the true value. Wider interval = more uncertainty.',
+    gl_ci_e:'Example:',
+    gl_ci_e2:'A lift of "+8% with 95% CI [+2%, +14%]" says the real effect is probably between +2% and +14%. Because the whole range is above zero, you can be confident it\'s a genuine improvement. If the CI were [−3%, +19%], it crosses zero — you couldn\'t rule out no effect (or even harm).',
+    gl_power_t:'Statistical power',
+    gl_power_d:'The chance your test will <strong>detect a real effect</strong> if one truly exists. Low power means you might miss a genuine winner. The standard target is 80%.',
+    gl_power_e:'80% power means: if the new button really is better, you have an 80% chance of your test catching it — and a 20% chance of missing it because your sample was too small.',
+    gl_mde_t:'Minimum detectable effect (MDE)',
+    gl_mde_d:'The <strong>smallest improvement worth catching</strong>. You decide it before the test — it drives how many users you need. Smaller MDE = much larger sample.',
+    gl_mde_e:'"I only care if the button lifts conversion by at least 5%." Detecting a 5% lift needs far fewer users than detecting a 1% lift.',
+    gl_ss_t:'Sample size',
+    gl_ss_d:'How many users you need per variant to reliably detect your MDE at your chosen α and power. Too few and the test is underpowered; the Plan tab computes this for you.',
+    gl_ss_e:'To spot a 5% lift on a 3% baseline at 80% power, you might need ~50,000 users per arm — roughly two weeks at typical traffic.',
+    gl_errors_t:'Type I & Type II errors',
+    gl_errors_d:'A <strong>Type I error</strong> (false positive) is declaring a winner that isn\'t real. A <strong>Type II error</strong> (false negative) is missing a real winner. α controls the first; power controls the second.',
+    gl_errors_e:'Shipping a button that actually does nothing = Type I. Killing a button that actually worked = Type II.',
     ref_chart1_title:'How statistical significance works',
     ref_chart1_sub:'The null hypothesis assumes no real effect. If your test statistic lands in the shaded rejection region (|Z| > zα), you reject it. α = 0.05 shown.',
     ref_chart2_title:'Type I & Type II errors',
@@ -2845,12 +3084,15 @@ const T = {
     ref_multiple_title:'Multiple testing: why more comparisons inflate false positives',
     ref_multiple_sub:'The classic α = 0.05 threshold protects a single comparison. The moment you test several hypotheses at once, the chance of at least one false positive climbs fast — and you must correct for it.',
     mt_problem:'<strong>The problem.</strong> If you fix α = 0.05 and test one hypothesis, your chance of a false positive is 5%. But test several independent hypotheses and the probability of at least one false positive — the family-wise error rate (FWER) — is 1 − (1 − α)<sup>m</sup>. With 3 comparisons it is already ~14%; with 10 it is ~40%. More variants, more metrics, or repeated peeking all multiply your chances of being fooled.',
+    mt_formula_label:'Family-wise error rate', mt_slider_label:'Comparisons (m):',
     mt_chart_title:'False-positive risk vs number of comparisons',
     mt_chart_sub:'The orange line is the uncorrected family-wise error rate; the dashed line shows how Bonferroni holds it at 5%.',
     mt_lbl_bonf:'with Bonferroni (5%)', mt_lbl_fwer:'uncorrected FWER', mt_axis:'number of simultaneous comparisons (m)',
     mt_bonf_b:'Bonferroni correction.', mt_bonf:'Divide your target α by the number of comparisons m (e.g. 0.05 / 10 = 0.005); only p-values below that count as significant. Dead simple and strictly controls FWER — but over-conservative, so it costs you power and can miss real effects.',
     mt_holm_b:'Holm–Bonferroni (step-down).', mt_holm:'Sort the p-values smallest to largest and test them in order against progressively looser thresholds (α/m, then α/(m−1), …). Uniformly more powerful than plain Bonferroni while giving the same FWER guarantee. A sensible default.',
     mt_bh_b:'Benjamini–Hochberg (FDR control).', mt_bh:'Instead of guarding against even one false positive, it controls the expected <em>fraction</em> of false positives among your significant results (the False Discovery Rate). Much more powerful when you screen many metrics, at the cost of allowing a controlled share of errors. The standard choice for large dashboards and exploratory analyses.',
+    mt_omnibus_title:'🧪 Run the omnibus test first',
+    mt_omnibus_body:'With 3+ variants, don\'t jump straight to pairwise comparisons. First run a single <strong>omnibus test</strong> — χ² for conversion, one-way ANOVA for continuous metrics — that asks one question: "is <em>any</em> variant different from the others?" Only if that comes back significant do you proceed to corrected pairwise tests to find <em>which</em> ones. This two-stage gate (the protected procedure) controls the error rate and stops you from fishing through pairs that the data never justified. This calculator follows exactly that order: χ² first, then Holm-corrected pairwise comparisons vs control.',
     mt_pick_title:'✅ Which to use',
     mt_pick_body:'A few pre-planned comparisons where any false positive is costly → <strong>Holm–Bonferroni</strong> (the recommended default). Screening many metrics where you can tolerate a small false-positive share for more discoveries → <strong>Benjamini–Hochberg</strong>. Plain Bonferroni is fine when m is small and you want the simplest defensible rule. Guardrail metrics that protect against regressions are usually left <em>uncorrected</em> — there you want maximum sensitivity.',
     ref_aatest_title:'Start here: the A/A test',
@@ -2994,6 +3236,7 @@ const T = {
     js_results_cont:"Results — Continuous metric (Welch's t-test)",
     js_results_ratio:"Results — Ratio metric (Welch's t on aggregated per-user values)",
     js_variants_diff:'✓ Variants are meaningfully different',
+    js_best_variant:'Best variant', js_vs_control:'vs control', js_holm_col:'Holm', js_holm_sig:'significant', js_holm_ns:'not sig.', js_holm_note:'Pairwise comparisons (each variant vs control A) use the Holm–Bonferroni step-down correction across {k} comparisons — uniformly more powerful than plain Bonferroni while controlling the family-wise error rate at α = {a}.', lbl_control_word:'control',
     js_no_diff:'✗ No significant difference detected',
     js_conv_ci:'Conversion rates with 95% confidence intervals',
     js_conv_ci_sub:'Bars are observed rates; whiskers are CIs. Non-overlapping intervals roughly imply a significant difference.',
@@ -3078,6 +3321,38 @@ const T = {
     ref_tests_title:'Тесты: краткий обзор', ref_how_title:'Как работает каждый тест',
     ref_limits_title:'Ограничения и как их преодолеть',
     ref_abp_title:'Как связаны α, β и мощность',
+    toc_glossary_short:'Глоссарий простым языком',
+    ref_glossary_title:'Глоссарий простым языком: термины с примерами',
+    ref_glossary_sub:'Каждый термин A/B-тестирования без жаргона — и с конкретным примером. Начните здесь, если словарь пугает.',
+    gl_eg:'Пример:',
+    gl_null_t:'Нулевая гипотеза (H₀)',
+    gl_null_d:'Исходное предположение, что между вариантами <strong>нет реальной разницы</strong> — любой разрыв это просто случайность. Тест пытается собрать достаточно доказательств, чтобы её отвергнуть.',
+    gl_null_e:'«Новая кнопка оформления конвертит ровно так же, как старая.» Вы запускаете тест в надежде это опровергнуть.',
+    gl_pval_t:'P-value',
+    gl_pval_d:'Вероятность увидеть разницу <strong>не меньше</strong> наблюдаемой, <em>если бы варианты были одинаковы</em>. Маленький p-value означает «такой разрыв был бы удивителен, если бы ничего не происходило» — значит, что-то происходит.',
+    gl_pval_e:'p = 0,03 значит: если кнопка на самом деле ничего не меняла, такой разрыв случился бы по удаче лишь в 3% случаев. Достаточно редко, чтобы счесть эффект реальным. Это <strong>не</strong> значит «97% вероятность, что кнопка лучше» — частая ловушка.',
+    gl_alpha_t:'Уровень значимости (α)',
+    gl_alpha_d:'Планка, заданная <em>заранее</em>: насколько мал должен быть p-value, чтобы назвать результат «значимым». Это и есть принятая доля ложных срабатываний. Обычно 0,05.',
+    gl_alpha_e:'α = 0,05 значит, что вы принимаете шанс 1 к 20 быть обманутым шумом и объявить победителя, которого нет.',
+    gl_sig_t:'Статистическая значимость',
+    gl_sig_d:'Результат «статистически значим», когда его p-value ниже вашего α. Это значит, что разница вряд ли случайна — <strong>а не</strong> что она велика или важна.',
+    gl_sig_e:'Прирост 0,1% может быть значимым при миллионах пользователей, но слишком мал для бизнеса. Значимо ≠ важно.',
+    gl_ci_t:'Доверительный интервал (ДИ)',
+    gl_ci_d:'<strong>Диапазон правдоподобных значений</strong> истинного эффекта вместо одного числа. 95% ДИ значит: если повторять эксперимент много раз, около 95% построенных интервалов содержали бы истинное значение. Шире интервал — больше неопределённости.',
+    gl_ci_e:'Пример:',
+    gl_ci_e2:'Прирост «+8% с 95% ДИ [+2%, +14%]» говорит, что реальный эффект, вероятно, между +2% и +14%. Раз весь диапазон выше нуля, можно быть уверенным в реальном улучшении. Если бы ДИ был [−3%, +19%], он пересекает ноль — нельзя исключить отсутствие эффекта (или даже вред).',
+    gl_power_t:'Статистическая мощность',
+    gl_power_d:'Шанс, что тест <strong>обнаружит реальный эффект</strong>, если он существует. Низкая мощность — можно пропустить настоящего победителя. Стандартная цель — 80%.',
+    gl_power_e:'Мощность 80% значит: если новая кнопка действительно лучше, у вас 80% шанс это поймать — и 20% шанс пропустить из-за слишком малой выборки.',
+    gl_mde_t:'Минимальный обнаружимый эффект (MDE)',
+    gl_mde_d:'<strong>Наименьшее улучшение, которое стоит ловить</strong>. Вы задаёте его до теста — оно определяет, сколько нужно пользователей. Меньше MDE — намного больше выборка.',
+    gl_mde_e:'«Мне важно, только если кнопка поднимает конверсию хотя бы на 5%.» Обнаружить прирост 5% нужно куда меньше пользователей, чем 1%.',
+    gl_ss_t:'Размер выборки',
+    gl_ss_d:'Сколько пользователей нужно на вариант, чтобы надёжно обнаружить ваш MDE при выбранных α и мощности. Слишком мало — тест недостаточно мощный; вкладка «План» считает это за вас.',
+    gl_ss_e:'Чтобы заметить прирост 5% на базе 3% при мощности 80%, может понадобиться ~50 000 пользователей на группу — около двух недель при обычном трафике.',
+    gl_errors_t:'Ошибки I и II рода',
+    gl_errors_d:'<strong>Ошибка I рода</strong> (ложноположительная) — объявить победителя, которого нет. <strong>Ошибка II рода</strong> (ложноотрицательная) — пропустить настоящего победителя. α контролирует первую, мощность — вторую.',
+    gl_errors_e:'Запустить кнопку, которая ничего не делает = I рода. Убить кнопку, которая работала = II рода.',
     ref_chart1_title:'Как работает статистическая значимость',
     ref_chart1_sub:'Нулевая гипотеза предполагает отсутствие реального эффекта. Если статистика теста попадает в зону отклонения (|Z| > zα), мы отвергаем H₀. Показано α = 0.05.',
     ref_chart2_title:'Ошибки I и II рода',
@@ -3215,12 +3490,15 @@ const T = {
     ref_multiple_title:'Множественное тестирование: почему больше сравнений завышают ложные срабатывания',
     ref_multiple_sub:'Классический порог α = 0,05 защищает одно сравнение. Как только вы проверяете несколько гипотез сразу, вероятность хотя бы одного ложного срабатывания быстро растёт — и её нужно корректировать.',
     mt_problem:'<strong>Проблема.</strong> При α = 0,05 и одной гипотезе шанс ложного срабатывания — 5%. Но при проверке нескольких независимых гипотез вероятность хотя бы одного ложного срабатывания — групповая вероятность ошибки (FWER) — равна 1 − (1 − α)<sup>m</sup>. При 3 сравнениях это уже ~14%, при 10 — ~40%. Больше вариантов, больше метрик или повторное подглядывание умножают шанс обмануться.',
+    mt_formula_label:'Групповая вероятность ошибки', mt_slider_label:'Сравнений (m):',
     mt_chart_title:'Риск ложного срабатывания и число сравнений',
     mt_chart_sub:'Оранжевая линия — нескорректированная групповая ошибка; пунктир показывает, как Бонферрони удерживает её на 5%.',
     mt_lbl_bonf:'с Бонферрони (5%)', mt_lbl_fwer:'без поправки (FWER)', mt_axis:'число одновременных сравнений (m)',
     mt_bonf_b:'Поправка Бонферрони.', mt_bonf:'Разделите целевой α на число сравнений m (например, 0,05 / 10 = 0,005); значимыми считаются только p-value ниже этого порога. Очень просто и строго контролирует FWER — но слишком консервативно, теряет мощность и может пропустить реальные эффекты.',
     mt_holm_b:'Холма–Бонферрони (пошаговая).', mt_holm:'Отсортируйте p-value от меньшего к большему и проверяйте по очереди против всё более мягких порогов (α/m, затем α/(m−1), …). Равномерно мощнее обычного Бонферрони при той же гарантии FWER. Разумный выбор по умолчанию.',
     mt_bh_b:'Бенджамини–Хохберга (контроль FDR).', mt_bh:'Вместо защиты даже от одного ложного срабатывания контролирует ожидаемую <em>долю</em> ложных среди значимых результатов (False Discovery Rate). Гораздо мощнее при просмотре многих метрик ценой допустимой доли ошибок. Стандартный выбор для больших дашбордов и разведочного анализа.',
+    mt_omnibus_title:'🧪 Сначала запустите омнибус-тест',
+    mt_omnibus_body:'При 3+ вариантах не переходите сразу к парным сравнениям. Сначала запустите единый <strong>омнибус-тест</strong> — χ² для конверсии, однофакторный ANOVA для непрерывных метрик — который задаёт один вопрос: «отличается ли <em>хоть какой-то</em> вариант от остальных?» И только если он значим, переходите к скорректированным парным тестам, чтобы найти <em>какие именно</em>. Этот двухэтапный шлюз (защищённая процедура) контролирует уровень ошибок и не даёт перебирать пары, которые данные не оправдывают. Этот калькулятор следует именно такому порядку: сначала χ², затем парные сравнения к контролю с поправкой Холма.',
     mt_pick_title:'✅ Что выбрать',
     mt_pick_body:'Несколько заранее запланированных сравнений, где любое ложное срабатывание дорого → <strong>Холма–Бонферрони</strong> (рекомендуемый выбор). Просмотр многих метрик, где допустима малая доля ложных ради большего числа находок → <strong>Бенджамини–Хохберга</strong>. Обычный Бонферрони подходит при малом m и желании простейшего защитимого правила. Охранные метрики против регрессий обычно оставляют <em>без поправки</em> — там нужна максимальная чувствительность.',
     ref_aatest_title:'Начните здесь: A/A-тест',
@@ -3363,7 +3641,8 @@ const T = {
     js_results_conv:'Результаты — Z-тест для конверсий',
     js_results_cont:'Результаты — Непрерывная метрика (критерий Уэлча)',
     js_results_ratio:'Результаты — t-тест для метрик-отношений (агрегированные значения)',
-    js_variants_diff:'✓ Варианты значимо различаются', js_no_diff:'✗ Значимых различий не обнаружено',
+    js_variants_diff:'✓ Варианты значимо различаются',
+    js_best_variant:'Лучший вариант', js_vs_control:'к контролю', js_holm_col:'Холм', js_holm_sig:'значимо', js_holm_ns:'не значимо', js_holm_note:'Парные сравнения (каждый вариант к контролю A) используют пошаговую поправку Холма–Бонферрони по {k} сравнениям — равномерно мощнее обычного Бонферрони при контроле групповой ошибки на уровне α = {a}.', lbl_control_word:'контроль', js_no_diff:'✗ Значимых различий не обнаружено',
     js_conv_ci:'Конверсии с 95% доверительными интервалами',
     js_conv_ci_sub:'Столбцы — наблюдаемые конверсии; усы — ДИ. Непересекающиеся интервалы примерно указывают на значимые различия.',
     js_null_dist:'Как наблюдаемое различие соотносится с нулевым распределением',
@@ -3713,20 +3992,34 @@ function calcSampleSize() {
   encodeState();
 }
 
-// ── Add conversion variant ──
-let convVariantCount = 2;
+// ── Add / remove conversion variants (labels always follow position) ──
+function relabelConvVariants() {
+  const rows = document.querySelectorAll('#conv-variants .variant-row');
+  rows.forEach((row, i) => {
+    const tagEl = row.querySelector('.variant-tag');
+    if (!tagEl) return;
+    tagEl.textContent = String.fromCharCode(65 + i);   // A, B, C, …
+    tagEl.classList.toggle('control', i === 0);         // only the first is control
+  });
+}
+
+function removeConvVariant(btn) {
+  const row = btn.closest('.variant-row');
+  if (row) row.remove();
+  relabelConvVariants();
+}
+
 function addConvVariant() {
-  convVariantCount++;
-  const tag = String.fromCharCode(64+convVariantCount);
   const div = document.createElement('div');
   div.className = 'variant-row';
-  div.innerHTML = `<div class="variant-tag">${tag}</div>
+  div.innerHTML = `<div class="variant-tag"></div>
     <div class="variant-inputs">
-      <div class="vi-field"><label>Exposed</label><input type="number" class="cv-users" placeholder="5000" min="1"></div>
-      <div class="vi-field"><label>Converted</label><input type="number" class="cv-conv" placeholder="280" min="0"></div>
+      <div class="vi-field"><label>${T[currentLang].lbl_exposed || 'Exposed'}</label><input type="number" class="cv-users" placeholder="5000" min="1"></div>
+      <div class="vi-field"><label>${T[currentLang].lbl_converted || 'Converted'}</label><input type="number" class="cv-conv" placeholder="280" min="0"></div>
     </div>
-    <button class="btn-remove" onclick="this.parentElement.remove()">×</button>`;
+    <button class="btn-remove" onclick="removeConvVariant(this)">×</button>`;
   document.getElementById('conv-variants').appendChild(div);
+  relabelConvVariants();
 }
 
 // ── Inline validation message helper (replaces alert pop-ups) ──
@@ -4014,16 +4307,49 @@ function analyseConversion() {
     </div>`;
 
     if(sigChi){
-      // The tool reports each variant vs control A, so there are (m-1) comparisons.
-      // Bonferroni divides alpha by the number of comparisons actually made.
-      const k=variants.length-1;
-      const aBonf=alpha/k;
+      // Holm–Bonferroni step-down across the (m-1) variant-vs-control comparisons.
+      const k = variants.length - 1;
+      // 1) compute raw p-values and lifts for each variant vs control A
+      const comps = variants.map((v, i) => {
+        if (i === 0) return null;
+        const seAB = Math.sqrt(A.p*(1-A.p)/A.n + v.p*(1-v.p)/v.n);
+        const zAB = (v.p - A.p) / seAB;
+        const pvAB = 2*(1-normCDF(Math.abs(zAB)));
+        return { i, p: pvAB, lift: (v.p-A.p)/A.p*100 };
+      });
+      // 2) Holm step-down: sort ascending, threshold alpha/(k-rank), stop at first non-rejection
+      const ordered = comps.filter(Boolean).slice().sort((a,b)=>a.p-b.p);
+      const holmSig = {};
+      let stillRejecting = true;
+      ordered.forEach((c, rank) => {
+        const thr = alpha / (k - rank);
+        c.thr = thr;
+        const rejected = stillRejecting && c.p < thr;
+        holmSig[c.i] = rejected;
+        if (!rejected) stillRejecting = false;
+      });
+      // 3) pick the best variant to highlight: highest rate among Holm-significant winners
+      //    (positive lift); if none significant, highlight the highest observed rate.
+      let bestIdx = -1, bestRate = -Infinity;
+      variants.forEach((v, i) => {
+        const qualifies = i === 0 ? false : (holmSig[i] && comps[i].lift > 0);
+        if (qualifies && v.p > bestRate) { bestRate = v.p; bestIdx = i; }
+      });
+      if (bestIdx === -1) { // no significant winner — flag the top raw rate (non-committal)
+        variants.forEach((v, i) => { if (v.p > bestRate) { bestRate = v.p; bestIdx = i; } });
+      }
+      const anyWinner = Object.values(holmSig).some(Boolean);
+
+      if (anyWinner && bestIdx > 0) {
+        html += `<div class="best-variant-banner">🏆 ${T[currentLang].js_best_variant || 'Best variant'}: <strong>${String.fromCharCode(65+bestIdx)}</strong> — ${(variants[bestIdx].p*100).toFixed(2)}% (${comps[bestIdx].lift>0?'+':''}${comps[bestIdx].lift.toFixed(1)}% ${T[currentLang].js_vs_control || 'vs control'})</div>`;
+      }
+
       // Full table for all variants
       html += `<div class="scroll-x" style="margin-top:16px">
-        <table class="ref-table" style="min-width:520px">
+        <table class="ref-table" style="min-width:560px">
           <thead><tr>
             <th>Variant</th><th>n</th><th>Rate</th><th>SD</th><th>CV</th>
-            <th>95% CI</th><th>Δ vs A</th><th>P-value</th>
+            <th>95% CI</th><th>Δ vs A</th><th>P-value</th><th>${T[currentLang].js_holm_col || 'Holm'}</th>
           </tr></thead><tbody>`;
       variants.forEach((v, i) => {
         const tag = String.fromCharCode(65+i);
@@ -4031,19 +4357,21 @@ function analyseConversion() {
         const cv = sd / v.p;
         const cilo = ((v.p - 1.96*Math.sqrt(v.p*(1-v.p)/v.n))*100).toFixed(2);
         const cihi = ((v.p + 1.96*Math.sqrt(v.p*(1-v.p)/v.n))*100).toFixed(2);
-        let liftTd = '—', pTd = '—';
+        let liftTd = '—', pTd = '—', holmTd = '—';
         if (i > 0) {
-          const seAB = Math.sqrt(A.p*(1-A.p)/A.n + v.p*(1-v.p)/v.n);
-          const zAB = (v.p - A.p) / seAB;
-          const pvAB = 2*(1-normCDF(Math.abs(zAB)));
-          const s = pvAB < aBonf;
-          const lift = ((v.p-A.p)/A.p*100).toFixed(2);
-          liftTd = `<span style="color:${s?RC.GR:RC.MUTED};font-weight:600">${lift>0?'+':''}${lift}%</span>`;
-          pTd = `<span style="color:${s?RC.GR:RC.MUTED};font-weight:600">${pvAB<0.0001?'< 0.0001':pvAB.toFixed(4)}</span>`;
+          const c = comps[i];
+          const sig = holmSig[i];
+          const col = sig ? RC.GR : RC.MUTED;
+          liftTd = `<span style="color:${col};font-weight:600">${c.lift>0?'+':''}${c.lift.toFixed(2)}%</span>`;
+          pTd = `<span style="color:${col};font-weight:600">${c.p<0.0001?'< 0.0001':c.p.toFixed(4)}</span>`;
+          holmTd = sig ? `<span style="color:${RC.GR};font-weight:700">✓ ${T[currentLang].js_holm_sig || 'significant'}</span>`
+                       : `<span style="color:var(--ink-faint)">${T[currentLang].js_holm_ns || 'not sig.'}</span>`;
         }
-        const rowBg = i===0 ? '' : `style="background:rgba(91,80,200,0.03)"`;
-        html += `<tr ${rowBg}>
-          <td><span style="color:${i===0?RC.P:RC.P};font-weight:700">${i===0?'◆':'◇'} ${tag}${i===0?' <small style="font-weight:400;color:var(--ink-faint)">(control)</small>':''}</span></td>
+        const isBest = (i === bestIdx && anyWinner && bestIdx > 0);
+        const rowStyle = isBest ? `style="background:${RC.GRL || 'rgba(26,122,74,0.10)'}"`
+                                : (i===0 ? '' : `style="background:rgba(91,80,200,0.03)"`);
+        html += `<tr ${rowStyle}>
+          <td><span style="color:${RC.P};font-weight:700">${isBest?'🏆':(i===0?'◆':'◇')} ${tag}${i===0?` <small style="font-weight:400;color:var(--ink-faint)">(${T[currentLang].lbl_control_word||'control'})</small>`:''}</span></td>
           <td>${v.n.toLocaleString()}</td>
           <td><strong>${(v.p*100).toFixed(2)}%</strong></td>
           <td>${(sd*100).toFixed(2)}%</td>
@@ -4051,10 +4379,11 @@ function analyseConversion() {
           <td>[${cilo}%, ${cihi}%]</td>
           <td>${liftTd}</td>
           <td>${pTd}</td>
+          <td>${holmTd}</td>
         </tr>`;
       });
       html += `</tbody></table></div>`;
-      html += `<p style="font-size:0.78rem;color:var(--ink-faint);margin-top:8px">Pairwise p-values (each variant vs control A) use Bonferroni correction: α = ${aBonf.toFixed(4)} per comparison (${alpha} ÷ ${k} comparisons).</p>`;
+      html += `<p style="font-size:0.78rem;color:var(--ink-faint);margin-top:8px">${(T[currentLang].js_holm_note || 'Pairwise comparisons (each variant vs control A) use the Holm–Bonferroni step-down correction across {k} comparisons — uniformly more powerful than plain Bonferroni while controlling the family-wise error rate at α = {a}.').replace('{k}', k).replace('{a}', alpha)}</p>`;
     }
     html+='</div>';
     const box=document.getElementById('conv-result');
@@ -4432,54 +4761,79 @@ function drawAnatomyCharts() {
   }
   const L = T[currentLang];
 
-  // Normal with 68-95-99.7 shaded bands
+  // Normal with per-segment shares (68-95-99.7), styled like the classic reference figure
   (function(){ const c = aInit('anat-chart-normal'); if(!c) return;
     const { ctx, W, H } = c;
-    const pad = { t: 18, b: 40, l: 16, r: 16 };
+    const pad = { t: 30, b: 34, l: 16, r: 16 };
     const pw = W - pad.l - pad.r, ph = H - pad.t - pad.b;
-    const mu = pad.l + pw/2;                 // centre x
-    const sd = pw / 7.2;                      // px per 1 SD (so ±3.6 SD fits)
+    const mu = pad.l + pw/2;
+    const sd = pw / 8.0;                       // px per 1 SD (±4 SD visible)
     const f = x => Math.exp(-0.5 * Math.pow((x-mu)/sd, 2));
-    const toY = v => pad.t + ph - v*ph*0.9;
-    // shaded SD bands (lightest at ±3, darker toward centre)
-    const bands = [
-      { k: 3, a: 0.08 }, { k: 2, a: 0.14 }, { k: 1, a: 0.24 },
+    const toY = v => pad.t + ph - v*ph*0.86;
+    const hx = RC.P.replace('#',''); const rn = parseInt(hx,16);
+    const R=(rn>>16)&255, G=(rn>>8)&255, B=rn&255;
+    // Per-segment fills with increasing depth toward the centre (mirrors the reference image)
+    // segments defined by [from*sd, to*sd] from the mean, with a fill alpha and a % label
+    const segs = [
+      { a:0, b:1, alpha:0.55, pct:'34.1%' },
+      { a:1, b:2, alpha:0.32, pct:'13.6%' },
+      { a:2, b:3, alpha:0.16, pct:'2.1%' },
+      { a:3, b:4, alpha:0.07, pct:'0.1%' },
     ];
-    bands.forEach(b => {
-      ctx.beginPath();
-      const x0 = mu - b.k*sd, x1 = mu + b.k*sd;
-      ctx.moveTo(x0, toY(0));
-      for (let x = x0; x <= x1; x += 1) ctx.lineTo(x, toY(f(x)));
+    function fillSeg(x0, x1, alpha){
+      ctx.beginPath(); ctx.moveTo(x0, toY(0));
+      for (let x=x0; x<=x1; x+=1) ctx.lineTo(x, toY(f(x)));
       ctx.lineTo(x1, toY(0)); ctx.closePath();
-      const h = RC.P.replace('#',''); const n = parseInt(h,16);
-      ctx.fillStyle = `rgba(${(n>>16)&255},${(n>>8)&255},${n&255},${b.a})`;
-      ctx.fill();
+      ctx.fillStyle = `rgba(${R},${G},${B},${alpha})`; ctx.fill();
+    }
+    // draw both sides of each segment
+    segs.forEach(s => {
+      fillSeg(mu + s.a*sd, mu + s.b*sd, s.alpha);     // right
+      fillSeg(mu - s.b*sd, mu - s.a*sd, s.alpha);     // left
     });
-    // SD gridlines + labels
+    // σ gridlines
     ctx.textAlign = 'center';
-    for (let k = -3; k <= 3; k++) {
+    for (let k=-4; k<=4; k++){
       const x = mu + k*sd;
       ctx.beginPath(); ctx.moveTo(x, pad.t); ctx.lineTo(x, toY(0));
-      ctx.strokeStyle = k===0 ? RC.GR : RC.BORDER;
-      ctx.lineWidth = k===0 ? 1.5 : 0.8;
-      if (k!==0) ctx.setLineDash([2,3]);
-      ctx.stroke(); ctx.setLineDash([]);
+      ctx.strokeStyle = k===0 ? '#ffffff' : 'rgba(255,255,255,0.5)';
+      ctx.lineWidth = k===0 ? 1.5 : 1;
+      if (Math.abs(k)<=3) ctx.stroke();
       ctx.fillStyle = RC.MUTED; ctx.font = '600 9.5px Inter, sans-serif';
-      ctx.fillText(k===0?'μ':(k>0?`+${k}σ`:`${k}σ`), x, H - 24);
+      if (Math.abs(k)<=3) ctx.fillText(k===0?'0':(k>0?`${k}σ`:`${k}σ`), x, H - 18);
     }
-    // curve
+    // curve outline
     ctx.beginPath();
-    for (let x = pad.l; x <= pad.l+pw; x += 1) (x===pad.l?ctx.moveTo(x,toY(f(x))):ctx.lineTo(x,toY(f(x))));
+    for (let x=pad.l; x<=pad.l+pw; x+=1) (x===pad.l?ctx.moveTo(x,toY(f(x))):ctx.lineTo(x,toY(f(x))));
     ctx.strokeStyle = RC.P; ctx.lineWidth = 2.5; ctx.stroke();
-    // percentage labels for the bands — placed clearly within each band
-    ctx.fillStyle = RC.INK; ctx.font = '700 11px Inter, sans-serif'; ctx.textAlign='center';
-    ctx.fillText('68%', mu, toY(0.50));
-    ctx.fillStyle = RC.P; ctx.font = '600 9.5px Inter, sans-serif';
-    ctx.fillText('95%', mu + 1.5*sd, toY(0.18));
-    ctx.fillText('99.7%', mu - 2.5*sd, toY(0.10));
+    // baseline
+    ctx.beginPath(); ctx.moveTo(pad.l, toY(0)); ctx.lineTo(pad.l+pw, toY(0));
+    ctx.strokeStyle = RC.BORDER; ctx.lineWidth = 1; ctx.stroke();
+    // segment % labels — centred in each segment, inside the curve where there is room
+    ctx.font = '700 10px Inter, sans-serif';
+    const lblY = [ toY(0.30), toY(0.30) ];   // 34.1% sits high inside the central band
+    // 34.1% both sides
+    ctx.fillStyle = '#fff';
+    ctx.fillText('34.1%', mu - 0.5*sd, toY(0.34));
+    ctx.fillText('34.1%', mu + 0.5*sd, toY(0.34));
+    // 13.6% both sides (white on mid band)
+    ctx.fillStyle = '#1c3d5a';
+    ctx.fillText('13.6%', mu - 1.5*sd, toY(0.07));
+    ctx.fillText('13.6%', mu + 1.5*sd, toY(0.07));
+    // 2.1% and 0.1% sit above the curve with little leader text
+    ctx.fillStyle = RC.MUTED; ctx.font = '600 9px Inter, sans-serif';
+    ctx.fillText('2.1%', mu - 2.5*sd, toY(0.10));
+    ctx.fillText('2.1%', mu + 2.5*sd, toY(0.10));
+    ctx.fillText('0.1%', mu - 3.4*sd, toY(0.05));
+    ctx.fillText('0.1%', mu + 3.4*sd, toY(0.05));
+    // top summary brackets: 68% / 95% / 99.7%
+    ctx.fillStyle = RC.INK; ctx.font = '700 9.5px Inter, sans-serif'; ctx.textAlign='center';
+    ctx.fillText('68%', mu, pad.t - 18);
+    ctx.fillStyle = RC.MUTED; ctx.font = '600 9px Inter, sans-serif';
+    ctx.fillText('95% within ±2σ · 99.7% within ±3σ', mu, pad.t - 6);
     // mean=median=mode marker
-    ctx.fillStyle = RC.GR; ctx.font = '700 10px Inter, sans-serif'; ctx.textAlign = 'center';
-    ctx.fillText(L.anat_mmm || 'mean = median = mode', mu, pad.t + 2);
+    ctx.fillStyle = RC.GR; ctx.font = '700 9.5px Inter, sans-serif';
+    ctx.fillText(L.anat_mmm || 'mean = median = mode', mu, H - 4);
   })();
 
   // Skewed helper: gamma-like shape, with mode/median/mean markers
@@ -5464,6 +5818,7 @@ function drawCharts() {
     const pad = { t: 18, b: 42, l: 44, r: 16 };
     const cw = W - pad.l - pad.r, ch = H - pad.t - pad.b;
     const mMax = 20, a = 0.05;
+    const mSel = parseInt(document.getElementById('fwer-slider')?.value) || 3;
     const toX = m => pad.l + ((m-1)/(mMax-1))*cw;
     const toY = y => pad.t + ch - y*ch;          // y in [0,1]
     // horizontal gridlines + y labels (0,25,50,75,100%)
@@ -5492,6 +5847,23 @@ function drawCharts() {
     ctx.strokeStyle = RC.OR; ctx.lineWidth = 2.5; ctx.stroke();
     ctx.fillStyle = RC.OR; ctx.font = '700 9.5px Inter, sans-serif'; ctx.textAlign='left';
     ctx.fillText(T[currentLang].mt_lbl_fwer || 'uncorrected FWER', toX(8), toY(pts[7].y)-8);
+    // highlight the selected m: vertical guide + dot + value bubble
+    const ySel = 1-Math.pow(1-a, mSel);
+    const xSel = toX(mSel);
+    ctx.beginPath(); ctx.moveTo(xSel, toY(0)); ctx.lineTo(xSel, toY(ySel));
+    ctx.strokeStyle = RC.P; ctx.lineWidth = 1.5; ctx.setLineDash([3,3]); ctx.stroke(); ctx.setLineDash([]);
+    ctx.beginPath(); ctx.arc(xSel, toY(ySel), 5, 0, 2*Math.PI);
+    ctx.fillStyle = RC.P; ctx.fill(); ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.stroke();
+    // value bubble
+    const label = `m=${mSel}: ${(ySel*100).toFixed(1)}%`;
+    ctx.font = '700 10px Inter, sans-serif';
+    const tw = ctx.measureText(label).width;
+    let bx = xSel + 8; if (bx + tw + 12 > pad.l+cw) bx = xSel - tw - 20;
+    const by = toY(ySel) - 22;
+    ctx.fillStyle = RC.P;
+    if (ctx.roundRect) { ctx.beginPath(); ctx.roundRect(bx, by, tw+12, 18, 5); ctx.fill(); }
+    else ctx.fillRect(bx, by, tw+12, 18);
+    ctx.fillStyle = '#fff'; ctx.textAlign='left'; ctx.fillText(label, bx+6, by+13);
     // x axis ticks + label
     ctx.fillStyle = RC.MUTED; ctx.font = '600 9.5px Inter, sans-serif'; ctx.textAlign='center';
     [1,5,10,15,20].forEach(m => ctx.fillText(m, toX(m), H-24));
@@ -5533,6 +5905,25 @@ document.addEventListener('DOMContentLoaded', () => {
       if (cltVal) cltVal.textContent = cltSlider.value;
       if (document.getElementById('tab-reference')?.classList.contains('active')) drawCharts();
     });
+  }
+
+  // FWER (multiple-testing) interactive slider + live formula
+  const fwerSlider = document.getElementById('fwer-slider');
+  function updateFwerFormula() {
+    if (!fwerSlider) return;
+    const m = parseInt(fwerSlider.value) || 1;
+    const fwer = 1 - Math.pow(1 - 0.05, m);
+    const valEl = document.getElementById('fwer-slider-val');
+    const mEl = document.getElementById('fwer-m');
+    const resEl = document.getElementById('fwer-val');
+    if (valEl) valEl.textContent = m;
+    if (mEl) mEl.textContent = m;
+    if (resEl) resEl.textContent = (fwer*100).toFixed(1) + '%';
+    if (document.getElementById('tab-reference')?.classList.contains('active')) drawCharts();
+  }
+  if (fwerSlider) {
+    fwerSlider.addEventListener('input', updateFwerFormula);
+    updateFwerFormula();
   }
 });
 
