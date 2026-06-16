@@ -652,6 +652,7 @@
         <div class="toc-group-h" data-i18n="toc_g5">🔬 Advanced &amp; pitfalls</div>
         <div class="toc-group-desc" data-i18n="toc_g5_desc">Techniques to make tests sharper, and the traps that quietly invalidate results — peeking, and testing too many things at once.</div>
         <a class="toc-link" href="#sec-cuped"><span class="toc-emoji">✂️</span><span data-i18n="toc_cuped_short">CUPED variance reduction</span></a>
+        <a class="toc-link" href="#sec-split"><span class="toc-emoji">⚖️</span><span data-i18n="toc_split_short">Unequal traffic splits (e.g. 90/10)</span></a>
         <a class="toc-link" href="#sec-peeking"><span class="toc-emoji">👀</span><span data-i18n="toc_peeking_short">Why peeking inflates errors</span></a>
         <a class="toc-link" href="#sec-multiple"><span class="toc-emoji">🎰</span><span data-i18n="toc_multiple_short">Multiple testing & error inflation</span></a>
       </nav>
@@ -835,6 +836,45 @@
     </div>
     <button class="chart-dl" onclick="downloadChart('chart-cuped','cuped-variance-reduction')"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></span><span class="dl-label" data-i18n="btn_dl_png">PNG</span></button>
     <div class="chart-wrap"><canvas id="chart-cuped"></canvas></div>
+  </div>
+
+  <!-- Unequal traffic split -->
+  <div class="card" id="sec-split">
+    <div class="card-title" data-i18n="ref_split_title">Unequal traffic splits: when 50/50 is too risky</div>
+    <div class="chart-sub" style="margin-bottom:14px" data-i18n="ref_split_sub">Sometimes you can't send half your users to an untested change — it may be expensive, risky, or operationally heavy. You can send a smaller slice (say 10%) to the variant. That safety has a real statistical cost.</div>
+
+    <div class="accordion-body" style="padding:0;background:none">
+      <p data-i18n="split_intro"><strong>The trade-off in one sentence:</strong> a 50/50 split is the most statistically efficient — it reaches significance with the fewest total users — but an uneven split (e.g. 90/10) exposes far fewer people to a risky variant, at the cost of needing more total traffic and more time.</p>
+    </div>
+
+    <div class="chart-card" style="box-shadow:none;border:1px solid var(--border);margin:14px 0 4px">
+      <div class="chart-title" style="padding-right:80px" data-i18n="split_chart_title">Total users needed vs how uneven the split is</div>
+      <div class="chart-sub" data-i18n="split_chart_sub">Baseline 5%, detecting a +10% relative lift at 95% confidence, 80% power. Drag to set the share going to the variant.</div>
+      <button class="chart-dl" onclick="downloadChart('chart-split','unequal-traffic-split')"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></span><span class="dl-label" data-i18n="btn_dl_png">PNG</span></button>
+
+      <div class="fwer-formula" id="split-formula">
+        <span class="fwer-formula-label" data-i18n="split_formula_label">At this split</span>
+        <span class="fwer-eq"><span data-i18n="split_var_label">variant gets</span> <span class="fwer-hl" id="split-treat">10%</span> · <span data-i18n="split_total_label">total users needed</span> <span class="fwer-result" id="split-total">179,760</span> <span class="fwer-hl" id="split-mult">2.9×</span> <span data-i18n="split_vs_label">vs 50/50</span></span>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:12px;margin:10px 0 4px;flex-wrap:wrap">
+        <label style="font-size:0.8rem;color:var(--ink-muted);font-weight:600" data-i18n="split_slider_label">Share to variant:</label>
+        <input type="range" id="split-slider" min="5" max="50" value="10" step="5" style="flex:1;min-width:140px;accent-color:var(--accent)">
+        <span id="split-slider-val" style="font-family:'JetBrains Mono',monospace;font-weight:600;color:var(--accent);min-width:42px">10%</span>
+      </div>
+      <div class="chart-wrap" style="height:230px"><canvas id="chart-split"></canvas></div>
+    </div>
+
+    <div class="accordion-body" style="padding:0;background:none;margin-top:14px">
+      <div class="tip-row"><span class="tip-icon">🛡️</span><div><strong data-i18n="split_why_b">Why you'd do it.</strong> <span data-i18n="split_why">A pricing change, a new checkout flow, or anything with revenue or support risk. A 10% exposure caps your downside: if the variant is bad, only 10% of users feel it.</span></div></div>
+      <div class="tip-row"><span class="tip-icon">🔋</span><div><strong data-i18n="split_power_b">Effect on power.</strong> <span data-i18n="split_power">Power is driven by the <em>smaller</em> arm. Shrinking the variant to 10% starves it of data, so to keep 80% power you must enlarge the whole experiment — the control arm balloons to compensate. Net effect: more total users than a balanced test.</span></div></div>
+      <div class="tip-row"><span class="tip-icon">⏱️</span><div><strong data-i18n="split_time_b">Effect on duration.</strong> <span data-i18n="split_time">The variant arm fills slowly because it only gets a thin slice of daily traffic. With the same total traffic, a 90/10 test can take roughly 2–3× longer than 50/50 to reach the needed numbers — the small arm is the bottleneck.</span></div></div>
+      <div class="tip-row"><span class="tip-icon">📐</span><div><strong data-i18n="split_rule_b">Rule of thumb.</strong> <span data-i18n="split_rule">50/50 is optimal for speed and sample efficiency. Don't go more extreme than you need: 80/20 costs ~60% more total users than 50/50, while 90/10 costs nearly 3×. Use the mildest imbalance that keeps the risk acceptable.</span></div></div>
+      <div class="callout-box">
+        <div class="callout-title" data-i18n="split_tip_title">💡 Practical guidance</div>
+        <p data-i18n="split_tip_body" style="margin:0">Start risky or expensive changes on a small slice (5–10%) to confirm nothing breaks, then — if it's safe — ramp toward 50/50 to gather evidence efficiently. If you must keep a small exposure for the whole test, plan for the longer runtime up front and check that your traffic can realistically reach the variant's required sample within your timeframe.</p>
+      </div>
+    </div>
   </div>
 
   <!-- Chart 6: Peeking inflation (interactive) -->

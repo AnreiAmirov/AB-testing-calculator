@@ -437,6 +437,20 @@ const T = {
     toc_g5_desc:'Techniques to make tests sharper, and the traps that quietly invalidate results — peeking, and testing too many things at once.',
     toc_cifac_short:'What widens a confidence interval', toc_choose_short:'Z-test vs t-test: which and why',
     toc_cuped_short:'CUPED variance reduction', toc_peeking_short:'Why peeking inflates errors',
+    toc_split_short:'Unequal traffic splits (e.g. 90/10)',
+    ref_split_title:'Unequal traffic splits: when 50/50 is too risky',
+    ref_split_sub:"Sometimes you can't send half your users to an untested change — it may be expensive, risky, or operationally heavy. You can send a smaller slice (say 10%) to the variant. That safety has a real statistical cost.",
+    split_intro:'<strong>The trade-off in one sentence:</strong> a 50/50 split is the most statistically efficient — it reaches significance with the fewest total users — but an uneven split (e.g. 90/10) exposes far fewer people to a risky variant, at the cost of needing more total traffic and more time.',
+    split_chart_title:'Total users needed vs how uneven the split is',
+    split_chart_sub:'Baseline 5%, detecting a +10% relative lift at 95% confidence, 80% power. Drag to set the share going to the variant.',
+    split_formula_label:'At this split', split_var_label:'variant gets', split_total_label:'total users needed', split_vs_label:'vs 50/50',
+    split_slider_label:'Share to variant:', split_axis:'share of traffic sent to the variant', split_best:'(most efficient)',
+    split_why_b:'Why you\'d do it.', split_why:'A pricing change, a new checkout flow, or anything with revenue or support risk. A 10% exposure caps your downside: if the variant is bad, only 10% of users feel it.',
+    split_power_b:'Effect on power.', split_power:'Power is driven by the <em>smaller</em> arm. Shrinking the variant to 10% starves it of data, so to keep 80% power you must enlarge the whole experiment — the control arm balloons to compensate. Net effect: more total users than a balanced test.',
+    split_time_b:'Effect on duration.', split_time:'The variant arm fills slowly because it only gets a thin slice of daily traffic. With the same total traffic, a 90/10 test can take roughly 2–3× longer than 50/50 to reach the needed numbers — the small arm is the bottleneck.',
+    split_rule_b:'Rule of thumb.', split_rule:'50/50 is optimal for speed and sample efficiency. Don\'t go more extreme than you need: 80/20 costs ~60% more total users than 50/50, while 90/10 costs nearly 3×. Use the mildest imbalance that keeps the risk acceptable.',
+    split_tip_title:'💡 Practical guidance',
+    split_tip_body:"Start risky or expensive changes on a small slice (5–10%) to confirm nothing breaks, then — if it's safe — ramp toward 50/50 to gather evidence efficiently. If you must keep a small exposure for the whole test, plan for the longer runtime up front and check that your traffic can realistically reach the variant's required sample within your timeframe.",
     toc_samplesize_short:'Sample size vs MDE', toc_distshapes_short:'Catalog of distribution shapes', toc_dice_short:'Worked example: two dice',
     toc_clt_short:'The Central Limit Theorem', toc_checknorm_short:'When to check for normality',
     toc_distcases_short:'Case studies: checking distributions', toc_usecases_short:'Matching the test to the situation',
@@ -892,6 +906,20 @@ const T = {
     toc_g5_desc:'Приёмы, делающие тесты точнее, и ловушки, которые тихо обесценивают результаты — подглядывание и проверка слишком многого сразу.',
     toc_cifac_short:'Что расширяет доверительный интервал', toc_choose_short:'Z-тест и t-тест: какой и почему',
     toc_cuped_short:'Снижение дисперсии CUPED', toc_peeking_short:'Почему подглядывание завышает ошибки',
+    toc_split_short:'Неравные сплиты трафика (напр. 90/10)',
+    ref_split_title:'Неравные сплиты трафика: когда 50/50 слишком рискованно',
+    ref_split_sub:'Иногда нельзя отправить половину пользователей на непроверенное изменение — оно может быть дорогим, рискованным или тяжёлым в эксплуатации. Можно направить на вариант меньшую долю (скажем, 10%). У этой безопасности есть реальная статистическая цена.',
+    split_intro:'<strong>Компромисс одной строкой:</strong> сплит 50/50 статистически самый эффективный — достигает значимости при наименьшем общем числе пользователей — но неравный сплит (напр. 90/10) подвергает риску гораздо меньше людей ценой большего трафика и времени.',
+    split_chart_title:'Сколько всего пользователей нужно в зависимости от неравномерности сплита',
+    split_chart_sub:'База 5%, обнаружение прироста +10% при 95% доверия и мощности 80%. Двигайте, чтобы задать долю на вариант.',
+    split_formula_label:'При этом сплите', split_var_label:'вариант получает', split_total_label:'всего нужно пользователей', split_vs_label:'против 50/50',
+    split_slider_label:'Доля на вариант:', split_axis:'доля трафика, направленная на вариант', split_best:'(самый эффективный)',
+    split_why_b:'Зачем это нужно.', split_why:'Изменение цены, новый флоу оформления или что угодно с риском для выручки или поддержки. Экспозиция 10% ограничивает риск: если вариант плохой, его почувствуют лишь 10% пользователей.',
+    split_power_b:'Влияние на мощность.', split_power:'Мощность определяется <em>меньшей</em> группой. Урезав вариант до 10%, вы лишаете его данных, поэтому ради 80% мощности нужно увеличить весь эксперимент — контрольная группа раздувается для компенсации. Итог: больше пользователей, чем в сбалансированном тесте.',
+    split_time_b:'Влияние на длительность.', split_time:'Группа варианта наполняется медленно, ведь получает лишь тонкий срез дневного трафика. При том же общем трафике тест 90/10 может занять примерно в 2–3 раза дольше, чем 50/50 — узкое место это малая группа.',
+    split_rule_b:'Эмпирическое правило.', split_rule:'50/50 оптимально по скорости и эффективности выборки. Не уходите в крайности без нужды: 80/20 стоит ~на 60% больше пользователей, чем 50/50, а 90/10 — почти втрое. Используйте минимальный дисбаланс, при котором риск приемлем.',
+    split_tip_title:'💡 Практический совет',
+    split_tip_body:'Запускайте рискованные или дорогие изменения на малой доле (5–10%), чтобы убедиться, что ничего не ломается, затем — если безопасно — наращивайте к 50/50 для эффективного сбора данных. Если малую экспозицию нужно держать весь тест, заранее закладывайте большую длительность и проверьте, что трафик реально доберёт нужную выборку варианта в ваши сроки.',
     toc_samplesize_short:'Размер выборки vs MDE', toc_distshapes_short:'Каталог форм распределений', toc_dice_short:'Пример: две кости',
     toc_clt_short:'Центральная предельная теорема', toc_checknorm_short:'Когда проверять нормальность',
     toc_distcases_short:'Кейсы: проверка распределений', toc_usecases_short:'Подбор теста под ситуацию',
@@ -3190,6 +3218,66 @@ function drawCharts() {
     ctx.fillText(T[currentLang].cifac_axis || 'users per group (n) — log scale', pad.l+cw/2, H-8);
   })();
 
+  // ── Total users vs treatment share (unequal split) ──
+  (function(){
+    const c = initCanvas('chart-split'); if(!c) return;
+    const { ctx, W, H } = c;
+    const pad = { t: 18, b: 42, l: 52, r: 16 };
+    const cw = W - pad.l - pad.r, ch = H - pad.t - pad.b;
+    const p1 = 0.05, p2 = p1*1.10, delta = p2-p1;
+    const zA = normInvCDF(0.975), zB = normInvCDF(0.80);
+    // total users needed as a function of treatment fraction f (control = 1-f)
+    function totalUsers(f){
+      const r = (1-f)/f;                       // control / treatment ratio
+      const pbar = (p1 + r*p2)/(1+r);
+      const n_t = Math.pow(zA*Math.sqrt((1+1/r)*pbar*(1-pbar)) + zB*Math.sqrt(p1*(1-p1)/r + p2*(1-p2)), 2) / (delta*delta);
+      const n_c = n_t * r;
+      return Math.ceil(n_t) + Math.ceil(n_c);
+    }
+    const fMin = 0.05, fMax = 0.50;
+    const fSel = (parseInt(document.getElementById('split-slider')?.value)||10)/100;
+    // y range
+    const totals = [];
+    for (let f=fMin; f<=fMax+1e-9; f+=0.01) totals.push(totalUsers(f));
+    const yMax = Math.max(...totals)*1.05;
+    const toX = f => pad.l + (f-fMin)/(fMax-fMin)*cw;
+    const toY = v => pad.t + ch - (v/yMax)*ch;
+    // y gridlines
+    ctx.textAlign='right'; ctx.font='600 9px Inter, sans-serif';
+    for (let g=0; g<=4; g++){
+      const val = yMax*g/4, y = toY(val);
+      ctx.beginPath(); ctx.moveTo(pad.l,y); ctx.lineTo(pad.l+cw,y);
+      ctx.strokeStyle=RC.BORDER; ctx.lineWidth=0.8; ctx.setLineDash([2,3]); ctx.stroke(); ctx.setLineDash([]);
+      ctx.fillStyle=RC.MUTED; ctx.fillText(Math.round(val/1000)+'k', pad.l-8, y+3);
+    }
+    // curve + fill
+    const pts=[];
+    for (let f=fMin; f<=fMax+1e-9; f+=0.005) pts.push({x:toX(f),y:toY(totalUsers(f))});
+    ctx.beginPath(); ctx.moveTo(pts[0].x,toY(0));
+    pts.forEach(pt=>ctx.lineTo(pt.x,pt.y));
+    ctx.lineTo(pts[pts.length-1].x,toY(0)); ctx.closePath();
+    ctx.fillStyle=vGrad(ctx,RC.P,pad.t,pad.t+ch,0.20,0.02); ctx.fill();
+    ctx.beginPath(); pts.forEach((pt,i)=>i===0?ctx.moveTo(pt.x,pt.y):ctx.lineTo(pt.x,pt.y));
+    ctx.strokeStyle=RC.P; ctx.lineWidth=2.5; ctx.stroke();
+    // mark 50/50 (most efficient) at right edge
+    ctx.fillStyle=RC.GR; ctx.font='700 9px Inter, sans-serif'; ctx.textAlign='center';
+    ctx.fillText('50/50 ' + (T[currentLang].split_best||'(most efficient)'), toX(0.46), toY(totalUsers(0.5))-8);
+    // highlight selected fraction
+    const xs=toX(fSel), ys=toY(totalUsers(fSel));
+    ctx.beginPath(); ctx.moveTo(xs,toY(0)); ctx.lineTo(xs,ys);
+    ctx.strokeStyle=RC.OR; ctx.lineWidth=1.5; ctx.setLineDash([3,3]); ctx.stroke(); ctx.setLineDash([]);
+    ctx.beginPath(); ctx.arc(xs,ys,5,0,2*Math.PI); ctx.fillStyle=RC.OR; ctx.fill(); ctx.strokeStyle='#fff'; ctx.lineWidth=2; ctx.stroke();
+    const lab=Math.round(totalUsers(fSel)/1000)+'k';
+    ctx.font='700 10px Inter, sans-serif'; const tw=ctx.measureText(lab).width;
+    let bx=xs+8; if (bx+tw+12>pad.l+cw) bx=xs-tw-20;
+    ctx.fillStyle=RC.OR; if(ctx.roundRect){ctx.beginPath();ctx.roundRect(bx,ys-22,tw+12,18,5);ctx.fill();}else ctx.fillRect(bx,ys-22,tw+12,18);
+    ctx.fillStyle='#fff'; ctx.textAlign='left'; ctx.fillText(lab,bx+6,ys-9);
+    // x ticks (share to variant)
+    ctx.fillStyle=RC.MUTED; ctx.font='600 9px Inter, sans-serif'; ctx.textAlign='center';
+    [0.05,0.1,0.2,0.3,0.4,0.5].forEach(f=>ctx.fillText(Math.round(f*100)+'%', toX(f), H-24));
+    ctx.fillText(T[currentLang].split_axis || 'share of traffic sent to the variant', pad.l+cw/2, H-8);
+  })();
+
   // ── FWER vs number of comparisons (multiple testing) ──
   (function(){
     const c = initCanvas('chart-fwer'); if(!c) return;
@@ -3322,6 +3410,36 @@ document.addEventListener('DOMContentLoaded', () => {
   if (ciSlider) {
     ciSlider.addEventListener('input', updateCiFormula);
     updateCiFormula();
+  }
+
+  // Unequal-split interactive slider + live formula
+  const splitSlider = document.getElementById('split-slider');
+  function splitTotal(f){
+    const p1=0.05, p2=p1*1.10, delta=p2-p1;
+    const zA=normInvCDF(0.975), zB=normInvCDF(0.80);
+    const r=(1-f)/f;
+    const pbar=(p1+r*p2)/(1+r);
+    const n_t=Math.pow(zA*Math.sqrt((1+1/r)*pbar*(1-pbar))+zB*Math.sqrt(p1*(1-p1)/r+p2*(1-p2)),2)/(delta*delta);
+    return Math.ceil(n_t)+Math.ceil(n_t*r);
+  }
+  function updateSplitFormula(){
+    if (!splitSlider) return;
+    const f = (parseInt(splitSlider.value)||10)/100;
+    const total = splitTotal(f);
+    const mult = total / splitTotal(0.5);
+    const valEl=document.getElementById('split-slider-val');
+    const treatEl=document.getElementById('split-treat');
+    const totalEl=document.getElementById('split-total');
+    const multEl=document.getElementById('split-mult');
+    if (valEl) valEl.textContent = Math.round(f*100)+'%';
+    if (treatEl) treatEl.textContent = Math.round(f*100)+'%';
+    if (totalEl) totalEl.textContent = total.toLocaleString();
+    if (multEl) multEl.textContent = mult.toFixed(1)+'×';
+    if (document.getElementById('tab-reference')?.classList.contains('active')) drawCharts();
+  }
+  if (splitSlider) {
+    splitSlider.addEventListener('input', updateSplitFormula);
+    updateSplitFormula();
   }
 });
 

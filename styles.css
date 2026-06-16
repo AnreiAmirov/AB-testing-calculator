@@ -1675,10 +1675,16 @@ main {
   .toc-nav {
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0.28s ease;
+    transition: max-height 0.3s ease;
     padding: 0 12px;
   }
-  .toc-sidebar.open .toc-nav { max-height: 1200px; padding: 0 12px 14px; }
+  /* Open: expand tall enough for the full list; scroll internally if it ever exceeds the viewport */
+  .toc-sidebar.open .toc-nav {
+    max-height: 75vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 0 12px 14px;
+  }
   .toc-sidebar.open .toc-chevron { transform: rotate(180deg); }
   [id^="sec-"] { scroll-margin-top: 16px; }
 }
