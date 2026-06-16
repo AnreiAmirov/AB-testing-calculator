@@ -95,6 +95,11 @@
       </div>
     </div>
     <p data-i18n="site_subtitle">Pick your metric, drop in your numbers, get a confident decision — with the right statistical test for what you're actually measuring.</p>
+    <div class="hero-props">
+      <span class="hero-prop"><span class="hero-prop-ic">✓</span><span data-i18n="prop_both">Sample size <em>and</em> duration in one place</span></span>
+      <span class="hero-prop"><span class="hero-prop-ic">✓</span><span data-i18n="prop_free">Free, no signup</span></span>
+      <span class="hero-prop"><span class="hero-prop-ic">✓</span><span data-i18n="prop_private">Runs in your browser — nothing leaves your device</span></span>
+    </div>
   </div>
 </header>
 
@@ -254,6 +259,13 @@
 
   </div><!-- end plan-steps -->
   <div class="plan-result-col">
+  <!-- Empty state: shown before the first calculation -->
+  <div id="plan-empty" class="plan-empty">
+    <div class="plan-empty-ic">📊</div>
+    <div class="plan-empty-t" data-i18n="plan_empty_t">Your result will appear here</div>
+    <div class="plan-empty-s" data-i18n="plan_empty_s">Required sample size, estimated test duration, and a plain-English read of what it means.</div>
+  </div>
+
   <div id="plan-result" class="result-box hidden">
     <div class="result-label" data-i18n="res_sample_size">Required sample size per variant</div>
     <div><span class="result-number" id="res-n">—</span><span class="result-unit" data-i18n="res_users">users</span></div>
@@ -271,6 +283,14 @@
       </div>
       <div id="res-duration-tips" style="margin-top:14px"></div>
     </div>
+    <div class="result-method"><span data-i18n="res_method_label">Method:</span> <span id="res-method">—</span></div>
+  </div>
+
+  <!-- What this means: plain-English interpretation, shown after a calculation -->
+  <div id="plan-explain" class="plan-explain hidden">
+    <h4 class="plan-explain-h"><span>📖</span><span data-i18n="plan_explain_h">What this means</span></h4>
+    <ul id="plan-explain-list" class="plan-explain-list"></ul>
+    <a class="plan-explain-link" href="#sec-choose" onclick="showTab('reference')"><span data-i18n="plan_explain_link">Read how this is computed →</span></a>
   </div>
   </div><!-- end plan-result-col -->
 </div><!-- end plan-layout -->
@@ -597,36 +617,43 @@
       <nav class="toc-nav" id="toc-nav">
         <div class="toc-sidebar-title" data-i18n="toc_title">On this page</div>
 
-        <div class="toc-group-h" data-i18n="toc_g1">🧠 Core concepts</div>
+        <div class="toc-group-h" data-i18n="toc_g1">🚀 Getting started</div>
+        <div class="toc-group-desc" data-i18n="toc_g1_desc">New to testing? Start here. Learn the vocabulary, see the whole process end to end, then validate your platform before you trust a single result.</div>
         <a class="toc-link" href="#sec-glossary"><span class="toc-emoji">📖</span><span data-i18n="toc_glossary_short">Plain-English glossary</span></a>
+        <a class="toc-link" href="#sec-process"><span class="toc-emoji">🧭</span><span data-i18n="toc_process_short">The full A/B test process</span></a>
+        <a class="toc-link" href="#sec-aatest"><span class="toc-emoji">🅰️</span><span data-i18n="toc_aatest_short">Start here: the A/A test</span></a>
+
+        <div class="toc-group-h" data-i18n="toc_g2">🧠 Core concepts</div>
+        <div class="toc-group-desc" data-i18n="toc_g2_desc">The four ideas every result rests on: significance, the two ways to be wrong, how big a sample you need, and the confidence interval around your answer.</div>
         <a class="toc-link" href="#sec-significance"><span class="toc-emoji">📊</span><span data-i18n="ref_chart1_title">How statistical significance works</span></a>
         <a class="toc-link" href="#sec-errors"><span class="toc-emoji">⚖️</span><span data-i18n="ref_chart2_title">Type I &amp; Type II errors</span></a>
+        <a class="toc-link" href="#sec-ci-factors"><span class="toc-emoji">📏</span><span data-i18n="toc_cifac_short">What widens a confidence interval</span></a>
         <a class="toc-link" href="#sec-samplesize"><span class="toc-emoji">📐</span><span data-i18n="toc_samplesize_short">Sample size vs MDE</span></a>
         <a class="toc-link" href="#sec-power"><span class="toc-emoji">🔋</span><span data-i18n="ref_chart4_title">How power grows with sample size</span></a>
 
-        <div class="toc-group-h" data-i18n="toc_g2">🚀 Advanced techniques</div>
-        <a class="toc-link" href="#sec-cuped"><span class="toc-emoji">✂️</span><span data-i18n="toc_cuped_short">CUPED variance reduction</span></a>
-        <a class="toc-link" href="#sec-peeking"><span class="toc-emoji">👀</span><span data-i18n="toc_peeking_short">Why peeking inflates errors</span></a>
+        <div class="toc-group-h" data-i18n="toc_g3">🎯 Choosing your test</div>
+        <div class="toc-group-desc" data-i18n="toc_g3_desc">Which test fits your metric — and what each one actually means, in both statistical and business terms. Get this right before you analyse anything.</div>
+        <a class="toc-link" href="#sec-choose"><span class="toc-emoji">🧪</span><span data-i18n="toc_choose_short">Z-test vs t-test: which and why</span></a>
+        <a class="toc-link" href="#sec-tests"><span class="toc-emoji">📋</span><span data-i18n="ref_tests_title">Tests at a glance</span></a>
+        <a class="toc-link" href="#sec-how"><span class="toc-emoji">⚙️</span><span data-i18n="ref_how_title">How each test works</span></a>
+        <a class="toc-link" href="#sec-usecases"><span class="toc-emoji">🎯</span><span data-i18n="toc_usecases_short">Matching the test to the situation</span></a>
 
-        <div class="toc-group-h" data-i18n="toc_g3">📈 Distributions &amp; theory</div>
+        <div class="toc-group-h" data-i18n="toc_g4">📈 Distributions &amp; theory</div>
+        <div class="toc-group-desc" data-i18n="toc_g4_desc">Why your data looks the way it does, and why averages behave so predictably at scale. The intuition that makes every test make sense.</div>
         <a class="toc-link" href="#sec-distshapes"><span class="toc-emoji">🗂️</span><span data-i18n="toc_distshapes_short">Catalog of distribution shapes</span></a>
         <a class="toc-link" href="#sec-fieldguide"><span class="toc-emoji">🧭</span><span data-i18n="ref_disttypes_title">A field guide to distributions</span></a>
         <a class="toc-link" href="#sec-anatomy"><span class="toc-emoji">📐</span><span data-i18n="toc_anatomy_short">Anatomy: mean, median, mode &amp; SD</span></a>
         <a class="toc-link" href="#sec-dice"><span class="toc-emoji">🎲</span><span data-i18n="toc_dice_short">Worked example: two dice</span></a>
         <a class="toc-link" href="#sec-clt"><span class="toc-emoji">🔔</span><span data-i18n="toc_clt_short">The Central Limit Theorem</span></a>
         <a class="toc-link" href="#sec-theory"><span class="toc-emoji">🧩</span><span data-i18n="ref_theory_title">The theory that ties it together</span></a>
-
-        <div class="toc-group-h" data-i18n="toc_g4">🛠️ Practical guidance</div>
         <a class="toc-link" href="#sec-checknorm"><span class="toc-emoji">🔍</span><span data-i18n="toc_checknorm_short">When to check for normality</span></a>
         <a class="toc-link" href="#sec-distcases"><span class="toc-emoji">📘</span><span data-i18n="toc_distcases_short">Case studies: checking distributions</span></a>
-        <a class="toc-link" href="#sec-usecases"><span class="toc-emoji">🎯</span><span data-i18n="toc_usecases_short">Matching the test to the situation</span></a>
-        <a class="toc-link" href="#sec-tests"><span class="toc-emoji">📋</span><span data-i18n="ref_tests_title">Tests at a glance</span></a>
-        <a class="toc-link" href="#sec-how"><span class="toc-emoji">⚙️</span><span data-i18n="ref_how_title">How each test works</span></a>
 
-        <div class="toc-group-h" data-i18n="toc_g5">🚦 Running an experiment</div>
-        <a class="toc-link" href="#sec-aatest"><span class="toc-emoji">🅰️</span><span data-i18n="toc_aatest_short">Start here: the A/A test</span></a>
+        <div class="toc-group-h" data-i18n="toc_g5">🔬 Advanced &amp; pitfalls</div>
+        <div class="toc-group-desc" data-i18n="toc_g5_desc">Techniques to make tests sharper, and the traps that quietly invalidate results — peeking, and testing too many things at once.</div>
+        <a class="toc-link" href="#sec-cuped"><span class="toc-emoji">✂️</span><span data-i18n="toc_cuped_short">CUPED variance reduction</span></a>
+        <a class="toc-link" href="#sec-peeking"><span class="toc-emoji">👀</span><span data-i18n="toc_peeking_short">Why peeking inflates errors</span></a>
         <a class="toc-link" href="#sec-multiple"><span class="toc-emoji">🎰</span><span data-i18n="toc_multiple_short">Multiple testing & error inflation</span></a>
-        <a class="toc-link" href="#sec-process"><span class="toc-emoji">🧭</span><span data-i18n="toc_process_short">The full A/B test process</span></a>
       </nav>
     </div>
   </aside>
@@ -702,6 +729,51 @@
     </div>
   </div>
 
+  <!-- Interactive A/B process walkthrough -->
+  <div class="card" id="sec-process">
+    <div class="card-title" data-i18n="ref_process_title">The full A/B test process — step by step</div>
+    <div class="chart-sub" style="margin-bottom:14px" data-i18n="ref_process_sub">Tap each step to expand it. This is the path from a vague idea to a decision you can defend.</div>
+
+    <div class="process-track" id="process-track">
+      <!-- steps injected by JS -->
+    </div>
+    <div class="process-progress"><div class="process-progress-bar" id="process-progress-bar"></div></div>
+    <div class="process-panel" id="process-panel"></div>
+  </div>
+
+  <!-- A/A test -->
+  <div class="card" id="sec-aatest">
+    <div class="card-title" data-i18n="ref_aatest_title">Start here: the A/A test</div>
+    <div class="chart-sub" style="margin-bottom:14px" data-i18n="ref_aatest_sub">Before you trust any A/B result, prove your splitting platform is fair. An A/A test sends two identical experiences to two randomly split groups — and expects to find no difference.</div>
+    <div class="accordion-body" style="padding:0;background:none">
+      <div class="tip-row"><span class="tip-icon">❓</span><div><strong data-i18n="aa_what_b">What it is.</strong> <span data-i18n="aa_what">You run an experiment where A and B are exactly the same. Since nothing differs, any "winner" your tool reports is pure noise. It is the experiment equivalent of weighing an empty scale to check it reads zero.</span></div></div>
+      <div class="tip-row"><span class="tip-icon">🎯</span><div><strong data-i18n="aa_why_b">Why juniors should start here.</strong> <span data-i18n="aa_why">Most splitting bugs are invisible until you look: a broken randomiser, users landing in both groups, bots skewing one side, or logging that double-counts. An A/A test surfaces all of these before a real test misleads you.</span></div></div>
+      <div class="tip-row"><span class="tip-icon">📊</span><div><strong data-i18n="aa_read_b">How to read it.</strong> <span data-i18n="aa_read">Expect a non-significant result (p &gt; 0.05) roughly 95% of the time. A single significant A/A result is not alarming — at α = 0.05, about 1 in 20 will trip by chance. Run several. If significants come up far more often than ~5%, your platform has a problem.</span></div></div>
+      <div class="tip-row"><span class="tip-icon">⚖️</span><div><strong data-i18n="aa_srm_b">Check the split ratio (SRM).</strong> <span data-i18n="aa_srm">If you asked for a 50/50 split, the group sizes should be very close. A large imbalance — a Sample Ratio Mismatch — means assignment is broken, and no result from that platform can be trusted until it is fixed.</span></div></div>
+      <div class="callout-box">
+        <div class="callout-title" data-i18n="aa_tip_title">✅ Practical starting checklist</div>
+        <p data-i18n="aa_tip_body" style="margin:0">1. Run an A/A test on your platform. 2. Confirm the split ratio matches what you configured. 3. Confirm the p-value is non-significant across a few runs. 4. Only then start real A/B tests. You can paste the two A/A group numbers into the Analyse tab and confirm "no clear winner" — exactly what you want to see.</p>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Chart 1: Significance / normal distribution -->
+  <div class="chart-card" id="sec-significance">
+    <div class="chart-title" data-i18n="ref_chart1_title">How statistical significance works</div>
+    <div class="chart-sub" data-i18n="ref_chart1_sub">The null hypothesis assumes no real effect. If your test statistic lands in the shaded rejection region (|Z| &gt; z<sub>α</sub>), you reject it. α = 0.05 shown.</div>
+    <button class="chart-dl" onclick="downloadChart('chart-significance','significance')"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></span><span class="dl-label" data-i18n="btn_dl_png">PNG</span></button>
+    <div class="chart-wrap"><canvas id="chart-significance"></canvas></div>
+  </div>
+
+  <!-- Chart 2: Type I and II errors -->
+  <div class="chart-card" id="sec-errors">
+    <div class="chart-title" data-i18n="ref_chart2_title">Type I &amp; Type II errors</div>
+    <div class="chart-sub" data-i18n="ref_chart2_sub">H₀ (blue) and H₁ (orange) distributions overlap. Red tail = α (false positive). Grey area = β (missed effect). Power = 1 − β.</div>
+    <button class="chart-dl" onclick="downloadChart('chart-errors','type-I-II-errors')"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></span><span class="dl-label" data-i18n="btn_dl_png">PNG</span></button>
+    <div class="chart-wrap"><canvas id="chart-errors"></canvas></div>
+  </div>
+
   <!-- What makes a confidence interval wider or narrower -->
   <div class="card" id="sec-ci-factors">
     <div class="card-title" data-i18n="ref_cifac_title">What makes a confidence interval wider or narrower?</div>
@@ -734,22 +806,6 @@
         <p data-i18n="cifac_tip_body" style="margin:0">A wide CI that crosses zero is the data telling you "I can't rule out no effect yet." The usual fix is more users — but because of the 1/√n rule, detecting ever-smaller effects gets expensive fast. That trade-off is exactly what the Plan tab quantifies when it sizes your test.</p>
       </div>
     </div>
-  </div>
-
-  <!-- Chart 1: Significance / normal distribution -->
-  <div class="chart-card" id="sec-significance">
-    <div class="chart-title" data-i18n="ref_chart1_title">How statistical significance works</div>
-    <div class="chart-sub" data-i18n="ref_chart1_sub">The null hypothesis assumes no real effect. If your test statistic lands in the shaded rejection region (|Z| &gt; z<sub>α</sub>), you reject it. α = 0.05 shown.</div>
-    <button class="chart-dl" onclick="downloadChart('chart-significance','significance')"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></span><span class="dl-label" data-i18n="btn_dl_png">PNG</span></button>
-    <div class="chart-wrap"><canvas id="chart-significance"></canvas></div>
-  </div>
-
-  <!-- Chart 2: Type I and II errors -->
-  <div class="chart-card" id="sec-errors">
-    <div class="chart-title" data-i18n="ref_chart2_title">Type I &amp; Type II errors</div>
-    <div class="chart-sub" data-i18n="ref_chart2_sub">H₀ (blue) and H₁ (orange) distributions overlap. Red tail = α (false positive). Grey area = β (missed effect). Power = 1 − β.</div>
-    <button class="chart-dl" onclick="downloadChart('chart-errors','type-I-II-errors')"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></span><span class="dl-label" data-i18n="btn_dl_png">PNG</span></button>
-    <div class="chart-wrap"><canvas id="chart-errors"></canvas></div>
   </div>
 
   <!-- Chart 3: Sample size vs MDE -->
@@ -963,6 +1019,38 @@
       <div class="tip-row"><span class="tip-icon">🔢</span><div><strong data-i18n="uc3_b">Counts per user (Poisson-like):</strong> <span data-i18n="uc3">Orders per user, errors per session. The mean is meaningful, but variance grows with the mean — Welch's t (unequal variances) is a safe default.</span></div></div>
       <div class="tip-row"><span class="tip-icon">🐫</span><div><strong data-i18n="uc4_b">Mixed populations (bimodal):</strong> <span data-i18n="uc4">Segment before you test. A single average across two distinct groups is usually misleading, however large the sample.</span></div></div>
       <div class="tip-row"><span class="tip-icon">✅</span><div><strong data-i18n="uc5_b">Binary outcomes (proportions):</strong> <span data-i18n="uc5">Conversion, click, signup. Use the Z-test; normality of raw data never matters, only that you have enough events (a rule of thumb: at least ~10 conversions in each arm).</span></div></div>
+    </div>
+  </div>
+
+  <div class="card" id="sec-choose">
+    <div class="card-title" data-i18n="ref_choose_title">Z-test vs t-test: which to use, and why</div>
+    <div class="chart-sub" style="margin-bottom:14px" data-i18n="ref_choose_sub">The single most common question — and the most consequential. The right test depends on one thing: what kind of number your metric produces per user.</div>
+
+    <div class="accordion-body" style="padding:0;background:none">
+      <p data-i18n="ch_intro"><strong>The deciding question:</strong> is each user a yes/no, or a number? That answer picks your test. Everything else is detail.</p>
+
+      <div class="choose-block">
+        <div class="choose-head"><span class="tip-icon">✅</span><span data-i18n="ch_z_h">Z-test — for conversion / proportions</span></div>
+        <div class="choose-row"><span class="choose-tag" data-i18n="ch_use">Use it when</span><span data-i18n="ch_z_use">each user is a binary outcome: converted or not, clicked or not, signed up or not.</span></div>
+        <div class="choose-row"><span class="choose-tag" data-i18n="ch_stat">In statistics</span><span data-i18n="ch_z_stat">It compares two proportions. For a binary variable the spread is fixed by the rate itself (variance = p(1−p)), so once you know the conversion rate you already know the variability — no extra information needed. With thousands of users the proportion is essentially normal, so a Z (normal) test is exact enough.</span></div>
+        <div class="choose-row"><span class="choose-tag" data-i18n="ch_biz">In business</span><span data-i18n="ch_z_biz">Answers "did a meaningfully larger share of users take the action?" Think checkout conversion, signup rate, email click-through. You only need two numbers per group — how many were shown it, and how many converted.</span></div>
+      </div>
+
+      <div class="choose-block">
+        <div class="choose-head"><span class="tip-icon">📊</span><span data-i18n="ch_t_h">t-test (Welch's) — for continuous metrics</span></div>
+        <div class="choose-row"><span class="choose-tag" data-i18n="ch_use">Use it when</span><span data-i18n="ch_t_use">each user produces a number that can vary freely: revenue, session length, items in cart, days retained.</span></div>
+        <div class="choose-row"><span class="choose-tag" data-i18n="ch_stat">In statistics</span><span data-i18n="ch_t_stat">It compares two means. Unlike a proportion, a continuous metric's spread is <em>not</em> determined by its average — two groups can share a mean yet differ wildly in variance — so the test must estimate the spread from the data. Welch's version doesn't assume the two groups have equal variance, which makes it the safe default. (The "t" accounts for the extra uncertainty of estimating that spread; at large n it converges to the Z-test.)</span></div>
+        <div class="choose-row"><span class="choose-tag" data-i18n="ch_biz">In business</span><span data-i18n="ch_t_biz">Answers "did the average value per user move?" Think ARPU, average order value, time on site. You need the mean, the standard deviation, and the sample size for each group — the spread matters as much as the average.</span></div>
+      </div>
+
+      <div class="callout-box">
+        <div class="callout-title" data-i18n="ch_key_title">🔑 The one-line reason they differ</div>
+        <p data-i18n="ch_key_body" style="margin:0">For a <strong>proportion</strong>, the rate fixes the variance — so summary counts are enough (Z-test). For a <strong>continuous</strong> value, the average and the spread are independent — so you must measure the spread separately, and the t-test is built to handle that uncertainty.</p>
+      </div>
+
+      <div class="tip-row"><span class="tip-icon">🔀</span><div><strong data-i18n="ch_ratio_b">Ratio metrics (AOV, CTR per session):</strong> <span data-i18n="ch_ratio">these have a varying denominator. Compute one value per user, then treat it as a continuous metric and use Welch's t.</span></div></div>
+      <div class="tip-row"><span class="tip-icon">📉</span><div><strong data-i18n="ch_mw_b">Skewed data with small n (&lt;200):</strong> <span data-i18n="ch_mw">when the Central Limit Theorem hasn't smoothed things out yet, switch to the Mann–Whitney U test, which compares ranks and assumes no particular shape.</span></div></div>
+      <div class="tip-row"><span class="tip-icon">🎰</span><div><strong data-i18n="ch_multi_b">3+ variants:</strong> <span data-i18n="ch_multi">run an omnibus test first (χ² for conversion, ANOVA for continuous), then corrected pairwise comparisons — see "Multiple testing" below.</span></div></div>
     </div>
   </div>
 
@@ -1181,21 +1269,6 @@
     <p style="margin-top:12px;font-size:0.78rem;color:var(--ink-faint)"><span data-i18n="footer_privacy">All calculations run locally in your browser — no data leaves your device.</span></p>
   </div>
 
-  <!-- A/A test -->
-  <div class="card" id="sec-aatest">
-    <div class="card-title" data-i18n="ref_aatest_title">Start here: the A/A test</div>
-    <div class="chart-sub" style="margin-bottom:14px" data-i18n="ref_aatest_sub">Before you trust any A/B result, prove your splitting platform is fair. An A/A test sends two identical experiences to two randomly split groups — and expects to find no difference.</div>
-    <div class="accordion-body" style="padding:0;background:none">
-      <div class="tip-row"><span class="tip-icon">❓</span><div><strong data-i18n="aa_what_b">What it is.</strong> <span data-i18n="aa_what">You run an experiment where A and B are exactly the same. Since nothing differs, any "winner" your tool reports is pure noise. It is the experiment equivalent of weighing an empty scale to check it reads zero.</span></div></div>
-      <div class="tip-row"><span class="tip-icon">🎯</span><div><strong data-i18n="aa_why_b">Why juniors should start here.</strong> <span data-i18n="aa_why">Most splitting bugs are invisible until you look: a broken randomiser, users landing in both groups, bots skewing one side, or logging that double-counts. An A/A test surfaces all of these before a real test misleads you.</span></div></div>
-      <div class="tip-row"><span class="tip-icon">📊</span><div><strong data-i18n="aa_read_b">How to read it.</strong> <span data-i18n="aa_read">Expect a non-significant result (p &gt; 0.05) roughly 95% of the time. A single significant A/A result is not alarming — at α = 0.05, about 1 in 20 will trip by chance. Run several. If significants come up far more often than ~5%, your platform has a problem.</span></div></div>
-      <div class="tip-row"><span class="tip-icon">⚖️</span><div><strong data-i18n="aa_srm_b">Check the split ratio (SRM).</strong> <span data-i18n="aa_srm">If you asked for a 50/50 split, the group sizes should be very close. A large imbalance — a Sample Ratio Mismatch — means assignment is broken, and no result from that platform can be trusted until it is fixed.</span></div></div>
-      <div class="callout-box">
-        <div class="callout-title" data-i18n="aa_tip_title">✅ Practical starting checklist</div>
-        <p data-i18n="aa_tip_body" style="margin:0">1. Run an A/A test on your platform. 2. Confirm the split ratio matches what you configured. 3. Confirm the p-value is non-significant across a few runs. 4. Only then start real A/B tests. You can paste the two A/A group numbers into the Analyse tab and confirm "no clear winner" — exactly what you want to see.</p>
-      </div>
-    </div>
-  </div>
 
   <!-- Multiple testing & error inflation -->
   <div class="card" id="sec-multiple">
@@ -1239,17 +1312,6 @@
     </div>
   </div>
 
-  <!-- Interactive A/B process walkthrough -->
-  <div class="card" id="sec-process">
-    <div class="card-title" data-i18n="ref_process_title">The full A/B test process — step by step</div>
-    <div class="chart-sub" style="margin-bottom:14px" data-i18n="ref_process_sub">Tap each step to expand it. This is the path from a vague idea to a decision you can defend.</div>
-
-    <div class="process-track" id="process-track">
-      <!-- steps injected by JS -->
-    </div>
-    <div class="process-progress"><div class="process-progress-bar" id="process-progress-bar"></div></div>
-    <div class="process-panel" id="process-panel"></div>
-  </div>
 
   </div><!-- /.ref-content -->
 </div><!-- /.ref-layout -->

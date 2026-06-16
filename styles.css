@@ -509,6 +509,65 @@ main {
   }
 }
 
+/* ── Hero value-prop pills ── */
+.hero-props {
+  display: flex; flex-wrap: wrap; gap: 8px 16px; margin-top: 14px;
+}
+.hero-prop {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 0.82rem; color: rgba(255,255,255,0.92);
+}
+.hero-prop em { font-style: italic; opacity: 0.95; }
+.hero-prop-ic {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 16px; height: 16px; border-radius: 50%;
+  background: rgba(255,255,255,0.22); color: #fff;
+  font-size: 0.62rem; font-weight: 700; flex-shrink: 0;
+}
+
+/* ── Plan empty state ── */
+.plan-empty {
+  border: 2px dashed var(--border);
+  border-radius: var(--radius);
+  padding: 32px 22px; text-align: center;
+  color: var(--ink-faint);
+}
+.plan-empty-ic { font-size: 1.9rem; }
+.plan-empty-t { font-weight: 600; color: var(--ink-muted); margin-top: 8px; font-size: 0.92rem; }
+.plan-empty-s { font-size: 0.82rem; margin-top: 5px; line-height: 1.5; }
+
+/* ── Method line inside the result card ── */
+.result-method {
+  margin-top: 16px; padding-top: 12px;
+  border-top: 1px solid rgba(255,255,255,0.2);
+  font-size: 0.76rem; color: rgba(255,255,255,0.82); line-height: 1.45;
+}
+.result-method span[data-i18n] { font-weight: 700; color: #fff; }
+
+/* ── "What this means" explain panel ── */
+.plan-explain {
+  margin-top: 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+  background: var(--card);
+}
+.plan-explain-h {
+  margin: 0 0 8px; font-size: 0.88rem; font-weight: 700;
+  display: flex; align-items: center; gap: 7px; color: var(--ink);
+}
+.plan-explain-list {
+  margin: 0; padding-left: 18px;
+  font-size: 0.84rem; color: var(--ink-muted); line-height: 1.7;
+}
+.plan-explain-list b { color: var(--accent); }
+.plan-explain-link {
+  display: inline-block; margin-top: 12px;
+  font-size: 0.82rem; font-weight: 600; color: var(--accent);
+  text-decoration: none;
+}
+.plan-explain-link:hover { text-decoration: underline; }
+
 /* ── Revenue projection card ── */
 .revenue-card {
   margin-top: 16px;
@@ -1477,6 +1536,46 @@ main {
   margin: 14px 0 4px;
 }
 .toc-group-h:first-of-type { margin-top: 0; }
+.toc-group-desc {
+  font-size: 0.72rem;
+  line-height: 1.45;
+  color: var(--ink-faint);
+  margin: 0 0 8px;
+  padding-right: 4px;
+}
+/* ── Z-vs-t "choosing your test" blocks ── */
+.choose-block {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  margin: 12px 0;
+  background: var(--pill-bg);
+}
+.choose-head {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 0.95rem; font-weight: 700; color: var(--ink);
+  margin-bottom: 10px;
+}
+.choose-row {
+  display: grid;
+  grid-template-columns: 96px 1fr;
+  gap: 10px;
+  font-size: 0.85rem;
+  color: var(--ink-muted);
+  line-height: 1.55;
+  padding: 6px 0;
+  border-top: 1px solid var(--border);
+}
+.choose-row:first-of-type { border-top: none; }
+.choose-tag {
+  font-size: 0.68rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.04em; color: var(--accent);
+  padding-top: 2px;
+}
+.choose-row em { color: var(--ink); font-style: italic; }
+@media (max-width: 520px) {
+  .choose-row { grid-template-columns: 1fr; gap: 2px; }
+}
 .toc-nav { display: flex; flex-direction: column; }
 .toc-link {
   display: flex;

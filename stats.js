@@ -29,7 +29,103 @@ function normPDF(x, mu, sigma) {
   return Math.exp(-0.5*((x-mu)/sigma)**2) / (sigma * Math.sqrt(2*Math.PI));
 }
 
+// ───────────────────────────────────────────────────────────────────────────
+// Higher-level test functions. These mirror EXACTLY the formulas used in the
+// app's Analyse tab, so testing them here guarantees the live results are sound.
+// All are pure (no DOM, no side effects).
+// ───────────────────────────────────────────────────────────────────────────
+
+/**
+ * Two-proportion Z-test (unpooled standard error), as used for 2-group conversion.
+ * @param {{n:number,c:number}} A  control: n exposed, c converted
+ * @param {{n:number,c:number}} B  variant
+ * @param {number} tails  1 or 2
+ * @returns {{pA,pB,se,z,p,liftPct}}
+ */
+function twoPropZTest(A, B, tails = 2) {
+  const pA = A.c / A.n, pB = B.c / B.n;
+  const se = Math.sqrt(pA*(1-pA)/A.n + pB*(1-pB)/B.n);
+  const z = (pB - pA) / se;
+  const p = tails === 2 ? 2*(1-normCDF(Math.abs(z))) : 1-normCDF(z);
+  return { pA, pB, se, z, p, liftPct: (pB-pA)/pA*100 };
+}
+
+/**
+ * Chi-squared statistic for a k-variant conversion table, with the
+ * Wilson–Hilferty normal approximation for the p-value (matches the app).
+ * @param {Array<{n:number,c:number}>} variants
+ * @returns {{chi2,df,p}}
+ */
+function chiSquaredConversion(variants) {
+  const total = variants.reduce((s,v)=>s+v.n, 0);
+  const totalConv = variants.reduce((s,v)=>s+v.c, 0);
+  const pPool = totalConv / total;
+  let chi2 = 0;
+  for (const v of variants) {
+    const exp = v.n * pPool;
+    chi2 += (v.c-exp)**2/exp + ((v.n-v.c)-v.n*(1-pPool))**2/(v.n*(1-pPool));
+  }
+  const df = variants.length - 1;
+  const zChi = ((Math.cbrt(chi2/df)) - (1 - 2/(9*df))) / Math.sqrt(2/(9*df));
+  const p = 1 - normCDF(zChi);
+  return { chi2, df, p };
+}
+
+/**
+ * Holm–Bonferroni step-down across (k-1) variant-vs-control comparisons.
+ * @param {Array<{n:number,c:number}>} variants  index 0 = control
+ * @param {number} alpha
+ * @returns {{ comparisons: Array<{i,p,thr,significant,lift}>, bestIdx }}
+ */
+function holmBonferroni(variants, alpha = 0.05) {
+  const A = { ...variants[0], p: variants[0].c/variants[0].n };
+  const k = variants.length - 1;
+  const comps = [];
+  for (let i = 1; i < variants.length; i++) {
+    const v = { ...variants[i], p: variants[i].c/variants[i].n };
+    const seAB = Math.sqrt(A.p*(1-A.p)/A.n + v.p*(1-v.p)/v.n);
+    const zAB = (v.p - A.p) / seAB;
+    const pvAB = 2*(1-normCDF(Math.abs(zAB)));
+    comps.push({ i, p: pvAB, lift: (v.p-A.p)/A.p*100 });
+  }
+  const ordered = comps.slice().sort((a,b)=>a.p-b.p);
+  let stillRejecting = true;
+  ordered.forEach((c, rank) => {
+    const thr = alpha / (k - rank);
+    c.thr = thr;
+    c.significant = stillRejecting && c.p < thr;
+    if (!c.significant) stillRejecting = false;
+  });
+  // best variant: highest rate among significant positive-lift winners
+  let bestIdx = -1, bestRate = -Infinity;
+  comps.forEach(c => {
+    const rate = variants[c.i].c/variants[c.i].n;
+    if (c.significant && c.lift > 0 && rate > bestRate) { bestRate = rate; bestIdx = c.i; }
+  });
+  return { comparisons: comps, bestIdx };
+}
+
+/**
+ * Welch's t-test (unequal variances), with normal approximation for the p-value
+ * and Welch–Satterthwaite degrees of freedom — matches the app's runWelchT.
+ * @param {{n,mean,sd}} A
+ * @param {{n,mean,sd}} B
+ * @param {number} tails
+ * @returns {{se,t,df,p,liftPct}}
+ */
+function welchT(A, B, tails = 2) {
+  const se = Math.sqrt(A.sd**2/A.n + B.sd**2/B.n);
+  const t = (B.mean - A.mean) / se;
+  const df = (A.sd**2/A.n + B.sd**2/B.n)**2 /
+             ((A.sd**2/A.n)**2/(A.n-1) + (B.sd**2/B.n)**2/(B.n-1));
+  const p = tails === 2 ? 2*(1-normCDF(Math.abs(t))) : 1-normCDF(t);
+  return { se, t, df, p, liftPct: (B.mean-A.mean)/A.mean*100 };
+}
+
 // Export for Node.js test runner (no effect in browser)
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { normInvCDF, normCDF, normPDF, mean, variance };
+  module.exports = {
+    normInvCDF, normCDF, normPDF, mean, variance,
+    twoPropZTest, chiSquaredConversion, holmBonferroni, welchT
+  };
 }

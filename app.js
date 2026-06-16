@@ -82,6 +82,23 @@ const T = {
     uc3_b:'Counts per user (Poisson-like):', uc3:'Orders per user, errors per session. The mean is meaningful, but variance grows with the mean — Welch\'s t (unequal variances) is a safe default.',
     uc4_b:'Mixed populations (bimodal):', uc4:'Segment before you test. A single average across two distinct groups is usually misleading, however large the sample.',
     uc5_b:'Binary outcomes (proportions):', uc5:'Conversion, click, signup. Use the Z-test; normality of raw data never matters, only that you have enough events (a rule of thumb: at least ~10 conversions in each arm).',
+    ref_choose_title:'Z-test vs t-test: which to use, and why',
+    ref_choose_sub:'The single most common question — and the most consequential. The right test depends on one thing: what kind of number your metric produces per user.',
+    ch_intro:'<strong>The deciding question:</strong> is each user a yes/no, or a number? That answer picks your test. Everything else is detail.',
+    ch_use:'Use it when', ch_stat:'In statistics', ch_biz:'In business',
+    ch_z_h:'Z-test — for conversion / proportions',
+    ch_z_use:'each user is a binary outcome: converted or not, clicked or not, signed up or not.',
+    ch_z_stat:'It compares two proportions. For a binary variable the spread is fixed by the rate itself (variance = p(1−p)), so once you know the conversion rate you already know the variability — no extra information needed. With thousands of users the proportion is essentially normal, so a Z (normal) test is exact enough.',
+    ch_z_biz:'Answers "did a meaningfully larger share of users take the action?" Think checkout conversion, signup rate, email click-through. You only need two numbers per group — how many were shown it, and how many converted.',
+    ch_t_h:"t-test (Welch's) — for continuous metrics",
+    ch_t_use:'each user produces a number that can vary freely: revenue, session length, items in cart, days retained.',
+    ch_t_stat:'It compares two means. Unlike a proportion, a continuous metric\'s spread is <em>not</em> determined by its average — two groups can share a mean yet differ wildly in variance — so the test must estimate the spread from the data. Welch\'s version doesn\'t assume the two groups have equal variance, which makes it the safe default. (The "t" accounts for the extra uncertainty of estimating that spread; at large n it converges to the Z-test.)',
+    ch_t_biz:'Answers "did the average value per user move?" Think ARPU, average order value, time on site. You need the mean, the standard deviation, and the sample size for each group — the spread matters as much as the average.',
+    ch_key_title:'🔑 The one-line reason they differ',
+    ch_key_body:'For a <strong>proportion</strong>, the rate fixes the variance — so summary counts are enough (Z-test). For a <strong>continuous</strong> value, the average and the spread are independent — so you must measure the spread separately, and the t-test is built to handle that uncertainty.',
+    ch_ratio_b:'Ratio metrics (AOV, CTR per session):', ch_ratio:'these have a varying denominator. Compute one value per user, then treat it as a continuous metric and use Welch\'s t.',
+    ch_mw_b:'Skewed data with small n (<200):', ch_mw:'when the Central Limit Theorem hasn\'t smoothed things out yet, switch to the Mann–Whitney U test, which compares ranks and assumes no particular shape.',
+    ch_multi_b:'3+ variants:', ch_multi:'run an omnibus test first (χ² for conversion, ANOVA for continuous), then corrected pairwise comparisons — see "Multiple testing" below.',
     ref_tests_title:'Tests at a glance', ref_how_title:'How each test works',
     ref_limits_title:'Limitations & how to overcome them',
     ref_abp_title:'How α, β, and power interact',
@@ -239,6 +256,19 @@ const T = {
     acc_multiple:'Multiple metrics — what do you optimise for?',
     // Plan result box
     res_sample_size:'Required sample size per variant',
+    prop_both:'Sample size <em>and</em> duration in one place', prop_free:'Free, no signup', prop_private:'Runs in your browser — nothing leaves your device',
+    plan_empty_t:'Your result will appear here', plan_empty_s:'Required sample size, estimated test duration, and a plain-English read of what it means.',
+    res_method_label:'Method:',
+    method_two_sided:'two-sided', method_one_sided:'one-sided',
+    method_z:'two-proportion Z-test, pooled variance, {c}% confidence, {p}% power ({s})',
+    method_t:"Welch's t-test (unequal variances), {c}% confidence, {p}% power ({s})",
+    method_bonf:'Bonferroni-adjusted for {k} comparisons',
+    plan_explain_h:'What this means', plan_explain_link:'Read how this is computed →',
+    explain_conv:'You need {n} users per group to reliably detect a {lift}% relative lift on a {base}% baseline.',
+    explain_cont:'You need {n} users per group to reliably detect a {lift}% change in the average.',
+    explain_days:'At your current traffic, that is about <b>{d} days</b> of testing.',
+    explain_tradeoff:'Smaller effects need far more traffic — halving the lift roughly quadruples the sample.',
+    explain_multi:'With {v} variants, each arm is sized for {k} corrected comparisons against control.',
     res_users:'users', res_days:'days',
     res_total:'total (both variants)', res_mde_abs:'absolute MDE',
     res_test_used:'test used', res_duration:'Estimated experiment duration',
@@ -262,7 +292,7 @@ const T = {
     js_rev_optimistic:'Optimistic',
     js_rev_note:'+{lift}pp lift × {visitors} visitors/mo × ${aov} AOV × 12 months. Based on 95% CI of the lift.',
     btn_share:'Share', share_copied:'✓ Link copied!',
-    toc_g5:'🚦 Running an experiment', toc_aatest_short:'Start here: the A/A test', toc_process_short:'The full A/B test process',
+    toc_aatest_short:'Start here: the A/A test', toc_process_short:'The full A/B test process',
     toc_multiple_short:'Multiple testing & error inflation',
     ref_multiple_title:'Multiple testing: why more comparisons inflate false positives',
     ref_multiple_sub:'The classic α = 0.05 threshold protects a single comparison. The moment you test several hypotheses at once, the chance of at least one false positive climbs fast — and you must correct for it.',
@@ -399,7 +429,13 @@ const T = {
     ri_control:'Control (A)', ri_variant:'Variant (B)', ri_settings:'Settings',
     ri_users:'users', ri_conv:'conv', ri_mean:'mean', recent_no_inputs:'Parameters not available for this entry',
     toc_title:'On this page',
-    toc_g1:'Core concepts', toc_g2:'Advanced techniques', toc_g3:'Distributions & theory', toc_g4:'Practical guidance',
+    toc_g1:'🚀 Getting started', toc_g2:'🧠 Core concepts', toc_g3:'🎯 Choosing your test', toc_g4:'📈 Distributions & theory', toc_g5:'🔬 Advanced & pitfalls',
+    toc_g1_desc:'New to testing? Start here. Learn the vocabulary, see the whole process end to end, then validate your platform before you trust a single result.',
+    toc_g2_desc:'The four ideas every result rests on: significance, the two ways to be wrong, how big a sample you need, and the confidence interval around your answer.',
+    toc_g3_desc:'Which test fits your metric — and what each one actually means, in both statistical and business terms. Get this right before you analyse anything.',
+    toc_g4_desc:'Why your data looks the way it does, and why averages behave so predictably at scale. The intuition that makes every test make sense.',
+    toc_g5_desc:'Techniques to make tests sharper, and the traps that quietly invalidate results — peeking, and testing too many things at once.',
+    toc_cifac_short:'What widens a confidence interval', toc_choose_short:'Z-test vs t-test: which and why',
     toc_cuped_short:'CUPED variance reduction', toc_peeking_short:'Why peeking inflates errors',
     toc_samplesize_short:'Sample size vs MDE', toc_distshapes_short:'Catalog of distribution shapes', toc_dice_short:'Worked example: two dice',
     toc_clt_short:'The Central Limit Theorem', toc_checknorm_short:'When to check for normality',
@@ -501,6 +537,23 @@ const T = {
     uc3_b:'Счётчики на пользователя (как Пуассон):', uc3:'Заказы на пользователя, ошибки за сессию. Среднее осмысленно, но дисперсия растёт со средним — Welch t (неравные дисперсии) безопасный выбор по умолчанию.',
     uc4_b:'Смешанные популяции (бимодальное):', uc4:'Сегментируйте перед тестом. Единое среднее по двум разным группам обычно вводит в заблуждение, какой бы большой ни была выборка.',
     uc5_b:'Бинарные исходы (доли):', uc5:'Конверсия, клик, регистрация. Используйте Z-тест; нормальность сырых данных не важна, важно лишь достаточно событий (правило: хотя бы ~10 конверсий в каждой группе).',
+    ref_choose_title:'Z-тест и t-тест: какой выбрать и почему',
+    ref_choose_sub:'Самый частый вопрос — и самый важный по последствиям. Правильный тест зависит от одного: какое число даёт ваша метрика на пользователя.',
+    ch_intro:'<strong>Решающий вопрос:</strong> каждый пользователь — это «да/нет» или число? Ответ выбирает тест. Остальное — детали.',
+    ch_use:'Когда применять', ch_stat:'Со стороны статистики', ch_biz:'Со стороны бизнеса',
+    ch_z_h:'Z-тест — для конверсии / долей',
+    ch_z_use:'каждый пользователь — бинарный исход: конвертировал или нет, кликнул или нет, зарегистрировался или нет.',
+    ch_z_stat:'Сравнивает две доли. Для бинарной переменной разброс задан самой долей (дисперсия = p(1−p)), поэтому, зная конверсию, вы уже знаете изменчивость — больше ничего не нужно. При тысячах пользователей доля практически нормальна, так что Z-тест (нормальный) достаточно точен.',
+    ch_z_biz:'Отвечает: «значимо ли большая доля пользователей совершила действие?» Конверсия оформления, регистрация, кликабельность письма. Нужно лишь два числа на группу — скольким показали и сколько конвертировали.',
+    ch_t_h:'t-тест (Уэлча) — для непрерывных метрик',
+    ch_t_use:'каждый пользователь даёт число, которое может свободно меняться: выручка, длина сессии, товары в корзине, дни удержания.',
+    ch_t_stat:'Сравнивает два средних. В отличие от доли, разброс непрерывной метрики <em>не</em> определяется её средним — две группы могут иметь одинаковое среднее, но сильно разную дисперсию — поэтому тест должен оценить разброс по данным. Версия Уэлча не предполагает равенства дисперсий, что делает её безопасным выбором. («t» учитывает дополнительную неопределённость оценки разброса; при большом n он сходится к Z-тесту.)',
+    ch_t_biz:'Отвечает: «изменилось ли среднее значение на пользователя?» ARPU, средний чек, время на сайте. Нужны среднее, стандартное отклонение и размер выборки по каждой группе — разброс важен не меньше среднего.',
+    ch_key_title:'🔑 Причина различия одной строкой',
+    ch_key_body:'Для <strong>доли</strong> ставка фиксирует дисперсию — поэтому достаточно сводных счётчиков (Z-тест). Для <strong>непрерывной</strong> величины среднее и разброс независимы — поэтому разброс надо измерять отдельно, и t-тест создан, чтобы справляться с этой неопределённостью.',
+    ch_ratio_b:'Ratio-метрики (средний чек, CTR за сессию):', ch_ratio:'у них меняющийся знаменатель. Посчитайте одно значение на пользователя, затем считайте его непрерывной метрикой и применяйте t Уэлча.',
+    ch_mw_b:'Скошенные данные при малом n (<200):', ch_mw:'когда ЦПТ ещё не сгладила картину, перейдите к критерию Манна–Уитни, который сравнивает ранги и не предполагает конкретной формы.',
+    ch_multi_b:'3+ варианта:', ch_multi:'сначала омнибус-тест (χ² для конверсии, ANOVA для непрерывных), затем скорректированные парные сравнения — см. «Множественное тестирование» ниже.',
     ref_tests_title:'Тесты: краткий обзор', ref_how_title:'Как работает каждый тест',
     ref_limits_title:'Ограничения и как их преодолеть',
     ref_abp_title:'Как связаны α, β и мощность',
@@ -658,6 +711,19 @@ const T = {
     acc_multiple:'Множественные метрики — что оптимизировать?',
     // Plan result box
     res_sample_size:'Необходимый размер выборки на вариант',
+    prop_both:'Размер выборки <em>и</em> длительность в одном месте', prop_free:'Бесплатно, без регистрации', prop_private:'Работает в браузере — данные не покидают устройство',
+    plan_empty_t:'Здесь появится результат', plan_empty_s:'Необходимый размер выборки, оценка длительности теста и понятное объяснение, что это значит.',
+    res_method_label:'Метод:',
+    method_two_sided:'двусторонний', method_one_sided:'односторонний',
+    method_z:'Z-тест для двух долей, объединённая дисперсия, {c}% доверия, мощность {p}% ({s})',
+    method_t:'t-тест Уэлча (неравные дисперсии), {c}% доверия, мощность {p}% ({s})',
+    method_bonf:'поправка Бонферрони на {k} сравнений',
+    plan_explain_h:'Что это значит', plan_explain_link:'Как это рассчитано →',
+    explain_conv:'Нужно {n} пользователей на группу, чтобы надёжно обнаружить относительный прирост {lift}% на базе {base}%.',
+    explain_cont:'Нужно {n} пользователей на группу, чтобы надёжно обнаружить изменение среднего на {lift}%.',
+    explain_days:'При текущем трафике это около <b>{d} дней</b> тестирования.',
+    explain_tradeoff:'Меньшие эффекты требуют гораздо больше трафика — вдвое меньший прирост примерно вчетверо увеличивает выборку.',
+    explain_multi:'При {v} вариантах каждая группа рассчитана на {k} скорректированных сравнений с контролем.',
     res_users:'пользователей', res_days:'дней',
     res_total:'итого (обе группы)', res_mde_abs:'абсолютный MDE',
     res_test_used:'используемый тест', res_duration:'Оценочная длительность эксперимента',
@@ -681,7 +747,7 @@ const T = {
     js_rev_optimistic:'Оптимистичный',
     js_rev_note:'+{lift}pp прирост × {visitors} посетителей/мес × ${aov} средний чек × 12 мес. На основе 95% ДИ прироста.',
     btn_share:'Поделиться', share_copied:'✓ Ссылка скопирована!',
-    toc_g5:'🚦 Проведение эксперимента', toc_aatest_short:'Начните здесь: A/A-тест', toc_process_short:'Полный процесс A/B-теста',
+    toc_aatest_short:'Начните здесь: A/A-тест', toc_process_short:'Полный процесс A/B-теста',
     toc_multiple_short:'Множественное тестирование и рост ошибок',
     ref_multiple_title:'Множественное тестирование: почему больше сравнений завышают ложные срабатывания',
     ref_multiple_sub:'Классический порог α = 0,05 защищает одно сравнение. Как только вы проверяете несколько гипотез сразу, вероятность хотя бы одного ложного срабатывания быстро растёт — и её нужно корректировать.',
@@ -818,7 +884,13 @@ const T = {
     ri_control:'Контроль (A)', ri_variant:'Вариант (B)', ri_settings:'Настройки',
     ri_users:'польз.', ri_conv:'конв.', ri_mean:'среднее', recent_no_inputs:'Параметры для этой записи недоступны',
     toc_title:'На этой странице',
-    toc_g1:'Основные понятия', toc_g2:'Продвинутые техники', toc_g3:'Распределения и теория', toc_g4:'Практические советы',
+    toc_g1:'🚀 С чего начать', toc_g2:'🧠 Основные понятия', toc_g3:'🎯 Выбор теста', toc_g4:'📈 Распределения и теория', toc_g5:'🔬 Продвинутое и ловушки',
+    toc_g1_desc:'Новичок в тестировании? Начните здесь. Освойте словарь, посмотрите весь процесс от начала до конца, затем проверьте платформу, прежде чем доверять результатам.',
+    toc_g2_desc:'Четыре идеи, на которых держится любой результат: значимость, два способа ошибиться, нужный размер выборки и доверительный интервал вокруг ответа.',
+    toc_g3_desc:'Какой тест подходит вашей метрике — и что каждый из них значит со статистической и бизнес-точки зрения. Разберитесь до того, как анализировать.',
+    toc_g4_desc:'Почему данные выглядят так, как выглядят, и почему средние ведут себя так предсказуемо при масштабе. Интуиция, делающая каждый тест понятным.',
+    toc_g5_desc:'Приёмы, делающие тесты точнее, и ловушки, которые тихо обесценивают результаты — подглядывание и проверка слишком многого сразу.',
+    toc_cifac_short:'Что расширяет доверительный интервал', toc_choose_short:'Z-тест и t-тест: какой и почему',
     toc_cuped_short:'Снижение дисперсии CUPED', toc_peeking_short:'Почему подглядывание завышает ошибки',
     toc_samplesize_short:'Размер выборки vs MDE', toc_distshapes_short:'Каталог форм распределений', toc_dice_short:'Пример: две кости',
     toc_clt_short:'Центральная предельная теорема', toc_checknorm_short:'Когда проверять нормальность',
@@ -1090,6 +1162,8 @@ function selectPlanMetric(type, btn) {
   document.getElementById('plan-inputs-continuous').classList.toggle('hidden', type !== 'continuous');
   document.getElementById('plan-ratio-notice').classList.toggle('hidden', type !== 'continuous');
   document.getElementById('plan-result').classList.add('hidden');
+  const peEl = document.getElementById('plan-explain'); if (peEl) peEl.classList.add('hidden');
+  const pemEl = document.getElementById('plan-empty'); if (pemEl) pemEl.classList.remove('hidden');
 }
 
 // ── Analyse metric select ──
@@ -1151,6 +1225,7 @@ function calcSampleSize() {
   // Duration calculation
   const dailyRaw = parseFloat(document.getElementById('p-daily-users').value);
   const durationWrap = document.getElementById('res-duration-wrap');
+  let explainDays = null;
 
   if (!isNaN(dailyRaw) && dailyRaw > 0) {
     // Daily traffic split across variants; round up to whole weeks (min 2)
@@ -1159,6 +1234,7 @@ function calcSampleSize() {
     // Always run whole weeks to capture weekly cycles (Kohavi et al.)
     const weeks = Math.max(2, Math.ceil(rawDays / 7));
     const days = weeks * 7;
+    explainDays = days;
 
     document.getElementById('res-days').textContent = days;
     document.getElementById('res-weeks').textContent = weeks + (weeks===1?' week':' weeks');
@@ -1185,6 +1261,52 @@ function calcSampleSize() {
   } else {
     durationWrap.classList.add('hidden');
   }
+
+  // ── Method line + "What this means" panel ──
+  const L = T[currentLang];
+  const confPct = Math.round((1 - alpha) * 100);
+  const powerPct = Math.round(power * 100);
+  const sided = tails === 2 ? (L.method_two_sided || 'two-sided') : (L.method_one_sided || 'one-sided');
+  let methodStr;
+  if (planMetric === 'conversion') {
+    methodStr = (L.method_z || 'two-proportion Z-test, pooled variance, {c}% confidence, {p}% power ({s})');
+  } else {
+    methodStr = (L.method_t || "Welch's t-test (unequal variances), {c}% confidence, {p}% power ({s})");
+  }
+  methodStr = methodStr.replace('{c}', confPct).replace('{p}', powerPct).replace('{s}', sided);
+  if (numVariants > 2) methodStr += ' · ' + (L.method_bonf || 'Bonferroni-adjusted for {k} comparisons').replace('{k}', numComparisons);
+  document.getElementById('res-method').textContent = methodStr;
+
+  // Build the plain-English bullets
+  const items = [];
+  const nStr = '<b>' + n.toLocaleString() + '</b>';
+  if (planMetric === 'conversion') {
+    const basePct = (baseRate*100).toFixed(1);
+    const liftPct = (mdeRel*100).toFixed(0);
+    items.push((L.explain_conv || 'You need {n} users per group to reliably detect a {lift}% relative lift on a {base}% baseline.')
+      .replace('{n}', nStr).replace('{lift}', liftPct).replace('{base}', basePct));
+  } else {
+    const liftPct = (mdeRel*100).toFixed(0);
+    items.push((L.explain_cont || 'You need {n} users per group to reliably detect a {lift}% change in the average.')
+      .replace('{n}', nStr).replace('{lift}', liftPct));
+  }
+  if (explainDays !== null) {
+    items.push((L.explain_days || 'At your current traffic, that is about <b>{d} days</b> of testing.')
+      .replace('{d}', explainDays));
+  }
+  items.push(L.explain_tradeoff || 'Smaller effects need far more traffic — halving the lift roughly quadruples the sample.');
+  if (numVariants > 2) {
+    items.push((L.explain_multi || 'With {v} variants, each arm is sized for {k} corrected comparisons against control.')
+      .replace('{v}', numVariants).replace('{k}', numComparisons));
+  }
+  document.getElementById('plan-explain-list').innerHTML = items.map(t => '<li>' + t + '</li>').join('');
+
+  // Toggle empty state off, explanation on
+  const emptyEl = document.getElementById('plan-empty');
+  const explainEl = document.getElementById('plan-explain');
+  if (emptyEl) emptyEl.classList.add('hidden');
+  if (explainEl) explainEl.classList.remove('hidden');
+
   encodeState();
 }
 

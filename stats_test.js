@@ -3,7 +3,10 @@
  * Run with:  node stats.test.js
  */
 
-const { normInvCDF, normCDF, normPDF, mean, variance } = require('./stats.js');
+const {
+  normInvCDF, normCDF, normPDF, mean, variance,
+  twoPropZTest, chiSquaredConversion, holmBonferroni, welchT
+} = require('./stats.js');
 
 let pass = 0, fail = 0;
 function test(name, fn) {
@@ -87,6 +90,97 @@ test('CUPED 40% reduction -> ~40% fewer users', () => {
   const base  = Math.ceil(2*((za+zb)*30/10)**2);
   const cuped = Math.ceil(2*((za+zb)*(30*Math.sqrt(0.6))/10)**2);
   expect(1 - cuped/base).toBeGreaterThan(0.35);
+});
+
+// ───────────────────────────────────────────────────────────────────────────
+// Critical analysis functions (verified against SciPy ground truth).
+// These guard the exact formulas the Analyse tab uses for real decisions —
+// including the multi-variant cases where bugs were previously found and fixed.
+// ───────────────────────────────────────────────────────────────────────────
+
+console.log('\nTwo-proportion Z-test (2-group conversion)');
+test('A=200/2000 vs B=240/2000: z and p match SciPy', () => {
+  const r = twoPropZTest({n:2000,c:200}, {n:2000,c:240});
+  expect(r.z).toBeCloseTo(2.0224, 3);   // SciPy: 2.0224
+  expect(r.p).toBeCloseTo(0.0431, 3);   // SciPy: 0.0431
+});
+test('identical groups => p ~= 1.0', () => {
+  const r = twoPropZTest({n:5000,c:500}, {n:5000,c:500});
+  expect(r.p).toBeCloseTo(1.0, 2);
+});
+test('large clear difference => p < 0.001', () => {
+  const r = twoPropZTest({n:10000,c:100}, {n:10000,c:300});
+  expect(r.p).toBeLessThan(0.001);
+});
+test('one-sided p is half of two-sided (same direction)', () => {
+  const t2 = twoPropZTest({n:2000,c:200}, {n:2000,c:240}, 2);
+  const t1 = twoPropZTest({n:2000,c:200}, {n:2000,c:240}, 1);
+  expect(t1.p).toBeCloseTo(t2.p/2, 4);
+});
+
+console.log('\nChi-squared, multi-variant (the previously-buggy path)');
+test('3 variants moderate (300/360/330): chi2 matches SciPy exactly', () => {
+  const r = chiSquaredConversion([{n:10000,c:300},{n:10000,c:360},{n:10000,c:330}]);
+  expect(r.chi2).toBeCloseTo(5.6407, 2);  // SciPy: 5.6407
+  expect(r.df).toBe(2);
+});
+test('3 variants moderate: p is NOT significant (~0.058, regression guard)', () => {
+  // The old bug reported p~0.004 here and falsely declared a winner.
+  const r = chiSquaredConversion([{n:10000,c:300},{n:10000,c:360},{n:10000,c:330}]);
+  expect(r.p).toBeGreaterThan(0.05);      // true p = 0.0596
+  expect(r.p).toBeLessThan(0.07);
+});
+test('4 variants (150/180/165/140): chi2 matches SciPy, p not significant', () => {
+  const r = chiSquaredConversion([{n:5000,c:150},{n:5000,c:180},{n:5000,c:165},{n:5000,c:140}]);
+  expect(r.chi2).toBeCloseTo(5.9772, 2);  // SciPy: 5.9772
+  expect(r.df).toBe(3);
+  expect(r.p).toBeGreaterThan(0.05);      // true p = 0.1127
+});
+test('strong real difference (300/420/500): p clearly significant', () => {
+  const r = chiSquaredConversion([{n:10000,c:300},{n:10000,c:420},{n:10000,c:500}]);
+  expect(r.p).toBeLessThan(0.001);
+});
+
+console.log('\nHolm-Bonferroni step-down');
+test('A=240,B=280,C=300 /1000: Holm flags BOTH B and C significant', () => {
+  const r = holmBonferroni([{n:1000,c:240},{n:1000,c:280},{n:1000,c:300}], 0.05);
+  const byIdx = Object.fromEntries(r.comparisons.map(c => [c.i, c]));
+  // Plain Bonferroni (alpha/2 = 0.025) would miss B (p=0.041); Holm catches it.
+  expect(byIdx[1].significant).toBe(true);   // B
+  expect(byIdx[2].significant).toBe(true);   // C
+});
+test('best variant is C (highest significant rate)', () => {
+  const r = holmBonferroni([{n:1000,c:240},{n:1000,c:280},{n:1000,c:300}], 0.05);
+  expect(r.bestIdx).toBe(2);
+});
+test('Holm is more powerful than plain Bonferroni on B', () => {
+  // B's raw p ~ 0.0412: fails plain Bonferroni (0.025) but passes Holm (relaxed 0.05 threshold)
+  const r = holmBonferroni([{n:1000,c:240},{n:1000,c:280},{n:1000,c:300}], 0.05);
+  const B = r.comparisons.find(c => c.i === 1);
+  expect(B.p).toBeGreaterThan(0.025);   // would fail plain Bonferroni
+  expect(B.significant).toBe(true);      // but Holm rejects it
+});
+test('no real effect => nothing significant', () => {
+  const r = holmBonferroni([{n:20000,c:600},{n:20000,c:602},{n:20000,c:598}], 0.05);
+  expect(r.comparisons.every(c => !c.significant)).toBe(true);
+  expect(r.bestIdx).toBe(-1);
+});
+
+console.log("\nWelch's t-test (continuous)");
+test('mean100/sd20 vs mean105/sd25, n=500: t, df, p match SciPy', () => {
+  const r = welchT({n:500,mean:100,sd:20}, {n:500,mean:105,sd:25});
+  expect(r.t).toBeCloseTo(3.4922, 2);   // SciPy: 3.4922
+  expect(r.df).toBeCloseTo(952.1, 0);   // Welch-Satterthwaite
+  expect(r.p).toBeLessThan(0.001);      // SciPy: 0.0005
+});
+test('identical means => p ~= 1.0', () => {
+  const r = welchT({n:500,mean:100,sd:20}, {n:500,mean:100,sd:25});
+  expect(r.p).toBeCloseTo(1.0, 2);
+});
+test('Welch df lies between min(nA,nB)-1 and nA+nB-2', () => {
+  const r = welchT({n:300,mean:50,sd:10}, {n:200,mean:52,sd:18});
+  expect(r.df).toBeGreaterThan(199);
+  expect(r.df).toBeLessThan(498);
 });
 
 // Summary
