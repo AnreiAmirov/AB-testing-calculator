@@ -644,6 +644,10 @@
         <a class="toc-link" href="#sec-process"><span class="toc-emoji">🧭</span><span data-i18n="toc_process_short">The full A/B test process</span></a>
         <a class="toc-link" href="#sec-aatest"><span class="toc-emoji">🅰️</span><span data-i18n="toc_aatest_short">Start here: the A/A test</span></a>
 
+        <div class="toc-group-h" data-i18n="toc_gcases">📚 Case studies</div>
+        <div class="toc-group-desc" data-i18n="toc_gcases_desc">Five real, end-to-end stories — from business problem to final decision — each using a different metric and showing how to size a test efficiently with a holdout.</div>
+        <a class="toc-link" href="#sec-cases"><span class="toc-emoji">📚</span><span data-i18n="toc_cases_short">Worked examples (5 stories)</span></a>
+
         <div class="toc-group-h" data-i18n="toc_g2">🧠 Core concepts</div>
         <div class="toc-group-desc" data-i18n="toc_g2_desc">The four ideas every result rests on: significance, the two ways to be wrong, how big a sample you need, and the confidence interval around your answer.</div>
         <a class="toc-link" href="#sec-significance"><span class="toc-emoji">📊</span><span data-i18n="ref_chart1_title">How statistical significance works</span></a>
@@ -777,6 +781,150 @@
         <p data-i18n="aa_tip_body" style="margin:0">1. Run an A/A test on your platform. 2. Confirm the split ratio matches what you configured. 3. Confirm the p-value is non-significant across a few runs. 4. Only then start real A/B tests. You can paste the two A/A group numbers into the Analyse tab and confirm "no clear winner" — exactly what you want to see.</p>
       </div>
     </div>
+  </div>
+
+
+  <!-- Case studies: 5 end-to-end business stories -->
+  <div class="card" id="sec-cases">
+    <div class="card-title" data-i18n="cases_title">Case studies: A/B testing from problem to decision</div>
+    <div class="chart-sub" style="margin-bottom:8px" data-i18n="cases_sub">Five real-world stories, each using a different metric. Every one follows the same arc — problem, plan, run, analyse, decide — and shows how to size a test efficiently with a holdout instead of exposing everyone.</div>
+    <div class="callout-box" style="margin-bottom:6px">
+      <div class="callout-title" data-i18n="cases_holdout_title">💡 The holdout principle (used in every case)</div>
+      <p style="margin:0" data-i18n="cases_holdout_body">Test on the <strong>minimum</strong> sample that gives 80% power — extra users past that add almost no certainty. Keep the rest as a <strong>holdout</strong> on the proven version, then roll the winner out to everyone afterwards. The full benefit comes at rollout, not during the test.</p>
+    </div>
+
+    <!-- Case 1 -->
+    <details class="case-card">
+      <summary><span class="case-emoji">📧</span><span class="case-sum-title" data-i18n="c1_title">A better email subject line</span><span class="case-tags"><span class="case-pill metric" data-i18n="c1_metric">Conversion</span><span class="case-pill test">Z-test</span></span></summary>
+      <div class="case-body">
+        <div class="case-stage"><span class="case-lbl" data-i18n="cases_problem">The problem</span><p data-i18n="c1_problem">A SaaS team sends a weekly newsletter to 200,000 subscribers. Open rate is 22%. Marketing thinks a curiosity-driven subject line ("You're missing 3 features") will beat the current one. They want evidence before rolling it out to the whole list.</p></div>
+        <div class="case-stage"><span class="case-lbl" data-i18n="cases_plan">Plan &amp; holdout</span><p data-i18n="c1_plan">Smallest lift worth shipping: +5% relative (22% → 23.1%). The calculator says ~22,700 per group. So they test on 25,000 per group (50,000 total) and <strong>hold out the other 150,000</strong> on the old line — no point exposing everyone to an unproven idea.</p>
+          <div class="case-graph">
+            <svg viewBox="0 0 360 130" width="100%" height="130" font-family="Inter,sans-serif">
+              <line x1="36" y1="105" x2="345" y2="105" stroke="var(--border)"/>
+              <line x1="36" y1="18" x2="36" y2="105" stroke="var(--border)"/>
+              <line x1="36" y1="40" x2="345" y2="40" stroke="#1a7a4a" stroke-dasharray="4 3"/>
+              <text x="40" y="36" font-size="8" fill="#1a7a4a">80% power</text>
+              <path d="M36,103 C110,96 140,60 190,44 C240,32 290,28 345,26" fill="none" stroke="#5b50c8" stroke-width="2.5"/>
+              <rect x="196" y="26" width="149" height="79" fill="#5b50c8" opacity="0.06"/>
+              <circle cx="196" cy="42" r="4.5" fill="#e8832a" stroke="#fff" stroke-width="1.5"/>
+              <text x="150" y="122" font-size="8" fill="var(--ink-muted)" text-anchor="middle" data-i18n="c1_graph_x">sample size per group →</text>
+              <text x="270" y="74" font-size="7.5" fill="var(--ink-faint)" text-anchor="middle" data-i18n="c1_graph_note">extra users add ~nothing</text>
+            </svg>
+            <div class="case-cap" data-i18n="c1_graph_cap">Power rises steeply then flattens — past the knee, more users mostly waste exposure.</div>
+          </div>
+        </div>
+        <div class="case-stage"><span class="case-lbl" data-i18n="cases_run">Run &amp; collect</span><p data-i18n="c1_run">A single send goes out Tuesday; opens counted over 48 hours. Control 5,503/25,000 = 22.0%. Variant 5,795/25,000 = 23.2%.</p></div>
+        <div class="case-stage result"><span class="case-lbl" data-i18n="cases_analyse">Analyse</span><p data-i18n="c1_analyse">Two-proportion Z-test: z ≈ 3.1, p ≈ 0.002. The 95% intervals for the two open rates don't overlap, and the split was a clean 50/50 (no SRM concern).</p></div>
+        <div class="case-verdict"><span>✅</span><div data-i18n="c1_verdict"><strong>Decision: roll out to all 200,000.</strong> The new line lifts opens ~5% relative — about 2,300 extra opens every week from then on. The holdout meant the full list was never risked on an untested idea.</div></div>
+        <div class="case-take" data-i18n="c1_take">Takeaway: a yes/no outcome (opened or not) is a conversion metric → Z-test. Size to the minimum, hold out the rest, capture the benefit at rollout.</div>
+      </div>
+    </details>
+
+    <!-- Case 2 -->
+    <details class="case-card">
+      <summary><span class="case-emoji">🛒</span><span class="case-sum-title" data-i18n="c2_title">A checkout redesign — and a split that lied</span><span class="case-tags"><span class="case-pill metric" data-i18n="c2_metric">Conversion</span><span class="case-pill test">Z-test</span></span></summary>
+      <div class="case-body">
+        <div class="case-stage"><span class="case-lbl" data-i18n="cases_problem">The problem</span><p data-i18n="c2_problem">An e-commerce team rebuilds the checkout to cut drop-off. Current purchase-completion rate is 30%. They want to detect at least a +8% relative lift before shipping a change this big.</p></div>
+        <div class="case-stage"><span class="case-lbl" data-i18n="cases_plan">Plan &amp; holdout</span><p data-i18n="c2_plan">The calculator says ~5,850 per group. With heavy daily traffic they expose just 10% of sessions to the test and keep 90% on the current checkout — a small, safe exposure for a risky change. They'll ramp up only if it's healthy.</p></div>
+        <div class="case-stage pitfall"><span class="case-lbl" data-i18n="cases_pitfall">⚠ The catch: SRM</span><p data-i18n="c2_pitfall">First read: 6,200 in control vs 5,800 in variant. The Analyse tab's Sample Ratio Mismatch check flags it — p ≈ 0.0004, far below the 0.001 alarm. A redirect bug was dropping some users before assignment. <strong>Any result here would be untrustworthy.</strong> They fix the bug and rerun.</p>
+          <div class="case-graph">
+            <svg viewBox="0 0 360 120" width="100%" height="120" font-family="Inter,sans-serif">
+              <text x="180" y="16" font-size="8.5" fill="var(--ink-muted)" text-anchor="middle" data-i18n="c2_graph_t">Observed vs expected (50/50)</text>
+              <text x="30" y="48" font-size="9" fill="var(--ink-muted)">A</text>
+              <rect x="46" y="40" width="150" height="14" fill="#9a9cb8" rx="2"/>
+              <rect x="196" y="40" width="6" height="14" fill="#e11d48"/>
+              <text x="300" y="50" font-size="8" fill="#e11d48">6,200 (too many)</text>
+              <text x="30" y="80" font-size="9" fill="var(--ink-muted)">B</text>
+              <rect x="46" y="72" width="138" height="14" fill="#9a9cb8" rx="2"/>
+              <text x="300" y="82" font-size="8" fill="#e11d48">5,800 (too few)</text>
+              <line x1="190" y1="32" x2="190" y2="94" stroke="#1a1a2e" stroke-dasharray="3 3"/>
+              <text x="190" y="108" font-size="7.5" fill="var(--ink-faint)" text-anchor="middle" data-i18n="c2_graph_exp">expected split point</text>
+            </svg>
+            <div class="case-cap" data-i18n="c2_graph_cap">The arms drifted from the intended 50/50 — a signal that assignment, not the variant, is the story.</div>
+          </div>
+        </div>
+        <div class="case-stage result"><span class="case-lbl" data-i18n="cases_analyse">Analyse (after fix)</span><p data-i18n="c2_analyse">Clean rerun: control 30.0% vs variant 32.5%, a healthy 50/50 split, z ≈ 4.2, p &lt; 0.001.</p></div>
+        <div class="case-verdict"><span>✅</span><div data-i18n="c2_verdict"><strong>Decision: ramp up, then ship.</strong> A real +2.5pp lift in completed purchases. They increase exposure gradually, confirm the gain holds, and roll out.</div></div>
+        <div class="case-take" data-i18n="c2_take">Takeaway: always check the split before the result. A Sample Ratio Mismatch means something is broken upstream — the lift is an illusion until it's fixed.</div>
+      </div>
+    </details>
+
+    <!-- Case 3 -->
+    <details class="case-card">
+      <summary><span class="case-emoji">💸</span><span class="case-sum-title" data-i18n="c3_title">A pricing page that lifts revenue per visitor</span><span class="case-tags"><span class="case-pill metric cont" data-i18n="c3_metric">Continuous</span><span class="case-pill test">Welch's t</span></span></summary>
+      <div class="case-body">
+        <div class="case-stage"><span class="case-lbl" data-i18n="cases_problem">The problem</span><p data-i18n="c3_problem">A team reorders the plans on a pricing page, hoping to raise average revenue per visitor (currently ~$18, but very spread out — many $0 visitors, a few large purchases).</p></div>
+        <div class="case-stage"><span class="case-lbl" data-i18n="cases_plan">Plan — and why not a Z-test</span><p data-i18n="c3_plan">Revenue per visitor is a continuous value, not yes/no, so this needs <strong>Welch's t-test</strong>, not a Z-test — and the spread (standard deviation), not just the average, drives the sample size. With high variance the calculator asks for ~23,700 per group. Traffic is only ~1,500/day, so the lesson flips: rather than a holdout, they must run <strong>~5 weeks</strong> just to reach the minimum.</p>
+          <div class="case-graph">
+            <svg viewBox="0 0 360 120" width="100%" height="120" font-family="Inter,sans-serif">
+              <line x1="20" y1="100" x2="345" y2="100" stroke="var(--border)"/>
+              <path d="M20,100 C60,100 70,30 95,30 C120,30 130,100 175,100 L175,100 Z" fill="#5b50c8" opacity="0.18"/>
+              <path d="M20,100 C60,100 70,30 95,30 C120,30 130,100 175,100" fill="none" stroke="#5b50c8" stroke-width="2"/>
+              <path d="M175,100 C175,100 230,98 290,96 C320,95 335,95 345,95" fill="none" stroke="#5b50c8" stroke-width="2" stroke-dasharray="2 2"/>
+              <text x="95" y="118" font-size="8" fill="var(--ink-muted)" text-anchor="middle" data-i18n="c3_graph_a">most visitors: $0</text>
+              <text x="290" y="118" font-size="8" fill="var(--ink-faint)" text-anchor="middle" data-i18n="c3_graph_b">few: large purchases (long tail)</text>
+            </svg>
+            <div class="case-cap" data-i18n="c3_graph_cap">Revenue is highly skewed with a long tail — that spread is exactly why the sample must be large.</div>
+          </div>
+        </div>
+        <div class="case-stage"><span class="case-lbl" data-i18n="cases_run">Run &amp; collect</span><p data-i18n="c3_run">After 5 weeks: ~43,000 visitors per arm. Control mean $18.00, variant mean $19.15 (both with large standard deviations ~$42).</p></div>
+        <div class="case-stage result"><span class="case-lbl" data-i18n="cases_analyse">Analyse</span><p data-i18n="c3_analyse">Welch's t-test: t ≈ 4.0, p &lt; 0.001. The +$1.15 per visitor is small relative to the spread, but with 43,000 per arm it's clearly distinguishable from noise.</p></div>
+        <div class="case-verdict"><span>✅</span><div data-i18n="c3_verdict"><strong>Decision: ship it.</strong> +$1.15 per visitor across all traffic is meaningful revenue. The long runtime was the price of a noisy metric — worth it for a permanent gain.</div></div>
+        <div class="case-take" data-i18n="c3_take">Takeaway: a per-user dollar amount is continuous → Welch's t-test. High variance means big samples; when traffic is scarce, time replaces the holdout.</div>
+      </div>
+    </details>
+
+    <!-- Case 4 -->
+    <details class="case-card">
+      <summary><span class="case-emoji">🚀</span><span class="case-sum-title" data-i18n="c4_title">An onboarding nudge that changes behaviour</span><span class="case-tags"><span class="case-pill metric ratio" data-i18n="c4_metric">Ratio</span><span class="case-pill test">Delta method</span></span></summary>
+      <div class="case-body">
+        <div class="case-stage"><span class="case-lbl" data-i18n="cases_problem">The problem</span><p data-i18n="c4_problem">A product team adds a guided checklist to onboarding, hoping new users take more key actions per session. The metric is <strong>actions per session</strong> — a ratio, where each user contributes many sessions.</p></div>
+        <div class="case-stage"><span class="case-lbl" data-i18n="cases_plan">Plan — why the delta method</span><p data-i18n="c4_plan">You randomise by <em>user</em> but measure per <em>session</em>, so a user's sessions are correlated. A naive t-test on session-level ratios would understate the variance and cry "significant" too easily. The right tool is the <strong>delta method</strong>, which estimates the correct variance and feeds a Z-test. They test on a safe 20% slice first (a risky onboarding change), holding the rest on the current flow.</p></div>
+        <div class="case-stage"><span class="case-lbl" data-i18n="cases_run">Run &amp; collect</span><p data-i18n="c4_run">8,000 users per arm. Control averages ~1.01 actions/session; variant ~1.10 — but the per-user session counts vary widely, so the variance must be handled carefully.</p>
+          <div class="case-graph">
+            <svg viewBox="0 0 360 120" width="100%" height="120" font-family="Inter,sans-serif">
+              <line x1="40" y1="100" x2="345" y2="100" stroke="var(--border)"/>
+              <circle cx="90" cy="78" r="3" fill="#9a9cb8" opacity="0.6"/><circle cx="120" cy="62" r="3" fill="#9a9cb8" opacity="0.6"/><circle cx="80" cy="88" r="3" fill="#9a9cb8" opacity="0.6"/><circle cx="140" cy="70" r="3" fill="#9a9cb8" opacity="0.6"/><circle cx="110" cy="82" r="3" fill="#9a9cb8" opacity="0.6"/>
+              <circle cx="220" cy="55" r="3" fill="#5b50c8" opacity="0.7"/><circle cx="250" cy="44" r="3" fill="#5b50c8" opacity="0.7"/><circle cx="210" cy="62" r="3" fill="#5b50c8" opacity="0.7"/><circle cx="270" cy="50" r="3" fill="#5b50c8" opacity="0.7"/><circle cx="240" cy="66" r="3" fill="#5b50c8" opacity="0.7"/>
+              <text x="110" y="116" font-size="8" fill="var(--ink-muted)" text-anchor="middle" data-i18n="c4_graph_a">control users</text>
+              <text x="240" y="116" font-size="8" fill="#5b50c8" text-anchor="middle" data-i18n="c4_graph_b">variant users</text>
+            </svg>
+            <div class="case-cap" data-i18n="c4_graph_cap">Each dot is a user's ratio. The variant cluster sits higher, but per-user spread is what the delta method accounts for.</div>
+          </div>
+        </div>
+        <div class="case-stage result"><span class="case-lbl" data-i18n="cases_analyse">Analyse</span><p data-i18n="c4_analyse">Delta method + Z-test: z ≈ 6.9, p &lt; 0.001. The lift in actions per session is real, and the variance was estimated correctly — a naive test would have over-stated the certainty.</p></div>
+        <div class="case-verdict"><span>✅</span><div data-i18n="c4_verdict"><strong>Decision: ramp and ship.</strong> The checklist genuinely changes behaviour. They expand from 20% to full rollout after confirming the lift holds.</div></div>
+        <div class="case-take" data-i18n="c4_take">Takeaway: ratio metrics (actions/session, revenue/order) need the delta method to get the variance right — otherwise you'll ship false positives.</div>
+      </div>
+    </details>
+
+    <!-- Case 5 -->
+    <details class="case-card">
+      <summary><span class="case-emoji">🔔</span><span class="case-sum-title" data-i18n="c5_title">When the test says "no"</span><span class="case-tags"><span class="case-pill metric" data-i18n="c5_metric">Conversion</span><span class="case-pill test">Z-test</span></span></summary>
+      <div class="case-body">
+        <div class="case-stage"><span class="case-lbl" data-i18n="cases_problem">The problem</span><p data-i18n="c5_problem">A growth team adds emoji and urgency to a re-engagement push ("⏰ Don't lose your streak!"), expecting more dormant users to return. Re-engagement rate is ~4%.</p></div>
+        <div class="case-stage"><span class="case-lbl" data-i18n="cases_plan">Plan &amp; holdout</span><p data-i18n="c5_plan">Even with millions of dormant users, they test on a holdout-sized cohort — 50,000 per group — not the whole base. No reason to blast everyone with an unproven message.</p></div>
+        <div class="case-stage"><span class="case-lbl" data-i18n="cases_run">Run &amp; collect</span><p data-i18n="c5_run">Control 4.0% vs variant 4.1%. The difference is tiny.</p></div>
+        <div class="case-stage result"><span class="case-lbl" data-i18n="cases_analyse">Analyse</span><p data-i18n="c5_analyse">Z-test: p = 0.42. The 95% interval for the lift runs from −0.14pp to +0.34pp — it straddles zero, so no effect can be claimed.</p>
+          <div class="case-graph">
+            <svg viewBox="0 0 360 100" width="100%" height="100" font-family="Inter,sans-serif">
+              <line x1="180" y1="20" x2="180" y2="70" stroke="var(--ink-muted)" stroke-dasharray="3 3"/>
+              <text x="180" y="88" font-size="8" fill="var(--ink-muted)" text-anchor="middle" data-i18n="c5_graph_zero">0 — no difference</text>
+              <line x1="110" y1="45" x2="260" y2="45" stroke="#b06a00" stroke-width="3"/>
+              <line x1="110" y1="37" x2="110" y2="53" stroke="#b06a00" stroke-width="2"/>
+              <line x1="260" y1="37" x2="260" y2="53" stroke="#b06a00" stroke-width="2"/>
+              <circle cx="185" cy="45" r="4" fill="#b06a00"/>
+              <text x="110" y="30" font-size="8" fill="var(--ink-faint)" text-anchor="middle">−0.14pp</text>
+              <text x="260" y="30" font-size="8" fill="var(--ink-faint)" text-anchor="middle">+0.34pp</text>
+            </svg>
+            <div class="case-cap" data-i18n="c5_graph_cap">The confidence interval crosses zero — the data can't rule out "no effect."</div>
+          </div>
+        </div>
+        <div class="case-verdict no"><span>🛑</span><div data-i18n="c5_verdict"><strong>Decision: don't ship.</strong> No detectable lift — and a guardrail check showed the emoji slightly raised mute rates. "No change" saved them from shipping clutter and annoying users.</div></div>
+        <div class="case-take" data-i18n="c5_take">Takeaway: a non-significant result is not a failed experiment. It's evidence that stops you shipping noise — and the holdout means you learned it cheaply.</div>
+      </div>
+    </details>
   </div>
 
 
