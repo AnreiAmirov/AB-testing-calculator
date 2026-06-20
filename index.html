@@ -249,9 +249,26 @@
       </div>
       <div class="field">
         <label><span data-i18n="plan_num_variants_short">Number of variants</span><br><span class="tip" data-i18n="plan_num_variants_tip">including control</span></label>
-        <input type="number" id="p-num-variants" value="2" min="2" max="10" step="1">
+        <input type="number" id="p-num-variants" value="2" min="2" max="10" step="1" onchange="renderAllocation()" oninput="renderAllocation()">
       </div>
     </div>
+
+    <div class="field" style="margin-top:14px">
+      <label><span data-i18n="plan_alloc_label">Traffic allocation</span></label>
+      <div class="alloc-toggle" role="tablist">
+        <button type="button" id="alloc-mode-equal" class="alloc-mode-btn selected" onclick="setAllocMode('equal')" data-i18n="plan_alloc_equal">Equal split</button>
+        <button type="button" id="alloc-mode-custom" class="alloc-mode-btn" onclick="setAllocMode('custom')" data-i18n="plan_alloc_custom">Custom split</button>
+      </div>
+    </div>
+    <div id="alloc-editor" class="alloc-editor hidden">
+      <div id="alloc-rows"></div>
+      <div class="alloc-sum-row">
+        <span data-i18n="plan_alloc_total">Total</span>
+        <span id="alloc-sum" class="alloc-sum-ok">100%</span>
+      </div>
+      <div id="alloc-warn" class="alloc-warn hidden" data-i18n="plan_alloc_warn">Shares must add up to 100%.</div>
+    </div>
+
     <div class="mt-20 flex-end">
       <button class="btn-primary" onclick="calcSampleSize()" data-i18n="btn_calculate">Calculate</button>
     </div>
@@ -273,6 +290,10 @@
       <div class="result-meta-item"><strong id="res-total">—</strong><span data-i18n="res_total">total (both variants)</span></div>
       <div class="result-meta-item"><strong id="res-mde-abs">—</strong><span data-i18n="res_mde_abs">absolute MDE</span></div>
       <div class="result-meta-item"><strong id="res-test">—</strong><span data-i18n="res_test_used">test used</span></div>
+    </div>
+    <div id="res-arms-wrap" class="hidden" style="margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,0.2)">
+      <div class="result-label" data-i18n="res_per_arm">Users per arm</div>
+      <table class="res-arms-table"><tbody id="res-arms-body"></tbody></table>
     </div>
     <div id="res-duration-wrap" class="hidden" style="margin-top:18px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.2)">
       <div class="result-label" data-i18n="res_duration">Estimated experiment duration</div>
@@ -1359,6 +1380,8 @@
 </div>
 
 <script src="stats.js"></script>
+<script src="i18n.js"></script>
+<script src="charts.js"></script>
 <script src="app.js"></script>
 </body>
 </html>
