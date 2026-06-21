@@ -674,6 +674,11 @@
         <a class="toc-link" href="#sec-samplesize"><span class="toc-emoji">📐</span><span data-i18n="toc_samplesize_short">Sample size vs MDE</span></a>
         <a class="toc-link" href="#sec-power"><span class="toc-emoji">🔋</span><span data-i18n="ref_chart4_title">How power grows with sample size</span></a>
 
+        <div class="toc-group-h" data-i18n="toc_gvar">✂️ Variance reduction</div>
+        <div class="toc-group-desc" data-i18n="toc_gvar_desc">Techniques that get you to the same answer with less traffic — and the right test for metrics built as a ratio. Learn these once you're comfortable with the core concepts above.</div>
+        <a class="toc-link" href="#sec-cuped"><span class="toc-emoji">✂️</span><span data-i18n="toc_cuped_short">CUPED variance reduction</span></a>
+        <a class="toc-link" href="#sec-delta"><span class="toc-emoji">➗</span><span data-i18n="toc_delta_short">The delta method (ratio metrics)</span></a>
+
         <div class="toc-group-h" data-i18n="toc_g3">🎯 Choosing your test</div>
         <div class="toc-group-desc" data-i18n="toc_g3_desc">Which test fits your metric — and what each one actually means, in both statistical and business terms. Get this right before you analyse anything.</div>
         <a class="toc-link" href="#sec-choose"><span class="toc-emoji">🧪</span><span data-i18n="toc_choose_short">Z-test vs t-test: which and why</span></a>
@@ -693,9 +698,7 @@
         <a class="toc-link" href="#sec-distcases"><span class="toc-emoji">📘</span><span data-i18n="toc_distcases_short">Case studies: checking distributions</span></a>
 
         <div class="toc-group-h" data-i18n="toc_g5">🔬 Advanced &amp; pitfalls</div>
-        <div class="toc-group-desc" data-i18n="toc_g5_desc">Techniques to make tests sharper, and the traps that quietly invalidate results — peeking, and testing too many things at once.</div>
-        <a class="toc-link" href="#sec-cuped"><span class="toc-emoji">✂️</span><span data-i18n="toc_cuped_short">CUPED variance reduction</span></a>
-        <a class="toc-link" href="#sec-delta"><span class="toc-emoji">➗</span><span data-i18n="toc_delta_short">The delta method (ratio metrics)</span></a>
+        <div class="toc-group-desc" data-i18n="toc_g5_desc">The traps that quietly invalidate results — unequal splits, peeking at results early, and testing too many things at once.</div>
         <a class="toc-link" href="#sec-split"><span class="toc-emoji">⚖️</span><span data-i18n="toc_split_short">Unequal traffic splits (e.g. 90/10)</span></a>
         <a class="toc-link" href="#sec-peeking"><span class="toc-emoji">👀</span><span data-i18n="toc_peeking_short">Why peeking inflates errors</span></a>
         <a class="toc-link" href="#sec-multiple"><span class="toc-emoji">🎰</span><span data-i18n="toc_multiple_short">Multiple testing & error inflation</span></a>
@@ -846,6 +849,7 @@
       <summary><span class="case-emoji">📧</span><span class="case-sum-title" data-i18n="c1_title">A better email subject line</span><span class="case-tags"><span class="case-pill metric" data-i18n="c1_metric">Conversion</span><span class="case-pill test">Z-test</span></span></summary>
       <div class="case-body">
         <div class="case-stage"><span class="case-lbl" data-i18n="cases_problem">The problem</span><p data-i18n="c1_problem">A SaaS team sends a weekly newsletter to 200,000 subscribers. Open rate is 22%. Marketing thinks a curiosity-driven subject line ("You're missing 3 features") will beat the current one. They want evidence before rolling it out to the whole list.</p></div>
+        <div class="case-stage hypothesis"><span class="case-lbl" data-i18n="cases_hypothesis">Hypothesis</span><p data-i18n="c1_hyp"><strong>Because</strong> past sends show curiosity-gap subject lines earned higher opens in our own data, <strong>we believe</strong> a curiosity-driven line <strong>will</strong> raise the open rate from 22% to at least 23.1% (+5% relative). We'll know we're right if the Z-test clears p &lt; 0.05 with the lift above that threshold.</p></div>
         <div class="case-stage"><span class="case-lbl" data-i18n="cases_plan">Plan &amp; holdout</span><p data-i18n="c1_plan">Smallest lift worth shipping: +5% relative (22% → 23.1%). The calculator says ~22,700 per group. So they test on 25,000 per group (50,000 total) and <strong>hold out the other 150,000</strong> on the old line — no point exposing everyone to an unproven idea.</p>
           <div class="case-graph">
             <svg viewBox="0 0 360 130" width="100%" height="130" font-family="Inter,sans-serif">
@@ -871,9 +875,38 @@
 
     <!-- Case 2 -->
     <details class="case-card">
+      <summary><span class="case-emoji">🔔</span><span class="case-sum-title" data-i18n="c5_title">When the test says "no"</span><span class="case-tags"><span class="case-pill metric" data-i18n="c5_metric">Conversion</span><span class="case-pill test">Z-test</span></span></summary>
+      <div class="case-body">
+        <div class="case-stage"><span class="case-lbl" data-i18n="cases_problem">The problem</span><p data-i18n="c5_problem">A growth team adds emoji and urgency to a re-engagement push ("⏰ Don't lose your streak!"), expecting more dormant users to return. Re-engagement rate is ~4%.</p></div>
+        <div class="case-stage hypothesis"><span class="case-lbl" data-i18n="cases_hypothesis">Hypothesis</span><p data-i18n="c5_hyp"><strong>Because</strong> support tickets and survey replies suggest users forget the app rather than dislike it, <strong>we believe</strong> an urgency-and-emoji push <strong>will</strong> lift the return rate from 4% by at least +0.5pp. We'll also watch a guardrail — mute/unsubscribe rate — so a "win" on returns doesn't quietly cost us long-term reach.</p></div>
+        <div class="case-stage"><span class="case-lbl" data-i18n="cases_plan">Plan &amp; holdout</span><p data-i18n="c5_plan">Even with millions of dormant users, they test on a holdout-sized cohort — 50,000 per group — not the whole base. No reason to blast everyone with an unproven message.</p></div>
+        <div class="case-stage"><span class="case-lbl" data-i18n="cases_run">Run &amp; collect</span><p data-i18n="c5_run">Control 4.0% vs variant 4.1%. The difference is tiny.</p></div>
+        <div class="case-stage result"><span class="case-lbl" data-i18n="cases_analyse">Analyse</span><p data-i18n="c5_analyse">Z-test: p = 0.42. The 95% interval for the lift runs from −0.14pp to +0.34pp — it straddles zero, so no effect can be claimed.</p>
+          <div class="case-graph">
+            <svg viewBox="0 0 360 100" width="100%" height="100" font-family="Inter,sans-serif">
+              <line x1="180" y1="20" x2="180" y2="70" stroke="var(--ink-muted)" stroke-dasharray="3 3"/>
+              <text x="180" y="88" font-size="8" fill="var(--ink-muted)" text-anchor="middle" data-i18n="c5_graph_zero">0 — no difference</text>
+              <line x1="110" y1="45" x2="260" y2="45" stroke="#b06a00" stroke-width="3"/>
+              <line x1="110" y1="37" x2="110" y2="53" stroke="#b06a00" stroke-width="2"/>
+              <line x1="260" y1="37" x2="260" y2="53" stroke="#b06a00" stroke-width="2"/>
+              <circle cx="185" cy="45" r="4" fill="#b06a00"/>
+              <text x="110" y="30" font-size="8" fill="var(--ink-faint)" text-anchor="middle">−0.14pp</text>
+              <text x="260" y="30" font-size="8" fill="var(--ink-faint)" text-anchor="middle">+0.34pp</text>
+            </svg>
+            <div class="case-cap" data-i18n="c5_graph_cap">The confidence interval crosses zero — the data can't rule out "no effect."</div>
+          </div>
+        </div>
+        <div class="case-verdict no"><span>🛑</span><div data-i18n="c5_verdict"><strong>Decision: don't ship.</strong> No detectable lift — and a guardrail check showed the emoji slightly raised mute rates. "No change" saved them from shipping clutter and annoying users.</div></div>
+        <div class="case-take" data-i18n="c5_take">Takeaway: a non-significant result is not a failed experiment. It's evidence that stops you shipping noise — and the holdout means you learned it cheaply.</div>
+      </div>
+    </details>
+
+    <!-- Case 3 -->
+    <details class="case-card">
       <summary><span class="case-emoji">🛒</span><span class="case-sum-title" data-i18n="c2_title">A checkout redesign — and a split that lied</span><span class="case-tags"><span class="case-pill metric" data-i18n="c2_metric">Conversion</span><span class="case-pill test">Z-test</span></span></summary>
       <div class="case-body">
         <div class="case-stage"><span class="case-lbl" data-i18n="cases_problem">The problem</span><p data-i18n="c2_problem">An e-commerce team rebuilds the checkout to cut drop-off. Current purchase-completion rate is 30%. They want to detect at least a +8% relative lift before shipping a change this big.</p></div>
+        <div class="case-stage hypothesis"><span class="case-lbl" data-i18n="cases_hypothesis">Hypothesis</span><p data-i18n="c2_hyp"><strong>Because</strong> funnel analytics show 1 in 3 users abandon at a cluttered payment step, <strong>we believe</strong> a streamlined checkout with a progress bar <strong>will</strong> raise completion from 30% by at least +8% relative (to ≈32.4%). Success = a significant positive Z-test <em>on a clean 50/50 split</em> — the split health matters as much as the p-value here.</p></div>
         <div class="case-stage"><span class="case-lbl" data-i18n="cases_plan">Plan &amp; holdout</span><p data-i18n="c2_plan">The calculator says ~5,850 per group. With heavy daily traffic they expose just 10% of sessions to the test and keep 90% on the current checkout — a small, safe exposure for a risky change. They'll ramp up only if it's healthy.</p></div>
         <div class="case-stage pitfall"><span class="case-lbl" data-i18n="cases_pitfall">⚠ The catch: SRM</span><p data-i18n="c2_pitfall">First read: 6,200 in control vs 5,800 in variant. The Analyse tab's Sample Ratio Mismatch check flags it — p ≈ 0.0004, far below the 0.001 alarm. A redirect bug was dropping some users before assignment. <strong>Any result here would be untrustworthy.</strong> They fix the bug and rerun.</p>
           <div class="case-graph">
@@ -898,11 +931,12 @@
       </div>
     </details>
 
-    <!-- Case 3 -->
+    <!-- Case 4 -->
     <details class="case-card">
       <summary><span class="case-emoji">💸</span><span class="case-sum-title" data-i18n="c3_title">A pricing page that lifts revenue per visitor</span><span class="case-tags"><span class="case-pill metric cont" data-i18n="c3_metric">Continuous</span><span class="case-pill test">Welch's t</span></span></summary>
       <div class="case-body">
         <div class="case-stage"><span class="case-lbl" data-i18n="cases_problem">The problem</span><p data-i18n="c3_problem">A team reorders the plans on a pricing page, hoping to raise average revenue per visitor (currently ~$18, but very spread out — many $0 visitors, a few large purchases).</p></div>
+        <div class="case-stage hypothesis"><span class="case-lbl" data-i18n="cases_hypothesis">Hypothesis</span><p data-i18n="c3_hyp"><strong>Because</strong> session recordings show visitors anchor on the first plan they see, <strong>we believe</strong> leading with the mid-tier plan <strong>will</strong> raise average revenue per visitor from $18 by at least +$1. Because revenue is a continuous, highly-skewed amount, success is a significant <strong>Welch's t-test</strong> — not a Z-test — on the per-visitor means.</p></div>
         <div class="case-stage"><span class="case-lbl" data-i18n="cases_plan">Plan — and why not a Z-test</span><p data-i18n="c3_plan">Revenue per visitor is a continuous value, not yes/no, so this needs <strong>Welch's t-test</strong>, not a Z-test — and the spread (standard deviation), not just the average, drives the sample size. With high variance the calculator asks for ~23,700 per group. Traffic is only ~1,500/day, so the lesson flips: rather than a holdout, they must run <strong>~5 weeks</strong> just to reach the minimum.</p>
           <div class="case-graph">
             <svg viewBox="0 0 360 120" width="100%" height="120" font-family="Inter,sans-serif">
@@ -923,11 +957,12 @@
       </div>
     </details>
 
-    <!-- Case 4 -->
+    <!-- Case 5 -->
     <details class="case-card">
       <summary><span class="case-emoji">🚀</span><span class="case-sum-title" data-i18n="c4_title">An onboarding nudge that changes behaviour</span><span class="case-tags"><span class="case-pill metric ratio" data-i18n="c4_metric">Ratio</span><span class="case-pill test">Delta method</span></span></summary>
       <div class="case-body">
         <div class="case-stage"><span class="case-lbl" data-i18n="cases_problem">The problem</span><p data-i18n="c4_problem">A product team adds a guided checklist to onboarding, hoping new users take more key actions per session. The metric is <strong>actions per session</strong> — a ratio, where each user contributes many sessions.</p></div>
+        <div class="case-stage hypothesis"><span class="case-lbl" data-i18n="cases_hypothesis">Hypothesis</span><p data-i18n="c4_hyp"><strong>Because</strong> activation data shows users who complete 3+ actions in week one retain far better, <strong>we believe</strong> a guided checklist <strong>will</strong> raise actions per session from ~1.0 by a meaningful margin. Because the metric is a ratio (many sessions per user), success must be judged with the <strong>delta method</strong>, which gets the variance right — a naive test would over-claim.</p></div>
         <div class="case-stage"><span class="case-lbl" data-i18n="cases_plan">Plan — why the delta method</span><p data-i18n="c4_plan">You randomise by <em>user</em> but measure per <em>session</em>, so a user's sessions are correlated. A naive t-test on session-level ratios would understate the variance and cry "significant" too easily. The right tool is the <strong>delta method</strong>, which estimates the correct variance and feeds a Z-test. They test on a safe 20% slice first (a risky onboarding change), holding the rest on the current flow.</p></div>
         <div class="case-stage"><span class="case-lbl" data-i18n="cases_run">Run &amp; collect</span><p data-i18n="c4_run">8,000 users per arm. Control averages ~1.01 actions/session; variant ~1.10 — but the per-user session counts vary widely, so the variance must be handled carefully.</p>
           <div class="case-graph">
@@ -944,33 +979,6 @@
         <div class="case-stage result"><span class="case-lbl" data-i18n="cases_analyse">Analyse</span><p data-i18n="c4_analyse">Delta method + Z-test: z ≈ 6.9, p &lt; 0.001. The lift in actions per session is real, and the variance was estimated correctly — a naive test would have over-stated the certainty.</p></div>
         <div class="case-verdict"><span>✅</span><div data-i18n="c4_verdict"><strong>Decision: ramp and ship.</strong> The checklist genuinely changes behaviour. They expand from 20% to full rollout after confirming the lift holds.</div></div>
         <div class="case-take" data-i18n="c4_take">Takeaway: ratio metrics (actions/session, revenue/order) need the delta method to get the variance right — otherwise you'll ship false positives.</div>
-      </div>
-    </details>
-
-    <!-- Case 5 -->
-    <details class="case-card">
-      <summary><span class="case-emoji">🔔</span><span class="case-sum-title" data-i18n="c5_title">When the test says "no"</span><span class="case-tags"><span class="case-pill metric" data-i18n="c5_metric">Conversion</span><span class="case-pill test">Z-test</span></span></summary>
-      <div class="case-body">
-        <div class="case-stage"><span class="case-lbl" data-i18n="cases_problem">The problem</span><p data-i18n="c5_problem">A growth team adds emoji and urgency to a re-engagement push ("⏰ Don't lose your streak!"), expecting more dormant users to return. Re-engagement rate is ~4%.</p></div>
-        <div class="case-stage"><span class="case-lbl" data-i18n="cases_plan">Plan &amp; holdout</span><p data-i18n="c5_plan">Even with millions of dormant users, they test on a holdout-sized cohort — 50,000 per group — not the whole base. No reason to blast everyone with an unproven message.</p></div>
-        <div class="case-stage"><span class="case-lbl" data-i18n="cases_run">Run &amp; collect</span><p data-i18n="c5_run">Control 4.0% vs variant 4.1%. The difference is tiny.</p></div>
-        <div class="case-stage result"><span class="case-lbl" data-i18n="cases_analyse">Analyse</span><p data-i18n="c5_analyse">Z-test: p = 0.42. The 95% interval for the lift runs from −0.14pp to +0.34pp — it straddles zero, so no effect can be claimed.</p>
-          <div class="case-graph">
-            <svg viewBox="0 0 360 100" width="100%" height="100" font-family="Inter,sans-serif">
-              <line x1="180" y1="20" x2="180" y2="70" stroke="var(--ink-muted)" stroke-dasharray="3 3"/>
-              <text x="180" y="88" font-size="8" fill="var(--ink-muted)" text-anchor="middle" data-i18n="c5_graph_zero">0 — no difference</text>
-              <line x1="110" y1="45" x2="260" y2="45" stroke="#b06a00" stroke-width="3"/>
-              <line x1="110" y1="37" x2="110" y2="53" stroke="#b06a00" stroke-width="2"/>
-              <line x1="260" y1="37" x2="260" y2="53" stroke="#b06a00" stroke-width="2"/>
-              <circle cx="185" cy="45" r="4" fill="#b06a00"/>
-              <text x="110" y="30" font-size="8" fill="var(--ink-faint)" text-anchor="middle">−0.14pp</text>
-              <text x="260" y="30" font-size="8" fill="var(--ink-faint)" text-anchor="middle">+0.34pp</text>
-            </svg>
-            <div class="case-cap" data-i18n="c5_graph_cap">The confidence interval crosses zero — the data can't rule out "no effect."</div>
-          </div>
-        </div>
-        <div class="case-verdict no"><span>🛑</span><div data-i18n="c5_verdict"><strong>Decision: don't ship.</strong> No detectable lift — and a guardrail check showed the emoji slightly raised mute rates. "No change" saved them from shipping clutter and annoying users.</div></div>
-        <div class="case-take" data-i18n="c5_take">Takeaway: a non-significant result is not a failed experiment. It's evidence that stops you shipping noise — and the holdout means you learned it cheaply.</div>
       </div>
     </details>
   </div>
@@ -1047,8 +1055,9 @@
     <div class="chart-wrap"><canvas id="chart-power"></canvas></div>
   </div>
 
+  <!-- ===== Variance reduction group: CUPED chart + deep-dive + delta ===== -->
   <!-- Chart 5: CUPED variance reduction (interactive) -->
-  <div class="chart-card" id="sec-cuped">
+  <div class="chart-card">
     <div class="chart-title" data-i18n="ref_chart5_title">CUPED: how variance reduction shrinks the sample you need</div>
     <div class="chart-sub" data-i18n="ref_chart5_sub">CUPED removes pre-experiment noise. Drag the slider to see how the variance-reduction percentage cuts the required sample size.</div>
     <div style="display:flex;align-items:center;gap:12px;margin:8px 0 4px;flex-wrap:wrap">
@@ -1059,6 +1068,180 @@
     <button class="chart-dl" onclick="downloadChart('chart-cuped','cuped-variance-reduction')"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></span><span class="dl-label" data-i18n="btn_dl_png">PNG</span></button>
     <div class="chart-wrap"><canvas id="chart-cuped"></canvas></div>
   </div>
+
+  <div class="card" id="sec-cuped">
+    <div class="card-title" data-i18n="ref_deepdive_title">Deep dive: CUPED, step by step</div>
+    <div class="accordion-body" style="padding:0;background:none">
+
+      <div class="dd-h3" data-i18n="dd2_h_idea">1 · The idea</div>
+      <p data-i18n="dd_cuped_intuition" style="background:rgba(91,95,233,0.06);border-left:3px solid var(--accent);padding:12px 14px;border-radius:6px;margin-bottom:14px"><strong>The intuition first.</strong> Imagine measuring whether a new gym program adds muscle. People start at wildly different weights, so the after-numbers are all over the place — the noise from "where each person started" drowns out the effect of your program. But you <em>know</em> each person's starting weight. If you measure the <em>change</em> from their own baseline instead of the raw after-number, that starting-point noise vanishes and the program's real effect pops out. CUPED is exactly this trick for product metrics: subtract the part of each user's behaviour you could have predicted <em>before</em> the test, and what's left is a much cleaner read on your change.</p>
+      <p data-i18n="dd_cuped_p1">CUPED (Controlled-experiment Using Pre-Experiment Data) is the single highest-leverage trick in modern experimentation. The idea: a user who spent a lot last month will probably spend a lot this month regardless of your change. That predictable part is noise you can subtract.</p>
+      <p data-i18n="dd2_oneliner"><strong>The one-line version for stakeholders:</strong> "CUPED doesn't change the answer; it gets us to the same answer with less traffic, by cancelling out noise we already knew about."</p>
+
+      <div class="dd-h3" data-i18n="dd2_h_when">2 · When do you actually run CUPED?</div>
+      <p data-i18n="dd2_when_p">The most common confusion: CUPED needs data from <strong>both</strong> sides of the experiment. The covariate X is <em>collected</em> before the test, but the adjustment itself is only <em>computed after</em> the test ends — because the formula needs each user's during-test outcome Y, which doesn't exist until the test is over. You decide on CUPED up front, but you run the math at analysis time.</p>
+      <div class="pl-phase">
+        <div><span class="pl-when" data-i18n="dd2_pl_before_w">Before the test</span><span class="pl-phase-title" data-i18n="dd2_pl_before_t">planning &amp; setup</span></div>
+        <ol>
+          <li data-i18n="dd2_pl_b1"><strong>Decide you'll use CUPED while designing the test.</strong> It affects your sample-size plan: expecting ~30% variance reduction lets you plan for fewer users or a shorter run.</li>
+          <li data-i18n="dd2_pl_b2"><strong>Choose the covariate X.</strong> The standard, most powerful choice is your target metric measured in the period just before the test (e.g. each user's revenue in the 1–4 weeks pre-launch). It must be a per-user value you can join later by a stable user ID.</li>
+          <li data-i18n="dd2_pl_b3"><strong>Fix the pre-period window and freeze it.</strong> 1–4 weeks is typical: too short and the covariate is noisy, too long and old behaviour stops predicting current behaviour.</li>
+          <li data-i18n="dd2_pl_b4"><strong>Decide the new-user rule now.</strong> Users with no history can't be adjusted. Choose in advance: exclude them, impute X = 0, or analyse returning vs. new users separately. Never decide this after seeing results.</li>
+          <li data-i18n="dd2_pl_b5"><strong>Capture X for every enrolled user</strong> as they enter, keyed to their user ID. This is the one step that must happen at enrolment.</li>
+        </ol>
+      </div>
+      <div class="pl-phase">
+        <div><span class="pl-when" data-i18n="dd2_pl_during_w">During the test</span><span class="pl-phase-title" data-i18n="dd2_pl_during_t">just run it</span></div>
+        <ol>
+          <li data-i18n="dd2_pl_d1"><strong>Run the experiment normally.</strong> CUPED changes nothing about execution — same randomisation, exposure, and metric collection.</li>
+          <li data-i18n="dd2_pl_d2"><strong>Don't touch X.</strong> The covariate is locked from the pre-period; you're now collecting Y (the during-test outcome). X stays untouched by the treatment — guaranteed, because it was measured before exposure.</li>
+        </ol>
+      </div>
+      <div class="pl-phase">
+        <div><span class="pl-when" data-i18n="dd2_pl_after_w">After the test</span><span class="pl-phase-title" data-i18n="dd2_pl_after_t">compute &amp; analyse</span></div>
+        <ol>
+          <li data-i18n="dd2_pl_a1"><strong>Validate the experiment first.</strong> Run the SRM / split-health check. CUPED reduces variance, it does not fix a broken experiment.</li>
+          <li data-i18n="dd2_pl_a2"><strong>Join X to Y by user ID.</strong> You now have, per user, their pre-period X and during-test Y.</li>
+          <li data-i18n="dd2_pl_a3"><strong>Compute θ on the pooled data</strong> (both arms together, not per-arm): θ = Cov(X, Y) / Var(X). Pooling matters — per-arm θ can leak the treatment effect into the adjustment.</li>
+          <li data-i18n="dd2_pl_a4"><strong>Adjust every user:</strong> Ỹ = Y − θ·(X − X̄), where X̄ is the population mean of X.</li>
+          <li data-i18n="dd2_pl_a5"><strong>Run your normal test on Ỹ</strong> and read the p-value exactly as usual.</li>
+        </ol>
+      </div>
+      <p style="font-size:.85rem;color:var(--ink-muted)" data-i18n="dd2_when_sum"><strong>One-line timing:</strong> collect X before, collect Y during, compute θ and adjust after. CUPED is a planning decision made up front but a calculation done at analysis time.</p>
+
+      <div class="dd-h3" data-i18n="dd2_h_case">3 · A worked case, step by step</div>
+      <p data-i18n="dd2_case_intro">Forget formulas for a moment. Here are <strong>8 users</strong> from a revenue test — four in control (A), four in the variant (B). For each we have <strong>X</strong> = spend in the weeks <em>before</em> the test, and <strong>Y</strong> = spend <em>during</em> it. Small enough to follow every number by hand.</p>
+      <div class="dd-h3" style="font-size:0.9rem" data-i18n="dd2_case_fail_h">First, try it the normal way — and watch it fail</div>
+      <p data-i18n="dd2_case_fail">Average Y in control = <strong>$24.00</strong>, in variant = <strong>$29.25</strong> — looks like a big +21.9% lift! But run a t-test and <strong>p = 0.74</strong>, nowhere near significant. Why? U2 ($55) and U6 ($60) are naturally big spenders bouncing the averages around so hard the test can't tell the gain from luck. The signal is real but the <em>noise</em> drowns it.</p>
+      <div class="dd-h3" style="font-size:0.9rem" data-i18n="dd2_case_apply_h">Now apply CUPED</div>
+      <div class="dd-step"><span class="dd-n">1</span><div><strong data-i18n="dd2_case_s1_b">Find θ.</strong> <span data-i18n="dd2_case_s1">θ = Cov(X,Y) / Var(X) across all 8 users = 337.4 / 296.0 = <strong>1.14</strong>. (Every extra $1 spent before predicts ~$1.14 during — consistent spenders.)</span></div></div>
+      <div class="dd-step"><span class="dd-n">2</span><div><strong data-i18n="dd2_case_s2_b">Find X̄.</strong> <span data-i18n="dd2_case_s2">The average of X over all 8 users = <strong>$22.375</strong>.</span></div></div>
+      <div class="dd-step"><span class="dd-n">3</span><div><strong data-i18n="dd2_case_s3_b">Adjust each user:</strong> <span data-i18n="dd2_case_s3">Ỹ = Y − θ·(X − X̄). For big spender U2: X = $50, so subtract 1.14 × (50 − 22.375) = $31.50, giving Ỹ = 55 − 31.50 = <strong>$23.50</strong>. Do this for all 8.</span></div></div>
+      <div class="dd-h3" style="font-size:0.9rem" data-i18n="dd2_case_cmp_h">Side-by-side: original Y vs. CUPED-adjusted Ỹ</div>
+      <p data-i18n="dd2_case_cmp_p">Watch the wild original column get pulled into a tight band — while the group averages barely move:</p>
+      <table class="cmp-table">
+        <thead><tr><th data-i18n="dd2_tbl_user">User</th><th data-i18n="dd2_tbl_orig">Original Y ($)</th><th data-i18n="dd2_tbl_cuped">CUPED Ỹ ($)</th></tr></thead>
+        <tbody>
+          <tr><td>U1 (A)</td><td>12</td><td>26.11</td></tr>
+          <tr><td>U2 (A)</td><td>55</td><td>23.50</td></tr>
+          <tr><td>U3 (A)</td><td>19</td><td>21.71</td></tr>
+          <tr><td>U4 (A)</td><td>10</td><td>26.39</td></tr>
+          <tr class="mean-row"><td data-i18n="dd2_tbl_meanA">Mean A</td><td>24.00</td><td>24.43</td></tr>
+          <tr><td>U5 (B)</td><td>18</td><td>29.83</td></tr>
+          <tr><td>U6 (B)</td><td>60</td><td>30.79</td></tr>
+          <tr><td>U7 (B)</td><td>27</td><td>27.43</td></tr>
+          <tr><td>U8 (B)</td><td>12</td><td>27.25</td></tr>
+          <tr class="mean-row"><td data-i18n="dd2_tbl_meanB">Mean B</td><td>29.25</td><td>28.82</td></tr>
+        </tbody>
+      </table>
+      <div class="whatchanged">
+        <strong data-i18n="dd2_wc_title">What changed?</strong>
+        <ol>
+          <li data-i18n="dd2_wc1"><strong>The effect stayed the same.</strong> Mean A and Mean B barely moved (24.00→24.43, 29.25→28.82). The gap between groups — the thing you care about — is preserved. CUPED did <em>not</em> invent or inflate the result.</li>
+          <li data-i18n="dd2_wc2"><strong>The noise collapsed.</strong> The original values swing $10–$60 (SD ≈ $21); the CUPED values sit in a tight $21–$31 band (SD ≈ $2). Big spenders U2 and U6 are pulled back to the pack, because CUPED knew they'd spend big anyway.</li>
+          <li data-i18n="dd2_wc3"><strong>So the verdict flips.</strong> Same difference in means, but now measured against tiny noise instead of huge noise. The result that was invisible becomes obvious.</li>
+        </ol>
+      </div>
+      <div class="dd-h3" style="font-size:0.9rem" data-i18n="dd2_case_verdict_h">Step 4 — re-run the same test, see the verdict flip</div>
+      <table class="verdict-table">
+        <thead><tr><th data-i18n="dd2_vt_test">Test on…</th><th data-i18n="dd2_vt_lift">Lift</th><th>t</th><th>p</th><th data-i18n="dd2_vt_verdict">Verdict at α = 0.05</th></tr></thead>
+        <tbody>
+          <tr><td class="vt-before" data-i18n="dd2_vt_orig">Original Y</td><td>+21.9%</td><td>0.35</td><td>0.74</td><td class="vt-before" data-i18n="dd2_vt_notsig">Not significant ✗</td></tr>
+          <tr><td class="vt-after" data-i18n="dd2_vt_cuped">CUPED Ỹ</td><td>+18.0%</td><td>3.09</td><td>0.023</td><td class="vt-after" data-i18n="dd2_vt_sig">Significant ✓</td></tr>
+        </tbody>
+      </table>
+      <p style="background:rgba(5,150,105,0.07);border-left:3px solid var(--success);padding:11px 14px;border-radius:6px" data-i18n="dd2_case_lesson"><strong>The lesson:</strong> the raw test said "no difference" — but that was the <em>noise</em> talking, not the truth. The variant really was better; a few big spenders hid it. If your test comes back "not significant" on a noisy metric like revenue, don't conclude "no effect" — first ask whether you have pre-period data to CUPED-adjust with. You may have a winner hiding under the noise.</p>
+      <p style="font-size:.82rem;color:var(--ink-muted)" data-i18n="dd2_case_note">(This 8-user set is deliberately tiny so you can check the arithmetic — its correlation is unrealistically clean. Real covariates correlate around 0.3–0.6; the realistic example below uses ρ = 0.55.)</p>
+
+      <div class="dd-h3" data-i18n="dd2_h_real">4 · The same idea at realistic scale</div>
+      <div class="case-study">
+        <div class="case-study-tag" data-i18n="cs_tag">📘 Case study</div>
+        <div class="case-study-title" data-i18n="cs_title">StreamFlix tests a new checkout flow</div>
+        <p data-i18n="cs_intro">StreamFlix wants to know if a one-click checkout lifts average revenue per user (ARPU). ARPU is brutally noisy — a handful of annual-plan buyers dominate, so the standard deviation is huge relative to the mean.</p>
+        <div class="cs-step"><strong data-i18n="cs_s1_b">The problem without CUPED:</strong> <span data-i18n="cs_s1">Baseline ARPU is $12.00 with an SD of $48.00 (CV = 4.0). To detect a 3% lift at 80% power, they'd need ≈ 168,000 users per arm — about 6 weeks of traffic.</span></div>
+        <div class="cs-step"><strong data-i18n="cs_s2_b">Apply CUPED:</strong> <span data-i18n="cs_s2">Each user's spend in the 4 weeks before the test (X) correlates with their spend during the test (Y) at ρ = 0.6. CUPED subtracts that predictable part: Y_cuped = Y − θ·(X − X̄).</span></div>
+        <div class="cs-step"><strong data-i18n="cs_s3_b">The result:</strong> <span data-i18n="cs_s3">Variance drops by ρ² = 0.36 — a 36% reduction. The effective SD falls from $48 to $38.4. Required sample size drops to ≈ 107,500 per arm — they reach a decision almost 2 weeks sooner, with no change to the estimated lift.</span></div>
+        <div class="cs-takeaway"><strong data-i18n="cs_takeaway_b">Takeaway:</strong> <span data-i18n="cs_takeaway">CUPED didn't change the answer — it got them to the same answer faster. The noisier your metric and the stronger the pre-period correlation, the bigger the win.</span></div>
+      </div>
+      <p data-i18n="dd_cuped_p2" style="margin-top:12px">Because required sample size scales linearly with variance, a 50% variance reduction means you reach significance in half the time — or detect an effect half the size in the same time. That is why every large experimentation platform uses it.</p>
+
+      <div class="dd-h3" data-i18n="dd2_h_limit">5 · Limitations &amp; pitfalls</div>
+      <div class="dd-limit" data-i18n="dd2_lim1"><b>You need persistent user IDs.</b> CUPED links each user's "before" to their "after," so it only works if you can identify the same person across both periods. Anonymous-session-only tracking blocks CUPED until you fix identity.</div>
+      <div class="dd-limit" data-i18n="dd2_lim2"><b>It only helps when X correlates with Y.</b> The variance reduction is exactly ρ². A weak covariate gives almost nothing — but CUPED is <em>safe</em> even then: with no correlation it leaves your estimate essentially unchanged rather than worse.</div>
+      <div class="dd-limit" data-i18n="dd2_lim3"><b>Needs pre-experiment history.</b> New users, new markets, or first-time events have no "before" to subtract. Decide the rule in advance — exclude or impute — never after seeing results.</div>
+      <div class="dd-limit" data-i18n="dd2_lim4"><b>The covariate must be pre-treatment.</b> Using anything measured during the experiment as X can absorb part of the treatment effect and bias your lift toward zero. Pre-period only.</div>
+      <div class="dd-limit" data-i18n="dd2_lim5"><b>It's still a t-test underneath.</b> CUPED doesn't escape the t-test's assumptions: you need normal-ish data or a large enough sample for the CLT. Easily met at thousands of users, risky on tiny tests.</div>
+      <div class="dd-limit" data-i18n="dd2_lim6"><b>It reduces variance, not bias.</b> SRM, contamination, or selection bias all survive the transform. Validate the experiment first, then apply CUPED.</div>
+
+      <div class="dd-h3" data-i18n="dd2_h_code">6 · Python script</div>
+      <p data-i18n="dd2_code_p">Copy-paste runnable (needs only <code>numpy</code> + <code>scipy</code>). Swap the simulated arrays for your own per-user <code>X</code> (pre-period) and <code>Y</code> (in-experiment).</p>
+      <div class="code-block">
+        <button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button>
+<pre><span class="tok-c"># CUPED: variance reduction for an A/B test. Needs numpy + scipy.</span>
+<span class="tok-k">import</span> <span class="tok-b">numpy</span> <span class="tok-k">as</span> <span class="tok-b">np</span>
+<span class="tok-k">from</span> <span class="tok-b">scipy</span> <span class="tok-k">import</span> stats
+
+<span class="tok-k">def</span> <span class="tok-f">analyse</span>(Yc, Yv, Xc, Xv):
+    <span class="tok-c"># 1) estimate theta on the POOLED pre/post data (both arms together)</span>
+    Xall, Yall = np.<span class="tok-f">concatenate</span>([Xc, Xv]), np.<span class="tok-f">concatenate</span>([Yc, Yv])
+    theta = np.<span class="tok-f">cov</span>(Yall, Xall, ddof=<span class="tok-n">1</span>)[<span class="tok-n">0</span>, <span class="tok-n">1</span>] / Xall.<span class="tok-f">var</span>(ddof=<span class="tok-n">1</span>)
+    <span class="tok-c"># 2) transform each arm with the same theta and global mean of X</span>
+    Xbar = Xall.<span class="tok-f">mean</span>()
+    Yc_c = Yc - theta * (Xc - Xbar)
+    Yv_c = Yv - theta * (Xv - Xbar)
+    <span class="tok-c"># 3) Welch t-test, raw vs CUPED</span>
+    t_raw, p_raw = stats.<span class="tok-f">ttest_ind</span>(Yv,   Yc,   equal_var=<span class="tok-k">False</span>)
+    t_cup, p_cup = stats.<span class="tok-f">ttest_ind</span>(Yv_c, Yc_c, equal_var=<span class="tok-k">False</span>)
+    rho = np.<span class="tok-f">corrcoef</span>(Xall, Yall)[<span class="tok-n">0</span>, <span class="tok-n">1</span>]
+    var_red = <span class="tok-n">1</span> - np.<span class="tok-f">concatenate</span>([Yc_c, Yv_c]).<span class="tok-f">var</span>(ddof=<span class="tok-n">1</span>) / Yall.<span class="tok-f">var</span>(ddof=<span class="tok-n">1</span>)
+    <span class="tok-f">print</span>(<span class="tok-s">f"rho = {rho:.3f}  (var. reduction rho^2 = {rho**2:.1%})"</span>)
+    <span class="tok-f">print</span>(<span class="tok-s">f"empirical var. drop  = {var_red:.1%}"</span>)
+    <span class="tok-f">print</span>(<span class="tok-s">f"raw   : lift={(Yv.mean()-Yc.mean())/Yc.mean():+.2%}  t={t_raw:.2f}  p={p_raw:.4f}"</span>)
+    <span class="tok-f">print</span>(<span class="tok-s">f"cuped : lift={(Yv_c.mean()-Yc_c.mean())/Yc_c.mean():+.2%}  t={t_cup:.2f}  p={p_cup:.4f}"</span>)
+
+<span class="tok-c"># --- demo data: replace with your own per-user arrays ---</span>
+rng = np.random.<span class="tok-f">default_rng</span>(<span class="tok-n">7</span>)
+N = <span class="tok-n">20_000</span>
+latent = rng.<span class="tok-f">lognormal</span>(<span class="tok-n">2.2</span>, <span class="tok-n">0.55</span>, <span class="tok-n">2</span>*N)
+X = latent + rng.<span class="tok-f">normal</span>(<span class="tok-n">0</span>, <span class="tok-n">5.5</span>, <span class="tok-n">2</span>*N)          <span class="tok-c"># pre-period spend</span>
+Y = latent + rng.<span class="tok-f">normal</span>(<span class="tok-n">0</span>, <span class="tok-n">5.5</span>, <span class="tok-n">2</span>*N)          <span class="tok-c"># in-experiment spend</span>
+Y[N:] *= <span class="tok-n">1.03</span>                                  <span class="tok-c"># inject a real +3% lift in the variant</span>
+<span class="tok-f">analyse</span>(Y[:N], Y[N:], X[:N], X[N:])</pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" id="sec-delta">
+    <div class="card-title" data-i18n="ref_delta_title">Deep dive: the delta method, step by step</div>
+    <div class="accordion-body" style="padding:0;background:none">
+      <p data-i18n="dd_delta_intuition" style="background:rgba(91,95,233,0.06);border-left:3px solid var(--accent);padding:12px 14px;border-radius:6px;margin-bottom:14px"><strong>The intuition first.</strong> Suppose you want to know the average "actions per session." You randomise <em>people</em> into control and variant — but each person has many sessions. Here's the trap: one chatty user might have 40 sessions, another just 1. If you pile all sessions into one bucket and treat them as independent, you're pretending you have far more <em>independent</em> data points than you really do. Sessions from the same person rise and fall together, so they don't each count as fresh evidence. The delta method is the fix: it works out the true uncertainty of a <em>ratio</em> (a top number divided by a bottom number, where both wobble) and hands that honest uncertainty to a normal Z-test.</p>
+
+      <p data-i18n="dd_delta_what"><strong>What kind of metric needs it?</strong> Any "ratio metric" where the denominator isn't fixed: actions per session, revenue per order, click-through rate per session, items per basket. The giveaway is that you randomise by one unit (the user) but count by another (sessions, orders, clicks).</p>
+
+      <div class="tip-row"><span class="tip-icon">1️⃣</span><div><strong data-i18n="dd_delta_s1_b">Spot the ratio</strong> — <span data-i18n="dd_delta_s1">Your metric is R = X / Y, where X is the numerator total (e.g. total actions) and Y the denominator total (e.g. total sessions). Both are random — they change from sample to sample — which is exactly what a naive test ignores.</span></div></div>
+      <div class="tip-row"><span class="tip-icon">2️⃣</span><div><strong data-i18n="dd_delta_s2_b">Why the naive test lies</strong> — <span data-i18n="dd_delta_s2">Treating each session as an independent row makes the standard error 2–10× too small. A too-small SE makes any difference look hugely significant — so you ship false positives. The error is invisible: the p-value just looks great.</span></div></div>
+      <div class="tip-row"><span class="tip-icon">3️⃣</span><div><strong data-i18n="dd_delta_s3_b">Estimate the variance of the ratio</strong> — <span data-i18n="dd_delta_s3">The delta method uses a first-order Taylor approximation to turn the messy variance of "a random top over a random bottom" into something computable: Var(R) ≈ (1/Ȳ²)·[Var(X) − 2R·Cov(X,Y) + R²·Var(Y)]. In plain terms: it accounts for how the numerator and denominator move <em>together</em>, which is the piece the naive test throws away.</span></div></div>
+      <div class="tip-row"><span class="tip-icon">4️⃣</span><div><strong data-i18n="dd_delta_s4_b">Feed it to a Z-test</strong> — <span data-i18n="dd_delta_s4">That corrected variance gives an honest standard error. From there it's an ordinary two-sample Z-test on the two groups' ratios. The delta method is <strong>not</strong> a separate test — it's the variance-estimation step that makes the Z-test trustworthy for ratio metrics.</span></div></div>
+
+      <div class="callout" style="background:rgba(217,119,6,0.08);border:1px solid rgba(217,119,6,0.3);border-radius:8px;padding:12px 14px;margin:14px 0">
+        <strong data-i18n="dd_delta_note_b" style="color:var(--warn,#D97706)">A common shortcut — and when it's enough.</strong>
+        <span data-i18n="dd_delta_note">For many product metrics you can sidestep the formula: aggregate to <em>one value per user</em> first (each user's own actions ÷ their own sessions), then run a plain Welch's t-test on those per-user numbers. That also respects the user-level independence. The full delta method earns its keep when you can't cleanly aggregate per user, or when the denominator can be zero for some users.</span>
+      </div>
+
+      <div class="case-study">
+        <div class="case-study-tag" data-i18n="cs_tag">📘 Case study</div>
+        <div class="case-study-title" data-i18n="ds_title">A nudge that lifts "actions per session"</div>
+        <p data-i18n="ds_intro">A team ships an onboarding nudge and measures actions per session. They randomise by user, but users have very different session counts — a handful of power users have dozens of sessions each.</p>
+        <div class="cs-step"><strong data-i18n="ds_s1_b">The trap:</strong> <span data-i18n="ds_s1">A naive test on 50,000 sessions reports z ≈ 11, p &lt; 0.0001 — looks like a slam dunk. But those sessions come from far fewer users, and one power user's good day counts dozens of times.</span></div>
+        <div class="cs-step"><strong data-i18n="ds_s2_b">Apply the delta method:</strong> <span data-i18n="ds_s2">Estimating the ratio's variance correctly inflates the standard error to its honest size. The z statistic falls from ~11 to ≈ 6.9 — still significant, but no longer absurdly so.</span></div>
+        <div class="cs-step"><strong data-i18n="ds_s3_b">The result:</strong> <span data-i18n="ds_s3">p &lt; 0.001 with the correct variance. The lift is real and they ship — but now the confidence interval is honest, so the projected impact they promise leadership isn't inflated.</span></div>
+        <div class="cs-takeaway"><strong data-i18n="cs_takeaway_b">Takeaway:</strong> <span data-i18n="ds_take">The delta method rarely flips "significant" to "not significant" — its job is to stop you over-stating certainty. On ratio metrics, a naive test's confidence is a mirage.</span></div>
+      </div>
+    </div>
+  </div>
+
+
+
 
   <!-- Unequal traffic split -->
   <div class="card" id="sec-split">
@@ -1450,177 +1633,6 @@
         <div class="tip-row"><span class="tip-icon">📐</span><div><strong data-i18n="ab_mult_t3_bold">Benjamini–Hochberg FDR</strong> — <span data-i18n="ab_mult_t3">If testing many metrics, BH correction is less conservative than Bonferroni while still disciplined.</span></div></div>
       </div>
     </details>
-  </div>
-
-  <div class="card">
-    <div class="card-title" data-i18n="ref_deepdive_title">Deep dive: CUPED, step by step</div>
-    <div class="accordion-body" style="padding:0;background:none">
-
-      <div class="dd-h3" data-i18n="dd2_h_idea">1 · The idea</div>
-      <p data-i18n="dd_cuped_intuition" style="background:rgba(91,95,233,0.06);border-left:3px solid var(--accent);padding:12px 14px;border-radius:6px;margin-bottom:14px"><strong>The intuition first.</strong> Imagine measuring whether a new gym program adds muscle. People start at wildly different weights, so the after-numbers are all over the place — the noise from "where each person started" drowns out the effect of your program. But you <em>know</em> each person's starting weight. If you measure the <em>change</em> from their own baseline instead of the raw after-number, that starting-point noise vanishes and the program's real effect pops out. CUPED is exactly this trick for product metrics: subtract the part of each user's behaviour you could have predicted <em>before</em> the test, and what's left is a much cleaner read on your change.</p>
-      <p data-i18n="dd_cuped_p1">CUPED (Controlled-experiment Using Pre-Experiment Data) is the single highest-leverage trick in modern experimentation. The idea: a user who spent a lot last month will probably spend a lot this month regardless of your change. That predictable part is noise you can subtract.</p>
-      <p data-i18n="dd2_oneliner"><strong>The one-line version for stakeholders:</strong> "CUPED doesn't change the answer; it gets us to the same answer with less traffic, by cancelling out noise we already knew about."</p>
-
-      <div class="dd-h3" data-i18n="dd2_h_when">2 · When do you actually run CUPED?</div>
-      <p data-i18n="dd2_when_p">The most common confusion: CUPED needs data from <strong>both</strong> sides of the experiment. The covariate X is <em>collected</em> before the test, but the adjustment itself is only <em>computed after</em> the test ends — because the formula needs each user's during-test outcome Y, which doesn't exist until the test is over. You decide on CUPED up front, but you run the math at analysis time.</p>
-      <div class="pl-phase">
-        <div><span class="pl-when" data-i18n="dd2_pl_before_w">Before the test</span><span class="pl-phase-title" data-i18n="dd2_pl_before_t">planning &amp; setup</span></div>
-        <ol>
-          <li data-i18n="dd2_pl_b1"><strong>Decide you'll use CUPED while designing the test.</strong> It affects your sample-size plan: expecting ~30% variance reduction lets you plan for fewer users or a shorter run.</li>
-          <li data-i18n="dd2_pl_b2"><strong>Choose the covariate X.</strong> The standard, most powerful choice is your target metric measured in the period just before the test (e.g. each user's revenue in the 1–4 weeks pre-launch). It must be a per-user value you can join later by a stable user ID.</li>
-          <li data-i18n="dd2_pl_b3"><strong>Fix the pre-period window and freeze it.</strong> 1–4 weeks is typical: too short and the covariate is noisy, too long and old behaviour stops predicting current behaviour.</li>
-          <li data-i18n="dd2_pl_b4"><strong>Decide the new-user rule now.</strong> Users with no history can't be adjusted. Choose in advance: exclude them, impute X = 0, or analyse returning vs. new users separately. Never decide this after seeing results.</li>
-          <li data-i18n="dd2_pl_b5"><strong>Capture X for every enrolled user</strong> as they enter, keyed to their user ID. This is the one step that must happen at enrolment.</li>
-        </ol>
-      </div>
-      <div class="pl-phase">
-        <div><span class="pl-when" data-i18n="dd2_pl_during_w">During the test</span><span class="pl-phase-title" data-i18n="dd2_pl_during_t">just run it</span></div>
-        <ol>
-          <li data-i18n="dd2_pl_d1"><strong>Run the experiment normally.</strong> CUPED changes nothing about execution — same randomisation, exposure, and metric collection.</li>
-          <li data-i18n="dd2_pl_d2"><strong>Don't touch X.</strong> The covariate is locked from the pre-period; you're now collecting Y (the during-test outcome). X stays untouched by the treatment — guaranteed, because it was measured before exposure.</li>
-        </ol>
-      </div>
-      <div class="pl-phase">
-        <div><span class="pl-when" data-i18n="dd2_pl_after_w">After the test</span><span class="pl-phase-title" data-i18n="dd2_pl_after_t">compute &amp; analyse</span></div>
-        <ol>
-          <li data-i18n="dd2_pl_a1"><strong>Validate the experiment first.</strong> Run the SRM / split-health check. CUPED reduces variance, it does not fix a broken experiment.</li>
-          <li data-i18n="dd2_pl_a2"><strong>Join X to Y by user ID.</strong> You now have, per user, their pre-period X and during-test Y.</li>
-          <li data-i18n="dd2_pl_a3"><strong>Compute θ on the pooled data</strong> (both arms together, not per-arm): θ = Cov(X, Y) / Var(X). Pooling matters — per-arm θ can leak the treatment effect into the adjustment.</li>
-          <li data-i18n="dd2_pl_a4"><strong>Adjust every user:</strong> Ỹ = Y − θ·(X − X̄), where X̄ is the population mean of X.</li>
-          <li data-i18n="dd2_pl_a5"><strong>Run your normal test on Ỹ</strong> and read the p-value exactly as usual.</li>
-        </ol>
-      </div>
-      <p style="font-size:.85rem;color:var(--ink-muted)" data-i18n="dd2_when_sum"><strong>One-line timing:</strong> collect X before, collect Y during, compute θ and adjust after. CUPED is a planning decision made up front but a calculation done at analysis time.</p>
-
-      <div class="dd-h3" data-i18n="dd2_h_case">3 · A worked case, step by step</div>
-      <p data-i18n="dd2_case_intro">Forget formulas for a moment. Here are <strong>8 users</strong> from a revenue test — four in control (A), four in the variant (B). For each we have <strong>X</strong> = spend in the weeks <em>before</em> the test, and <strong>Y</strong> = spend <em>during</em> it. Small enough to follow every number by hand.</p>
-      <div class="dd-h3" style="font-size:0.9rem" data-i18n="dd2_case_fail_h">First, try it the normal way — and watch it fail</div>
-      <p data-i18n="dd2_case_fail">Average Y in control = <strong>$24.00</strong>, in variant = <strong>$29.25</strong> — looks like a big +21.9% lift! But run a t-test and <strong>p = 0.74</strong>, nowhere near significant. Why? U2 ($55) and U6 ($60) are naturally big spenders bouncing the averages around so hard the test can't tell the gain from luck. The signal is real but the <em>noise</em> drowns it.</p>
-      <div class="dd-h3" style="font-size:0.9rem" data-i18n="dd2_case_apply_h">Now apply CUPED</div>
-      <div class="dd-step"><span class="dd-n">1</span><div><strong data-i18n="dd2_case_s1_b">Find θ.</strong> <span data-i18n="dd2_case_s1">θ = Cov(X,Y) / Var(X) across all 8 users = 337.4 / 296.0 = <strong>1.14</strong>. (Every extra $1 spent before predicts ~$1.14 during — consistent spenders.)</span></div></div>
-      <div class="dd-step"><span class="dd-n">2</span><div><strong data-i18n="dd2_case_s2_b">Find X̄.</strong> <span data-i18n="dd2_case_s2">The average of X over all 8 users = <strong>$22.375</strong>.</span></div></div>
-      <div class="dd-step"><span class="dd-n">3</span><div><strong data-i18n="dd2_case_s3_b">Adjust each user:</strong> <span data-i18n="dd2_case_s3">Ỹ = Y − θ·(X − X̄). For big spender U2: X = $50, so subtract 1.14 × (50 − 22.375) = $31.50, giving Ỹ = 55 − 31.50 = <strong>$23.50</strong>. Do this for all 8.</span></div></div>
-      <div class="dd-h3" style="font-size:0.9rem" data-i18n="dd2_case_cmp_h">Side-by-side: original Y vs. CUPED-adjusted Ỹ</div>
-      <p data-i18n="dd2_case_cmp_p">Watch the wild original column get pulled into a tight band — while the group averages barely move:</p>
-      <table class="cmp-table">
-        <thead><tr><th data-i18n="dd2_tbl_user">User</th><th data-i18n="dd2_tbl_orig">Original Y ($)</th><th data-i18n="dd2_tbl_cuped">CUPED Ỹ ($)</th></tr></thead>
-        <tbody>
-          <tr><td>U1 (A)</td><td>12</td><td>26.11</td></tr>
-          <tr><td>U2 (A)</td><td>55</td><td>23.50</td></tr>
-          <tr><td>U3 (A)</td><td>19</td><td>21.71</td></tr>
-          <tr><td>U4 (A)</td><td>10</td><td>26.39</td></tr>
-          <tr class="mean-row"><td data-i18n="dd2_tbl_meanA">Mean A</td><td>24.00</td><td>24.43</td></tr>
-          <tr><td>U5 (B)</td><td>18</td><td>29.83</td></tr>
-          <tr><td>U6 (B)</td><td>60</td><td>30.79</td></tr>
-          <tr><td>U7 (B)</td><td>27</td><td>27.43</td></tr>
-          <tr><td>U8 (B)</td><td>12</td><td>27.25</td></tr>
-          <tr class="mean-row"><td data-i18n="dd2_tbl_meanB">Mean B</td><td>29.25</td><td>28.82</td></tr>
-        </tbody>
-      </table>
-      <div class="whatchanged">
-        <strong data-i18n="dd2_wc_title">What changed?</strong>
-        <ol>
-          <li data-i18n="dd2_wc1"><strong>The effect stayed the same.</strong> Mean A and Mean B barely moved (24.00→24.43, 29.25→28.82). The gap between groups — the thing you care about — is preserved. CUPED did <em>not</em> invent or inflate the result.</li>
-          <li data-i18n="dd2_wc2"><strong>The noise collapsed.</strong> The original values swing $10–$60 (SD ≈ $21); the CUPED values sit in a tight $21–$31 band (SD ≈ $2). Big spenders U2 and U6 are pulled back to the pack, because CUPED knew they'd spend big anyway.</li>
-          <li data-i18n="dd2_wc3"><strong>So the verdict flips.</strong> Same difference in means, but now measured against tiny noise instead of huge noise. The result that was invisible becomes obvious.</li>
-        </ol>
-      </div>
-      <div class="dd-h3" style="font-size:0.9rem" data-i18n="dd2_case_verdict_h">Step 4 — re-run the same test, see the verdict flip</div>
-      <table class="verdict-table">
-        <thead><tr><th data-i18n="dd2_vt_test">Test on…</th><th data-i18n="dd2_vt_lift">Lift</th><th>t</th><th>p</th><th data-i18n="dd2_vt_verdict">Verdict at α = 0.05</th></tr></thead>
-        <tbody>
-          <tr><td class="vt-before" data-i18n="dd2_vt_orig">Original Y</td><td>+21.9%</td><td>0.35</td><td>0.74</td><td class="vt-before" data-i18n="dd2_vt_notsig">Not significant ✗</td></tr>
-          <tr><td class="vt-after" data-i18n="dd2_vt_cuped">CUPED Ỹ</td><td>+18.0%</td><td>3.09</td><td>0.023</td><td class="vt-after" data-i18n="dd2_vt_sig">Significant ✓</td></tr>
-        </tbody>
-      </table>
-      <p style="background:rgba(5,150,105,0.07);border-left:3px solid var(--success);padding:11px 14px;border-radius:6px" data-i18n="dd2_case_lesson"><strong>The lesson:</strong> the raw test said "no difference" — but that was the <em>noise</em> talking, not the truth. The variant really was better; a few big spenders hid it. If your test comes back "not significant" on a noisy metric like revenue, don't conclude "no effect" — first ask whether you have pre-period data to CUPED-adjust with. You may have a winner hiding under the noise.</p>
-      <p style="font-size:.82rem;color:var(--ink-muted)" data-i18n="dd2_case_note">(This 8-user set is deliberately tiny so you can check the arithmetic — its correlation is unrealistically clean. Real covariates correlate around 0.3–0.6; the realistic example below uses ρ = 0.55.)</p>
-
-      <div class="dd-h3" data-i18n="dd2_h_real">4 · The same idea at realistic scale</div>
-      <div class="case-study">
-        <div class="case-study-tag" data-i18n="cs_tag">📘 Case study</div>
-        <div class="case-study-title" data-i18n="cs_title">StreamFlix tests a new checkout flow</div>
-        <p data-i18n="cs_intro">StreamFlix wants to know if a one-click checkout lifts average revenue per user (ARPU). ARPU is brutally noisy — a handful of annual-plan buyers dominate, so the standard deviation is huge relative to the mean.</p>
-        <div class="cs-step"><strong data-i18n="cs_s1_b">The problem without CUPED:</strong> <span data-i18n="cs_s1">Baseline ARPU is $12.00 with an SD of $48.00 (CV = 4.0). To detect a 3% lift at 80% power, they'd need ≈ 168,000 users per arm — about 6 weeks of traffic.</span></div>
-        <div class="cs-step"><strong data-i18n="cs_s2_b">Apply CUPED:</strong> <span data-i18n="cs_s2">Each user's spend in the 4 weeks before the test (X) correlates with their spend during the test (Y) at ρ = 0.6. CUPED subtracts that predictable part: Y_cuped = Y − θ·(X − X̄).</span></div>
-        <div class="cs-step"><strong data-i18n="cs_s3_b">The result:</strong> <span data-i18n="cs_s3">Variance drops by ρ² = 0.36 — a 36% reduction. The effective SD falls from $48 to $38.4. Required sample size drops to ≈ 107,500 per arm — they reach a decision almost 2 weeks sooner, with no change to the estimated lift.</span></div>
-        <div class="cs-takeaway"><strong data-i18n="cs_takeaway_b">Takeaway:</strong> <span data-i18n="cs_takeaway">CUPED didn't change the answer — it got them to the same answer faster. The noisier your metric and the stronger the pre-period correlation, the bigger the win.</span></div>
-      </div>
-      <p data-i18n="dd_cuped_p2" style="margin-top:12px">Because required sample size scales linearly with variance, a 50% variance reduction means you reach significance in half the time — or detect an effect half the size in the same time. That is why every large experimentation platform uses it.</p>
-
-      <div class="dd-h3" data-i18n="dd2_h_limit">5 · Limitations &amp; pitfalls</div>
-      <div class="dd-limit" data-i18n="dd2_lim1"><b>You need persistent user IDs.</b> CUPED links each user's "before" to their "after," so it only works if you can identify the same person across both periods. Anonymous-session-only tracking blocks CUPED until you fix identity.</div>
-      <div class="dd-limit" data-i18n="dd2_lim2"><b>It only helps when X correlates with Y.</b> The variance reduction is exactly ρ². A weak covariate gives almost nothing — but CUPED is <em>safe</em> even then: with no correlation it leaves your estimate essentially unchanged rather than worse.</div>
-      <div class="dd-limit" data-i18n="dd2_lim3"><b>Needs pre-experiment history.</b> New users, new markets, or first-time events have no "before" to subtract. Decide the rule in advance — exclude or impute — never after seeing results.</div>
-      <div class="dd-limit" data-i18n="dd2_lim4"><b>The covariate must be pre-treatment.</b> Using anything measured during the experiment as X can absorb part of the treatment effect and bias your lift toward zero. Pre-period only.</div>
-      <div class="dd-limit" data-i18n="dd2_lim5"><b>It's still a t-test underneath.</b> CUPED doesn't escape the t-test's assumptions: you need normal-ish data or a large enough sample for the CLT. Easily met at thousands of users, risky on tiny tests.</div>
-      <div class="dd-limit" data-i18n="dd2_lim6"><b>It reduces variance, not bias.</b> SRM, contamination, or selection bias all survive the transform. Validate the experiment first, then apply CUPED.</div>
-
-      <div class="dd-h3" data-i18n="dd2_h_code">6 · Python script</div>
-      <p data-i18n="dd2_code_p">Copy-paste runnable (needs only <code>numpy</code> + <code>scipy</code>). Swap the simulated arrays for your own per-user <code>X</code> (pre-period) and <code>Y</code> (in-experiment).</p>
-      <div class="code-block">
-        <button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button>
-<pre><span class="tok-c"># CUPED: variance reduction for an A/B test. Needs numpy + scipy.</span>
-<span class="tok-k">import</span> <span class="tok-b">numpy</span> <span class="tok-k">as</span> <span class="tok-b">np</span>
-<span class="tok-k">from</span> <span class="tok-b">scipy</span> <span class="tok-k">import</span> stats
-
-<span class="tok-k">def</span> <span class="tok-f">analyse</span>(Yc, Yv, Xc, Xv):
-    <span class="tok-c"># 1) estimate theta on the POOLED pre/post data (both arms together)</span>
-    Xall, Yall = np.<span class="tok-f">concatenate</span>([Xc, Xv]), np.<span class="tok-f">concatenate</span>([Yc, Yv])
-    theta = np.<span class="tok-f">cov</span>(Yall, Xall, ddof=<span class="tok-n">1</span>)[<span class="tok-n">0</span>, <span class="tok-n">1</span>] / Xall.<span class="tok-f">var</span>(ddof=<span class="tok-n">1</span>)
-    <span class="tok-c"># 2) transform each arm with the same theta and global mean of X</span>
-    Xbar = Xall.<span class="tok-f">mean</span>()
-    Yc_c = Yc - theta * (Xc - Xbar)
-    Yv_c = Yv - theta * (Xv - Xbar)
-    <span class="tok-c"># 3) Welch t-test, raw vs CUPED</span>
-    t_raw, p_raw = stats.<span class="tok-f">ttest_ind</span>(Yv,   Yc,   equal_var=<span class="tok-k">False</span>)
-    t_cup, p_cup = stats.<span class="tok-f">ttest_ind</span>(Yv_c, Yc_c, equal_var=<span class="tok-k">False</span>)
-    rho = np.<span class="tok-f">corrcoef</span>(Xall, Yall)[<span class="tok-n">0</span>, <span class="tok-n">1</span>]
-    var_red = <span class="tok-n">1</span> - np.<span class="tok-f">concatenate</span>([Yc_c, Yv_c]).<span class="tok-f">var</span>(ddof=<span class="tok-n">1</span>) / Yall.<span class="tok-f">var</span>(ddof=<span class="tok-n">1</span>)
-    <span class="tok-f">print</span>(<span class="tok-s">f"rho = {rho:.3f}  (var. reduction rho^2 = {rho**2:.1%})"</span>)
-    <span class="tok-f">print</span>(<span class="tok-s">f"empirical var. drop  = {var_red:.1%}"</span>)
-    <span class="tok-f">print</span>(<span class="tok-s">f"raw   : lift={(Yv.mean()-Yc.mean())/Yc.mean():+.2%}  t={t_raw:.2f}  p={p_raw:.4f}"</span>)
-    <span class="tok-f">print</span>(<span class="tok-s">f"cuped : lift={(Yv_c.mean()-Yc_c.mean())/Yc_c.mean():+.2%}  t={t_cup:.2f}  p={p_cup:.4f}"</span>)
-
-<span class="tok-c"># --- demo data: replace with your own per-user arrays ---</span>
-rng = np.random.<span class="tok-f">default_rng</span>(<span class="tok-n">7</span>)
-N = <span class="tok-n">20_000</span>
-latent = rng.<span class="tok-f">lognormal</span>(<span class="tok-n">2.2</span>, <span class="tok-n">0.55</span>, <span class="tok-n">2</span>*N)
-X = latent + rng.<span class="tok-f">normal</span>(<span class="tok-n">0</span>, <span class="tok-n">5.5</span>, <span class="tok-n">2</span>*N)          <span class="tok-c"># pre-period spend</span>
-Y = latent + rng.<span class="tok-f">normal</span>(<span class="tok-n">0</span>, <span class="tok-n">5.5</span>, <span class="tok-n">2</span>*N)          <span class="tok-c"># in-experiment spend</span>
-Y[N:] *= <span class="tok-n">1.03</span>                                  <span class="tok-c"># inject a real +3% lift in the variant</span>
-<span class="tok-f">analyse</span>(Y[:N], Y[N:], X[:N], X[N:])</pre>
-      </div>
-    </div>
-  </div>
-
-  <div class="card" id="sec-delta">
-    <div class="card-title" data-i18n="ref_delta_title">Deep dive: the delta method, step by step</div>
-    <div class="accordion-body" style="padding:0;background:none">
-      <p data-i18n="dd_delta_intuition" style="background:rgba(91,95,233,0.06);border-left:3px solid var(--accent);padding:12px 14px;border-radius:6px;margin-bottom:14px"><strong>The intuition first.</strong> Suppose you want to know the average "actions per session." You randomise <em>people</em> into control and variant — but each person has many sessions. Here's the trap: one chatty user might have 40 sessions, another just 1. If you pile all sessions into one bucket and treat them as independent, you're pretending you have far more <em>independent</em> data points than you really do. Sessions from the same person rise and fall together, so they don't each count as fresh evidence. The delta method is the fix: it works out the true uncertainty of a <em>ratio</em> (a top number divided by a bottom number, where both wobble) and hands that honest uncertainty to a normal Z-test.</p>
-
-      <p data-i18n="dd_delta_what"><strong>What kind of metric needs it?</strong> Any "ratio metric" where the denominator isn't fixed: actions per session, revenue per order, click-through rate per session, items per basket. The giveaway is that you randomise by one unit (the user) but count by another (sessions, orders, clicks).</p>
-
-      <div class="tip-row"><span class="tip-icon">1️⃣</span><div><strong data-i18n="dd_delta_s1_b">Spot the ratio</strong> — <span data-i18n="dd_delta_s1">Your metric is R = X / Y, where X is the numerator total (e.g. total actions) and Y the denominator total (e.g. total sessions). Both are random — they change from sample to sample — which is exactly what a naive test ignores.</span></div></div>
-      <div class="tip-row"><span class="tip-icon">2️⃣</span><div><strong data-i18n="dd_delta_s2_b">Why the naive test lies</strong> — <span data-i18n="dd_delta_s2">Treating each session as an independent row makes the standard error 2–10× too small. A too-small SE makes any difference look hugely significant — so you ship false positives. The error is invisible: the p-value just looks great.</span></div></div>
-      <div class="tip-row"><span class="tip-icon">3️⃣</span><div><strong data-i18n="dd_delta_s3_b">Estimate the variance of the ratio</strong> — <span data-i18n="dd_delta_s3">The delta method uses a first-order Taylor approximation to turn the messy variance of "a random top over a random bottom" into something computable: Var(R) ≈ (1/Ȳ²)·[Var(X) − 2R·Cov(X,Y) + R²·Var(Y)]. In plain terms: it accounts for how the numerator and denominator move <em>together</em>, which is the piece the naive test throws away.</span></div></div>
-      <div class="tip-row"><span class="tip-icon">4️⃣</span><div><strong data-i18n="dd_delta_s4_b">Feed it to a Z-test</strong> — <span data-i18n="dd_delta_s4">That corrected variance gives an honest standard error. From there it's an ordinary two-sample Z-test on the two groups' ratios. The delta method is <strong>not</strong> a separate test — it's the variance-estimation step that makes the Z-test trustworthy for ratio metrics.</span></div></div>
-
-      <div class="callout" style="background:rgba(217,119,6,0.08);border:1px solid rgba(217,119,6,0.3);border-radius:8px;padding:12px 14px;margin:14px 0">
-        <strong data-i18n="dd_delta_note_b" style="color:var(--warn,#D97706)">A common shortcut — and when it's enough.</strong>
-        <span data-i18n="dd_delta_note">For many product metrics you can sidestep the formula: aggregate to <em>one value per user</em> first (each user's own actions ÷ their own sessions), then run a plain Welch's t-test on those per-user numbers. That also respects the user-level independence. The full delta method earns its keep when you can't cleanly aggregate per user, or when the denominator can be zero for some users.</span>
-      </div>
-
-      <div class="case-study">
-        <div class="case-study-tag" data-i18n="cs_tag">📘 Case study</div>
-        <div class="case-study-title" data-i18n="ds_title">A nudge that lifts "actions per session"</div>
-        <p data-i18n="ds_intro">A team ships an onboarding nudge and measures actions per session. They randomise by user, but users have very different session counts — a handful of power users have dozens of sessions each.</p>
-        <div class="cs-step"><strong data-i18n="ds_s1_b">The trap:</strong> <span data-i18n="ds_s1">A naive test on 50,000 sessions reports z ≈ 11, p &lt; 0.0001 — looks like a slam dunk. But those sessions come from far fewer users, and one power user's good day counts dozens of times.</span></div>
-        <div class="cs-step"><strong data-i18n="ds_s2_b">Apply the delta method:</strong> <span data-i18n="ds_s2">Estimating the ratio's variance correctly inflates the standard error to its honest size. The z statistic falls from ~11 to ≈ 6.9 — still significant, but no longer absurdly so.</span></div>
-        <div class="cs-step"><strong data-i18n="ds_s3_b">The result:</strong> <span data-i18n="ds_s3">p &lt; 0.001 with the correct variance. The lift is real and they ship — but now the confidence interval is honest, so the projected impact they promise leadership isn't inflated.</span></div>
-        <div class="cs-takeaway"><strong data-i18n="cs_takeaway_b">Takeaway:</strong> <span data-i18n="ds_take">The delta method rarely flips "significant" to "not significant" — its job is to stop you over-stating certainty. On ratio metrics, a naive test's confidence is a mirage.</span></div>
-      </div>
-    </div>
   </div>
 
   <div class="card">

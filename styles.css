@@ -677,6 +677,9 @@ main {
 .case-stage { border-left: 3px solid var(--accent); padding: 6px 0 6px 14px; margin: 12px 0; }
 .case-stage.result { border-color: #1a7a4a; }
 .case-stage.pitfall { border-color: #b06a00; }
+.case-stage.hypothesis { border-color: var(--accent); background: rgba(91,95,233,0.05); border-radius: 0 6px 6px 0; padding-right: 12px; }
+.case-stage.hypothesis .case-lbl { color: var(--accent); }
+.case-stage.hypothesis p strong { color: var(--ink); }
 .case-lbl {
   font-size: 0.64rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;
   color: var(--accent); display: block; margin-bottom: 3px;
