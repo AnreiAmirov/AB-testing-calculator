@@ -395,6 +395,24 @@
           <div class="mt-12">
             <button class="btn-ghost" onclick="addConvVariant()" data-i18n="btn_add_variant">+ Add variant</button>
           </div>
+
+          <!-- Expected split (for the SRM health check) -->
+          <div class="srm-expected-block">
+            <div class="srm-expected-label" data-i18n="srm_expected_title">Expected traffic split <span class="tip" data-i18n="srm_expected_tip">— used only for the split-health check</span></div>
+            <div class="alloc-toggle srm-toggle">
+              <button type="button" id="srm-mode-equal" class="alloc-mode-btn selected" onclick="setSrmMode('equal')" data-i18n="plan_alloc_equal">Equal split</button>
+              <button type="button" id="srm-mode-custom" class="alloc-mode-btn" onclick="setSrmMode('custom')" data-i18n="plan_alloc_custom">Custom split</button>
+            </div>
+            <div id="srm-editor" class="srm-editor hidden">
+              <div class="srm-hint" data-i18n="srm_expected_hint">Enter the split you intended. The check flags a mismatch only if the data deviates from this.</div>
+              <div id="srm-rows"></div>
+              <div class="alloc-sum-row">
+                <span data-i18n="plan_alloc_total">Total</span>
+                <span id="srm-sum" class="alloc-sum-ok">100%</span>
+              </div>
+              <div id="srm-warn" class="alloc-warn hidden" data-i18n="plan_alloc_warn">Shares must add up to 100%.</div>
+            </div>
+          </div>
         </div>
       </div>
       <div class="analyse-main">
@@ -677,6 +695,7 @@
         <div class="toc-group-h" data-i18n="toc_g5">🔬 Advanced &amp; pitfalls</div>
         <div class="toc-group-desc" data-i18n="toc_g5_desc">Techniques to make tests sharper, and the traps that quietly invalidate results — peeking, and testing too many things at once.</div>
         <a class="toc-link" href="#sec-cuped"><span class="toc-emoji">✂️</span><span data-i18n="toc_cuped_short">CUPED variance reduction</span></a>
+        <a class="toc-link" href="#sec-delta"><span class="toc-emoji">➗</span><span data-i18n="toc_delta_short">The delta method (ratio metrics)</span></a>
         <a class="toc-link" href="#sec-split"><span class="toc-emoji">⚖️</span><span data-i18n="toc_split_short">Unequal traffic splits (e.g. 90/10)</span></a>
         <a class="toc-link" href="#sec-peeking"><span class="toc-emoji">👀</span><span data-i18n="toc_peeking_short">Why peeking inflates errors</span></a>
         <a class="toc-link" href="#sec-multiple"><span class="toc-emoji">🎰</span><span data-i18n="toc_multiple_short">Multiple testing & error inflation</span></a>
@@ -750,7 +769,37 @@
       <div class="gloss-item">
         <div class="gloss-term"><span class="gloss-emoji">⚠️</span><span data-i18n="gl_errors_t">Type I & Type II errors</span></div>
         <div class="gloss-def" data-i18n="gl_errors_d">A <strong>Type I error</strong> (false positive) is declaring a winner that isn't real. A <strong>Type II error</strong> (false negative) is missing a real winner. α controls the first; power controls the second.</div>
-        <div class="gloss-eg"><strong data-i18n="gl_eg">Example:</strong> <span data-i18n="gl_errors_e">Shipping a button that actually does nothing = Type I. Killing a button that actually worked = Type II.</span></div>
+        <div class="gloss-eg"><strong data-i18n="gl_eg">Example:</strong> <span data-i18n="gl_errors_e">Shipping a button that actually does nothing = Type I. Killing a button that actually worked = Type II.</span> <span data-i18n="gl_errors_seealso">See the chart below for how α and β trade off visually.</span></div>
+      </div>
+
+      <div class="gloss-item">
+        <div class="gloss-term"><span class="gloss-emoji">🔋</span><span data-i18n="gl_beta_t">β (beta)</span></div>
+        <div class="gloss-def" data-i18n="gl_beta_d">The chance of <strong>missing a real effect</strong> — a false negative. It's the flip side of power: <strong>power = 1 − β</strong>. If you aim for 80% power, you're accepting β = 20%.</div>
+        <div class="gloss-eg"><strong data-i18n="gl_eg">Example:</strong> <span data-i18n="gl_beta_e">β = 0.20 means: if the variant truly is better, there's a 20% chance your test fails to notice — usually because the sample was too small.</span></div>
+      </div>
+
+      <div class="gloss-item">
+        <div class="gloss-term"><span class="gloss-emoji">📉</span><span data-i18n="gl_se_t">Standard error (SE)</span></div>
+        <div class="gloss-def" data-i18n="gl_se_d">How much your measured result would <strong>bounce around</strong> if you reran the experiment with a fresh sample. It shrinks as your sample grows — specifically as 1/√n, so quadrupling the users halves the wobble.</div>
+        <div class="gloss-eg"><strong data-i18n="gl_eg">Example:</strong> <span data-i18n="gl_se_e">Measure a 4.0% conversion rate with a small SE and you can trust the 4.0%. A large SE means the true rate could easily be 3% or 5% — the same number, far less certainty.</span></div>
+      </div>
+
+      <div class="gloss-item">
+        <div class="gloss-term"><span class="gloss-emoji">🌪️</span><span data-i18n="gl_cv_t">Coefficient of variation (CV)</span></div>
+        <div class="gloss-def" data-i18n="gl_cv_d">The spread of a metric <strong>relative to its average</strong> (SD ÷ mean). A unit-free "noisiness" score: high CV means the metric jumps around a lot for its size, so you'll need more data to see a signal.</div>
+        <div class="gloss-eg"><strong data-i18n="gl_eg">Example:</strong> <span data-i18n="gl_cv_e">Revenue per user is famously high-CV — a few big spenders dwarf everyone else. That's exactly why ARPU tests need huge samples (or CUPED, below).</span></div>
+      </div>
+
+      <div class="gloss-item">
+        <div class="gloss-term"><span class="gloss-emoji">🚨</span><span data-i18n="gl_srm_t">Sample Ratio Mismatch (SRM)</span></div>
+        <div class="gloss-def" data-i18n="gl_srm_d">When the <strong>actual traffic split differs from the one you intended</strong> — e.g. you asked for 50/50 but got 52/48. It's a red flag for a bug in assignment, and it <strong>invalidates the whole test</strong>, even if the p-value looks great. The Analyse tab checks this for you automatically.</div>
+        <div class="gloss-eg"><strong data-i18n="gl_eg">Example:</strong> <span data-i18n="gl_srm_e">A redirect was quietly dropping users before they reached the variant, so control filled faster. Until that's fixed, no result can be trusted — you fix the cause and rerun, never "adjust" the numbers.</span></div>
+      </div>
+
+      <div class="gloss-item">
+        <div class="gloss-term"><span class="gloss-emoji">⚡</span><span data-i18n="gl_cuped_t">CUPED</span></div>
+        <div class="gloss-def" data-i18n="gl_cuped_d">A <strong>variance-reduction</strong> technique that subtracts each user's predictable, pre-experiment behaviour from their result — leaving a cleaner signal, so you reach a decision with less data. It changes nothing about your estimate of the lift, only its precision.</div>
+        <div class="gloss-eg"><strong data-i18n="gl_eg">Example:</strong> <span data-i18n="gl_cuped_e">A user who spent heavily last month will likely spend heavily this month regardless of your change. Subtracting that known tendency can cut the required sample by a third or more. Full walkthrough in the CUPED deep-dive below.</span></div>
       </div>
     </div>
   </div>
@@ -1400,23 +1449,9 @@
   </div>
 
   <div class="card">
-    <div class="card-title" data-i18n="ref_glossary_title">Glossary of key terms</div>
-    <div class="accordion-body" style="padding:0;background:none">
-      <div class="tip-row"><div><strong>p-value</strong> — <span data-i18n="gl_pvalue">The probability of seeing a difference at least this large if there were truly no effect. Small p = the data is surprising under "no effect."</span></div></div>
-      <div class="tip-row"><div><strong>α (alpha)</strong> — <span data-i18n="gl_alpha">Your false-positive tolerance — the chance you'll call a winner when there's no real effect. Usually 5%.</span></div></div>
-      <div class="tip-row"><div><strong>β (beta) / power</strong> — <span data-i18n="gl_beta">β is the chance of missing a real effect. Power = 1 − β is the chance of catching it. Aim for 80%+.</span></div></div>
-      <div class="tip-row"><div><strong>MDE</strong> — <span data-i18n="gl_mde">Minimum Detectable Effect: the smallest lift your test is powered to detect. Smaller MDE needs much more data.</span></div></div>
-      <div class="tip-row"><div><strong>Confidence interval</strong> — <span data-i18n="gl_ci">A range that would contain the true effect 95% of the time across repeated experiments. If it excludes zero, the result is significant.</span></div></div>
-      <div class="tip-row"><div><strong>Standard error (SE)</strong> — <span data-i18n="gl_se">How much your estimate would bounce around from sample to sample. Shrinks as 1/√n.</span></div></div>
-      <div class="tip-row"><div><strong data-i18n="gl_cv_b">Coefficient of variation (CV)</strong> — <span data-i18n="gl_cv">SD ÷ mean. A unit-free measure of spread; high CV means a noisy metric that needs more data.</span></div></div>
-      <div class="tip-row"><div><strong>SRM</strong> — <span data-i18n="gl_srm">Sample Ratio Mismatch: the actual traffic split differs from the intended one, signalling a bug that invalidates results.</span></div></div>
-      <div class="tip-row"><div><strong>CUPED</strong> — <span data-i18n="gl_cuped">A variance-reduction technique that subtracts predictable pre-experiment noise from your metric, so you need less data. Explained in detail below.</span></div></div>
-    </div>
-  </div>
-
-  <div class="card">
     <div class="card-title" data-i18n="ref_deepdive_title">Deep dive: CUPED, step by step</div>
     <div class="accordion-body" style="padding:0;background:none">
+      <p data-i18n="dd_cuped_intuition" style="background:rgba(91,95,233,0.06);border-left:3px solid var(--accent);padding:12px 14px;border-radius:6px;margin-bottom:14px"><strong>The intuition first.</strong> Imagine measuring whether a new gym program adds muscle. People start at wildly different weights, so the after-numbers are all over the place — the noise from "where each person started" drowns out the effect of your program. But you <em>know</em> each person's starting weight. If you measure the <em>change</em> from their own baseline instead of the raw after-number, that starting-point noise vanishes and the program's real effect pops out. CUPED is exactly this trick for product metrics: subtract the part of each user's behaviour you could have predicted <em>before</em> the test, and what's left is a much cleaner read on your change.</p>
       <p data-i18n="dd_cuped_p1">CUPED (Controlled-experiment Using Pre-Experiment Data) is the single highest-leverage trick in modern experimentation. The idea: a user who spent a lot last month will probably spend a lot this month regardless of your change. That predictable part is noise you can subtract.</p>
       <div class="tip-row"><span class="tip-icon">1️⃣</span><div><strong data-i18n="dd_cuped_s1_b">Pick a covariate X</strong> — <span data-i18n="dd_cuped_s1">a pre-experiment measurement correlated with your metric Y. Prior-period revenue is the classic choice for ARPU tests.</span></div></div>
       <div class="tip-row"><span class="tip-icon">2️⃣</span><div><strong data-i18n="dd_cuped_s2_b">Estimate θ</strong> — <span data-i18n="dd_cuped_s2">θ = Cov(Y, X) / Var(X). This is just the slope of a regression of Y on X, computed across all users in the experiment.</span></div></div>
@@ -1432,6 +1467,35 @@
         <div class="cs-step"><strong data-i18n="cs_s2_b">Apply CUPED:</strong> <span data-i18n="cs_s2">Each user's spend in the 4 weeks before the test (X) correlates with their spend during the test (Y) at ρ = 0.6. CUPED subtracts that predictable part: Y_cuped = Y − θ·(X − X̄).</span></div>
         <div class="cs-step"><strong data-i18n="cs_s3_b">The result:</strong> <span data-i18n="cs_s3">Variance drops by ρ² = 0.36 — a 36% reduction. The effective SD falls from $48 to $38.4. Required sample size drops to ≈ 107,500 per arm — they reach a decision almost 2 weeks sooner, with no change to the estimated lift.</span></div>
         <div class="cs-takeaway"><strong data-i18n="cs_takeaway_b">Takeaway:</strong> <span data-i18n="cs_takeaway">CUPED didn't change the answer — it got them to the same answer faster. The noisier your metric and the stronger the pre-period correlation, the bigger the win.</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" id="sec-delta">
+    <div class="card-title" data-i18n="ref_delta_title">Deep dive: the delta method, step by step</div>
+    <div class="accordion-body" style="padding:0;background:none">
+      <p data-i18n="dd_delta_intuition" style="background:rgba(91,95,233,0.06);border-left:3px solid var(--accent);padding:12px 14px;border-radius:6px;margin-bottom:14px"><strong>The intuition first.</strong> Suppose you want to know the average "actions per session." You randomise <em>people</em> into control and variant — but each person has many sessions. Here's the trap: one chatty user might have 40 sessions, another just 1. If you pile all sessions into one bucket and treat them as independent, you're pretending you have far more <em>independent</em> data points than you really do. Sessions from the same person rise and fall together, so they don't each count as fresh evidence. The delta method is the fix: it works out the true uncertainty of a <em>ratio</em> (a top number divided by a bottom number, where both wobble) and hands that honest uncertainty to a normal Z-test.</p>
+
+      <p data-i18n="dd_delta_what"><strong>What kind of metric needs it?</strong> Any "ratio metric" where the denominator isn't fixed: actions per session, revenue per order, click-through rate per session, items per basket. The giveaway is that you randomise by one unit (the user) but count by another (sessions, orders, clicks).</p>
+
+      <div class="tip-row"><span class="tip-icon">1️⃣</span><div><strong data-i18n="dd_delta_s1_b">Spot the ratio</strong> — <span data-i18n="dd_delta_s1">Your metric is R = X / Y, where X is the numerator total (e.g. total actions) and Y the denominator total (e.g. total sessions). Both are random — they change from sample to sample — which is exactly what a naive test ignores.</span></div></div>
+      <div class="tip-row"><span class="tip-icon">2️⃣</span><div><strong data-i18n="dd_delta_s2_b">Why the naive test lies</strong> — <span data-i18n="dd_delta_s2">Treating each session as an independent row makes the standard error 2–10× too small. A too-small SE makes any difference look hugely significant — so you ship false positives. The error is invisible: the p-value just looks great.</span></div></div>
+      <div class="tip-row"><span class="tip-icon">3️⃣</span><div><strong data-i18n="dd_delta_s3_b">Estimate the variance of the ratio</strong> — <span data-i18n="dd_delta_s3">The delta method uses a first-order Taylor approximation to turn the messy variance of "a random top over a random bottom" into something computable: Var(R) ≈ (1/Ȳ²)·[Var(X) − 2R·Cov(X,Y) + R²·Var(Y)]. In plain terms: it accounts for how the numerator and denominator move <em>together</em>, which is the piece the naive test throws away.</span></div></div>
+      <div class="tip-row"><span class="tip-icon">4️⃣</span><div><strong data-i18n="dd_delta_s4_b">Feed it to a Z-test</strong> — <span data-i18n="dd_delta_s4">That corrected variance gives an honest standard error. From there it's an ordinary two-sample Z-test on the two groups' ratios. The delta method is <strong>not</strong> a separate test — it's the variance-estimation step that makes the Z-test trustworthy for ratio metrics.</span></div></div>
+
+      <div class="callout" style="background:rgba(217,119,6,0.08);border:1px solid rgba(217,119,6,0.3);border-radius:8px;padding:12px 14px;margin:14px 0">
+        <strong data-i18n="dd_delta_note_b" style="color:var(--warn,#D97706)">A common shortcut — and when it's enough.</strong>
+        <span data-i18n="dd_delta_note">For many product metrics you can sidestep the formula: aggregate to <em>one value per user</em> first (each user's own actions ÷ their own sessions), then run a plain Welch's t-test on those per-user numbers. That also respects the user-level independence. The full delta method earns its keep when you can't cleanly aggregate per user, or when the denominator can be zero for some users.</span>
+      </div>
+
+      <div class="case-study">
+        <div class="case-study-tag" data-i18n="cs_tag">📘 Case study</div>
+        <div class="case-study-title" data-i18n="ds_title">A nudge that lifts "actions per session"</div>
+        <p data-i18n="ds_intro">A team ships an onboarding nudge and measures actions per session. They randomise by user, but users have very different session counts — a handful of power users have dozens of sessions each.</p>
+        <div class="cs-step"><strong data-i18n="ds_s1_b">The trap:</strong> <span data-i18n="ds_s1">A naive test on 50,000 sessions reports z ≈ 11, p &lt; 0.0001 — looks like a slam dunk. But those sessions come from far fewer users, and one power user's good day counts dozens of times.</span></div>
+        <div class="cs-step"><strong data-i18n="ds_s2_b">Apply the delta method:</strong> <span data-i18n="ds_s2">Estimating the ratio's variance correctly inflates the standard error to its honest size. The z statistic falls from ~11 to ≈ 6.9 — still significant, but no longer absurdly so.</span></div>
+        <div class="cs-step"><strong data-i18n="ds_s3_b">The result:</strong> <span data-i18n="ds_s3">p &lt; 0.001 with the correct variance. The lift is real and they ship — but now the confidence interval is honest, so the projected impact they promise leadership isn't inflated.</span></div>
+        <div class="cs-takeaway"><strong data-i18n="cs_takeaway_b">Takeaway:</strong> <span data-i18n="ds_take">The delta method rarely flips "significant" to "not significant" — its job is to stop you over-stating certainty. On ratio metrics, a naive test's confidence is a mirage.</span></div>
       </div>
     </div>
   </div>

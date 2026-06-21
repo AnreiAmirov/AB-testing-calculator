@@ -306,6 +306,67 @@ function selectPlanMetric(type, btn) {
   const awEl = document.getElementById('res-arms-wrap'); if (awEl) awEl.classList.add('hidden');
 }
 
+// ── Analyse-tab "expected split" (drives the SRM check) ──
+let srmMode = 'equal';
+
+function setSrmMode(mode) {
+  srmMode = mode;
+  document.getElementById('srm-mode-equal').classList.toggle('selected', mode === 'equal');
+  document.getElementById('srm-mode-custom').classList.toggle('selected', mode === 'custom');
+  document.getElementById('srm-editor').classList.toggle('hidden', mode !== 'custom');
+  if (mode === 'custom') renderSrmRows();
+}
+
+// Render one percentage input per current Analyse variant row, defaulting to even.
+function renderSrmRows() {
+  const rowsEl = document.getElementById('srm-rows');
+  if (!rowsEl || srmMode !== 'custom') return;
+  const k = document.querySelectorAll('#conv-variants .variant-row').length;
+  const labels = getVariantLabels(k);
+  const existing = rowsEl.querySelectorAll('.srm-pct-input');
+  let values;
+  if (existing.length === k) {
+    values = Array.from(existing).map(i => parseFloat(i.value) || 0);
+  } else {
+    const even = Math.round(100 / k);
+    values = labels.map((_, i) => i === k - 1 ? 100 - even * (k - 1) : even);
+  }
+  rowsEl.innerHTML = labels.map((lab, i) => `
+    <div class="alloc-row">
+      <span class="alloc-tag ${i === 0 ? 'control' : ''}">${lab}</span>
+      <input type="range" class="alloc-slider srm-slider" min="1" max="98" value="${values[i]}" data-idx="${i}" oninput="onSrmSlider(${i}, this.value)">
+      <input type="number" class="alloc-pct-input srm-pct-input" min="1" max="98" value="${values[i]}" data-idx="${i}" oninput="onSrmInput(${i}, this.value)">
+    </div>`).join('');
+  updateSrmSum();
+}
+
+function syncSrmRow(i, val) {
+  const slider = document.querySelector(`.srm-slider[data-idx="${i}"]`);
+  const input = document.querySelector(`.srm-pct-input[data-idx="${i}"]`);
+  if (slider) slider.value = val;
+  if (input) input.value = val;
+}
+function onSrmSlider(i, val) { syncSrmRow(i, val); updateSrmSum(); }
+function onSrmInput(i, val) { syncSrmRow(i, val); updateSrmSum(); }
+
+function getSrmWeights() {
+  const inputs = document.querySelectorAll('#srm-rows .srm-pct-input');
+  return Array.from(inputs).map(i => parseFloat(i.value) || 0);
+}
+
+function updateSrmSum() {
+  const weights = getSrmWeights();
+  const sum = weights.reduce((a, b) => a + b, 0);
+  const sumEl = document.getElementById('srm-sum');
+  const warnEl = document.getElementById('srm-warn');
+  if (sumEl) {
+    sumEl.textContent = Math.round(sum) + '%';
+    sumEl.className = Math.abs(sum - 100) < 0.5 ? 'alloc-sum-ok' : 'alloc-sum-bad';
+  }
+  if (warnEl) warnEl.classList.toggle('hidden', Math.abs(sum - 100) < 0.5);
+  return sum;
+}
+
 // ── Analyse metric select ──
 let analyseMetric = 'conversion';
 function selectAnalyseMetric(type, btn) {
@@ -555,6 +616,7 @@ function removeConvVariant(btn) {
   const row = btn.closest('.variant-row');
   if (row) row.remove();
   relabelConvVariants();
+  if (srmMode === 'custom') renderSrmRows();
 }
 
 function addConvVariant() {
@@ -568,6 +630,7 @@ function addConvVariant() {
     <button class="btn-remove" onclick="removeConvVariant(this)">×</button>`;
   document.getElementById('conv-variants').appendChild(div);
   relabelConvVariants();
+  if (srmMode === 'custom') renderSrmRows();
 }
 
 // ── Inline validation message helper (replaces alert pop-ups) ──
@@ -664,22 +727,59 @@ function analyseConversion() {
   const A = variants[0];
 
   // ── SRM (Sample Ratio Mismatch) health check ──
-  // Compare observed arm sizes against an equal-split expectation via chi-squared.
+  // Compare observed arm sizes against the user's INTENDED split via a
+  // chi-squared goodness-of-fit test. Default: equal split (today's behaviour).
+  // Custom: the weights the user entered in the "Expected split" control, so a
+  // deliberate 30/20/10 test is NOT falsely flagged.
   const srmBanner = (() => {
     const counts = variants.map(v => v.n);
     const total = counts.reduce((a,b)=>a+b,0);
-    const expected = total / counts.length;        // assumes intended equal split
+    const k = counts.length;
+
+    // Determine expected fractions. Equal unless a valid custom split is set.
+    let fracs;
+    let splitLabel;
+    const L = T[currentLang];
+    if (srmMode === 'custom') {
+      const w = getSrmWeights();
+      const wsum = w.reduce((a,b)=>a+b,0);
+      // Only honour custom weights if they're present for every arm and sum to ~100.
+      if (w.length === k && Math.abs(wsum - 100) < 0.5 && w.every(x => x > 0)) {
+        fracs = w.map(x => x / 100);
+        splitLabel = w.map(x => Math.round(x)).join('/');
+      } else {
+        // Invalid custom entry → fall back to equal and tell the user.
+        fracs = Array.from({length:k}, () => 1/k);
+        splitLabel = null;
+      }
+    } else {
+      fracs = Array.from({length:k}, () => 1/k);
+      splitLabel = null;
+    }
+
+    const expected = fracs.map(f => total * f);
     let chi2 = 0;
-    for (const o of counts) chi2 += (o-expected)**2/expected;
-    const df = counts.length - 1;
+    for (let i = 0; i < k; i++) chi2 += (counts[i]-expected[i])**2/expected[i];
+    const df = k - 1;
     // Wilson–Hilferty p-value
     const zChi = ((Math.cbrt(chi2/df))-(1-2/(9*df)))/Math.sqrt(2/(9*df));
     const pSRM = 1 - normCDF(zChi);
-    const L = T[currentLang];
+
+    const obsStr = counts.map(c => c.toLocaleString()).join(' / ');
+    const expStr = expected.map(e => Math.round(e).toLocaleString()).join(' / ');
+    const intended = splitLabel
+      ? (L.srm_intended_custom || 'your intended {s} split').replace('{s}', splitLabel)
+      : (L.srm_intended_equal || 'an even split');
+
     if (pSRM < 0.001) {
-      return `<div class="srm-banner srm-bad">⚠ ${(L.srm_bad||'Sample Ratio Mismatch: arm sizes differ from an even split (p < 0.001). Assignment may be broken — results unreliable until fixed.')}</div>`;
+      const msg = (L.srm_bad || 'Sample Ratio Mismatch: arm sizes ({obs}) differ from {intended} (expected {exp}, p < 0.001). Assignment may be broken — results unreliable until fixed.')
+        .replace('{obs}', obsStr).replace('{exp}', expStr).replace('{intended}', intended);
+      return `<div class="srm-banner srm-bad">⚠ ${msg}</div>`;
     }
-    return `<div class="srm-banner srm-ok">✓ ${(L.srm_ok||'Split looks healthy: arm sizes are consistent with an even split (p = {p}).').replace('{p}', pSRM.toFixed(2))}</div>`;
+    const msg = (L.srm_ok || 'Split looks healthy: arm sizes ({obs}) are consistent with {intended} (expected {exp}, p = {p}).')
+      .replace('{obs}', obsStr).replace('{exp}', expStr).replace('{intended}', intended)
+      .replace('{p}', pSRM.toFixed(2));
+    return `<div class="srm-banner srm-ok">✓ ${msg}</div>`;
   })();
 
   let html = `<div class="ar-header">${T[currentLang].js_results_conv}</div><div class="ar-body">${srmBanner}`;

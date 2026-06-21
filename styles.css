@@ -630,6 +630,22 @@ main {
 .srm-ok  { background: var(--success-bg, rgba(26,122,74,0.1)); color: var(--success, #1a7a4a); border: 1px solid rgba(26,122,74,0.25); }
 .srm-bad { background: rgba(225,29,72,0.08); color: var(--danger, #e11d48); border: 1px solid rgba(225,29,72,0.3); font-weight: 600; }
 
+/* ── Expected-split control that feeds the SRM check (Analyse sidebar) ── */
+.srm-expected-block {
+  margin-top: 16px; padding-top: 14px; border-top: 1px dashed var(--border);
+}
+.srm-expected-label {
+  font-size: 0.82rem; font-weight: 600; color: var(--ink-muted);
+  margin-bottom: 8px;
+}
+.srm-expected-label .tip { font-weight: 400; opacity: 0.8; }
+.srm-toggle .alloc-mode-btn { padding: 6px 14px; font-size: 0.78rem; }
+.srm-editor { margin-top: 12px; }
+.srm-hint {
+  font-size: 0.78rem; color: var(--ink-muted); line-height: 1.45;
+  margin-bottom: 10px;
+}
+
 /* ── Case studies ── */
 .case-card {
   border: 1px solid var(--border); border-radius: var(--radius);
