@@ -1455,14 +1455,88 @@
   <div class="card">
     <div class="card-title" data-i18n="ref_deepdive_title">Deep dive: CUPED, step by step</div>
     <div class="accordion-body" style="padding:0;background:none">
+
+      <div class="dd-h3" data-i18n="dd2_h_idea">1 · The idea</div>
       <p data-i18n="dd_cuped_intuition" style="background:rgba(91,95,233,0.06);border-left:3px solid var(--accent);padding:12px 14px;border-radius:6px;margin-bottom:14px"><strong>The intuition first.</strong> Imagine measuring whether a new gym program adds muscle. People start at wildly different weights, so the after-numbers are all over the place — the noise from "where each person started" drowns out the effect of your program. But you <em>know</em> each person's starting weight. If you measure the <em>change</em> from their own baseline instead of the raw after-number, that starting-point noise vanishes and the program's real effect pops out. CUPED is exactly this trick for product metrics: subtract the part of each user's behaviour you could have predicted <em>before</em> the test, and what's left is a much cleaner read on your change.</p>
       <p data-i18n="dd_cuped_p1">CUPED (Controlled-experiment Using Pre-Experiment Data) is the single highest-leverage trick in modern experimentation. The idea: a user who spent a lot last month will probably spend a lot this month regardless of your change. That predictable part is noise you can subtract.</p>
-      <div class="tip-row"><span class="tip-icon">1️⃣</span><div><strong data-i18n="dd_cuped_s1_b">Pick a covariate X</strong> — <span data-i18n="dd_cuped_s1">a pre-experiment measurement correlated with your metric Y. Prior-period revenue is the classic choice for ARPU tests.</span></div></div>
-      <div class="tip-row"><span class="tip-icon">2️⃣</span><div><strong data-i18n="dd_cuped_s2_b">Estimate θ</strong> — <span data-i18n="dd_cuped_s2">θ = Cov(Y, X) / Var(X). This is just the slope of a regression of Y on X, computed across all users in the experiment.</span></div></div>
-      <div class="tip-row"><span class="tip-icon">3️⃣</span><div><strong data-i18n="dd_cuped_s3_b">Transform Y</strong> — <span data-i18n="dd_cuped_s3">Y_cuped = Y − θ·(X − X̄). The mean is unchanged (so your lift estimate stays unbiased), but the variance drops.</span></div></div>
-      <div class="tip-row"><span class="tip-icon">4️⃣</span><div><strong data-i18n="dd_cuped_s4_b">Run your test on Y_cuped</strong> — <span data-i18n="dd_cuped_s4">The variance reduction equals ρ², where ρ is the correlation between Y and X. A correlation of 0.7 cuts variance by ~49%.</span></div></div>
-      <p data-i18n="dd_cuped_p2">Because required sample size scales linearly with variance, a 50% variance reduction means you reach significance in half the time — or detect an effect half the size in the same time. That is why every large experimentation platform uses it.</p>
+      <p data-i18n="dd2_oneliner"><strong>The one-line version for stakeholders:</strong> "CUPED doesn't change the answer; it gets us to the same answer with less traffic, by cancelling out noise we already knew about."</p>
 
+      <div class="dd-h3" data-i18n="dd2_h_when">2 · When do you actually run CUPED?</div>
+      <p data-i18n="dd2_when_p">The most common confusion: CUPED needs data from <strong>both</strong> sides of the experiment. The covariate X is <em>collected</em> before the test, but the adjustment itself is only <em>computed after</em> the test ends — because the formula needs each user's during-test outcome Y, which doesn't exist until the test is over. You decide on CUPED up front, but you run the math at analysis time.</p>
+      <div class="pl-phase">
+        <div><span class="pl-when" data-i18n="dd2_pl_before_w">Before the test</span><span class="pl-phase-title" data-i18n="dd2_pl_before_t">planning &amp; setup</span></div>
+        <ol>
+          <li data-i18n="dd2_pl_b1"><strong>Decide you'll use CUPED while designing the test.</strong> It affects your sample-size plan: expecting ~30% variance reduction lets you plan for fewer users or a shorter run.</li>
+          <li data-i18n="dd2_pl_b2"><strong>Choose the covariate X.</strong> The standard, most powerful choice is your target metric measured in the period just before the test (e.g. each user's revenue in the 1–4 weeks pre-launch). It must be a per-user value you can join later by a stable user ID.</li>
+          <li data-i18n="dd2_pl_b3"><strong>Fix the pre-period window and freeze it.</strong> 1–4 weeks is typical: too short and the covariate is noisy, too long and old behaviour stops predicting current behaviour.</li>
+          <li data-i18n="dd2_pl_b4"><strong>Decide the new-user rule now.</strong> Users with no history can't be adjusted. Choose in advance: exclude them, impute X = 0, or analyse returning vs. new users separately. Never decide this after seeing results.</li>
+          <li data-i18n="dd2_pl_b5"><strong>Capture X for every enrolled user</strong> as they enter, keyed to their user ID. This is the one step that must happen at enrolment.</li>
+        </ol>
+      </div>
+      <div class="pl-phase">
+        <div><span class="pl-when" data-i18n="dd2_pl_during_w">During the test</span><span class="pl-phase-title" data-i18n="dd2_pl_during_t">just run it</span></div>
+        <ol>
+          <li data-i18n="dd2_pl_d1"><strong>Run the experiment normally.</strong> CUPED changes nothing about execution — same randomisation, exposure, and metric collection.</li>
+          <li data-i18n="dd2_pl_d2"><strong>Don't touch X.</strong> The covariate is locked from the pre-period; you're now collecting Y (the during-test outcome). X stays untouched by the treatment — guaranteed, because it was measured before exposure.</li>
+        </ol>
+      </div>
+      <div class="pl-phase">
+        <div><span class="pl-when" data-i18n="dd2_pl_after_w">After the test</span><span class="pl-phase-title" data-i18n="dd2_pl_after_t">compute &amp; analyse</span></div>
+        <ol>
+          <li data-i18n="dd2_pl_a1"><strong>Validate the experiment first.</strong> Run the SRM / split-health check. CUPED reduces variance, it does not fix a broken experiment.</li>
+          <li data-i18n="dd2_pl_a2"><strong>Join X to Y by user ID.</strong> You now have, per user, their pre-period X and during-test Y.</li>
+          <li data-i18n="dd2_pl_a3"><strong>Compute θ on the pooled data</strong> (both arms together, not per-arm): θ = Cov(X, Y) / Var(X). Pooling matters — per-arm θ can leak the treatment effect into the adjustment.</li>
+          <li data-i18n="dd2_pl_a4"><strong>Adjust every user:</strong> Ỹ = Y − θ·(X − X̄), where X̄ is the population mean of X.</li>
+          <li data-i18n="dd2_pl_a5"><strong>Run your normal test on Ỹ</strong> and read the p-value exactly as usual.</li>
+        </ol>
+      </div>
+      <p style="font-size:.85rem;color:var(--ink-muted)" data-i18n="dd2_when_sum"><strong>One-line timing:</strong> collect X before, collect Y during, compute θ and adjust after. CUPED is a planning decision made up front but a calculation done at analysis time.</p>
+
+      <div class="dd-h3" data-i18n="dd2_h_case">3 · A worked case, step by step</div>
+      <p data-i18n="dd2_case_intro">Forget formulas for a moment. Here are <strong>8 users</strong> from a revenue test — four in control (A), four in the variant (B). For each we have <strong>X</strong> = spend in the weeks <em>before</em> the test, and <strong>Y</strong> = spend <em>during</em> it. Small enough to follow every number by hand.</p>
+      <div class="dd-h3" style="font-size:0.9rem" data-i18n="dd2_case_fail_h">First, try it the normal way — and watch it fail</div>
+      <p data-i18n="dd2_case_fail">Average Y in control = <strong>$24.00</strong>, in variant = <strong>$29.25</strong> — looks like a big +21.9% lift! But run a t-test and <strong>p = 0.74</strong>, nowhere near significant. Why? U2 ($55) and U6 ($60) are naturally big spenders bouncing the averages around so hard the test can't tell the gain from luck. The signal is real but the <em>noise</em> drowns it.</p>
+      <div class="dd-h3" style="font-size:0.9rem" data-i18n="dd2_case_apply_h">Now apply CUPED</div>
+      <div class="dd-step"><span class="dd-n">1</span><div><strong data-i18n="dd2_case_s1_b">Find θ.</strong> <span data-i18n="dd2_case_s1">θ = Cov(X,Y) / Var(X) across all 8 users = 337.4 / 296.0 = <strong>1.14</strong>. (Every extra $1 spent before predicts ~$1.14 during — consistent spenders.)</span></div></div>
+      <div class="dd-step"><span class="dd-n">2</span><div><strong data-i18n="dd2_case_s2_b">Find X̄.</strong> <span data-i18n="dd2_case_s2">The average of X over all 8 users = <strong>$22.375</strong>.</span></div></div>
+      <div class="dd-step"><span class="dd-n">3</span><div><strong data-i18n="dd2_case_s3_b">Adjust each user:</strong> <span data-i18n="dd2_case_s3">Ỹ = Y − θ·(X − X̄). For big spender U2: X = $50, so subtract 1.14 × (50 − 22.375) = $31.50, giving Ỹ = 55 − 31.50 = <strong>$23.50</strong>. Do this for all 8.</span></div></div>
+      <div class="dd-h3" style="font-size:0.9rem" data-i18n="dd2_case_cmp_h">Side-by-side: original Y vs. CUPED-adjusted Ỹ</div>
+      <p data-i18n="dd2_case_cmp_p">Watch the wild original column get pulled into a tight band — while the group averages barely move:</p>
+      <table class="cmp-table">
+        <thead><tr><th data-i18n="dd2_tbl_user">User</th><th data-i18n="dd2_tbl_orig">Original Y ($)</th><th data-i18n="dd2_tbl_cuped">CUPED Ỹ ($)</th></tr></thead>
+        <tbody>
+          <tr><td>U1 (A)</td><td>12</td><td>26.11</td></tr>
+          <tr><td>U2 (A)</td><td>55</td><td>23.50</td></tr>
+          <tr><td>U3 (A)</td><td>19</td><td>21.71</td></tr>
+          <tr><td>U4 (A)</td><td>10</td><td>26.39</td></tr>
+          <tr class="mean-row"><td data-i18n="dd2_tbl_meanA">Mean A</td><td>24.00</td><td>24.43</td></tr>
+          <tr><td>U5 (B)</td><td>18</td><td>29.83</td></tr>
+          <tr><td>U6 (B)</td><td>60</td><td>30.79</td></tr>
+          <tr><td>U7 (B)</td><td>27</td><td>27.43</td></tr>
+          <tr><td>U8 (B)</td><td>12</td><td>27.25</td></tr>
+          <tr class="mean-row"><td data-i18n="dd2_tbl_meanB">Mean B</td><td>29.25</td><td>28.82</td></tr>
+        </tbody>
+      </table>
+      <div class="whatchanged">
+        <strong data-i18n="dd2_wc_title">What changed?</strong>
+        <ol>
+          <li data-i18n="dd2_wc1"><strong>The effect stayed the same.</strong> Mean A and Mean B barely moved (24.00→24.43, 29.25→28.82). The gap between groups — the thing you care about — is preserved. CUPED did <em>not</em> invent or inflate the result.</li>
+          <li data-i18n="dd2_wc2"><strong>The noise collapsed.</strong> The original values swing $10–$60 (SD ≈ $21); the CUPED values sit in a tight $21–$31 band (SD ≈ $2). Big spenders U2 and U6 are pulled back to the pack, because CUPED knew they'd spend big anyway.</li>
+          <li data-i18n="dd2_wc3"><strong>So the verdict flips.</strong> Same difference in means, but now measured against tiny noise instead of huge noise. The result that was invisible becomes obvious.</li>
+        </ol>
+      </div>
+      <div class="dd-h3" style="font-size:0.9rem" data-i18n="dd2_case_verdict_h">Step 4 — re-run the same test, see the verdict flip</div>
+      <table class="verdict-table">
+        <thead><tr><th data-i18n="dd2_vt_test">Test on…</th><th data-i18n="dd2_vt_lift">Lift</th><th>t</th><th>p</th><th data-i18n="dd2_vt_verdict">Verdict at α = 0.05</th></tr></thead>
+        <tbody>
+          <tr><td class="vt-before" data-i18n="dd2_vt_orig">Original Y</td><td>+21.9%</td><td>0.35</td><td>0.74</td><td class="vt-before" data-i18n="dd2_vt_notsig">Not significant ✗</td></tr>
+          <tr><td class="vt-after" data-i18n="dd2_vt_cuped">CUPED Ỹ</td><td>+18.0%</td><td>3.09</td><td>0.023</td><td class="vt-after" data-i18n="dd2_vt_sig">Significant ✓</td></tr>
+        </tbody>
+      </table>
+      <p style="background:rgba(5,150,105,0.07);border-left:3px solid var(--success);padding:11px 14px;border-radius:6px" data-i18n="dd2_case_lesson"><strong>The lesson:</strong> the raw test said "no difference" — but that was the <em>noise</em> talking, not the truth. The variant really was better; a few big spenders hid it. If your test comes back "not significant" on a noisy metric like revenue, don't conclude "no effect" — first ask whether you have pre-period data to CUPED-adjust with. You may have a winner hiding under the noise.</p>
+      <p style="font-size:.82rem;color:var(--ink-muted)" data-i18n="dd2_case_note">(This 8-user set is deliberately tiny so you can check the arithmetic — its correlation is unrealistically clean. Real covariates correlate around 0.3–0.6; the realistic example below uses ρ = 0.55.)</p>
+
+      <div class="dd-h3" data-i18n="dd2_h_real">4 · The same idea at realistic scale</div>
       <div class="case-study">
         <div class="case-study-tag" data-i18n="cs_tag">📘 Case study</div>
         <div class="case-study-title" data-i18n="cs_title">StreamFlix tests a new checkout flow</div>
@@ -1471,6 +1545,51 @@
         <div class="cs-step"><strong data-i18n="cs_s2_b">Apply CUPED:</strong> <span data-i18n="cs_s2">Each user's spend in the 4 weeks before the test (X) correlates with their spend during the test (Y) at ρ = 0.6. CUPED subtracts that predictable part: Y_cuped = Y − θ·(X − X̄).</span></div>
         <div class="cs-step"><strong data-i18n="cs_s3_b">The result:</strong> <span data-i18n="cs_s3">Variance drops by ρ² = 0.36 — a 36% reduction. The effective SD falls from $48 to $38.4. Required sample size drops to ≈ 107,500 per arm — they reach a decision almost 2 weeks sooner, with no change to the estimated lift.</span></div>
         <div class="cs-takeaway"><strong data-i18n="cs_takeaway_b">Takeaway:</strong> <span data-i18n="cs_takeaway">CUPED didn't change the answer — it got them to the same answer faster. The noisier your metric and the stronger the pre-period correlation, the bigger the win.</span></div>
+      </div>
+      <p data-i18n="dd_cuped_p2" style="margin-top:12px">Because required sample size scales linearly with variance, a 50% variance reduction means you reach significance in half the time — or detect an effect half the size in the same time. That is why every large experimentation platform uses it.</p>
+
+      <div class="dd-h3" data-i18n="dd2_h_limit">5 · Limitations &amp; pitfalls</div>
+      <div class="dd-limit" data-i18n="dd2_lim1"><b>You need persistent user IDs.</b> CUPED links each user's "before" to their "after," so it only works if you can identify the same person across both periods. Anonymous-session-only tracking blocks CUPED until you fix identity.</div>
+      <div class="dd-limit" data-i18n="dd2_lim2"><b>It only helps when X correlates with Y.</b> The variance reduction is exactly ρ². A weak covariate gives almost nothing — but CUPED is <em>safe</em> even then: with no correlation it leaves your estimate essentially unchanged rather than worse.</div>
+      <div class="dd-limit" data-i18n="dd2_lim3"><b>Needs pre-experiment history.</b> New users, new markets, or first-time events have no "before" to subtract. Decide the rule in advance — exclude or impute — never after seeing results.</div>
+      <div class="dd-limit" data-i18n="dd2_lim4"><b>The covariate must be pre-treatment.</b> Using anything measured during the experiment as X can absorb part of the treatment effect and bias your lift toward zero. Pre-period only.</div>
+      <div class="dd-limit" data-i18n="dd2_lim5"><b>It's still a t-test underneath.</b> CUPED doesn't escape the t-test's assumptions: you need normal-ish data or a large enough sample for the CLT. Easily met at thousands of users, risky on tiny tests.</div>
+      <div class="dd-limit" data-i18n="dd2_lim6"><b>It reduces variance, not bias.</b> SRM, contamination, or selection bias all survive the transform. Validate the experiment first, then apply CUPED.</div>
+
+      <div class="dd-h3" data-i18n="dd2_h_code">6 · Python script</div>
+      <p data-i18n="dd2_code_p">Copy-paste runnable (needs only <code>numpy</code> + <code>scipy</code>). Swap the simulated arrays for your own per-user <code>X</code> (pre-period) and <code>Y</code> (in-experiment).</p>
+      <div class="code-block">
+        <button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button>
+<pre><span class="tok-c"># CUPED: variance reduction for an A/B test. Needs numpy + scipy.</span>
+<span class="tok-k">import</span> <span class="tok-b">numpy</span> <span class="tok-k">as</span> <span class="tok-b">np</span>
+<span class="tok-k">from</span> <span class="tok-b">scipy</span> <span class="tok-k">import</span> stats
+
+<span class="tok-k">def</span> <span class="tok-f">analyse</span>(Yc, Yv, Xc, Xv):
+    <span class="tok-c"># 1) estimate theta on the POOLED pre/post data (both arms together)</span>
+    Xall, Yall = np.<span class="tok-f">concatenate</span>([Xc, Xv]), np.<span class="tok-f">concatenate</span>([Yc, Yv])
+    theta = np.<span class="tok-f">cov</span>(Yall, Xall, ddof=<span class="tok-n">1</span>)[<span class="tok-n">0</span>, <span class="tok-n">1</span>] / Xall.<span class="tok-f">var</span>(ddof=<span class="tok-n">1</span>)
+    <span class="tok-c"># 2) transform each arm with the same theta and global mean of X</span>
+    Xbar = Xall.<span class="tok-f">mean</span>()
+    Yc_c = Yc - theta * (Xc - Xbar)
+    Yv_c = Yv - theta * (Xv - Xbar)
+    <span class="tok-c"># 3) Welch t-test, raw vs CUPED</span>
+    t_raw, p_raw = stats.<span class="tok-f">ttest_ind</span>(Yv,   Yc,   equal_var=<span class="tok-k">False</span>)
+    t_cup, p_cup = stats.<span class="tok-f">ttest_ind</span>(Yv_c, Yc_c, equal_var=<span class="tok-k">False</span>)
+    rho = np.<span class="tok-f">corrcoef</span>(Xall, Yall)[<span class="tok-n">0</span>, <span class="tok-n">1</span>]
+    var_red = <span class="tok-n">1</span> - np.<span class="tok-f">concatenate</span>([Yc_c, Yv_c]).<span class="tok-f">var</span>(ddof=<span class="tok-n">1</span>) / Yall.<span class="tok-f">var</span>(ddof=<span class="tok-n">1</span>)
+    <span class="tok-f">print</span>(<span class="tok-s">f"rho = {rho:.3f}  (var. reduction rho^2 = {rho**2:.1%})"</span>)
+    <span class="tok-f">print</span>(<span class="tok-s">f"empirical var. drop  = {var_red:.1%}"</span>)
+    <span class="tok-f">print</span>(<span class="tok-s">f"raw   : lift={(Yv.mean()-Yc.mean())/Yc.mean():+.2%}  t={t_raw:.2f}  p={p_raw:.4f}"</span>)
+    <span class="tok-f">print</span>(<span class="tok-s">f"cuped : lift={(Yv_c.mean()-Yc_c.mean())/Yc_c.mean():+.2%}  t={t_cup:.2f}  p={p_cup:.4f}"</span>)
+
+<span class="tok-c"># --- demo data: replace with your own per-user arrays ---</span>
+rng = np.random.<span class="tok-f">default_rng</span>(<span class="tok-n">7</span>)
+N = <span class="tok-n">20_000</span>
+latent = rng.<span class="tok-f">lognormal</span>(<span class="tok-n">2.2</span>, <span class="tok-n">0.55</span>, <span class="tok-n">2</span>*N)
+X = latent + rng.<span class="tok-f">normal</span>(<span class="tok-n">0</span>, <span class="tok-n">5.5</span>, <span class="tok-n">2</span>*N)          <span class="tok-c"># pre-period spend</span>
+Y = latent + rng.<span class="tok-f">normal</span>(<span class="tok-n">0</span>, <span class="tok-n">5.5</span>, <span class="tok-n">2</span>*N)          <span class="tok-c"># in-experiment spend</span>
+Y[N:] *= <span class="tok-n">1.03</span>                                  <span class="tok-c"># inject a real +3% lift in the variant</span>
+<span class="tok-f">analyse</span>(Y[:N], Y[N:], X[:N], X[N:])</pre>
       </div>
     </div>
   </div>

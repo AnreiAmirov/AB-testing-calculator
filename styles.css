@@ -865,6 +865,64 @@ main {
   line-height: 1.6;
 }
 .cs-takeaway strong { color: var(--success); }
+
+/* ── CUPED deep-dive: numbered steps, comparison table, pipeline, code block ── */
+.dd-step { display:flex; gap:11px; margin:11px 0; align-items:flex-start; font-size:0.86rem; color:var(--ink-muted); line-height:1.55; }
+.dd-step .dd-n { flex-shrink:0; width:26px; height:26px; border-radius:7px; background:var(--accent); color:#fff; font-weight:700; font-size:.82rem; display:flex; align-items:center; justify-content:center; }
+.dd-step strong { color:var(--ink); }
+.dd-h3 { font-size:0.98rem; font-weight:700; color:var(--accent); margin:18px 0 6px; }
+
+.cmp-table { border-collapse:collapse; width:100%; margin:12px 0; font-size:0.86rem; }
+.cmp-table th, .cmp-table td { border:1px solid var(--border); padding:7px 11px; text-align:left; }
+.cmp-table th { background:var(--pill-bg); font-weight:700; }
+.cmp-table td:nth-child(2), .cmp-table th:nth-child(2) { background:rgba(225,29,72,0.05); }
+.cmp-table td:nth-child(3), .cmp-table th:nth-child(3) { background:rgba(5,150,105,0.06); }
+.cmp-table .mean-row td { font-weight:700; background:var(--pill-bg) !important; border-top:2px solid var(--accent); }
+[data-theme="dark"] .cmp-table td:nth-child(2), [data-theme="dark"] .cmp-table th:nth-child(2) { background:rgba(225,29,72,0.12); }
+[data-theme="dark"] .cmp-table td:nth-child(3), [data-theme="dark"] .cmp-table th:nth-child(3) { background:rgba(5,150,105,0.14); }
+
+.verdict-table { border-collapse:collapse; width:100%; margin:12px 0; font-size:0.85rem; }
+.verdict-table th, .verdict-table td { border:1px solid var(--border); padding:7px 11px; text-align:left; }
+.verdict-table th { background:var(--pill-bg); }
+.vt-before { color:var(--danger,#e11d48); font-weight:700; }
+.vt-after { color:var(--success,#059669); font-weight:700; }
+
+.whatchanged { background:var(--card,#fff); border:1px solid var(--border); border-radius:var(--radius-md); padding:14px 16px; margin-top:12px; }
+.whatchanged > strong { color:var(--ink); }
+.whatchanged ol { margin:6px 0; padding-left:20px; font-size:0.85rem; color:var(--ink-muted); line-height:1.55; }
+.whatchanged li { margin:7px 0; }
+.whatchanged li strong { color:var(--ink); }
+
+.pl-phase { background:var(--card,#fff); border:1px solid var(--border); border-left:4px solid var(--accent); border-radius:var(--radius-sm); padding:12px 16px; margin:10px 0; font-size:0.86rem; }
+.pl-phase ol { margin:8px 0 2px; padding-left:20px; color:var(--ink-muted); line-height:1.55; }
+.pl-phase li { margin:6px 0; }
+.pl-phase li strong { color:var(--ink); }
+.pl-when { display:inline-block; font-size:.7rem; font-weight:800; letter-spacing:.04em; color:var(--accent); background:var(--pill-bg); padding:2px 9px; border-radius:var(--radius-pill); margin-right:6px; text-transform:uppercase; }
+.pl-phase-title { font-weight:700; color:var(--ink); }
+
+.dd-limit { background:rgba(217,119,6,0.07); border:1px solid rgba(217,119,6,0.25); border-radius:var(--radius-sm); padding:10px 13px; margin:9px 0; font-size:0.85rem; color:var(--ink-muted); line-height:1.55; }
+.dd-limit b { color:var(--warn,#D97706); }
+
+/* Reusable code block with copy button */
+.code-block { position:relative; margin:12px 0; }
+.code-block pre {
+  background:#1e2233; color:#e6e8f5; padding:16px 18px; border-radius:var(--radius-sm);
+  overflow-x:auto; font-size:0.78rem; line-height:1.55; font-family:'JetBrains Mono',ui-monospace,Menlo,monospace;
+  margin:0; -webkit-overflow-scrolling:touch;
+}
+.code-block .code-copy {
+  position:absolute; top:8px; right:8px; background:rgba(255,255,255,0.1); color:#e6e8f5;
+  border:1px solid rgba(255,255,255,0.2); border-radius:6px; padding:4px 10px; font-size:0.72rem;
+  font-weight:600; cursor:pointer; transition:background 0.15s;
+}
+.code-block .code-copy:hover { background:rgba(255,255,255,0.2); }
+.code-block .code-copy.copied { background:var(--success,#059669); border-color:var(--success,#059669); }
+.tok-c { color:#8b93b8; font-style:italic; }   /* comment */
+.tok-k { color:#c792ea; }                        /* keyword */
+.tok-s { color:#c3e88d; }                        /* string */
+.tok-n { color:#f78c6c; }                        /* number */
+.tok-f { color:#82aaff; }                        /* function */
+.tok-b { color:#ffcb6b; }                        /* builtin/module */
 .cs-chart-wrap {
   width: 100%;
   height: 130px;

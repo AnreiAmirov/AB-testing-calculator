@@ -1289,6 +1289,37 @@ let RC = {
 };
 
 // ── Download a chart canvas as a PNG (with solid background + padding) ──
+// Copy the code inside a .code-block to the clipboard, with button feedback.
+function copyCodeBlock(btn) {
+  const block = btn.closest('.code-block');
+  const pre = block && block.querySelector('pre');
+  if (!pre) return;
+  const text = pre.innerText;
+  const done = () => {
+    const orig = btn.getAttribute('data-label') || btn.textContent;
+    if (!btn.getAttribute('data-label')) btn.setAttribute('data-label', orig);
+    btn.textContent = (T[currentLang] && T[currentLang].btn_copied) || 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = (T[currentLang] && T[currentLang].btn_copy) || btn.getAttribute('data-label') || 'Copy';
+      btn.classList.remove('copied');
+    }, 1600);
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(done).catch(() => fallbackCopy(text, done));
+  } else {
+    fallbackCopy(text, done);
+  }
+}
+function fallbackCopy(text, done) {
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position = 'fixed'; ta.style.opacity = '0';
+  document.body.appendChild(ta); ta.select();
+  try { document.execCommand('copy'); done(); } catch (e) {}
+  document.body.removeChild(ta);
+}
+
 function downloadChart(canvasId, filename) {
   const src = document.getElementById(canvasId);
   if (!src) return;
