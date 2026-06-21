@@ -842,14 +842,34 @@ document.addEventListener('DOMContentLoaded', () => {
       const open = sidebar.classList.toggle('open');
       toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
     });
-    // tapping a link closes the drawer on mobile
-    links.forEach(a => a.addEventListener('click', () => {
-      if (window.innerWidth < 1024) {
-        sidebar.classList.remove('open');
-        toggle.setAttribute('aria-expanded', 'false');
-      }
-    }));
   }
+
+  // Scroll to the target for every TOC link.
+  // The only real bug is on mobile: the drawer is a tall block at the top of the
+  // page, so if we let the native #anchor jump run while it's open, the browser
+  // scrolls to the target's open-drawer position, then the drawer collapses and
+  // shifts everything up — landing the user too far down. Fix: prevent the
+  // native jump, close the drawer first, wait for the collapse to finish, THEN
+  // scrollIntoView against the settled layout. Desktop keeps the simple path.
+  links.forEach(a => a.addEventListener('click', (ev) => {
+    const id = a.getAttribute('href').slice(1);
+    const target = document.getElementById(id);
+    if (!target) return;                 // anything odd: let the browser handle it
+    ev.preventDefault();
+
+    const go = () => {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      if (history.replaceState) history.replaceState(null, '', '#' + id);
+    };
+
+    if (window.innerWidth < 1024 && sidebar.classList.contains('open')) {
+      sidebar.classList.remove('open');
+      if (toggle) toggle.setAttribute('aria-expanded', 'false');
+      setTimeout(go, 340);             // wait out the 0.3s max-height transition
+    } else {
+      go();
+    }
+  }));
 
   // Highlight the first section initially
   setActive(sections[0]?.id);

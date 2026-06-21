@@ -768,8 +768,7 @@
 
       <div class="gloss-item">
         <div class="gloss-term"><span class="gloss-emoji">⚠️</span><span data-i18n="gl_errors_t">Type I & Type II errors</span></div>
-        <div class="gloss-def" data-i18n="gl_errors_d">A <strong>Type I error</strong> (false positive) is declaring a winner that isn't real. A <strong>Type II error</strong> (false negative) is missing a real winner. α controls the first; power controls the second.</div>
-        <div class="gloss-eg"><strong data-i18n="gl_eg">Example:</strong> <span data-i18n="gl_errors_e">Shipping a button that actually does nothing = Type I. Killing a button that actually worked = Type II.</span> <span data-i18n="gl_errors_seealso">See the chart below for how α and β trade off visually.</span></div>
+        <div class="gloss-def" data-i18n="gl_errors_xref">The two ways a test can be wrong: a <strong>false positive</strong> (shipping nothing) and a <strong>false negative</strong> (missing a real win). Explained in full, with the α/β trade-off chart, in <a href="#sec-errors">Type I &amp; Type II errors</a> under Core concepts.</div>
       </div>
 
       <div class="gloss-item">
@@ -991,6 +990,11 @@
     <div class="chart-sub" data-i18n="ref_chart2_sub">H₀ (blue) and H₁ (orange) distributions overlap. Red tail = α (false positive). Grey area = β (missed effect). Power = 1 − β.</div>
     <button class="chart-dl" onclick="downloadChart('chart-errors','type-I-II-errors')"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></span><span class="dl-label" data-i18n="btn_dl_png">PNG</span></button>
     <div class="chart-wrap"><canvas id="chart-errors"></canvas></div>
+    <div class="errors-defs">
+      <div class="errors-def-row"><span class="errors-def-tag errors-def-1" data-i18n="err_t1_tag">Type I · false positive</span><span data-i18n="err_t1_def">Declaring a winner that isn't real. You ship a change that does nothing. Its rate is α — the significance level you set (usually 5%).</span></div>
+      <div class="errors-def-row"><span class="errors-def-tag errors-def-2" data-i18n="err_t2_tag">Type II · false negative</span><span data-i18n="err_t2_def">Missing a real winner. A change that truly works fails your test. Its rate is β; power = 1 − β is your chance of catching it (aim for 80%+).</span></div>
+      <div class="errors-eg"><strong data-i18n="gl_eg">Example:</strong> <span data-i18n="gl_errors_e">Shipping a button that actually does nothing = Type I. Killing a button that actually worked = Type II.</span></div>
+    </div>
   </div>
 
   <!-- What makes a confidence interval wider or narrower -->
