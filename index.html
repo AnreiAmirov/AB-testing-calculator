@@ -1495,7 +1495,7 @@ Y[N:] *= <span class="tok-n">1.03</span>                                  <span 
 
       <div class="tip-row"><span class="tip-icon">🔀</span><div><strong data-i18n="ch_ratio_b">Ratio metrics (AOV, CTR per session):</strong> <span data-i18n="ch_ratio">these have a varying denominator. Compute one value per user, then treat it as a continuous metric and use Welch's t.</span></div></div>
       <div class="tip-row"><span class="tip-icon">📉</span><div><strong data-i18n="ch_mw_b">Skewed data with small n (&lt;200):</strong> <span data-i18n="ch_mw">when the Central Limit Theorem hasn't smoothed things out yet, switch to the Mann–Whitney U test, which compares ranks and assumes no particular shape.</span></div></div>
-      <div class="tip-row"><span class="tip-icon">🎰</span><div><strong data-i18n="ch_multi_b">3+ variants:</strong> <span data-i18n="ch_multi">run an omnibus test first (χ² for conversion, ANOVA for continuous), then corrected pairwise comparisons — see "Multiple testing" below.</span></div></div>
+      <div class="tip-row"><span class="tip-icon">🎰</span><div><strong data-i18n="ch_multi_b">3+ variants:</strong> <span data-i18n="ch_multi">compare each variant to control and apply a Holm–Bonferroni correction across those comparisons — no omnibus test needed once you correct. See "Multiple testing" below.</span></div></div>
     </div>
   </div>
 
@@ -1511,7 +1511,7 @@ Y[N:] *= <span class="tok-n">1.03</span>                                  <span 
           <tr><td data-i18n="tbl_g2c1">Continuous per-user metric</td><td>Welch's t-test</td><td data-i18n="tbl_g2c3">One numeric value per user; handles unequal variances</td></tr>
           <tr><td data-i18n="tbl_g3c1">Ratio metric (AOV, CTR…)</td><td data-i18n="tbl_g3c2">Aggregate → Welch's t</td><td data-i18n="tbl_g3c3">Compute one value per user, treat as average metric</td></tr>
           <tr><td data-i18n="tbl_g4c1">Skewed / small n (&lt;200)</td><td>Mann–Whitney U</td><td data-i18n="tbl_g4c3">When CLT hasn't kicked in; tests stochastic dominance</td></tr>
-          <tr><td data-i18n="tbl_g5c1">3+ variants on conversion</td><td>χ² + Bonferroni</td><td data-i18n="tbl_g5c3">Run χ² first; pairwise Z with α/k if significant</td></tr>
+          <tr><td data-i18n="tbl_g5c1">3+ variants on conversion</td><td>Z + Holm</td><td data-i18n="tbl_g5c3">Each variant vs control, Holm–Bonferroni across comparisons</td></tr>
         </tbody>
       </table>
     </div>
@@ -1565,8 +1565,8 @@ Y[N:] *= <span class="tok-n">1.03</span>                                  <span 
     <details class="accordion" id="acc-body-multi">
       <summary data-i18n="acc_multi">Multi-variant tests (3+ variants)</summary>
       <div class="accordion-body">
-        <p data-i18n="ab_multi_p1">For binary outcomes: run χ² across the full contingency table first. If significant, follow with pairwise Z-tests using Bonferroni correction (α/k per pair, where k = number of pairs).</p>
-        <p data-i18n="ab_multi_p2">For continuous metrics with 3+ arms: one-way ANOVA, then pairwise Welch's t with Bonferroni or Holm–Bonferroni.</p>
+        <p data-i18n="ab_multi_p1">For binary outcomes with 3+ arms: compare each variant to control with a two-proportion Z-test, then apply a Holm–Bonferroni correction across those comparisons. An omnibus χ² is optional — useful only if your question is purely "did anything change?", since the correction already controls the error rate.</p>
+        <p data-i18n="ab_multi_p2">For continuous metrics with 3+ arms: pairwise Welch's t-tests vs control with Holm–Bonferroni. (One-way ANOVA is an optional omnibus screen, not a required first step once you correct.)</p>
         <p><strong data-i18n="ab_multi_why_bold">Why not just run all pairs at α = 0.05?</strong> <span data-i18n="ab_multi_why">With 3 variants you have 3 pairs — the family-wise error rate reaches ~14%. Bonferroni keeps it at 5%.</span></p>
       </div>
     </details>
@@ -1709,9 +1709,24 @@ Y[N:] *= <span class="tok-n">1.03</span>                                  <span 
       <div class="tip-row"><span class="tip-icon">➗</span><div><strong data-i18n="mt_bonf_b">Bonferroni correction.</strong> <span data-i18n="mt_bonf">Divide your target α by the number of comparisons m (e.g. 0.05 / 10 = 0.005); only p-values below that count as significant. Dead simple and strictly controls FWER — but over-conservative, so it costs you power and can miss real effects.</span></div></div>
       <div class="tip-row"><span class="tip-icon">📶</span><div><strong data-i18n="mt_holm_b">Holm–Bonferroni (step-down).</strong> <span data-i18n="mt_holm">Sort the p-values smallest to largest and test them in order against progressively looser thresholds (α/m, then α/(m−1), …). Uniformly more powerful than plain Bonferroni while giving the same FWER guarantee. A sensible default.</span></div></div>
       <div class="tip-row"><span class="tip-icon">📊</span><div><strong data-i18n="mt_bh_b">Benjamini–Hochberg (FDR control).</strong> <span data-i18n="mt_bh">Instead of guarding against even one false positive, it controls the expected <em>fraction</em> of false positives among your significant results (the False Discovery Rate). Much more powerful when you screen many metrics, at the cost of allowing a controlled share of errors. The standard choice for large dashboards and exploratory analyses.</span></div></div>
+
+      <div class="dd-h3" style="margin-top:18px" data-i18n="mt_walk_h">Holm step by step — a worked example</div>
+      <p data-i18n="mt_walk_p">Say you ran control + 3 variants, so you have <strong>3 comparisons</strong> (each variant vs control) and you want to keep your overall false-positive risk at α = 5%. You get these p-values back. Holm walks through them from smallest to largest, against a threshold that <em>loosens</em> at each step:</p>
+      <table class="cmp-table">
+        <thead><tr><th data-i18n="mt_walk_c1">Rank</th><th data-i18n="mt_walk_c2">Comparison</th><th data-i18n="mt_walk_c3">p-value</th><th data-i18n="mt_walk_c4">Threshold</th><th data-i18n="mt_walk_c5">Verdict</th></tr></thead>
+        <tbody>
+          <tr><td>1 (smallest)</td><td>Control vs B</td><td>0.004</td><td>0.05 / 3 = 0.0167</td><td style="color:var(--success);font-weight:700">0.004 &lt; 0.0167 → significant ✓</td></tr>
+          <tr><td>2</td><td>Control vs D</td><td>0.012</td><td>0.05 / 2 = 0.0250</td><td style="color:var(--success);font-weight:700">0.012 &lt; 0.025 → significant ✓</td></tr>
+          <tr><td>3 (largest)</td><td>Control vs C</td><td>0.140</td><td>0.05 / 1 = 0.0500</td><td style="color:var(--danger);font-weight:700">0.140 &gt; 0.05 → stop ✗</td></tr>
+        </tbody>
+      </table>
+      <p data-i18n="mt_walk_after">Read it top to bottom. The first comparison must clear the strictest bar (α / 3). Once it passes, the next one faces a slightly looser bar (α / 2), and so on. The moment a comparison <em>fails</em>, you stop — everything below it is automatically "not significant" too. Here, B and D win; C does not. Notice the key trick: only the very first test faces the full Bonferroni penalty (α/3). That's why Holm finds <strong>at least as many</strong> winners as plain Bonferroni — which would have judged <em>all three</em> against the strict 0.0167 — and never fewer, while keeping the exact same 5% guarantee.</p>
+
       <div class="callout-box" style="background:rgba(91,80,200,0.07);border-left-color:var(--accent)">
-        <div class="callout-title" style="color:var(--accent)" data-i18n="mt_omnibus_title">🧪 Run the omnibus test first</div>
-        <p data-i18n="mt_omnibus_body" style="margin:0">With 3+ variants, don't jump straight to pairwise comparisons. First run a single <strong>omnibus test</strong> — χ² for conversion, one-way ANOVA for continuous metrics — that asks one question: "is <em>any</em> variant different from the others?" Only if that comes back significant do you proceed to corrected pairwise tests to find <em>which</em> ones. This two-stage gate (the protected procedure) controls the error rate and stops you from fishing through pairs that the data never justified. This calculator follows exactly that order: χ² first, then Holm-corrected pairwise comparisons vs control.</p>
+        <div class="callout-title" style="color:var(--accent)" data-i18n="mt_omnibus_title">Do you need an "omnibus" test first?</div>
+        <p data-i18n="mt_omnibus_body" style="margin:0 0 10px">You may have read the classic advice: with 3+ groups, first run one big <strong>omnibus test</strong> — χ² for conversion, ANOVA for continuous — that asks only <em>"is there any difference anywhere?"</em>, and only do pairwise comparisons if it's significant. That ritual comes from <strong>unprotected</strong> pairwise tests, where the omnibus acts as a gate to control the error rate.</p>
+        <p data-i18n="mt_omnibus_body2" style="margin:0 0 10px">Here's the part most write-ups skip: <strong>once you apply Holm (or Bonferroni), that gate becomes redundant.</strong> The correction already controls your family-wise error rate on its own, so you can go straight to the corrected pairwise comparisons. Gating <em>and</em> correcting is just doubly conservative and costs you power. The omnibus answers a different question anyway — "did <em>anything</em> move?" — whereas a product decision needs "<em>which</em> variant won, and by how much?", which only the pairwise comparisons tell you.</p>
+        <p data-i18n="mt_omnibus_body3" style="margin:0"><strong>What this calculator does:</strong> for 3+ variants it compares each variant against control and applies <strong>Holm–Bonferroni</strong> across those comparisons — no omnibus gate required. The omnibus test is still worth running when your only question really is "did the experiment do <em>anything</em>?" (a research framing), or as a quick screen when there's no designated control.</p>
       </div>
       <div class="callout-box">
         <div class="callout-title" data-i18n="mt_pick_title">✅ Which to use</div>
