@@ -381,6 +381,67 @@ function selectAnalyseMetric(type, btn) {
 // ── Stats helpers ──
 
 // ── Sample size + duration ──
+// Reverse mode: given daily traffic and test length, find the smallest relative
+// lift (MDE) detectable at the chosen alpha/power. Inverts the SAME formulas
+// calcSampleSize() uses (bisection for conversion, closed form for continuous),
+// so forward and reverse are always mutually consistent. Equal split assumed.
+function reverseMDE() {
+  const t = T[currentLang];
+  const box = document.getElementById('rev-result');
+  const show = (cls, html) => { box.className = 'rev-result ' + cls; box.innerHTML = html; };
+
+  const alpha = parseFloat(document.querySelector('input[name="p-alpha"]:checked').value);
+  const power = parseFloat(document.querySelector('input[name="p-power"]:checked').value);
+  const tails = parseInt(document.querySelector('input[name="p-tails"]:checked').value);
+  const numVariants = parseInt(document.getElementById('p-num-variants').value) || 2;
+  const alphaAdj = alpha / Math.max(1, numVariants - 1);   // Bonferroni across variant-vs-control comparisons
+  const zA = normInvCDF(tails === 2 ? 1 - alphaAdj/2 : 1 - alphaAdj);
+  const zB = normInvCDF(power);
+
+  const daily = parseFloat(document.getElementById('rev-daily').value);
+  const days  = parseFloat(document.getElementById('rev-days').value);
+  if (!daily || !days || daily <= 0 || days <= 0) { show('rev-err', t.rev_err_inputs); return; }
+  const nAvail = Math.floor(daily * days / numVariants);   // per arm, equal split
+  if (nAvail < 10) { show('rev-err', t.rev_err_inputs); return; }
+
+  let relPct, absTxt;
+  if (planMetric === 'conversion') {
+    const p1 = parseFloat(document.getElementById('p-conv-base').value) / 100;
+    if (!p1 || p1 <= 0 || p1 >= 1) { show('rev-err', t.rev_err_base); return; }
+    // Same formula as calcSampleSize's conversion branch
+    const needed = rel => {
+      const p2 = Math.min(0.999999, p1 * (1 + rel));
+      const pbar = (p1 + p2) / 2;
+      return Math.pow(zA*Math.sqrt(2*pbar*(1-pbar)) + zB*Math.sqrt(p1*(1-p1)+p2*(1-p2)), 2) / Math.pow(p2 - p1, 2);
+    };
+    const relMax = (1/p1 - 1) * 0.999;                     // keeps p2 < 1
+    if (needed(relMax) > nAvail) { show('rev-err', t.rev_err_traffic.replace('{n}', nAvail.toLocaleString())); return; }
+    let lo = 1e-4, hi = relMax;                            // needed() decreases in rel -> bisection
+    for (let i = 0; i < 200; i++) {
+      const mid = (lo + hi) / 2;
+      if (needed(mid) > nAvail) lo = mid; else hi = mid;
+    }
+    relPct = hi * 100;
+    absTxt = (p1 * hi * 100).toFixed(2) + ' pp';
+  } else {
+    const mu = parseFloat(document.getElementById('p-cont-mean').value);
+    let sd = parseFloat(document.getElementById('p-cont-sd').value);
+    const cuped = (parseFloat(document.getElementById('p-cont-cuped').value) || 0) / 100;
+    if (!mu || !sd || sd <= 0) { show('rev-err', t.rev_err_base); return; }
+    sd *= Math.sqrt(1 - cuped);
+    const delta = (zA + zB) * sd * Math.sqrt(2 / nAvail);  // closed-form inverse of n = 2((zA+zB)sd/delta)^2
+    relPct = delta / Math.abs(mu) * 100;
+    absTxt = delta.toFixed(2) + ' ' + (t.rev_units || 'units');
+  }
+
+  const note = numVariants > 2 ? '<div class="rev-note">' + t.rev_note_multi.replace('{k}', numVariants) + '</div>' : '';
+  show('rev-ok',
+    '<div class="rev-line"><strong>' + nAvail.toLocaleString() + '</strong> ' + t.rev_res_n + '</div>' +
+    '<div class="rev-line rev-main"><strong>' + (relPct >= 10 ? relPct.toFixed(1) : relPct.toFixed(2)) + '%</strong> ' + t.rev_res_rel + '</div>' +
+    '<div class="rev-line"><strong>' + absTxt + '</strong> ' + t.rev_res_abs + '</div>' +
+    '<div class="rev-note">' + t.rev_note + '</div>' + note);
+}
+
 function calcSampleSize() {
   const alpha = parseFloat(document.querySelector('input[name="p-alpha"]:checked').value);
   const power = parseFloat(document.querySelector('input[name="p-power"]:checked').value);
@@ -1088,12 +1149,33 @@ function parseBlock(block) {
 }
 
 // ── Variance diagnostics ──
+function skewness(vals) {
+  const n = vals.length, m = mean(vals);
+  const s = Math.sqrt(vals.reduce((a,v)=>a+(v-m)**2,0)/n);
+  if (s === 0) return 0;
+  return vals.reduce((a,v)=>a+((v-m)/s)**3,0)/n;
+}
+
 function varianceDiagnostics(A, B) {
   const warnings = [];
   const cvA = A.sd / Math.abs(A.mean);
   const cvB = B.sd / Math.abs(B.mean);
   const varRatio = A.sd > 0 && B.sd > 0 ? Math.max(A.sd**2, B.sd**2) / Math.min(A.sd**2, B.sd**2) : 1;
   const minN = Math.min(A.n, B.n);
+
+  // Small-sample + genuinely skewed raw data: the t-test may be fragile here.
+  // True third-moment skewness (only computable when raw values were pasted).
+  if (A.vals && B.vals && minN < 200) {
+    const skA = skewness(A.vals), skB = skewness(B.vals);
+    const maxSk = Math.max(Math.abs(skA), Math.abs(skB));
+    if (maxSk > 2) {
+      warnings.push({ level:'warn', text:
+        (T[currentLang].an_skew_warn || '')
+          .replace('{n}', minN)
+          .replace('{sk}', maxSk.toFixed(1))
+      });
+    }
+  }
 
   if (cvA > 1 || cvB > 1) {
     const which = cvA > cvB ? `A (CV=${cvA.toFixed(2)})` : `B (CV=${cvB.toFixed(2)})`;

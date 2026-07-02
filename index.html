@@ -12,13 +12,18 @@
 <meta name="keywords" content="A/B test calculator, sample size calculator, statistical significance calculator, Z-test, t-test, p-value, confidence interval, conversion rate test, experiment power calculator">
 <meta name="author" content="Andrei Amirov">
 <meta name="robots" content="index, follow">
-<link rel="canonical" href="https://anreiamirov.github.io/AB-testing-calculator/">
+<link rel="canonical" href="https://data-for-everyone.com/">
 
 <!-- ── Open Graph (link previews on LinkedIn, Slack, Facebook) ── -->
 <meta property="og:type" content="website">
 <meta property="og:title" content="Free A/B Test Calculator: Sample Size & Significance">
 <meta property="og:description" content="Plan sample size and check statistical significance for A/B tests — Z-test, t-test, multiple variants — with a clear guide to p-values, confidence intervals and power. Free, no signup.">
-<meta property="og:url" content="https://anreiamirov.github.io/AB-testing-calculator/">
+<meta property="og:url" content="https://data-for-everyone.com/">
+<meta property="og:image" content="https://data-for-everyone.com/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A/B Testing Calculator — the right statistical test, sample size and a plain-English verdict, free in your browser">
+<meta name="twitter:image" content="https://data-for-everyone.com/og-image.png">
 <meta property="og:site_name" content="A/B Test Calculator">
 
 <!-- ── Twitter / X card ── -->
@@ -272,6 +277,27 @@
     <div class="mt-20 flex-end">
       <button class="btn-primary" onclick="calcSampleSize()" data-i18n="btn_calculate">Calculate</button>
     </div>
+  </div>
+
+  <!-- Reverse mode: traffic & time -> smallest detectable lift -->
+  <div class="step-card">
+    <div class="step-num" data-i18n="rev_step">Reverse mode</div>
+    <div class="card-heading" data-i18n="rev_title">🔄 What lift can I detect?</div>
+    <p style="font-size:0.82rem;color:var(--ink-muted);margin:4px 0 12px" data-i18n="rev_hint">The opposite question: given the traffic and time you actually have, this finds the smallest relative lift the test could reliably detect — using the same baseline, α, power and variants set above.</p>
+    <div class="form-row cols-2" style="align-items:start">
+      <div class="field">
+        <label><span data-i18n="rev_daily">Daily eligible users</span><br><span class="tip" data-i18n="rev_daily_tip">total across all variants</span></label>
+        <input type="number" id="rev-daily" placeholder="e.g. 2000" min="1" step="1">
+      </div>
+      <div class="field">
+        <label><span data-i18n="rev_days">Test length (days)</span><br><span class="tip" data-i18n="rev_days_tip">how long you can run it</span></label>
+        <input type="number" id="rev-days" placeholder="e.g. 21" min="1" step="1">
+      </div>
+    </div>
+    <div class="mt-20 flex-end">
+      <button class="btn-primary" onclick="reverseMDE()" data-i18n="rev_btn">Find detectable MDE</button>
+    </div>
+    <div id="rev-result" class="rev-result hidden"></div>
   </div>
 
   </div><!-- end plan-steps -->
@@ -908,7 +934,7 @@
         <div class="case-stage"><span class="case-lbl" data-i18n="cases_problem">The problem</span><p data-i18n="c2_problem">An e-commerce team rebuilds the checkout to cut drop-off. Current purchase-completion rate is 30%. They want to detect at least a +8% relative lift before shipping a change this big.</p></div>
         <div class="case-stage hypothesis"><span class="case-lbl" data-i18n="cases_hypothesis">Hypothesis</span><p data-i18n="c2_hyp"><strong>Because</strong> funnel analytics show 1 in 3 users abandon at a cluttered payment step, <strong>we believe</strong> a streamlined checkout with a progress bar <strong>will</strong> raise completion from 30% by at least +8% relative (to ≈32.4%). Success = a significant positive Z-test <em>on a clean 50/50 split</em> — the split health matters as much as the p-value here.</p></div>
         <div class="case-stage"><span class="case-lbl" data-i18n="cases_plan">Plan &amp; holdout</span><p data-i18n="c2_plan">The calculator says ~5,850 per group. With heavy daily traffic they expose just 10% of sessions to the test and keep 90% on the current checkout — a small, safe exposure for a risky change. They'll ramp up only if it's healthy.</p></div>
-        <div class="case-stage pitfall"><span class="case-lbl" data-i18n="cases_pitfall">⚠ The catch: SRM</span><p data-i18n="c2_pitfall">First read: 6,200 in control vs 5,800 in variant. The Analyse tab's Sample Ratio Mismatch check flags it — p ≈ 0.0004, far below the 0.001 alarm. A redirect bug was dropping some users before assignment. <strong>Any result here would be untrustworthy.</strong> They fix the bug and rerun.</p>
+        <div class="case-stage pitfall"><span class="case-lbl" data-i18n="cases_pitfall">⚠ The catch: SRM</span><p data-i18n="c2_pitfall">First read: 6,200 in control vs 5,800 in variant. The Analyse tab's Sample Ratio Mismatch check flags it — p ≈ 0.0003, far below the 0.001 alarm. A redirect bug was dropping some users before assignment. <strong>Any result here would be untrustworthy.</strong> They fix the bug and rerun.</p>
           <div class="case-graph">
             <svg viewBox="0 0 360 120" width="100%" height="120" font-family="Inter,sans-serif">
               <text x="180" y="16" font-size="8.5" fill="var(--ink-muted)" text-anchor="middle" data-i18n="c2_graph_t">Observed vs expected (50/50)</text>
@@ -925,7 +951,7 @@
             <div class="case-cap" data-i18n="c2_graph_cap">The arms drifted from the intended 50/50 — a signal that assignment, not the variant, is the story.</div>
           </div>
         </div>
-        <div class="case-stage result"><span class="case-lbl" data-i18n="cases_analyse">Analyse (after fix)</span><p data-i18n="c2_analyse">Clean rerun: control 30.0% vs variant 32.5%, a healthy 50/50 split, z ≈ 4.2, p &lt; 0.001.</p></div>
+        <div class="case-stage result"><span class="case-lbl" data-i18n="cases_analyse">Analyse (after fix)</span><p data-i18n="c2_analyse">Clean rerun: control 30.0% vs variant 32.5%, a healthy 50/50 split, z ≈ 2.9, p ≈ 0.004.</p></div>
         <div class="case-verdict"><span>✅</span><div data-i18n="c2_verdict"><strong>Decision: ramp up, then ship.</strong> A real +2.5pp lift in completed purchases. They increase exposure gradually, confirm the gain holds, and roll out.</div></div>
         <div class="case-take" data-i18n="c2_take">Takeaway: always check the split before the result. A Sample Ratio Mismatch means something is broken upstream — the lift is an illusion until it's fixed.</div>
       </div>
@@ -937,7 +963,7 @@
       <div class="case-body">
         <div class="case-stage"><span class="case-lbl" data-i18n="cases_problem">The problem</span><p data-i18n="c3_problem">A team reorders the plans on a pricing page, hoping to raise average revenue per visitor (currently ~$18, but very spread out — many $0 visitors, a few large purchases).</p></div>
         <div class="case-stage hypothesis"><span class="case-lbl" data-i18n="cases_hypothesis">Hypothesis</span><p data-i18n="c3_hyp"><strong>Because</strong> session recordings show visitors anchor on the first plan they see, <strong>we believe</strong> leading with the mid-tier plan <strong>will</strong> raise average revenue per visitor from $18 by at least +$1. Because revenue is a continuous, highly-skewed amount, success is a significant <strong>Welch's t-test</strong> — not a Z-test — on the per-visitor means.</p></div>
-        <div class="case-stage"><span class="case-lbl" data-i18n="cases_plan">Plan — and why not a Z-test</span><p data-i18n="c3_plan">Revenue per visitor is a continuous value, not yes/no, so this needs <strong>Welch's t-test</strong>, not a Z-test — and the spread (standard deviation), not just the average, drives the sample size. With high variance the calculator asks for ~23,700 per group. Traffic is only ~1,500/day, so the lesson flips: rather than a holdout, they must run <strong>~5 weeks</strong> just to reach the minimum.</p>
+        <div class="case-stage"><span class="case-lbl" data-i18n="cases_plan">Plan — and why not a Z-test</span><p data-i18n="c3_plan">Revenue per visitor is a continuous value, not yes/no, so this needs <strong>Welch's t-test</strong>, not a Z-test — and the spread (standard deviation), not just the average, drives the sample size. With high variance the calculator asks for ~27,700 per group. Traffic is only ~1,500 visitors/day, so the lesson flips: rather than a holdout, they must run <strong>~5–6 weeks</strong> just to reach the minimum.</p>
           <div class="case-graph">
             <svg viewBox="0 0 360 120" width="100%" height="120" font-family="Inter,sans-serif">
               <line x1="20" y1="100" x2="345" y2="100" stroke="var(--border)"/>
@@ -950,8 +976,8 @@
             <div class="case-cap" data-i18n="c3_graph_cap">Revenue is highly skewed with a long tail — that spread is exactly why the sample must be large.</div>
           </div>
         </div>
-        <div class="case-stage"><span class="case-lbl" data-i18n="cases_run">Run &amp; collect</span><p data-i18n="c3_run">After 5 weeks: ~43,000 visitors per arm. Control mean $18.00, variant mean $19.15 (both with large standard deviations ~$42).</p></div>
-        <div class="case-stage result"><span class="case-lbl" data-i18n="cases_analyse">Analyse</span><p data-i18n="c3_analyse">Welch's t-test: t ≈ 4.0, p &lt; 0.001. The +$1.15 per visitor is small relative to the spread, but with 43,000 per arm it's clearly distinguishable from noise.</p></div>
+        <div class="case-stage"><span class="case-lbl" data-i18n="cases_run">Run &amp; collect</span><p data-i18n="c3_run">After ~5½ weeks: ~27,700 visitors per arm. Control mean $18.00, variant mean $19.15 (both with large standard deviations ~$42).</p></div>
+        <div class="case-stage result"><span class="case-lbl" data-i18n="cases_analyse">Analyse</span><p data-i18n="c3_analyse">Welch's t-test: t ≈ 3.2, p ≈ 0.001. The +$1.15 per visitor is small relative to the spread, but with ~27,700 per arm it's clearly distinguishable from noise.</p></div>
         <div class="case-verdict"><span>✅</span><div data-i18n="c3_verdict"><strong>Decision: ship it.</strong> +$1.15 per visitor across all traffic is meaningful revenue. The long runtime was the price of a noisy metric — worth it for a permanent gain.</div></div>
         <div class="case-take" data-i18n="c3_take">Takeaway: a per-user dollar amount is continuous → Welch's t-test. High variance means big samples; when traffic is scarce, time replaces the holdout.</div>
       </div>
@@ -1158,9 +1184,9 @@
         <div class="case-study-tag" data-i18n="cs_tag">📘 Case study</div>
         <div class="case-study-title" data-i18n="cs_title">StreamFlix tests a new checkout flow</div>
         <p data-i18n="cs_intro">StreamFlix wants to know if a one-click checkout lifts average revenue per user (ARPU). ARPU is brutally noisy — a handful of annual-plan buyers dominate, so the standard deviation is huge relative to the mean.</p>
-        <div class="cs-step"><strong data-i18n="cs_s1_b">The problem without CUPED:</strong> <span data-i18n="cs_s1">Baseline ARPU is $12.00 with an SD of $48.00 (CV = 4.0). To detect a 3% lift at 80% power, they'd need ≈ 168,000 users per arm — about 6 weeks of traffic.</span></div>
+        <div class="cs-step"><strong data-i18n="cs_s1_b">The problem without CUPED:</strong> <span data-i18n="cs_s1">Baseline ARPU is $12.00 with an SD of $48.00 (CV = 4.0). To detect a 3% lift at 80% power, they'd need ≈ 279,000 users per arm — about 6 weeks at ~6,700 eligible users per day per arm.</span></div>
         <div class="cs-step"><strong data-i18n="cs_s2_b">Apply CUPED:</strong> <span data-i18n="cs_s2">Each user's spend in the 4 weeks before the test (X) correlates with their spend during the test (Y) at ρ = 0.6. CUPED subtracts that predictable part: Y_cuped = Y − θ·(X − X̄).</span></div>
-        <div class="cs-step"><strong data-i18n="cs_s3_b">The result:</strong> <span data-i18n="cs_s3">Variance drops by ρ² = 0.36 — a 36% reduction. The effective SD falls from $48 to $38.4. Required sample size drops to ≈ 107,500 per arm — they reach a decision almost 2 weeks sooner, with no change to the estimated lift.</span></div>
+        <div class="cs-step"><strong data-i18n="cs_s3_b">The result:</strong> <span data-i18n="cs_s3">Variance drops by ρ² = 0.36 — a 36% reduction. The effective SD falls from $48 to $38.4. Required sample size drops to ≈ 178,600 per arm — they reach a decision almost 2 weeks sooner, with no change to the estimated lift.</span></div>
         <div class="cs-takeaway"><strong data-i18n="cs_takeaway_b">Takeaway:</strong> <span data-i18n="cs_takeaway">CUPED didn't change the answer — it got them to the same answer faster. The noisier your metric and the stronger the pre-period correlation, the bigger the win.</span></div>
       </div>
       <p data-i18n="dd_cuped_p2" style="margin-top:12px">Because required sample size scales linearly with variance, a 50% variance reduction means you reach significance in half the time — or detect an effect half the size in the same time. That is why every large experimentation platform uses it.</p>
