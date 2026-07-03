@@ -1920,6 +1920,16 @@ main {
   .chart-dl svg { width: 15px; height: 15px; }
   .chart-title { padding-right: 44px; }
 }
+/* Wide tables scroll inside their own box on small screens instead of
+   stretching the page (which caused a 124px horizontal page scroll). */
+@media (max-width: 700px) {
+  table.ref-table, table.cmp-table, table.verdict-table {
+    display: block;
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
 .chart-wrap {
   width: 100%;
   height: 200px;

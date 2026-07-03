@@ -386,28 +386,37 @@ function selectAnalyseMetric(type, btn) {
 // calcSampleSize() uses (bisection for conversion, closed form for continuous),
 // so forward and reverse are always mutually consistent. Equal split assumed.
 function reverseMDE() {
-  const t = T[currentLang];
+  const t = T[currentLang] || {};
   const box = document.getElementById('rev-result');
-  const show = (cls, html) => { box.className = 'rev-result ' + cls; box.innerHTML = html; };
+  if (!box) return;
+  box.classList.remove('hidden');
+  const show = (cls, html) => { box.classList.remove('hidden'); box.className = 'rev-result ' + cls; box.innerHTML = html; };
 
-  const alpha = parseFloat(document.querySelector('input[name="p-alpha"]:checked').value);
-  const power = parseFloat(document.querySelector('input[name="p-power"]:checked').value);
-  const tails = parseInt(document.querySelector('input[name="p-tails"]:checked').value);
-  const numVariants = parseInt(document.getElementById('p-num-variants').value) || 2;
+  // Read the shared Plan settings defensively — fall back to sensible defaults
+  // if a control isn't found, so the button always produces a visible result.
+  const rv = (sel, def) => { const el = document.querySelector(sel); return el ? el.value : def; };
+  const alpha = parseFloat(rv('input[name="p-alpha"]:checked', '0.05')) || 0.05;
+  const power = parseFloat(rv('input[name="p-power"]:checked', '0.8')) || 0.8;
+  const tails = parseInt(rv('input[name="p-tails"]:checked', '2')) || 2;
+  const nvEl = document.getElementById('p-num-variants');
+  const numVariants = (nvEl && parseInt(nvEl.value)) || 2;
   const alphaAdj = alpha / Math.max(1, numVariants - 1);   // Bonferroni across variant-vs-control comparisons
   const zA = normInvCDF(tails === 2 ? 1 - alphaAdj/2 : 1 - alphaAdj);
   const zB = normInvCDF(power);
 
-  const daily = parseFloat(document.getElementById('rev-daily').value);
-  const days  = parseFloat(document.getElementById('rev-days').value);
-  if (!daily || !days || daily <= 0 || days <= 0) { show('rev-err', t.rev_err_inputs); return; }
+  const dailyEl = document.getElementById('rev-daily');
+  const daysEl  = document.getElementById('rev-days');
+  const daily = dailyEl ? parseFloat(dailyEl.value) : NaN;
+  const days  = daysEl ? parseFloat(daysEl.value) : NaN;
+  if (!daily || !days || daily <= 0 || days <= 0) { show('rev-err', t.rev_err_inputs || 'Enter daily eligible users and a test length in days first.'); return; }
   const nAvail = Math.floor(daily * days / numVariants);   // per arm, equal split
-  if (nAvail < 10) { show('rev-err', t.rev_err_inputs); return; }
+  if (nAvail < 10) { show('rev-err', t.rev_err_inputs || 'Enter daily eligible users and a test length in days first.'); return; }
 
   let relPct, absTxt;
   if (planMetric === 'conversion') {
-    const p1 = parseFloat(document.getElementById('p-conv-base').value) / 100;
-    if (!p1 || p1 <= 0 || p1 >= 1) { show('rev-err', t.rev_err_base); return; }
+    const baseEl = document.getElementById('p-conv-base');
+    const p1 = baseEl ? parseFloat(baseEl.value) / 100 : NaN;
+    if (!p1 || p1 <= 0 || p1 >= 1) { show('rev-err', t.rev_err_base || 'Fill in the baseline conversion rate above first.'); return; }
     // Same formula as calcSampleSize's conversion branch
     const needed = rel => {
       const p2 = Math.min(0.999999, p1 * (1 + rel));
@@ -415,7 +424,7 @@ function reverseMDE() {
       return Math.pow(zA*Math.sqrt(2*pbar*(1-pbar)) + zB*Math.sqrt(p1*(1-p1)+p2*(1-p2)), 2) / Math.pow(p2 - p1, 2);
     };
     const relMax = (1/p1 - 1) * 0.999;                     // keeps p2 < 1
-    if (needed(relMax) > nAvail) { show('rev-err', t.rev_err_traffic.replace('{n}', nAvail.toLocaleString())); return; }
+    if (needed(relMax) > nAvail) { show('rev-err', (t.rev_err_traffic || 'Not enough traffic: only {n} users per arm.').replace('{n}', nAvail.toLocaleString())); return; }
     let lo = 1e-4, hi = relMax;                            // needed() decreases in rel -> bisection
     for (let i = 0; i < 200; i++) {
       const mid = (lo + hi) / 2;
@@ -424,22 +433,25 @@ function reverseMDE() {
     relPct = hi * 100;
     absTxt = (p1 * hi * 100).toFixed(2) + ' pp';
   } else {
-    const mu = parseFloat(document.getElementById('p-cont-mean').value);
-    let sd = parseFloat(document.getElementById('p-cont-sd').value);
-    const cuped = (parseFloat(document.getElementById('p-cont-cuped').value) || 0) / 100;
-    if (!mu || !sd || sd <= 0) { show('rev-err', t.rev_err_base); return; }
+    const muEl = document.getElementById('p-cont-mean');
+    const sdEl = document.getElementById('p-cont-sd');
+    const cupedEl = document.getElementById('p-cont-cuped');
+    const mu = muEl ? parseFloat(muEl.value) : NaN;
+    let sd = sdEl ? parseFloat(sdEl.value) : NaN;
+    const cuped = ((cupedEl && parseFloat(cupedEl.value)) || 0) / 100;
+    if (!mu || !sd || sd <= 0) { show('rev-err', t.rev_err_base || 'Fill in the mean and SD above first.'); return; }
     sd *= Math.sqrt(1 - cuped);
     const delta = (zA + zB) * sd * Math.sqrt(2 / nAvail);  // closed-form inverse of n = 2((zA+zB)sd/delta)^2
     relPct = delta / Math.abs(mu) * 100;
     absTxt = delta.toFixed(2) + ' ' + (t.rev_units || 'units');
   }
 
-  const note = numVariants > 2 ? '<div class="rev-note">' + t.rev_note_multi.replace('{k}', numVariants) + '</div>' : '';
+  const note = numVariants > 2 ? '<div class="rev-note">' + (t.rev_note_multi || '').replace('{k}', numVariants) + '</div>' : '';
   show('rev-ok',
-    '<div class="rev-line"><strong>' + nAvail.toLocaleString() + '</strong> ' + t.rev_res_n + '</div>' +
-    '<div class="rev-line rev-main"><strong>' + (relPct >= 10 ? relPct.toFixed(1) : relPct.toFixed(2)) + '%</strong> ' + t.rev_res_rel + '</div>' +
-    '<div class="rev-line"><strong>' + absTxt + '</strong> ' + t.rev_res_abs + '</div>' +
-    '<div class="rev-note">' + t.rev_note + '</div>' + note);
+    '<div class="rev-line"><strong>' + nAvail.toLocaleString() + '</strong> ' + (t.rev_res_n || 'users per arm available') + '</div>' +
+    '<div class="rev-line rev-main"><strong>' + (relPct >= 10 ? relPct.toFixed(1) : relPct.toFixed(2)) + '%</strong> ' + (t.rev_res_rel || 'smallest detectable relative lift') + '</div>' +
+    '<div class="rev-line"><strong>' + absTxt + '</strong> ' + (t.rev_res_abs || 'in absolute terms') + '</div>' +
+    '<div class="rev-note">' + (t.rev_note || '') + '</div>' + note);
 }
 
 function calcSampleSize() {
