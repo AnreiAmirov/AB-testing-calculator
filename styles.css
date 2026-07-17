@@ -1096,12 +1096,6 @@ main {
   background: var(--accent-hover-bg, #f0effc);
   box-shadow: 0 0 0 3px rgba(91,80,200,0.12);
 }
-/* Metric name (the first bold span) is the card's headline — give it the
-   accent colour explicitly so it reads clearly on BOTH light and dark
-   backgrounds. Without this it inherited --ink and went dark-on-dark. */
-.plan-metric-btn > div > span:first-child {
-  color: var(--accent);
-}
 .plan-metric-badge {
   flex-shrink: 0;
   font-family: 'JetBrains Mono', monospace;
