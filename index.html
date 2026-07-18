@@ -161,21 +161,21 @@
     <div class="plan-metric-choice" style="display:flex;flex-direction:column;gap:8px;margin-top:14px">
       <button class="plan-metric-btn selected" id="plan-btn-conversion" onclick="selectPlanMetric('conversion', this)">
         <div style="flex:1;text-align:left">
-          <span style="font-weight:600;font-size:0.9rem;display:block;margin-bottom:2px;color:var(--accent)" data-i18n="plan_conv_label">Conversion</span>
+          <span style="font-weight:600;font-size:0.9rem;display:block;margin-bottom:2px" data-i18n="plan_conv_label">Conversion</span>
           <span style="font-size:0.78rem;color:var(--ink-muted)" data-i18n="plan_conv_desc">Yes/no per user — signup rate, purchase rate, click-through rate, retention</span>
         </div>
         <span class="plan-metric-badge">Z-test</span>
       </button>
       <button class="plan-metric-btn" id="plan-btn-continuous" onclick="selectPlanMetric('continuous', this)">
         <div style="flex:1;text-align:left">
-          <span style="font-weight:600;font-size:0.9rem;display:block;margin-bottom:2px;color:var(--accent)" data-i18n="plan_cont_label">Continuous metric</span>
+          <span style="font-weight:600;font-size:0.9rem;display:block;margin-bottom:2px" data-i18n="plan_cont_label">Continuous metric</span>
           <span style="font-size:0.78rem;color:var(--ink-muted)" data-i18n="plan_cont_desc">One continuous value per user — ARPU, session time, items in cart, 14-day spend</span>
         </div>
         <span class="plan-metric-badge">Welch's t</span>
       </button>
     </div>
     <div id="plan-ratio-notice" class="notice warn hidden" style="margin-top:12px">
-      <strong>Testing a ratio metric like AOV or CTR per session?</strong> Aggregate to one value per user first (total revenue ÷ total orders for each user), then enter the resulting per-user mean and SD below. This avoids correlation bias. See Reference → Ratio metrics.
+      <strong data-i18n="plan_ratio_notice_b">Testing a ratio metric like AOV or CTR per session?</strong> <span data-i18n="plan_ratio_notice">Aggregate to one value per user first (total revenue ÷ total orders for each user), then enter the resulting per-user mean and SD below. This avoids correlation bias. See Reference → Ratio metrics.</span>
     </div>
   </div>
 
@@ -373,7 +373,7 @@
 
       <button class="plan-metric-btn selected" onclick="selectAnalyseMetric('conversion', this)">
         <div style="flex:1;text-align:left">
-          <span style="font-weight:600;font-size:0.9rem;display:block;margin-bottom:2px;color:var(--accent)" data-i18n="plan_conv_label">Conversion</span>
+          <span style="font-weight:600;font-size:0.9rem;display:block;margin-bottom:2px" data-i18n="plan_conv_label">Conversion</span>
           <span style="font-size:0.78rem;color:var(--ink-muted)" data-i18n="plan_conv_desc">Yes/no per user — signup rate, purchase rate, click-through rate, retention</span>
         </div>
         <span class="plan-metric-badge">Z-test</span>
@@ -381,7 +381,7 @@
 
       <button class="plan-metric-btn" onclick="selectAnalyseMetric('continuous', this)">
         <div style="flex:1;text-align:left">
-          <span style="font-weight:600;font-size:0.9rem;display:block;margin-bottom:2px;color:var(--accent)" data-i18n="plan_cont_label">Continuous metric</span>
+          <span style="font-weight:600;font-size:0.9rem;display:block;margin-bottom:2px" data-i18n="plan_cont_label">Continuous metric</span>
           <span style="font-size:0.78rem;color:var(--ink-muted)" data-i18n="plan_cont_desc">One continuous value per user — ARPU, session time, items in cart, 14-day spend</span>
         </div>
         <span class="plan-metric-badge">Welch's t</span>
@@ -389,7 +389,7 @@
 
       <button class="plan-metric-btn" onclick="selectAnalyseMetric('ratio', this)">
         <div style="flex:1;text-align:left">
-          <span style="font-weight:600;font-size:0.9rem;display:block;margin-bottom:2px;color:var(--accent)" data-i18n="plan_ratio_label">Ratio metric</span>
+          <span style="font-weight:600;font-size:0.9rem;display:block;margin-bottom:2px" data-i18n="plan_ratio_label">Ratio metric</span>
           <span style="font-size:0.78rem;color:var(--ink-muted)" data-i18n="plan_ratio_desc">Rate with varying denominator — AOV, CTR per session, items per order</span>
         </div>
         <span class="plan-metric-badge">t (aggregated)</span>
@@ -425,6 +425,15 @@
           <div class="mt-12">
             <button class="btn-ghost" onclick="addConvVariant()" data-i18n="btn_add_variant">+ Add variant</button>
           </div>
+
+          <!-- File upload (raw per-user rows or pre-aggregated counts) -->
+          <div class="upload-zone" id="conv-upload-zone" ondragover="event.preventDefault();this.classList.add('drag-over')" ondragleave="this.classList.remove('drag-over')" ondrop="handleExcelDrop(event,'conversion')">
+            <input type="file" accept=".xlsx,.xls,.csv" onchange="handleExcelFile(this.files[0],'conversion')">
+            <div class="upload-zone-icon">📂</div>
+            <span class="upload-zone-label" data-i18n="lbl_upload">Upload Excel / CSV file</span>
+            <span class="upload-zone-hint" data-i18n="up_hint_conv">One row per user with <code>group</code> and <code>converted</code> (0/1) — or pre-aggregated <code>group</code>, <code>exposed</code>, <code>converted</code>. Columns are auto-detected.</span>
+          </div>
+          <div id="conv-upload-status"></div>
 
           <!-- Expected split (for the SRM health check) -->
           <div class="srm-expected-block">
@@ -502,7 +511,7 @@
             <input type="file" accept=".xlsx,.xls,.csv" onchange="handleExcelFile(this.files[0],'continuous')">
             <div class="upload-zone-icon">📂</div>
             <span class="upload-zone-label" data-i18n="lbl_upload">Upload Excel / CSV file</span>
-            <span class="upload-zone-hint" data-i18n="lbl_upload_hint">Columns: <code style="font-family:'JetBrains Mono',monospace;font-size:0.7rem;background:var(--border);padding:1px 4px;border-radius:3px">variant</code> and <code style="font-family:'JetBrains Mono',monospace;font-size:0.7rem;background:var(--border);padding:1px 4px;border-radius:3px">value</code> (or we'll auto-detect)</span>
+            <span class="upload-zone-hint" data-i18n="up_hint_cont">One row per user with <code>group</code> and <code>value</code>. Columns are auto-detected.</span>
           </div>
           <div id="cont-upload-status"></div>
           <div style="display:flex;align-items:center;gap:8px;margin:10px 0">
@@ -594,8 +603,8 @@
           <div class="upload-zone" id="ratio-upload-zone" ondragover="event.preventDefault();this.classList.add('drag-over')" ondragleave="this.classList.remove('drag-over')" ondrop="handleExcelDrop(event,'ratio')">
             <input type="file" accept=".xlsx,.xls,.csv" onchange="handleExcelFile(this.files[0],'ratio')">
             <div class="upload-zone-icon">📂</div>
-            <span class="upload-zone-label">Upload Excel / CSV file</span>
-            <span class="upload-zone-hint">Columns: <code style="font-family:'JetBrains Mono',monospace;font-size:0.7rem;background:var(--border);padding:1px 4px;border-radius:3px">variant</code> and <code style="font-family:'JetBrains Mono',monospace;font-size:0.7rem;background:var(--border);padding:1px 4px;border-radius:3px">value</code> (or we'll auto-detect)</span>
+            <span class="upload-zone-label" data-i18n="lbl_upload">Upload Excel / CSV file</span>
+            <span class="upload-zone-hint" data-i18n="up_hint_ratio">One row per user with <code>group</code> and <code>value</code> (already aggregated per user). Columns are auto-detected.</span>
           </div>
           <div id="ratio-upload-status"></div>
           <div style="display:flex;align-items:center;gap:8px;margin:10px 0">

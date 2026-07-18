@@ -28,6 +28,37 @@ function applyLang(lang) {
   }
   // Re-render the interactive process stepper (its content is i18n-driven)
   if (typeof renderProcess === 'function') renderProcess();
+
+  // Result blocks are generated once as finished HTML and contain no [data-i18n]
+  // hooks, so a language switch would otherwise leave a previously-calculated
+  // result stranded in the old language. Recompute any visible result.
+  try {
+    const planRes = document.getElementById('plan-result');
+    if (planRes && !planRes.classList.contains('hidden') && planRes.innerHTML.trim() &&
+        typeof calcSampleSize === 'function') {
+      calcSampleSize();
+    }
+    const revRes = document.getElementById('rev-result');
+    if (revRes && !revRes.classList.contains('hidden') && revRes.innerHTML.trim() &&
+        typeof reverseMDE === 'function') {
+      reverseMDE();
+    }
+    const convRes = document.getElementById('conv-result');
+    if (convRes && !convRes.classList.contains('hidden') && convRes.innerHTML.trim() &&
+        typeof analyseConversion === 'function') {
+      analyseConversion();
+    }
+    const contRes = document.getElementById('cont-result');
+    if (contRes && !contRes.classList.contains('hidden') && contRes.innerHTML.trim() &&
+        typeof analyseContinuous === 'function') {
+      analyseContinuous();
+    }
+    const ratioRes = document.getElementById('ratio-result');
+    if (ratioRes && !ratioRes.classList.contains('hidden') && ratioRes.innerHTML.trim() &&
+        typeof analyseRatio === 'function') {
+      analyseRatio();
+    }
+  } catch (e) { /* never let a re-render break the language switch */ }
 }
 
 function toggleLang() {
@@ -482,6 +513,7 @@ function calcSampleSize() {
   const isCustom = allocMode === 'custom';
 
   let n, mdeAbs, testName, baseRate, mdeRel;
+  const L2 = T[currentLang] || {};   // i18n for test names / units in this function
   let armSizes = null;        // per-arm user counts (custom split)
   let totalUsers = null;      // experiment total
   let bottleneckIdx = -1;
@@ -493,7 +525,7 @@ function calcSampleSize() {
     mdeAbs = ((p2-p1)*100).toFixed(2)+' pp';
     const pbar = (p1+p2)/2;
     n = Math.ceil((zAlpha*Math.sqrt(2*pbar*(1-pbar))+zBeta*Math.sqrt(p1*(1-p1)+p2*(1-p2)))**2/(p2-p1)**2);
-    testName = 'Z-test';
+    testName = L2.test_z || 'Z-test';
     baseRate = p1;
     if (isCustom) {
       // Unequal split: size each control-vs-variant comparison given the allocation,
@@ -518,9 +550,9 @@ function calcSampleSize() {
     const cupedPct = parseFloat(document.getElementById('p-cont-cuped').value)/100;
     sd *= Math.sqrt(1-cupedPct);
     const delta = mu*mdeRel;
-    mdeAbs = delta.toFixed(2)+' units';
+    mdeAbs = delta.toFixed(2)+' '+(L2.rev_units || 'units');
     n = Math.ceil(2*((zAlpha+zBeta)*sd/delta)**2);
-    testName = cupedPct>0 ? "Welch's t + CUPED" : "Welch's t-test";
+    testName = cupedPct>0 ? (L2.test_welch_cuped || "Welch's t + CUPED") : (L2.test_welch || "Welch's t-test");
     baseRate = null;
     if (isCustom) {
       // For a difference of means, per-comparison total with control fraction fC and
@@ -592,19 +624,29 @@ function calcSampleSize() {
     explainDays = days;
 
     document.getElementById('res-days').textContent = days;
-    document.getElementById('res-weeks').textContent = weeks + (weeks===1?' week':' weeks');
+    // Russian needs proper plural forms: 1 неделя / 2-4 недели / 5+ недель
+    let weekWord;
+    if (currentLang === 'ru') {
+      const m10 = weeks % 10, m100 = weeks % 100;
+      weekWord = (m10 === 1 && m100 !== 11) ? 'неделя'
+               : (m10 >= 2 && m10 <= 4 && (m100 < 12 || m100 > 14)) ? 'недели'
+               : 'недель';
+    } else {
+      weekWord = weeks === 1 ? (L2.unit_week || 'week') : (L2.unit_weeks || 'weeks');
+    }
+    document.getElementById('res-weeks').textContent = weeks + ' ' + weekWord;
     document.getElementById('res-daily').textContent = Math.round(usersPerVariantPerDay).toLocaleString();
 
     // Contextual tips
     const tips = [];
-    if (weeks > 8)  tips.push({ icon: '⚠️', text: 'Over 8 weeks is a long test. Consider raising α to 0.10 for faster iteration, or narrowing scope to a higher-traffic surface.' });
-    if (weeks < 2)  tips.push({ icon: '⚠️', text: 'Always run for at least 2 full weeks to capture weekly seasonality. Short tests often produce misleading results.' });
-    if (mdeRel && mdeRel < 0.03) tips.push({ icon: '💡', text: 'Detecting a sub-3% lift requires a very large sample. Consider whether this effect size is truly worth shipping — or raise the MDE threshold.' });
-    if (numVariants > 2) tips.push({ icon: '🔢', text: `With ${numVariants} variants you make ${numComparisons} comparisons vs control. The sample size above already applies a Bonferroni-adjusted α = ${alphaAdj.toFixed(4)} per comparison, which is why each arm needs more users than a simple 2-group test.` });
-    if (isCustom) tips.push({ icon: '⏱️', text: `Duration is set by the smallest arm (${getVariantLabels(weights.length)[bottleneckIdx]}, ${Math.round(weights[bottleneckIdx]*100)}% of traffic) — it fills slowest, so it is the bottleneck.` });
-    if (planMetric === 'conversion' && baseRate < 0.02) tips.push({ icon: '⚠️', text: 'Very low baseline (<2%) means you need huge samples. Consider testing on a higher-converting funnel step first, or using a one-sided test if you only care about improvement.' });
-    tips.push({ icon: '📅', text: 'Start on a Monday and end on a Sunday to ensure full weekly coverage. Avoid launching during atypical periods: holidays, campaigns, or major product changes.' });
-    tips.push({ icon: '🔒', text: 'Pre-register your MDE and analysis plan before launch. Checking results daily and stopping early inflates false positives by up to 5×.' });
+    if (weeks > 8)  tips.push({ icon: '⚠️', text: L2.tip_long_test || 'Over 8 weeks is a long test. Consider raising α to 0.10 for faster iteration, or narrowing scope to a higher-traffic surface.' });
+    if (weeks < 2)  tips.push({ icon: '⚠️', text: L2.tip_min_two_weeks || 'Always run for at least 2 full weeks to capture weekly seasonality. Short tests often produce misleading results.' });
+    if (mdeRel && mdeRel < 0.03) tips.push({ icon: '💡', text: L2.tip_small_mde || 'Detecting a sub-3% lift requires a very large sample. Consider whether this effect size is truly worth shipping — or raise the MDE threshold.' });
+    if (numVariants > 2) tips.push({ icon: '🔢', text: (L2.tip_multi_variant || 'With {k} variants you make {c} comparisons vs control. The sample size above already applies a Bonferroni-adjusted α = {a} per comparison, which is why each arm needs more users than a simple 2-group test.').replace('{k}', numVariants).replace('{c}', numComparisons).replace('{a}', alphaAdj.toFixed(4)) });
+    if (isCustom) tips.push({ icon: '⏱️', text: (L2.tip_bottleneck || 'Duration is set by the smallest arm ({v}, {p}% of traffic) — it fills slowest, so it is the bottleneck.').replace('{v}', getVariantLabels(weights.length)[bottleneckIdx]).replace('{p}', Math.round(weights[bottleneckIdx]*100)) });
+    if (planMetric === 'conversion' && baseRate < 0.02) tips.push({ icon: '⚠️', text: L2.tip_low_baseline || 'Very low baseline (<2%) means you need huge samples. Consider testing on a higher-converting funnel step first, or using a one-sided test if you only care about improvement.' });
+    tips.push({ icon: '📅', text: L2.tip_calendar || 'Start on a Monday and end on a Sunday to ensure full weekly coverage. Avoid launching during atypical periods: holidays, campaigns, or major product changes.' });
+    tips.push({ icon: '🔒', text: L2.tip_preregister || 'Pre-register your MDE and analysis plan before launch. Checking results daily and stopping early inflates false positives by up to 5×.' });
 
     const tipsHtml = tips.map(t =>
       `<div style="display:flex;gap:8px;align-items:flex-start;margin-bottom:7px">
@@ -2106,3 +2148,203 @@ function drawNullDist(canvasId, muA, muB, se, stat, alpha, tails, sig, fmt) {
   });
 }
 
+
+// ═══════════════════════════════════════════════════════════════════════
+// FILE UPLOAD — Excel / CSV
+// Accepts BOTH raw per-user rows (one row = one user) and pre-aggregated
+// counts, auto-detects column names (EN + RU synonyms), aggregates, fills
+// the form, and shows a summary so the user can verify before analysing.
+// ═══════════════════════════════════════════════════════════════════════
+
+const UP_SYN = {
+  group:     ['group','variant','arm','bucket','cohort','test_group','testgroup','гру\u043fпа','группа','вариант','когорта'],
+  converted: ['converted','conversion','convert','success','is_converted','converts','purchased','конверсия','конверсии','целевое'],
+  value:     ['value','metric','revenue','amount','val','score','spend','arpu','значение','выручка','сумма','метрика'],
+  exposed:   ['exposed','users','n','count','sample','sample_size','visitors','impressions','показы','пользователи','выборка']
+};
+
+function upNorm(h) { return String(h == null ? '' : h).trim().toLowerCase().replace(/[\s\-.]+/g, '_'); }
+
+function upFindCol(headers, kind) {
+  const syn = UP_SYN[kind];
+  for (let i = 0; i < headers.length; i++) {
+    if (syn.includes(upNorm(headers[i]))) return i;
+  }
+  return -1;
+}
+
+function upStatus(metric, cls, html) {
+  // element ids use the short form: conv / cont / ratio
+  const short = metric === 'conversion' ? 'conv' : (metric === 'continuous' ? 'cont' : metric);
+  const el = document.getElementById(short + '-upload-status');
+  if (!el) return;
+  el.className = 'upload-status ' + cls;
+  el.innerHTML = html;
+}
+
+function handleExcelDrop(ev, metric) {
+  ev.preventDefault();
+  const short = metric === 'conversion' ? 'conv' : (metric === 'continuous' ? 'cont' : metric);
+  const zone = document.getElementById(short + '-upload-zone');
+  if (zone) zone.classList.remove('drag-over');
+  const f = ev.dataTransfer && ev.dataTransfer.files && ev.dataTransfer.files[0];
+  if (f) handleExcelFile(f, metric);
+}
+
+function handleExcelFile(file, metric) {
+  const L = T[currentLang] || {};
+  if (!file) return;
+  if (typeof XLSX === 'undefined') {
+    upStatus(metric, 'up-err', L.up_err_lib || 'Spreadsheet library not loaded — check your connection and reload.');
+    return;
+  }
+  const reader = new FileReader();
+  reader.onerror = () => upStatus(metric, 'up-err', L.up_err_read || 'Could not read the file.');
+  reader.onload = e => {
+    try {
+      const wb = XLSX.read(new Uint8Array(e.target.result), { type: 'array' });
+      const sheet = wb.Sheets[wb.SheetNames[0]];
+      const rows = XLSX.utils.sheet_to_json(sheet, { header: 1, blankrows: false });
+      parseUploadedData(rows, metric);
+    } catch (err) {
+      upStatus(metric, 'up-err', (L.up_err_parse || 'Could not parse the file: {e}').replace('{e}', err.message));
+    }
+  };
+  reader.readAsArrayBuffer(file);
+}
+
+function parseUploadedData(rows, metric) {
+  const L = T[currentLang] || {};
+  if (!rows || rows.length < 2) {
+    upStatus(metric, 'up-err', L.up_err_empty || 'The file looks empty. Expected a header row plus data rows.');
+    return;
+  }
+  // Find the header row (first row where a group column is recognisable)
+  let hIdx = -1;
+  for (let i = 0; i < Math.min(rows.length, 10); i++) {
+    if (upFindCol(rows[i] || [], 'group') >= 0) { hIdx = i; break; }
+  }
+  if (hIdx < 0) {
+    const found = (rows[0] || []).join(', ');
+    upStatus(metric, 'up-err',
+      (L.up_err_nogroup || 'No group column found. Expected one of: group, variant, arm (or Russian equivalents). Found: {f}')
+        .replace('{f}', found));
+    return;
+  }
+  const headers = rows[hIdx];
+  const gi = upFindCol(headers, 'group');
+  const ci = upFindCol(headers, 'converted');
+  const vi = upFindCol(headers, 'value');
+  const ei = upFindCol(headers, 'exposed');
+  const body = rows.slice(hIdx + 1).filter(r => r && r.length && r[gi] != null && String(r[gi]).trim() !== '');
+
+  if (!body.length) {
+    upStatus(metric, 'up-err', L.up_err_empty || 'The file looks empty. Expected a header row plus data rows.');
+    return;
+  }
+
+  // ── Conversion ──────────────────────────────────────────────────────
+  if (metric === 'conversion') {
+    if (ci < 0 && ei < 0) {
+      upStatus(metric, 'up-err', L.up_err_noconv || 'No conversion column found. Expected "converted" with 0/1 per user, or pre-aggregated "exposed" + "converted".');
+      return;
+    }
+    const agg = {};
+    let badVal = 0;
+    for (const r of body) {
+      const g = String(r[gi]).trim();
+      if (!agg[g]) agg[g] = { n: 0, c: 0 };
+      if (ei >= 0) {                          // pre-aggregated rows
+        agg[g].n += Number(r[ei]) || 0;
+        agg[g].c += Number(r[ci]) || 0;
+      } else {                                // raw per-user rows
+        const raw = r[ci];
+        const v = (raw === true || raw === 1 || raw === '1' || String(raw).trim().toLowerCase() === 'true') ? 1
+                : (raw === false || raw === 0 || raw === '0' || String(raw).trim().toLowerCase() === 'false' || raw === '' || raw == null) ? 0
+                : null;
+        if (v === null) { badVal++; continue; }
+        agg[g].n += 1; agg[g].c += v;
+      }
+    }
+    const groups = Object.keys(agg);
+    if (groups.length < 2) {
+      upStatus(metric, 'up-err', (L.up_err_groups || 'Need exactly 2 groups, found {k}: {g}').replace('{k}', groups.length).replace('{g}', groups.join(', ')));
+      return;
+    }
+    // control first: explicit "control"/"контроль", else alphabetical
+    groups.sort((a, b) => {
+      const ca = /^(control|контроль|a)$/i.test(a) ? -1 : 0;
+      const cb = /^(control|контроль|a)$/i.test(b) ? -1 : 0;
+      return ca !== cb ? ca - cb : String(a).localeCompare(String(b));
+    });
+    const use = groups.slice(0, 2);
+    // fill the form
+    const rowsEl = document.querySelectorAll('#conv-variants .variant-row');
+    use.forEach((g, i) => {
+      if (!rowsEl[i]) return;
+      const un = rowsEl[i].querySelector('.cv-users');
+      const cn = rowsEl[i].querySelector('.cv-conv');
+      if (un) un.value = agg[g].n;
+      if (cn) cn.value = agg[g].c;
+    });
+    let html = '<div class="up-ok-head">' + (L.up_ok || '✓ Loaded {n} rows').replace('{n}', body.length.toLocaleString()) + '</div>';
+    html += '<table class="up-summary"><tr><th>' + (L.up_col_group || 'Group') + '</th><th>' + (L.up_col_n || 'Users') + '</th><th>' + (L.up_col_conv || 'Converted') + '</th><th>' + (L.up_col_rate || 'Rate') + '</th></tr>';
+    use.forEach(g => {
+      const a = agg[g];
+      html += `<tr><td>${g}</td><td>${a.n.toLocaleString()}</td><td>${a.c.toLocaleString()}</td><td>${(a.c/a.n*100).toFixed(2)}%</td></tr>`;
+    });
+    html += '</table>';
+    if (groups.length > 2) html += '<div class="up-warn">' + (L.up_warn_extra || '⚠ {k} groups found — used the first two: {g}').replace('{k}', groups.length).replace('{g}', use.join(', ')) + '</div>';
+    if (badVal) html += '<div class="up-warn">' + (L.up_warn_badval || '⚠ {k} rows skipped: conversion must be 0 or 1.').replace('{k}', badVal) + '</div>';
+    upStatus(metric, 'up-ok', html);
+    return;
+  }
+
+  // ── Continuous / Ratio ──────────────────────────────────────────────
+  if (vi < 0) {
+    upStatus(metric, 'up-err', L.up_err_novalue || 'No value column found. Expected "value" (or revenue / amount / значение) with one number per user.');
+    return;
+  }
+  const vals = {};
+  let skipped = 0, binaryOnly = true;
+  for (const r of body) {
+    const g = String(r[gi]).trim();
+    const v = Number(r[vi]);
+    if (!isFinite(v)) { skipped++; continue; }
+    if (v !== 0 && v !== 1) binaryOnly = false;
+    (vals[g] = vals[g] || []).push(v);
+  }
+  const groups = Object.keys(vals).filter(g => vals[g].length);
+  if (groups.length < 2) {
+    upStatus(metric, 'up-err', (L.up_err_groups || 'Need exactly 2 groups, found {k}: {g}').replace('{k}', groups.length).replace('{g}', groups.join(', ')));
+    return;
+  }
+  groups.sort((a, b) => {
+    const ca = /^(control|контроль|a)$/i.test(a) ? -1 : 0;
+    const cb = /^(control|контроль|a)$/i.test(b) ? -1 : 0;
+    return ca !== cb ? ca - cb : String(a).localeCompare(String(b));
+  });
+  const use = groups.slice(0, 2);
+  const panelId = metric === 'ratio' ? '#panel-ratio' : '#panel-cont';
+  let tas = document.querySelectorAll(panelId + ' .cv-raw-ta');
+  if (!tas.length) tas = document.querySelectorAll('.cv-raw-ta');   // fallback
+  use.forEach((g, i) => {
+    if (tas[i]) {
+      tas[i].value = vals[g].join(', ');
+      tas[i].dispatchEvent(new Event('input', { bubbles: true }));
+    }
+  });
+  let html = '<div class="up-ok-head">' + (L.up_ok || '✓ Loaded {n} rows').replace('{n}', body.length.toLocaleString()) + '</div>';
+  html += '<table class="up-summary"><tr><th>' + (L.up_col_group || 'Group') + '</th><th>' + (L.up_col_n || 'Users') + '</th><th>' + (L.up_col_mean || 'Mean') + '</th><th>' + (L.up_col_sd || 'SD') + '</th></tr>';
+  use.forEach(g => {
+    const a = vals[g];
+    const m = a.reduce((s, x) => s + x, 0) / a.length;
+    const sd = Math.sqrt(a.reduce((s, x) => s + (x - m) ** 2, 0) / (a.length - 1 || 1));
+    html += `<tr><td>${g}</td><td>${a.length.toLocaleString()}</td><td>${m.toFixed(2)}</td><td>${sd.toFixed(2)}</td></tr>`;
+  });
+  html += '</table>';
+  if (binaryOnly) html += '<div class="up-warn">' + (L.up_warn_binary || '⚠ All values are 0/1 — this looks like a conversion metric. Switch to the Conversion tab for the correct test.') + '</div>';
+  if (skipped) html += '<div class="up-warn">' + (L.up_warn_skipped || '⚠ {k} rows skipped (value was not a number).').replace('{k}', skipped) + '</div>';
+  if (groups.length > 2) html += '<div class="up-warn">' + (L.up_warn_extra || '⚠ {k} groups found — used the first two: {g}').replace('{k}', groups.length).replace('{g}', use.join(', ')) + '</div>';
+  upStatus(metric, 'up-ok', html);
+}
