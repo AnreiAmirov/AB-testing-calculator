@@ -1563,6 +1563,7 @@ main {
   cursor: pointer;
   transition: border-color 0.15s, background 0.15s;
   background: var(--pill-bg);
+  margin-top: 22px;
   margin-bottom: 12px;
   position: relative;
 }
@@ -1958,12 +1959,29 @@ canvas.chart { width: 100% !important; height: 100% !important; display: block; 
 .upload-status.up-ok  { background: rgba(5,150,105,0.07);  border-color: rgba(5,150,105,0.28); }
 .upload-status.up-err { background: rgba(225,29,72,0.07);  border-color: rgba(225,29,72,0.30); color: var(--danger, #E11D48); }
 .up-ok-head { font-weight: 700; color: var(--success, #059669); margin-bottom: 7px; }
-table.up-summary { width: 100%; border-collapse: collapse; margin-top: 6px; font-size: 0.8rem; }
+/* Summary table must never outgrow its status box. Long RU headers
+   ("Пользователей", "Конверсий") previously forced it ~100px wider than the
+   container, so it spilled out the right edge. Fixed layout + wrapping keeps
+   it inside; overflow-x is a safety net on very narrow screens. */
+.upload-status { max-width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+table.up-summary {
+  width: 100%;
+  max-width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  margin-top: 6px;
+  font-size: 0.8rem;
+}
 table.up-summary th, table.up-summary td {
   border: 1px solid var(--border);
   padding: 5px 9px;
   text-align: left;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  hyphens: auto;
 }
+/* First column (group name) stays readable; the numeric columns share the rest. */
+table.up-summary th:first-child, table.up-summary td:first-child { width: 30%; }
 table.up-summary th { background: var(--pill-bg); font-weight: 700; color: var(--ink-muted); }
 .up-warn { margin-top: 8px; font-size: 0.78rem; color: var(--warning, #D97706); line-height: 1.5; }
 .upload-zone-hint code {
