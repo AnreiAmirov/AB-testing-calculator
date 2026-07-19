@@ -2246,6 +2246,11 @@ function parseUploadedData(rows, metric) {
   // ── Conversion ──────────────────────────────────────────────────────
   if (metric === 'conversion') {
     if (ci < 0 && ei < 0) {
+      if (vi >= 0) {
+        upStatus(metric, 'up-err', L.up_err_is_continuous ||
+          'This looks like continuous data (found a "value" column, not "converted"). Switch to the Continuous metric tab and upload it there.');
+        return;
+      }
       upStatus(metric, 'up-err', L.up_err_noconv || 'No conversion column found. Expected "converted" with 0/1 per user, or pre-aggregated "exposed" + "converted".');
       return;
     }
@@ -2302,6 +2307,13 @@ function parseUploadedData(rows, metric) {
 
   // ── Continuous / Ratio ──────────────────────────────────────────────
   if (vi < 0) {
+    // The file may be perfectly valid — just loaded into the wrong tab.
+    // If it carries conversion data, say so explicitly instead of a dead end.
+    if (ci >= 0 || ei >= 0) {
+      upStatus(metric, 'up-err', L.up_err_is_conversion ||
+        'This looks like conversion data (found a "converted" column, not "value"). Switch to the Conversion tab and upload it there.');
+      return;
+    }
     upStatus(metric, 'up-err', L.up_err_novalue || 'No value column found. Expected "value" (or revenue / amount / значение) with one number per user.');
     return;
   }
@@ -2325,7 +2337,7 @@ function parseUploadedData(rows, metric) {
     return ca !== cb ? ca - cb : String(a).localeCompare(String(b));
   });
   const use = groups.slice(0, 2);
-  const panelId = metric === 'ratio' ? '#panel-ratio' : '#panel-cont';
+  const panelId = metric === 'ratio' ? '#analyse-section-ratio' : '#analyse-section-continuous';
   let tas = document.querySelectorAll(panelId + ' .cv-raw-ta');
   if (!tas.length) tas = document.querySelectorAll('.cv-raw-ta');   // fallback
   use.forEach((g, i) => {
