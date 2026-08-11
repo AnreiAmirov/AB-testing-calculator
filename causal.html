@@ -47,21 +47,46 @@
 </header>
 
 <main class="causal-main" id="tab-reference">
+<div class="causal-layout">
 
-  <!-- TOC -->
-  <div class="card causal-toc">
-    <div class="card-title" data-i18n="c_toc_h">On this page</div>
-    <ol>
-      <li><a href="#c-why" data-i18n="c_toc_1">Why it matters: where A/B tests fail</a></li>
-      <li><a href="#c-idea" data-i18n="c_toc_2">The core idea: the counterfactual</a></li>
-      <li><a href="#c-trap" data-i18n="c_toc_3">The main trap: correlation ≠ causation</a></li>
-      <li><a href="#c-methods" data-i18n="c_toc_4">Five methods people actually use</a></li>
-      <li><a href="#c-did" data-i18n="c_toc_5">Difference-in-Differences: maths &amp; code</a></li>
-      <li><a href="#c-cases" data-i18n="c_toc_6">Business cases</a></li>
-      <li><a href="#c-choose" data-i18n="c_toc_7">Which method to choose</a></li>
-      <li><a href="#c-limits" data-i18n="c_toc_8">Honest limitations</a></li>
-    </ol>
-  </div>
+  <!-- Icon navigation (sticky, like the calculator's Learn tab) -->
+  <nav class="causal-nav" id="causal-nav">
+    <div class="causal-nav-title" data-i18n="c_toc_h">On this page</div>
+    <a class="causal-nav-item" href="#c-why">
+      <span class="cn-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></span>
+      <span data-i18n="c_toc_1">Why it matters: where A/B tests fail</span>
+    </a>
+    <a class="causal-nav-item" href="#c-idea">
+      <span class="cn-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.663 17h4.673M12 3v1M3 12h1M20 12h1M5.6 5.6l.7.7M18.4 5.6l-.7.7"/><path d="M9 17a5 5 0 1 1 6 0 3 3 0 0 0-1 2v1a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1v-1a3 3 0 0 0-1-2z"/></svg></span>
+      <span data-i18n="c_toc_2">The core idea: the counterfactual</span>
+    </a>
+    <a class="causal-nav-item" href="#c-trap">
+      <span class="cn-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>
+      <span data-i18n="c_toc_3">The main trap: correlation ≠ causation</span>
+    </a>
+    <a class="causal-nav-item" href="#c-methods">
+      <span class="cn-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></span>
+      <span data-i18n="c_toc_4">Five methods people actually use</span>
+    </a>
+    <a class="causal-nav-item" href="#c-did">
+      <span class="cn-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span>
+      <span data-i18n="c_toc_5">Difference-in-Differences: maths &amp; code</span>
+    </a>
+    <a class="causal-nav-item" href="#c-cases">
+      <span class="cn-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7h-9M14 17H5M17 3a4 4 0 1 0 0 8 4 4 0 0 0 0-8zM7 13a4 4 0 1 0 0 8 4 4 0 0 0 0-8z"/></svg></span>
+      <span data-i18n="c_toc_6">Business cases</span>
+    </a>
+    <a class="causal-nav-item" href="#c-choose">
+      <span class="cn-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></span>
+      <span data-i18n="c_toc_7">Which method to choose</span>
+    </a>
+    <a class="causal-nav-item" href="#c-limits">
+      <span class="cn-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span>
+      <span data-i18n="c_toc_8">Honest limitations</span>
+    </a>
+  </nav>
+
+  <div class="causal-content">
 
   <!-- 1 WHY -->
   <div class="card" id="c-why">
@@ -294,6 +319,9 @@ Regression effect = +2.13 pp
     <div class="cs-takeaway"><b data-i18n="c_limits_key_b">The section's main point:</b> <span data-i18n="c_limits_key">an analyst's value isn't computing the effect — it's honestly saying <em>how much</em> to trust it. A good causal analysis always names its own weak spot.</span></div>
   </div>
 
+  </div><!-- /causal-content -->
+  </div><!-- /causal-layout -->
+
   <div class="causal-back">
     <a href="ab-testing.html" class="causal-back-link" data-i18n="c_back_ab">← Back to the A/B Testing Calculator</a>
     <a href="index.html" class="causal-back-link" data-i18n="c_back_home">Home</a>
@@ -305,5 +333,27 @@ Regression effect = +2.13 pp
 <script src="stats.js"></script>
 <script src="charts.js"></script>
 <script src="app.js"></script>
+<script>
+// Scroll-spy: highlight the nav item for the section currently in view.
+(function(){
+  const nav = document.getElementById('causal-nav');
+  if (!nav) return;
+  const items = [...nav.querySelectorAll('.causal-nav-item')];
+  const sections = items.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+  function onScroll(){
+    let active = 0;
+    const y = window.scrollY + 120;
+    sections.forEach((s, i) => { if (s.offsetTop <= y) active = i; });
+    items.forEach((a, i) => a.classList.toggle('active', i === active));
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+  // Smooth-scroll with offset so the sticky header doesn't cover the title
+  items.forEach(a => a.addEventListener('click', e => {
+    const tgt = document.querySelector(a.getAttribute('href'));
+    if (tgt) { e.preventDefault(); window.scrollTo({ top: tgt.offsetTop - 90, behavior: 'smooth' }); }
+  }));
+})();
+</script>
 </body>
 </html>
