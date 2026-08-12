@@ -50,40 +50,16 @@
 <div class="causal-layout">
 
   <!-- Icon navigation (sticky, like the calculator's Learn tab) -->
-  <nav class="causal-nav" id="causal-nav">
-    <div class="causal-nav-title" data-i18n="c_toc_h">On this page</div>
-    <a class="causal-nav-item" href="#c-why">
-      <span class="cn-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></span>
-      <span data-i18n="c_toc_1">Why it matters: where A/B tests fail</span>
-    </a>
-    <a class="causal-nav-item" href="#c-idea">
-      <span class="cn-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.663 17h4.673M12 3v1M3 12h1M20 12h1M5.6 5.6l.7.7M18.4 5.6l-.7.7"/><path d="M9 17a5 5 0 1 1 6 0 3 3 0 0 0-1 2v1a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1v-1a3 3 0 0 0-1-2z"/></svg></span>
-      <span data-i18n="c_toc_2">The core idea: the counterfactual</span>
-    </a>
-    <a class="causal-nav-item" href="#c-trap">
-      <span class="cn-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>
-      <span data-i18n="c_toc_3">The main trap: correlation ≠ causation</span>
-    </a>
-    <a class="causal-nav-item" href="#c-methods">
-      <span class="cn-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></span>
-      <span data-i18n="c_toc_4">Five methods people actually use</span>
-    </a>
-    <a class="causal-nav-item" href="#c-did">
-      <span class="cn-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span>
-      <span data-i18n="c_toc_5">Difference-in-Differences: maths &amp; code</span>
-    </a>
-    <a class="causal-nav-item" href="#c-cases">
-      <span class="cn-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7h-9M14 17H5M17 3a4 4 0 1 0 0 8 4 4 0 0 0 0-8zM7 13a4 4 0 1 0 0 8 4 4 0 0 0 0-8z"/></svg></span>
-      <span data-i18n="c_toc_6">Business cases</span>
-    </a>
-    <a class="causal-nav-item" href="#c-choose">
-      <span class="cn-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></span>
-      <span data-i18n="c_toc_7">Which method to choose</span>
-    </a>
-    <a class="causal-nav-item" href="#c-limits">
-      <span class="cn-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span>
-      <span data-i18n="c_toc_8">Honest limitations</span>
-    </a>
+  <nav class="causal-nav toc-sidebar" id="causal-nav" aria-label="On this page">
+    <div class="toc-group-h" data-i18n="c_toc_h">On this page</div>
+    <a class="toc-link" href="#c-why"><span class="toc-emoji">🎯</span><span data-i18n="c_toc_1">Why it matters: where A/B tests fail</span></a>
+    <a class="toc-link" href="#c-idea"><span class="toc-emoji">💡</span><span data-i18n="c_toc_2">The core idea: the counterfactual</span></a>
+    <a class="toc-link" href="#c-trap"><span class="toc-emoji">⚠️</span><span data-i18n="c_toc_3">The main trap: correlation ≠ causation</span></a>
+    <a class="toc-link" href="#c-methods"><span class="toc-emoji">🧰</span><span data-i18n="c_toc_4">Five methods people actually use</span></a>
+    <a class="toc-link" href="#c-did"><span class="toc-emoji">📐</span><span data-i18n="c_toc_5">Difference-in-Differences: maths &amp; code</span></a>
+    <a class="toc-link" href="#c-cases"><span class="toc-emoji">💼</span><span data-i18n="c_toc_6">Business cases</span></a>
+    <a class="toc-link" href="#c-choose"><span class="toc-emoji">🧭</span><span data-i18n="c_toc_7">Which method to choose</span></a>
+    <a class="toc-link" href="#c-limits"><span class="toc-emoji">🛡️</span><span data-i18n="c_toc_8">Honest limitations</span></a>
   </nav>
 
   <div class="causal-content">
@@ -194,6 +170,11 @@
 
     <div class="dd-h3" data-i18n="c_did_code_h">Python: run it yourself</div>
     <p data-i18n="c_did_code_p">Self-contained — needs only <code>numpy</code>. Data is generated inside (a true effect of +2.5 pp) so you can run it as-is and watch the method recover it. Swap the generated arrays for your own.</p>
+    <button class="code-toggle" onclick="toggleCode(this)" aria-expanded="false">
+      <svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      <span data-i18n="c_did_code_show">Show Python code</span>
+    </button>
+    <div class="code-collapse" hidden>
     <div class="code-block">
       <button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button>
 <pre><span class="tok-c"># Difference-in-Differences — needs only numpy.</span>
@@ -241,6 +222,7 @@ DiD effect:        +2.13 pp
 Regression effect = +2.13 pp
   SE=0.269, 95% CI = [+1.60, +2.66]
     </div>
+    </div><!-- /code-collapse -->
     <div class="callout-box"><p style="margin:0"><b data-i18n="c_did_out_b">What the result shows:</b> <span data-i18n="c_did_out">the naive "after − before" in treated would give +3.54 pp — inflated, because part of the rise is just the background (+1.41). DiD subtracts the background and gives an honest <b>+2.13 pp</b>, close to the true +2.5. Both methods agree to two decimals.</span></p></div>
   </div>
 
@@ -333,6 +315,24 @@ Regression effect = +2.13 pp
 <script src="stats.js"></script>
 <script src="charts.js"></script>
 <script src="app.js"></script>
+<script>
+// Collapsible Python code block: toggle visibility + button label/chevron.
+function toggleCode(btn){
+  const wrap = btn.nextElementSibling;
+  if (!wrap) return;
+  const open = wrap.hasAttribute('hidden');
+  if (open) { wrap.removeAttribute('hidden'); } else { wrap.setAttribute('hidden',''); }
+  btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  btn.classList.toggle('open', open);
+  const lbl = btn.querySelector('span[data-i18n]');
+  if (lbl && typeof T !== 'undefined' && T[currentLang]) {
+    lbl.textContent = open
+      ? (T[currentLang].c_did_code_hide || 'Hide Python code')
+      : (T[currentLang].c_did_code_show || 'Show Python code');
+    lbl.setAttribute('data-i18n', open ? 'c_did_code_hide' : 'c_did_code_show');
+  }
+}
+</script>
 <script>
 // Scroll-spy: highlight the nav item for the section currently in view.
 (function(){
