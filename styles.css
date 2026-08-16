@@ -2166,49 +2166,56 @@ table.up-summary th { background: var(--pill-bg); font-weight: 700; color: var(-
 
 }
 
+
+
 /* ═══════════════════════════════════════════════════════════════════════
    INTERACTIVE PAGE TITLE
-   The title itself is the link home. Instead of an icon that eats space,
-   a hairline underline grows out from the left on hover — no layout shift,
-   nothing added to the header in its resting state.
+   The title is the link home. On hover a soft translucent plate fades in
+   behind it — the same visual language as the RU / Dark pills beside it,
+   so the header reads as one family. Padding is always present, so nothing
+   shifts when the plate appears.
+
+   The colour rules are deliberately explicit (and cover :link/:visited):
+   without them the browser's default visited-link purple overrides an
+   inherited colour and the title renders purple on the gradient.
    ═══════════════════════════════════════════════════════════════════════ */
 .site-title-link { margin: 0; }
 
-.site-title-link a {
-  color: inherit;
+.site-title-link a,
+.site-title-link a:link,
+.site-title-link a:visited,
+.site-title-link a:hover,
+.site-title-link a:active {
+  color: #fff;
   text-decoration: none;
-  position: relative;
+  -webkit-text-decoration: none;
+}
+
+.site-title-link a {
   display: inline-block;
-  transition: opacity 0.15s ease;
+  padding: 4px 12px;
+  margin-left: -12px;            /* keeps the text optically aligned */
+  border-radius: 12px;
+  background: transparent;
+  transition: background 0.2s ease, transform 0.2s ease;
 }
 
-/* the underline lives in a pseudo-element, so it can't affect layout */
-.site-title-link a::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  bottom: -2px;
-  width: 100%;
-  height: 3px;
-  border-radius: 2px;
-  background: currentColor;
-  opacity: 0.9;
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+.site-title-link a:hover {
+  background: rgba(255, 255, 255, 0.14);
 }
 
-.site-title-link a:hover { opacity: 0.94; }
-.site-title-link a:hover::after,
-.site-title-link a:focus-visible::after { transform: scaleX(1); }
+.site-title-link a:active { transform: scale(0.985); }
 
-/* keyboard focus stays obvious on the gradient header */
 .site-title-link a:focus-visible {
   outline: 3px solid #fff;
-  outline-offset: 4px;
-  border-radius: 6px;
+  outline-offset: 2px;
+  background: rgba(255, 255, 255, 0.14);
+}
+
+@media (max-width: 640px) {
+  .site-title-link a { padding: 3px 9px; margin-left: -9px; border-radius: 10px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .site-title-link a::after { transition: none; }
+  .site-title-link a { transition: none; }
 }
