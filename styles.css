@@ -10,7 +10,7 @@
   --border-strong: #c8cbe0;
   --ink: #1a1a2e;
   --ink-muted: #5a5c7a;
-  --ink-faint: #9a9cb8;
+  --ink-faint: #686b85;
   --pill-bg: #eef0fb;
   --pill-active-bg: #5b50c8;
   --pill-active-text: #ffffff;
@@ -2099,4 +2099,83 @@ table.up-summary th { background: var(--pill-bg); font-weight: 700; color: var(-
 @media (max-width: 640px) {
   .causal-main { padding: 18px 14px 50px; }
   .did-formula { font-size: 0.94rem; padding: 14px 14px; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   ACCESSIBILITY PASS — WCAG 2.1 AA
+   Fixes from the audit: touch targets, dark-mode pill contrast, focus ring.
+   Colour tokens were corrected at the source (--ink-faint), so .card-title
+   and .tip inherit the fix without per-selector overrides.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* ── 2.5.5 Touch targets: min 44×44 on touch devices ── */
+@media (pointer: coarse), (max-width: 820px) {
+  .lang-toggle,
+  .theme-toggle,
+  .share-btn,
+  .home-link,
+  .code-toggle,
+  .alloc-mode-btn,
+  .tab-btn,
+  .plan-metric-btn,
+  .btn-primary,
+  .toc-link {
+    min-height: 44px;
+  }
+  /* inline links need padding rather than height to stay in the text flow */
+  .causal-back-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+  input, select, textarea { min-height: 44px; }
+}
+
+/* ── 1.4.3 Dark-mode contrast for selected pills and badges ──
+   In dark theme --accent is a LIGHT lavender (#a59cf7), so white text on it
+   only reaches 2.41:1. Dark ink on that same fill reaches 7.07:1. */
+[data-theme="dark"] .radio-group label:has(input:checked),
+[data-theme="dark"] .radio-group label:has(input:checked) span,
+[data-theme="dark"] .alloc-mode-btn.selected,
+[data-theme="dark"] .plan-metric-badge,
+[data-theme="dark"] .btn-primary,
+[data-theme="dark"] .skip-link {
+  background: var(--accent);
+  color: #12132a;
+}
+[data-theme="dark"] .plan-metric-btn.selected .plan-metric-badge {
+  background: #fff;
+  color: #241f4d;
+}
+
+/* ── 1.4.11 Decorative check icon in the hero needs 3:1 ── */
+.hero-prop-ic { color: #fff; opacity: 1; }
+
+/* ── 2.4.7 Branded, always-visible focus indicator ──
+   Replaces the browser default (thin 1px auto outline) with a clear ring
+   that reads on both themes. :focus-visible keeps it keyboard-only. */
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+[data-theme="dark"] :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline-color: #a59cf7;
+}
+
+/* ── 2.4.1 Skip link: lets keyboard users jump past the header ── */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 999;
+  background: var(--accent);
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: 0 0 10px 0;
+  font-weight: 600;
+  text-decoration: none;
+}
+.skip-link:focus {
+  left: 0;
 }
