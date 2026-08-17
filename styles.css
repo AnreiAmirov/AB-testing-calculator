@@ -2009,13 +2009,12 @@ table.up-summary th { background: var(--pill-bg); font-weight: 700; color: var(-
   display: inline-flex; align-items: center; justify-content: center;
   flex-shrink: 0; overflow: hidden;
 }
-#causal-nav svg, #causal-nav .cn-ic svg {
-  width: 16px !important;
-  height: 16px !important;
+/* Safety cap only — icons must never exceed their box, whatever the load
+   order. Kept generous so the intended 16px sizing still applies. */
+#causal-nav svg {
+  max-width: 20px;
+  max-height: 20px;
   flex-shrink: 0;
-}
-#causal-nav .cn-ic {
-  width: 30px !important; height: 30px !important; flex-shrink: 0;
 }
 
 /* ── Collapsible Python code toggle ── */
@@ -2229,12 +2228,21 @@ table.up-summary th { background: var(--pill-bg); font-weight: 700; color: var(-
   display: flex; align-items: center; gap: 8px;
   margin: 0 0 8px; font-size: 0.82rem; flex-wrap: wrap;
 }
+.crumbs a,
+.crumbs a:link,
+.crumbs a:visited,
+.crumbs a:hover,
+.crumbs a:active {
+  color: rgba(255,255,255,0.88);
+  text-decoration: none;
+  -webkit-text-decoration: none;
+}
 .crumbs a {
-  color: rgba(255,255,255,0.85); text-decoration: none; font-weight: 600;
+  font-weight: 600;
   padding: 5px 11px; border-radius: 8px; background: rgba(255,255,255,0.12);
   transition: background 0.15s, color 0.15s;
 }
-.crumbs a:hover { background: rgba(255,255,255,0.24); color: #fff; }
+.crumbs a:hover { background: rgba(255,255,255,0.26); color: #fff; }
 .crumbs a:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
 .crumb-sep { color: rgba(255,255,255,0.55); }
 .crumb-cur { color: rgba(255,255,255,0.9); font-weight: 600; }
@@ -2242,21 +2250,24 @@ table.up-summary th { background: var(--pill-bg); font-weight: 700; color: var(-
   .crumbs a { min-height: 44px; display: inline-flex; align-items: center; }
 }
 
-/* ── Nav icons: line-art in a rounded plate (style B) ── */
+/* ── Nav icons: line-art in a rounded plate (style B) ──
+   Icons carry the accent colour rather than muted grey, so they read as part
+   of the brand instead of fading into the background. */
 .toc-ic {
   width: 30px; height: 30px; border-radius: 8px; flex-shrink: 0;
-  background: var(--pill-bg); color: var(--ink-muted);
+  background: var(--accent-hover-bg, #f0effc);
+  color: var(--accent);
   display: inline-flex; align-items: center; justify-content: center;
-  transition: background 0.15s, color 0.15s;
+  transition: background 0.15s, color 0.15s, transform 0.15s;
 }
-.toc-ic svg { width: 15px; height: 15px; }
-.toc-link:hover .toc-ic,
+.toc-ic svg { width: 16px; height: 16px; }
+.toc-link:hover .toc-ic { background: var(--accent); color: #fff; transform: scale(1.05); }
 .toc-link.active .toc-ic { background: var(--accent); color: #fff; }
 
 /* group headers get a small bare icon */
 .toc-group-h { display: flex; align-items: center; gap: 7px; }
-.toc-g-ic { display: inline-flex; align-items: center; color: var(--accent); flex-shrink: 0; }
-.toc-g-ic svg { width: 15px; height: 15px; }
+.toc-g-ic { display: inline-flex; align-items: center; color: var(--accent); flex-shrink: 0; opacity: 0.95; }
+.toc-g-ic svg { width: 16px; height: 16px; }
 
 [data-theme="dark"] .toc-ic { background: rgba(255,255,255,0.07); }
 
