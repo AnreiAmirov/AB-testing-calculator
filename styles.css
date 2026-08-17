@@ -2009,13 +2009,23 @@ table.up-summary th { background: var(--pill-bg); font-weight: 700; color: var(-
   display: inline-flex; align-items: center; justify-content: center;
   flex-shrink: 0; overflow: hidden;
 }
-/* Safety cap only — icons must never exceed their box, whatever the load
-   order. Kept generous so the intended 16px sizing still applies. */
+
+/* ── HARD SIZE CAP for every nav icon, on every page ──
+   These SVGs also carry width/height attributes in the markup, so they stay
+   correct even with no CSS at all. This rule is the second line of defence:
+   it covers both the causal page and the calculator's Learn tab, and uses
+   !important so no container can stretch an icon to full width. */
+.toc-ic svg,
+.toc-g-ic svg,
 #causal-nav svg {
-  max-width: 20px;
-  max-height: 20px;
-  flex-shrink: 0;
+  width: 16px !important;
+  height: 16px !important;
+  max-width: 16px !important;
+  max-height: 16px !important;
+  flex-shrink: 0 !important;
 }
+.toc-ic { width: 30px !important; height: 30px !important; flex-shrink: 0 !important; }
+.toc-g-ic { width: 16px !important; height: 16px !important; flex-shrink: 0 !important; }
 
 /* ── Collapsible Python code toggle ── */
 .code-toggle {
