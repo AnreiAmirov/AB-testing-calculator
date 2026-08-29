@@ -2360,3 +2360,49 @@ function parseUploadedData(rows, metric) {
   if (groups.length > 2) html += '<div class="up-warn">' + (L.up_warn_extra || '⚠ {k} groups found — used the first two: {g}').replace('{k}', groups.length).replace('{g}', use.join(', ')) + '</div>';
   upStatus(metric, 'up-ok', html);
 }
+
+/* ── Scroll-spy for the Learn tab's table of contents ──────────────────
+   Highlights the section currently in view. Positions are measured from the
+   document (getBoundingClientRect + scrollY) rather than offsetTop, because
+   offsetTop is relative to the nearest positioned ancestor and gives the
+   wrong section once the sidebar or a card becomes positioned. */
+(function initTocSpy() {
+  function setup() {
+    const links = [...document.querySelectorAll('#tab-reference .toc-link')];
+    if (!links.length) return;
+    const sections = links
+      .map(a => document.querySelector(a.getAttribute('href')))
+      .map((el, i) => ({ el, i }))
+      .filter(x => x.el);
+    if (!sections.length) return;
+
+    function spy() {
+      const panel = document.getElementById('tab-reference');
+      if (!panel || !panel.classList.contains('active')) return;
+      const y = window.scrollY + 140;
+      // The table of contents is ordered by topic, not by document order, so
+      // pick the section whose top is closest above the viewport line rather
+      // than the highest index — otherwise the wrong entry lights up.
+      let active = -1, bestTop = -Infinity;
+      sections.forEach(({ el, i }) => {
+        const top = el.getBoundingClientRect().top + window.scrollY;
+        if (top <= y && top > bestTop) { bestTop = top; active = i; }
+      });
+      if (active === -1) active = 0;
+      links.forEach((a, i) => a.classList.toggle('active', i === active));
+    }
+    window.addEventListener('scroll', spy, { passive: true });
+    spy();
+
+    links.forEach(a => a.addEventListener('click', e => {
+      const t = document.querySelector(a.getAttribute('href'));
+      if (!t) return;
+      e.preventDefault();
+      const top = t.getBoundingClientRect().top + window.scrollY - 90;
+      window.scrollTo({ top, behavior: 'smooth' });
+    }));
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setup);
+  } else { setup(); }
+})();

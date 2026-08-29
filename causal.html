@@ -343,12 +343,12 @@ function toggleCode(btn){
 (function(){
   const nav = document.getElementById('causal-nav');
   if (!nav) return;
-  const items = [...nav.querySelectorAll('.causal-nav-item')];
+  const items = [...nav.querySelectorAll('.toc-link')];
   const sections = items.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
   function onScroll(){
     let active = 0;
     const y = window.scrollY + 120;
-    sections.forEach((s, i) => { if (s.offsetTop <= y) active = i; });
+    sections.forEach((s, i) => { const top=s.getBoundingClientRect().top+window.scrollY; if (top <= y) active = i; });
     items.forEach((a, i) => a.classList.toggle('active', i === active));
   }
   window.addEventListener('scroll', onScroll, { passive: true });
@@ -356,7 +356,7 @@ function toggleCode(btn){
   // Smooth-scroll with offset so the sticky header doesn't cover the title
   items.forEach(a => a.addEventListener('click', e => {
     const tgt = document.querySelector(a.getAttribute('href'));
-    if (tgt) { e.preventDefault(); window.scrollTo({ top: tgt.offsetTop - 90, behavior: 'smooth' }); }
+    if (tgt) { e.preventDefault(); window.scrollTo({ top: tgt.getBoundingClientRect().top+window.scrollY - 90, behavior: 'smooth' }); }
   }));
 })();
 </script>

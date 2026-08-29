@@ -195,7 +195,7 @@
     <div id="plan-inputs-conversion">
       <div class="form-row cols-2">
         <div class="field">
-          <label data-i18n="plan_baseline_conv">Baseline conversion rate (%)<span class="tip"> e.g. 4.8 means 4.8%</span></label>
+          <label data-i18n="plan_baseline_conv">Baseline conversion rate (%)<span class="tip" data-i18n="tip_conv_base2"> e.g. 4.8 means 4.8%</span></label>
           <input type="number" id="p-conv-base" value="4.8" min="0.01" max="99.9" step="0.1">
         </div>
         <div class="field">
@@ -208,11 +208,11 @@
     <div id="plan-inputs-continuous" class="hidden">
       <div class="form-row cols-2">
         <div class="field">
-          <label data-i18n="plan_baseline_mean">Baseline mean<span class="tip"> current average</span></label>
+          <label data-i18n="plan_baseline_mean">Baseline mean<span class="tip" data-i18n="tip_cur_avg2"> current average</span></label>
           <input type="number" id="p-cont-mean" value="42.50" step="0.01">
         </div>
         <div class="field">
-          <label data-i18n="plan_sd_label">Standard deviation<span class="tip"> from historical data</span></label>
+          <label data-i18n="plan_sd_label">Standard deviation<span class="tip" data-i18n="tip_hist2"> from historical data</span></label>
           <input type="number" id="p-cont-sd" value="85" min="0.01" step="0.1">
         </div>
       </div>
@@ -222,7 +222,7 @@
           <input type="number" id="p-cont-mde" value="5" min="0.1" step="0.1">
         </div>
         <div class="field">
-          <label data-i18n="plan_cuped_label">CUPED variance reduction (%)<span class="tip"> 0 if not using; typical 30–50%</span></label>
+          <label data-i18n="plan_cuped_label">CUPED variance reduction (%)<span class="tip" data-i18n="tip_cuped2"> 0 if not using; typical 30–50%</span></label>
           <input type="number" id="p-cont-cuped" value="0" min="0" max="90" step="1">
         </div>
       </div>
@@ -482,7 +482,7 @@
             </div>
           </div>
           <div class="field mt-12">
-            <label data-i18n="lbl_prereg_mde">Pre-registered MDE (%, optional)<span class="tip"> — your upfront minimum</span></label>
+            <label data-i18n="lbl_prereg_mde">Pre-registered MDE (%, optional)<span class="tip" data-i18n="tip_upfront2"> — your upfront minimum</span></label>
             <input type="number" id="a-prereg-mde" placeholder="e.g. 5" min="0" step="0.1" style="max-width:160px">
           </div>
           <details class="revenue-inputs" style="margin-top:14px">
@@ -533,7 +533,7 @@
             <div class="cont-variant-block" data-tag="A">
               <div style="font-family:'JetBrains Mono',monospace;font-size:0.8rem;font-weight:600;color:var(--accent);margin-bottom:6px">A <span style="font-weight:400;color:var(--ink-faint);font-size:0.72rem" data-i18n="lbl_control">(control)</span></div>
               <div class="field">
-                <label data-i18n="lbl_per_user_values">Per-user values <span class="tip">comma or space separated</span></label>
+                <label data-i18n="lbl_per_user_values">Per-user values <span class="tip" data-i18n="tip_sep">comma or space separated</span></label>
                 <textarea class="cv-raw-ta" rows="3" placeholder="42.1, 38.5, 0, 55.2, 12.0, 0, 71.3 ..." style="width:100%;padding:8px 10px;border:1.5px solid var(--border-strong);border-radius:var(--radius-sm);font-family:'JetBrains Mono',monospace;font-size:0.82rem;resize:vertical;background:#fff"></textarea>
               </div>
               <div class="form-row cols-3 mt-8" id="cont-summary-A" style="display:none">
@@ -549,7 +549,7 @@
             <div class="cont-variant-block" data-tag="B">
               <div style="font-family:'JetBrains Mono',monospace;font-size:0.8rem;font-weight:600;color:var(--ink-muted);margin-bottom:6px">B</div>
               <div class="field">
-                <label>Per-user values <span class="tip">comma or space separated</span></label>
+                <label>Per-user values <span class="tip" data-i18n="tip_sep">comma or space separated</span></label>
                 <textarea class="cv-raw-ta" rows="3" placeholder="45.0, 41.2, 0, 58.0, 14.5, 0, 80.1 ..." style="width:100%;padding:8px 10px;border:1.5px solid var(--border-strong);border-radius:var(--radius-sm);font-family:'JetBrains Mono',monospace;font-size:0.82rem;resize:vertical;background:#fff"></textarea>
               </div>
               <div class="form-row cols-3 mt-8" id="cont-summary-B" style="display:none">
@@ -599,9 +599,9 @@
       <details class="disclosure" style="margin-top:8px;background:transparent;border:none;padding:0">
         <summary style="font-size:0.78rem" data-i18n="ratio_warn_why">Why does this matter?</summary>
         <ul style="margin-top:6px">
-          <li>A heavy buyer with 10 orders contributes 10 rows if not aggregated — their data dominates, creating correlation between rows that breaks the independence assumption of t-tests.</li>
-          <li>The standard error becomes 2–10× too small, making results look far more significant than they are. False positive rate can exceed 30%.</li>
-          <li>Fix: compute one value per user (total revenue ÷ total orders), then paste those per-user values below.</li>
+          <li data-i18n="ratio_li1">A heavy buyer with 10 orders contributes 10 rows if not aggregated — their data dominates, creating correlation between rows that breaks the independence assumption of t-tests.</li>
+          <li data-i18n="ratio_li2">The standard error becomes 2–10× too small, making results look far more significant than they are. False positive rate can exceed 30%.</li>
+          <li data-i18n="ratio_li3">Fix: compute one value per user (total revenue ÷ total orders), then paste those per-user values below.</li>
         </ul>
       </details>
     </div>
@@ -618,7 +618,7 @@
           <div id="ratio-upload-status"></div>
           <div style="display:flex;align-items:center;gap:8px;margin:10px 0">
             <hr style="flex:1;border:none;border-top:1px solid var(--border)">
-            <span style="font-size:0.72rem;color:var(--ink-faint);flex-shrink:0">or paste values below</span>
+            <span style="font-size:0.72rem;color:var(--ink-faint);flex-shrink:0" data-i18n="tip_paste">or paste values below</span>
             <hr style="flex:1;border:none;border-top:1px solid var(--border)">
           </div>
           <p style="font-size:0.8rem;color:var(--ink-muted);margin-bottom:14px" data-i18n="ratio_hint">Each value = one user's computed ratio (e.g. their AOV or their CTR).</p>
@@ -626,7 +626,7 @@
             <div class="cont-variant-block" data-tag="A">
               <div style="font-family:'JetBrains Mono',monospace;font-size:0.8rem;font-weight:600;color:var(--accent);margin-bottom:6px">A <span style="font-weight:400;color:var(--ink-faint);font-size:0.72rem" data-i18n="lbl_control">(control)</span></div>
               <div class="field">
-                <label data-i18n="lbl_per_user_ratio">Per-user ratio values <span class="tip">comma or space separated</span></label>
+                <label data-i18n="lbl_per_user_ratio">Per-user ratio values <span class="tip" data-i18n="tip_sep">comma or space separated</span></label>
                 <textarea class="cv-raw-ta" rows="3" placeholder="28.50, 45.00, 12.00, 67.50, 22.00 ..." style="width:100%;padding:8px 10px;border:1.5px solid var(--border-strong);border-radius:var(--radius-sm);font-family:'JetBrains Mono',monospace;font-size:0.82rem;resize:vertical;background:#fff"></textarea>
               </div>
               <div class="form-row cols-3 mt-8" id="ratio-summary-A" style="display:none">
@@ -642,7 +642,7 @@
             <div class="cont-variant-block" data-tag="B">
               <div style="font-family:'JetBrains Mono',monospace;font-size:0.8rem;font-weight:600;color:var(--ink-muted);margin-bottom:6px">B</div>
               <div class="field">
-                <label>Per-user ratio values <span class="tip">comma or space separated</span></label>
+                <label>Per-user ratio values <span class="tip" data-i18n="tip_sep">comma or space separated</span></label>
                 <textarea class="cv-raw-ta" rows="3" placeholder="30.00, 48.50, 13.50, 71.00, 25.50 ..." style="width:100%;padding:8px 10px;border:1.5px solid var(--border-strong);border-radius:var(--radius-sm);font-family:'JetBrains Mono',monospace;font-size:0.82rem;resize:vertical;background:#fff"></textarea>
               </div>
               <div class="form-row cols-3 mt-8" id="ratio-summary-B" style="display:none">

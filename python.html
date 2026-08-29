@@ -3,16 +3,16 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Python for Product Analysts — Data for Everyone</title>
-<meta name="description" content="Practical Python for product analytics: language fundamentals, dataset design, pandas, and six real business cases with runnable code and charts.">
+<title>Python for Analysts — Data for Everyone</title>
+<meta name="description" content="Practical Python for product analysts: fundamentals, core algorithms, pandas and numpy, six business cases with runnable code and real charts.">
 <link rel="canonical" href="https://data-for-everyone.com/python.html">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Python for Product Analysts — Data for Everyone">
-<meta property="og:description" content="Language fundamentals, dataset design, pandas and six real cases with runnable code.">
+<meta property="og:title" content="Python for Analysts — Data for Everyone">
+<meta property="og:description" content="Fundamentals, algorithms and real data work, with runnable code and charts.">
 <meta property="og:url" content="https://data-for-everyone.com/python.html">
 <meta property="og:image" content="https://data-for-everyone.com/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -23,7 +23,6 @@
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
 <header class="site-header">
   <div class="site-header-inner">
     <nav class="crumbs" aria-label="Breadcrumb">
@@ -45,207 +44,430 @@
         </button>
       </div>
     </div>
-    <p data-i18n="py_sub">Language fundamentals, dataset design and six real business cases. Every chart on this page was produced by running the code shown next to it.</p>
+    <p data-i18n="py_sub">Fundamentals, algorithms and real data work.</p>
   </div>
 </header>
-
 <main class="causal-main" id="tab-reference">
 <div class="causal-layout">
 <nav class="toc-sidebar" id="py-nav"><div class="toc-side-title" data-i18n="py_toc_h">On this page</div>
-<a class="toc-link" href="#t-basics"><span class="toc-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span><span data-i18n="py_nav_1">Основы Python на практике</span></a>
-<a class="toc-link" href="#t-dataset"><span class="toc-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M9 10v10"/></svg></span><span data-i18n="py_nav_2">Как устроен датасет</span></a>
-<a class="toc-link" href="#t-style"><span class="toc-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></span><span data-i18n="py_nav_3">Как писать код правильно</span></a>
-<a class="toc-link" href="#t-pandas"><span class="toc-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h18v6H3zM3 13h8v8H3zM15 13h6v8h-6z"/></svg></span><span data-i18n="py_nav_4">pandas: выбор и группировка</span></a>
-<a class="toc-link" href="#t-clean"><span class="toc-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg></span><span data-i18n="py_nav_5">Проверка и чистка данных</span></a>
-<a class="toc-link" href="#c-funnel"><span class="toc-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16l-6 8v6l-4-2v-4z"/></svg></span><span data-i18n="py_nav_6">Кейс: воронка</span></a>
-<a class="toc-link" href="#c-arpu"><span class="toc-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18c4 0 5-12 9-12s5 12 9 12"/></svg></span><span data-i18n="py_nav_7">Кейс: ARPU и медиана</span></a>
-<a class="toc-link" href="#c-cohort"><span class="toc-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18"/></svg></span><span data-i18n="py_nav_8">Кейс: когорты</span></a>
-<a class="toc-link" href="#c-ab"><span class="toc-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18"/><path d="M5 8l-3 7h6zM19 8l-3 7h6z"/></svg></span><span data-i18n="py_nav_9">Кейс: A/B-тест</span></a>
-<a class="toc-link" href="#c-rfm"><span class="toc-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="7" cy="8" r="3"/><circle cx="16" cy="15" r="3"/><path d="M10 10l3 3"/></svg></span><span data-i18n="py_nav_10">Кейс: RFM-сегменты</span></a>
-<a class="toc-link" href="#c-anom"><span class="toc-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 15l4-6 4 4 4-8 6 10"/></svg></span><span data-i18n="py_nav_11">Кейс: аномалии</span></a>
-<a class="toc-link" href="#v-adv"><span class="toc-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg></span><span data-i18n="py_nav_12">Продвинутая визуализация</span></a>
-<a class="toc-link" href="#v-rules"><span class="toc-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s8-4 8-10V5l-8-3-8 3v6c0 6 8 10 8 10z"/></svg></span><span data-i18n="py_nav_13">Правила хорошего графика</span></a>
-<a class="toc-link" href="#t-errors"><span class="toc-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v5"/><path d="M12 16.5h.01"/></svg></span><span data-i18n="py_nav_14">Частые ошибки</span></a>
-</nav>
-<div class="causal-content">
-<div class="card" id="t-style">
-<div class="card-title">2 · Как писать код правильно</div>
-<p>Этот раздел важнее синтаксиса. Аналитический код читают (в том числе вы через месяц) и на его основе принимают решения. Плохо написанный скрипт не просто некрасив — он <b>тихо выдаёт неверные числа</b>.</p>
-
-<div class="dd-h3">Правило 1 · Имена вместо загадок</div>
-<p><code>d</code>, <code>x</code>, <code>tmp2</code> — через неделю вы не вспомните, что это. <code>orders</code>, <code>paid_orders</code>, <code>arpu_by_country</code> — читаются как предложение. Имя переменной — это бесплатная документация.</p>
-
-<div class="dd-h3">Правило 2 · Векторизация вместо циклов</div>
-<p>pandas и numpy выполняют операцию сразу над всем столбцом. Ручной цикл по строкам делает то же самое, но в десятки раз медленнее — и код длиннее. Ниже — замер на реальных данных.</p>
-<button class="code-toggle" onclick="toggleCode(this)"><svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="c_did_code_show">Show Python code</span></button>
+<a class="toc-link" href="#s-basics"><span class="toc-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span><span data-i18n="py_nav_1">Python fundamentals</span></a>
+<a class="toc-link" href="#s-algo"><span class="toc-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="6" r="2.5"/><circle cx="12" cy="18" r="2.5"/><path d="M8 7l3 9M16 7l-3 9"/></svg></span><span data-i18n="py_nav_2">Core algorithms</span></a>
+<a class="toc-link" href="#s-data"><span class="toc-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M9 10v10"/></svg></span><span data-i18n="py_nav_3">Working with data</span></a>
+<a class="toc-link" href="#s-cases"><span class="toc-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></span><span data-i18n="py_nav_4">Business cases</span></a>
+<a class="toc-link" href="#s-viz"><span class="toc-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg></span><span data-i18n="py_nav_5">Advanced visualisation</span></a>
+<a class="toc-link" href="#s-errors"><span class="toc-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v5"/><path d="M12 16.5h.01"/></svg></span><span data-i18n="py_nav_6">Common mistakes</span></a>
+</nav><div class="causal-content">
+<div class="card" id="s-basics"><div class="card-title" data-i18n="s1_h">1 · Python fundamentals</div>
+<p data-i18n="s1_lead">Not a tour of the language — only what an analyst actually uses, and each idea explained by <em>why</em> it exists, not just how it is typed.</p>
+<div class="dd-h3" data-i18n="s11_h">1.1 · Types: a promise about a value</div>
+<p data-i18n="s11_p1">A type tells you what you may do with a value. Numbers add up, strings glue together. Mix them up and <code>"120" + "80"</code> silently becomes <code>"12080"</code> instead of 200 — a bug that raises no error and simply puts a wrong number in your report.</p>
+<p data-i18n="s11_p2"><code>None</code> deserves special care: it means "there is no value", which is <b>not</b> zero. A user who never bought has revenue <code>None</code>; a user who bought and refunded everything has <code>0</code>. Treating them the same shifts your average.</p>
+<button class="code-toggle" onclick="toggleCode(this)" aria-expanded="false"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="c_did_code_show">Show Python code</span></button>
 <div class="code-collapse" hidden>
-<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)">Copy</button><pre><span class="tok-c"># ❌ ПЛОХО — так писать не надо</span>
+<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="tok-c"># A type is a promise about what you can do <span class="tok-k">with</span> a value</span>
+users   = 1200              <span class="tok-c"># int   — whole number</span>
+conv    = 0.048             <span class="tok-c"># float — fractional</span>
+metric  = &quot;checkout_rate&quot;   <span class="tok-c"># str   — text</span>
+is_sig  = <span class="tok-k">True</span>              <span class="tok-c"># bool  — yes/no</span>
+missing = <span class="tok-k">None</span>              <span class="tok-c"># <span class="tok-k">None</span>  — there is NO value (<span class="tok-k">not</span> zero!)</span>
+
+print(type(users), type(conv))
+
+<span class="tok-c"># The classic trap: numbers that are secretly strings</span>
+a, b = &quot;120&quot;, &quot;80&quot;
+print(a + b)            <span class="tok-c"># 12080  — glued, <span class="tok-k">not</span> added</span>
+print(int(a) + int(b))  <span class="tok-c"># 200    — <span class="tok-k">as</span> intended</span>
+
+<span class="tok-c"># <span class="tok-k">None</span> is <span class="tok-k">not</span> zero</span>
+never_bought = <span class="tok-k">None</span>
+refunded_all = 0
+print(never_bought is <span class="tok-k">None</span>, refunded_all == 0)</pre></div>
+<div class="code-output"><span class="code-output-label" data-i18n="py_out_label"># output when run (verified):</span>&lt;class &#x27;int&#x27;&gt; &lt;class &#x27;float&#x27;&gt;
+12080
+200
+True True</div>
+</div>
+
+<div class="dd-h3" data-i18n="s12_h">1.2 · Structures: list, dict, set</div>
+<p data-i18n="s12_p1">The structure you choose decides both readability and speed. The rule: <b>list</b> when order matters, <b>dict</b> when you look values up by key, <b>set</b> when you need uniqueness or a fast "is it there?" check.</p>
+<p data-i18n="s12_p2">The speed gap is not academic. A list checks elements one by one; a set jumps straight to the answer through a hash. Inside a loop over a million rows that is the difference between seconds and hours.</p>
+<button class="code-toggle" onclick="toggleCode(this)" aria-expanded="false"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="c_did_code_show">Show Python code</span></button>
+<div class="code-collapse" hidden>
+<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="tok-c"># List — order matters, access by position</span>
+revenue = [120.5, 80.0, 340.2, 55.0]
+print(revenue[0], revenue[-1], revenue[1:3])
+
+<span class="tok-c"># Dict — lookup by key</span>
+user_plan = {101: &quot;pro&quot;, 102: &quot;free&quot;, 103: &quot;pro&quot;}
+print(user_plan[102])                 <span class="tok-c"># free</span>
+print(user_plan.get(999, &quot;unknown&quot;))  <span class="tok-c"># safe default, no error</span>
+
+<span class="tok-c"># Set — uniqueness <span class="tok-k">and</span> fast membership tests</span>
+paid_users = {101, 103, 107}
+print(107 <span class="tok-k">in</span> paid_users)
+
+<span class="tok-c"># Why the choice matters <span class="tok-k">for</span> speed</span>
+<span class="tok-k">import</span> time
+big_list = list(range(1_000_000))
+big_set  = set(big_list)
+
+t0 = time.perf_counter(); 999_999 <span class="tok-k">in</span> big_list; t_list = time.perf_counter() - t0
+t0 = time.perf_counter(); 999_999 <span class="tok-k">in</span> big_set;  t_set  = time.perf_counter() - t0
+print(f&quot;list: {t_list*1000:.2f} ms | set: {t_set*1000:.4f} ms&quot;)</pre></div>
+<div class="code-output"><span class="code-output-label" data-i18n="py_out_label"># output when run (verified):</span>120.5 55.0 [80.0, 340.2]
+free
+unknown
+True
+list: 7.62 ms | set: 0.0022 ms</div>
+</div>
+
+<div class="callout-box" data-i18n="s12_take"><b>Practical rule:</b> if you test membership inside a loop, convert the list to a set first. One line, and a slow script stops being slow.</div>
+<div class="dd-h3" data-i18n="s13_h">1.3 · Comprehensions</div>
+<p data-i18n="s13_p1">A comprehension builds a collection in one line. The gain is not brevity but intent: it says "this is a transformation of that", instead of "make an empty list, then append over and over".</p>
+<button class="code-toggle" onclick="toggleCode(this)" aria-expanded="false"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="c_did_code_show">Show Python code</span></button>
+<div class="code-collapse" hidden>
+<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre>orders = [
+    {&quot;id&quot;: 1, &quot;amount&quot;: 120, &quot;status&quot;: &quot;paid&quot;},
+    {&quot;id&quot;: 2, &quot;amount&quot;: 0,   &quot;status&quot;: &quot;cancelled&quot;},
+    {&quot;id&quot;: 3, &quot;amount&quot;: 340, &quot;status&quot;: &quot;paid&quot;},
+]
+
+amounts  = [o[&quot;amount&quot;] <span class="tok-k">for</span> o <span class="tok-k">in</span> orders]                        <span class="tok-c"># transform</span>
+paid     = [o[&quot;amount&quot;] <span class="tok-k">for</span> o <span class="tok-k">in</span> orders <span class="tok-k">if</span> o[&quot;status&quot;] == &quot;paid&quot;]  <span class="tok-c"># + filter</span>
+by_id    = {o[&quot;id&quot;]: o[&quot;amount&quot;] <span class="tok-k">for</span> o <span class="tok-k">in</span> orders}               <span class="tok-c"># dict</span>
+statuses = {o[&quot;status&quot;] <span class="tok-k">for</span> o <span class="tok-k">in</span> orders}                        <span class="tok-c"># set</span>
+
+print(amounts)
+print(paid)
+print(by_id)
+print(sorted(statuses))</pre></div>
+<div class="code-output"><span class="code-output-label" data-i18n="py_out_label"># output when run (verified):</span>[120, 0, 340]
+[120, 340]
+{1: 120, 2: 0, 3: 340}
+[&#x27;cancelled&#x27;, &#x27;paid&#x27;]</div>
+</div>
+
+<div class="dd-h3" data-i18n="s14_h">1.4 · Functions</div>
+<p data-i18n="s14_p1">A function is how you stop copy-pasting. The real benefit is not elegance: when a formula changes you fix it once instead of hunting every copy — and a copy you miss is exactly how two slides end up disagreeing.</p>
+<button class="code-toggle" onclick="toggleCode(this)" aria-expanded="false"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="c_did_code_show">Show Python code</span></button>
+<div class="code-collapse" hidden>
+<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="tok-k">def</span> lift(control, variant):
+    &quot;&quot;&quot;Relative uplift <span class="tok-k">in</span> %. The docstring is what your editor
+    shows <span class="tok-k">as</span> a hint later — it is <span class="tok-k">not</span> decoration.&quot;&quot;&quot;
+    <span class="tok-k">if</span> control == 0:
+        <span class="tok-k">return</span> <span class="tok-k">None</span>                 <span class="tok-c"># honestly <span class="tok-k">return</span> &quot;unknown&quot;</span>
+    <span class="tok-k">return</span> (variant - control) / control * 100
+
+print(round(lift(0.098, 0.1136), 1))
+print(lift(0, 0.05))                <span class="tok-c"># <span class="tok-k">None</span> — no division by zero</span>
+
+<span class="tok-k">def</span> summarize(values, digits=2, with_median=<span class="tok-k">True</span>):
+    out = {&quot;n&quot;: len(values), &quot;mean&quot;: round(sum(values)/len(values), digits)}
+    <span class="tok-k">if</span> with_median:
+        srt = sorted(values); mid = len(srt)//2
+        out[&quot;median&quot;] = round(srt[mid] <span class="tok-k">if</span> len(srt) % 2 <span class="tok-k">else</span> (srt[mid-1]+srt[mid])/2, digits)
+    <span class="tok-k">return</span> out
+
+print(summarize([120, 80, 340, 55]))</pre></div>
+<div class="code-output"><span class="code-output-label" data-i18n="py_out_label"># output when run (verified):</span>15.9
+None
+{&#x27;n&#x27;: 4, &#x27;mean&#x27;: 148.75, &#x27;median&#x27;: 100.0}</div>
+</div>
+
+<div class="cs-takeaway" data-i18n="s14_take"><b>Rule of thumb:</b> a calculation that appears twice is a function waiting to happen. Add a docstring — that is the text your editor shows as a hint later.</div>
+</div>
+<div class="card" id="s-algo"><div class="card-title" data-i18n="s2_h">2 · Core algorithms</div>
+<p data-i18n="s2_lead">These are the classic interview problems — but what matters here is the <b>pattern</b> behind each one. The same four patterns underpin how pandas performs a join, a group-by or a rolling window.</p>
+<div class="dd-h3" data-i18n="s21_h">2.1 · Complexity in one paragraph</div>
+<p data-i18n="s21_p1">Complexity answers one question: as data grows, how fast does the work grow? <b>O(n)</b> means one pass — double the rows, double the time. <b>O(n²)</b> means comparing every element with every other — double the rows and the time goes up fourfold. Most "why is my script hanging" stories are an accidental O(n²).</p>
+<p data-i18n="s21_p2">The practical takeaway: a loop inside a loop over the same data is a red flag. Almost always it can be replaced by a dictionary lookup, turning O(n²) into O(n).</p>
+<button class="code-toggle" onclick="toggleCode(this)" aria-expanded="false"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="c_did_code_show">Show Python code</span></button>
+<div class="code-collapse" hidden>
+<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="tok-k">import</span> time
+
+<span class="tok-k">def</span> has_duplicate_slow(items):      <span class="tok-c"># O(n^2) — every pair compared</span>
+    <span class="tok-k">for</span> i <span class="tok-k">in</span> range(len(items)):
+        <span class="tok-k">for</span> j <span class="tok-k">in</span> range(i+1, len(items)):
+            <span class="tok-k">if</span> items[i] == items[j]:
+                <span class="tok-k">return</span> <span class="tok-k">True</span>
+    <span class="tok-k">return</span> <span class="tok-k">False</span>
+
+<span class="tok-k">def</span> has_duplicate_fast(items):      <span class="tok-c"># O(n) — one pass, remembering</span>
+    seen = set()
+    <span class="tok-k">for</span> x <span class="tok-k">in</span> items:
+        <span class="tok-k">if</span> x <span class="tok-k">in</span> seen:
+            <span class="tok-k">return</span> <span class="tok-k">True</span>
+        seen.add(x)
+    <span class="tok-k">return</span> <span class="tok-k">False</span>
+
+data = list(range(5000))            <span class="tok-c"># worst case: no duplicates at all</span>
+
+t0 = time.perf_counter(); has_duplicate_slow(data); slow = time.perf_counter()-t0
+t0 = time.perf_counter(); has_duplicate_fast(data); fast = time.perf_counter()-t0
+print(f&quot;O(n^2): {slow*1000:.1f} ms&quot;)
+print(f&quot;O(n):   {fast*1000:.2f} ms&quot;)
+print(f&quot;faster: {slow/fast:.0f}x&quot;)</pre></div>
+<div class="code-output"><span class="code-output-label" data-i18n="py_out_label"># output when run (verified):</span>O(n^2): 268.5 ms
+O(n):   0.35 ms
+faster: 766x</div>
+</div>
+
+<div class="dd-h3" data-i18n="s22_h">2.2 · Pattern: a dict as memory</div>
+<p data-i18n="s22_p1">The single most useful pattern in analytics. Instead of comparing every pair, you walk once and remember what you have already seen. Whenever a task sounds like "find a pair / find a duplicate / match one table to another", this is the shape of the answer.</p>
+<button class="code-toggle" onclick="toggleCode(this)" aria-expanded="false"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="c_did_code_show">Show Python code</span></button>
+<div class="code-collapse" hidden>
+<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="tok-c"># Pattern: a dict remembers what we have already seen.</span>
+<span class="tok-c"># Analytical meaning: find two orders that add up to a target sum.</span>
+<span class="tok-k">def</span> two_sum(nums, target):
+    seen = {}                       <span class="tok-c"># value -&gt; index</span>
+    <span class="tok-k">for</span> i, n <span class="tok-k">in</span> enumerate(nums):
+        <span class="tok-k">if</span> target - n <span class="tok-k">in</span> seen:      <span class="tok-c"># has the complement appeared before?</span>
+            <span class="tok-k">return</span> [seen[target - n], i]
+        seen[n] = i
+    <span class="tok-k">return</span> []
+
+print(two_sum([120, 45, 300, 80, 55], 135))   <span class="tok-c"># 80 + 55</span>
+
+<span class="tok-c"># Same pattern: match two tables by key without a nested loop</span>
+users  = {101: &quot;RU&quot;, 102: &quot;KZ&quot;, 103: &quot;RU&quot;}
+orders = [(101, 120), (103, 340), (999, 50)]
+joined = [(uid, amt, users.get(uid, &quot;unknown&quot;)) <span class="tok-k">for</span> uid, amt <span class="tok-k">in</span> orders]
+print(joined)</pre></div>
+<div class="code-output"><span class="code-output-label" data-i18n="py_out_label"># output when run (verified):</span>[3, 4]
+[(101, 120, &#x27;RU&#x27;), (103, 340, &#x27;RU&#x27;), (999, 50, &#x27;unknown&#x27;)]</div>
+</div>
+
+<div class="callout-box" data-i18n="s22_take"><b>Why this matters beyond interviews:</b> a <code>merge</code> in pandas is exactly this — it builds a hash of one table and walks the other once. Understanding the pattern is understanding why a join on an indexed key is fast.</div>
+<div class="dd-h3" data-i18n="s23_h">2.3 · Pattern: counting and top-K</div>
+<p data-i18n="s23_p1">Counting occurrences is the most common analytical operation there is: popular pages, frequent errors, best-selling items. <code>Counter</code> does it in one pass and hands you the ranking ready-made.</p>
+<button class="code-toggle" onclick="toggleCode(this)" aria-expanded="false"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="c_did_code_show">Show Python code</span></button>
+<div class="code-collapse" hidden>
+<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="tok-k">from</span> collections <span class="tok-k">import</span> Counter
+
+pages = [&quot;/home&quot;,&quot;/pricing&quot;,&quot;/home&quot;,&quot;/docs&quot;,&quot;/home&quot;,&quot;/pricing&quot;,&quot;/blog&quot;]
+
+counts = Counter(pages)
+print(counts)                       <span class="tok-c"># how many times each page appeared</span>
+print(counts.most_common(2))        <span class="tok-c"># ranking, ready-made</span>
+
+<span class="tok-c"># Share of traffic, <span class="tok-k">not</span> just raw counts</span>
+total = sum(counts.values())
+<span class="tok-k">for</span> page, n <span class="tok-k">in</span> counts.most_common(3):
+    print(f&quot;{page:&lt;10} {n}  {n/total*100:.0f}%&quot;)</pre></div>
+<div class="code-output"><span class="code-output-label" data-i18n="py_out_label"># output when run (verified):</span>Counter({&#x27;/home&#x27;: 3, &#x27;/pricing&#x27;: 2, &#x27;/docs&#x27;: 1, &#x27;/blog&#x27;: 1})
+[(&#x27;/home&#x27;, 3), (&#x27;/pricing&#x27;, 2)]
+/home      3  43%
+/pricing   2  29%
+/docs      1  14%</div>
+</div>
+
+<div class="dd-h3" data-i18n="s24_h">2.4 · Pattern: sliding window</div>
+<p data-i18n="s24_p1">When a question involves "k consecutive days", recomputing the sum for every position is wasteful. A sliding window adds the entering value and subtracts the leaving one — one pass instead of many. This is precisely what <code>rolling()</code> does in pandas.</p>
+<button class="code-toggle" onclick="toggleCode(this)" aria-expanded="false"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="c_did_code_show">Show Python code</span></button>
+<div class="code-collapse" hidden>
+<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="tok-c"># Best 3 consecutive days of sales.</span>
+<span class="tok-c"># Naive: recompute the sum <span class="tok-k">for</span> every position — O(n*k)</span>
+<span class="tok-c"># Sliding window: add the entering value, subtract the leaving one — O(n)</span>
+<span class="tok-k">def</span> max_window(values, k):
+    current = sum(values[:k])
+    best = current
+    <span class="tok-k">for</span> i <span class="tok-k">in</span> range(k, len(values)):
+        current += values[i] - values[i - k]
+        best = max(best, current)
+    <span class="tok-k">return</span> best
+
+sales = [120, 80, 300, 55, 400, 90, 20]
+print(max_window(sales, 3))         <span class="tok-c"># 300 + 55 + 400</span>
+
+<span class="tok-c"># pandas does exactly this <span class="tok-k">with</span> rolling()</span>
 <span class="tok-k">import</span> pandas <span class="tok-k">as</span> <span class="tok-b">pd</span>
-d = <span class="tok-b">pd</span>.read_csv(&quot;f.csv&quot;)
-x = d[d[&<span class="tok-c">#x27;a&#x27;]&gt;0]</span>
-y = []
-<span class="tok-k">for</span> i <span class="tok-k">in</span> range(len(x)):
-    y.append(x.iloc[i][&<span class="tok-c">#x27;b&#x27;] * 1.2)</span>
-x[&<span class="tok-c">#x27;c&#x27;] = y</span>
+print(<span class="tok-b">pd</span>.Series(sales).rolling(3).sum().max())</pre></div>
+<div class="code-output"><span class="code-output-label" data-i18n="py_out_label"># output when run (verified):</span>755
+755.0</div>
+</div>
 
-<span class="tok-c"># ✅ ХОРОШО — то же самое, но понятно и в 20 раз быстрее</span>
-orders = <span class="tok-b">pd</span>.read_csv(&quot;orders_2026_q1.csv&quot;)
+<div class="dd-h3" data-i18n="s25_h">2.5 · Pattern: grouping by a computed key</div>
+<p data-i18n="s25_p1">Sometimes the key you need is not in the data — you compute it. Sorting the letters of a word groups anagrams; normalising a name groups duplicate customers; rounding a timestamp groups events into hours. The mechanism is identical, and it is what <code>groupby</code> does under the hood.</p>
+<button class="code-toggle" onclick="toggleCode(this)" aria-expanded="false"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="c_did_code_show">Show Python code</span></button>
+<div class="code-collapse" hidden>
+<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="tok-k">from</span> collections <span class="tok-k">import</span> defaultdict
 
-paid_orders = orders[orders[&quot;amount&quot;] &gt; 0]          <span class="tok-c"># понятное имя</span>
-paid_orders = paid_orders.copy()                    <span class="tok-c"># явная копия — см. ниже</span>
-paid_orders[&quot;amount_with_vat&quot;] = paid_orders[&quot;amount&quot;] * 1.2   <span class="tok-c"># векторно</span>
+<span class="tok-c"># Pattern: group by a key you compute yourself.</span>
+<span class="tok-k">def</span> group_by_key(items, key_fn):
+    groups = defaultdict(list)
+    <span class="tok-k">for</span> x <span class="tok-k">in</span> items:
+        groups[key_fn(x)].append(x)
+    <span class="tok-k">return</span> dict(groups)
 
-<span class="tok-c"># ── Почему цикл — плохо: замер на 100 000 строк ──</span>
-<span class="tok-k">import</span> numpy <span class="tok-k">as</span> <span class="tok-b">np</span>, time
+<span class="tok-c"># Anagrams: the key is the sorted letters</span>
+words = [&quot;listen&quot;, &quot;silent&quot;, &quot;enlist&quot;, &quot;google&quot;, &quot;gogole&quot;]
+print(group_by_key(words, <span class="tok-k">lambda</span> w: &quot;&quot;.join(sorted(w))))
+
+<span class="tok-c"># Same mechanism, real task: merge duplicate customers</span>
+names = [&quot;Ivan Petrov&quot;, &quot;ivan  petrov&quot;, &quot;Anna Sidorova&quot;]
+normalise = <span class="tok-k">lambda</span> s: &quot; &quot;.join(s.lower().split())
+print(group_by_key(names, normalise))</pre></div>
+<div class="code-output"><span class="code-output-label" data-i18n="py_out_label"># output when run (verified):</span>{&#x27;eilnst&#x27;: [&#x27;listen&#x27;, &#x27;silent&#x27;, &#x27;enlist&#x27;], &#x27;eggloo&#x27;: [&#x27;google&#x27;, &#x27;gogole&#x27;]}
+{&#x27;ivan petrov&#x27;: [&#x27;Ivan Petrov&#x27;, &#x27;ivan  petrov&#x27;], &#x27;anna sidorova&#x27;: [&#x27;Anna Sidorova&#x27;]}</div>
+</div>
+
+<div class="cs-takeaway" data-i18n="s25_take"><b>What ties these together:</b> four of the five problems above are solved by "remember what you have seen in a dict or set". That single idea converts brute-force comparison into a single pass — and it is the foundation of every fast operation in pandas.</div>
+</div>
+<div class="card" id="s-data"><div class="card-title" data-i18n="s3_h">3 · Working with data</div>
+<p data-i18n="s3_lead">Where the language stops and the craft begins. Half of all analytical errors are born not in the calculation but in how the table was assembled.</p>
+<div class="dd-h3" data-i18n="s31_h">3.1 · numpy: why vectorisation</div>
+<p data-i18n="s31_p1">numpy stores numbers in one continuous block of memory and applies an operation to the whole block at once, in compiled code. A Python loop, by contrast, unpacks and repacks every value individually. That is where the order-of-magnitude difference comes from — it is not a style preference.</p>
+<button class="code-toggle" onclick="toggleCode(this)" aria-expanded="false"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="c_did_code_show">Show Python code</span></button>
+<div class="code-collapse" hidden>
+<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="tok-k">import</span> numpy <span class="tok-k">as</span> <span class="tok-b">np</span>, pandas <span class="tok-k">as</span> <span class="tok-b">pd</span>, time
+
 s = <span class="tok-b">pd</span>.Series(<span class="tok-b">np</span>.random.rand(100_000))
 
-t0 = time.perf_counter()
-res_loop = [v * 1.2 <span class="tok-k">for</span> v <span class="tok-k">in</span> s]          <span class="tok-c"># поэлементно</span>
-t_loop = time.perf_counter() - t0
+t0 = time.perf_counter(); loop = [v * 1.2 <span class="tok-k">for</span> v <span class="tok-k">in</span> s];  t_loop = time.perf_counter()-t0
+t0 = time.perf_counter(); vec  = s * 1.2;               t_vec  = time.perf_counter()-t0
 
-t0 = time.perf_counter()
-res_vec = s * 1.2                        <span class="tok-c"># векторно, средствами pandas</span>
-t_vec = time.perf_counter() - t0
+print(f&quot;loop:   {t_loop*1000:.1f} ms&quot;)
+print(f&quot;vector: {t_vec*1000:.1f} ms&quot;)
+print(f&quot;faster: {t_loop/t_vec:.0f}x&quot;)
 
-print(f&quot;цикл:    {t_loop*1000:.1f} мс&quot;)
-print(f&quot;вектор:  {t_vec*1000:.1f} мс&quot;)
-print(f&quot;быстрее в {t_loop/t_vec:.0f} раз&quot;)</pre></div>
-<div class="code-output"><span class="code-output-label"># вывод при запуске (проверено):</span>цикл:    9.3 мс
-вектор:  0.6 мс
-быстрее в 16 раз</div>
+<span class="tok-c"># numpy also gives whole-array maths <span class="tok-k">in</span> one call</span>
+a = <span class="tok-b">np</span>.array([120.0, 80.0, 340.0, 55.0])
+print(a.mean(), a.std().round(2), <span class="tok-b">np</span>.percentile(a, 90))</pre></div>
+<div class="code-output"><span class="code-output-label" data-i18n="py_out_label"># output when run (verified):</span>loop:   9.3 ms
+vector: 0.6 ms
+faster: 16x
+148.75 111.24 274.0</div>
 </div>
 
-<p style="font-size:.88rem;color:#686b85">Точное число зависит от машины и объёма данных — но порядок стабилен: на больших таблицах разрыв достигает сотен раз. Правило простое: если пишете <code>for</code> по строкам DataFrame, почти наверняка есть векторный способ.</p>
-<div class="dd-h3">Правило 3 · Явная копия вместо SettingWithCopyWarning</div>
-<p>Самая частая ловушка pandas. Когда вы фильтруете таблицу, а потом пишете в результат, pandas не знает — вы меняете копию или оригинал. Итог: предупреждение и молча не записанные значения.</p>
-<button class="code-toggle" onclick="toggleCode(this)"><svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="c_did_code_show">Show Python code</span></button>
+<div class="cs-takeaway" data-i18n="s31_take"><b>Rule:</b> if you are writing <code>for</code> over the rows of a DataFrame, there is almost certainly a vector equivalent. The exact multiple depends on the machine, but the order of magnitude is stable.</div>
+<div class="dd-h3" data-i18n="s32_h">3.2 · Building a dataset properly</div>
+<p data-i18n="s32_p1">The most common mistake is leaving everything as strings. Then dates will not sort, categories waste memory, and numbers will not add up. Declare types as you build the table, not after something breaks.</p>
+<p data-i18n="s32_p2">Note the fixed seed. Anything random — sampling, simulation, synthetic data — must be reproducible, otherwise tomorrow you get different numbers and cannot tell whether the data changed or you simply got lucky.</p>
+<button class="code-toggle" onclick="toggleCode(this)" aria-expanded="false"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="c_did_code_show">Show Python code</span></button>
 <div class="code-collapse" hidden>
-<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)">Copy</button><pre><span class="tok-k">import</span> <span class="tok-b">pandas</span> <span class="tok-k">as</span> <span class="tok-b">pd</span>
-<span class="tok-c"># таблица для примеров ниже</span>
-orders = pd.DataFrame({<span class="tok-s">&quot;country&quot;</span>: [<span class="tok-s">&quot;RU&quot;</span>,<span class="tok-s">&quot;KZ&quot;</span>,<span class="tok-s">&quot;RU&quot;</span>],
-                       <span class="tok-s">&quot;amount&quot;</span>: [1200, 300, 800],
-                       <span class="tok-s">&quot;status&quot;</span>: [<span class="tok-s">&quot;paid&quot;</span>,<span class="tok-s">&quot;paid&quot;</span>,<span class="tok-s">&quot;cancelled&quot;</span>]})
+<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="tok-k">import</span> pandas <span class="tok-k">as</span> <span class="tok-b">pd</span>, numpy <span class="tok-k">as</span> <span class="tok-b">np</span>
 
-<span class="tok-c"># ❌ pandas выдаст SettingWithCopyWarning, запись может не сработать</span>
-subset = orders[orders[&quot;country&quot;] == &quot;RU&quot;]
-subset[&quot;is_big&quot;] = subset[&quot;amount&quot;] &gt; 1000
+rng = <span class="tok-b">np</span>.random.default_rng(42)      <span class="tok-c"># fixed seed -&gt; reproducible</span>
+n = 500
 
-<span class="tok-c"># ✅ Вариант 1 — явно говорим, что это отдельная таблица</span>
-subset = orders[orders[&quot;country&quot;] == &quot;RU&quot;].copy()
-subset[&quot;is_big&quot;] = subset[&quot;amount&quot;] &gt; 1000
+users = <span class="tok-b">pd</span>.DataFrame({
+    &quot;user_id&quot;: <span class="tok-b">np</span>.arange(1, n+1),                              <span class="tok-c"># int</span>
+    &quot;signup&quot;:  <span class="tok-b">pd</span>.to_datetime(&quot;2026-01-01&quot;)                    <span class="tok-c"># real dates</span>
+               + <span class="tok-b">pd</span>.to_timedelta(rng.integers(0, 180, n), unit=&quot;D&quot;),
+    &quot;country&quot;: <span class="tok-b">pd</span>.Categorical(rng.choice([&quot;RU&quot;,&quot;KZ&quot;,&quot;BY&quot;], n, p=[.6,.25,.15])),
+    &quot;plan&quot;:    <span class="tok-b">pd</span>.Categorical(rng.choice([&quot;free&quot;,&quot;pro&quot;], n, p=[.75,.25]),
+                              categories=[&quot;free&quot;,&quot;pro&quot;], ordered=<span class="tok-k">True</span>),
+    &quot;revenue&quot;: <span class="tok-b">np</span>.round(rng.lognormal(2.5, 1.1, n), 2),
+})
+users.loc[rng.choice(n, 25, replace=<span class="tok-k">False</span>), &quot;revenue&quot;] = <span class="tok-b">np</span>.nan   <span class="tok-c"># realistic gaps</span>
 
-<span class="tok-c"># ✅ Вариант 2 — меняем оригинал через .loc, без промежуточной таблицы</span>
-orders.loc[orders[&quot;country&quot;] == &quot;RU&quot;, &quot;is_big&quot;] = orders[&quot;amount&quot;] &gt; 1000</pre></div>
+print(users.dtypes.to_string())
+
+obj_kb = users[&quot;country&quot;].astype(object).memory_usage(deep=<span class="tok-k">True</span>)/1024
+cat_kb = users[&quot;country&quot;].memory_usage(deep=<span class="tok-k">True</span>)/1024
+print(f&quot;\nobject: {obj_kb:.1f} KB | category: {cat_kb:.1f} KB &quot;
+      f&quot;-&gt; {obj_kb/cat_kb:.0f}x smaller&quot;)</pre></div>
+<div class="code-output"><span class="code-output-label" data-i18n="py_out_label"># output when run (verified):</span>user_id             int64
+signup     datetime64[us]
+country          category
+plan             category
+revenue           float64
+
+object: 25.0 KB | category: 0.8 KB -&gt; 33x smaller</div>
 </div>
 
-
-<div class="dd-h3">Правило 4 · Воспроизводимость</div>
-<p>Если в коде есть случайность (сэмплирование, симуляция) — фиксируйте зерно. Иначе завтра получите другие числа и не поймёте, изменились данные или просто повезло.</p>
-<button class="code-toggle" onclick="toggleCode(this)"><svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="c_did_code_show">Show Python code</span></button>
+<div class="callout-box" data-i18n="s32_take"><b>Why <code>category</code> matters:</b> on 500 rows the saving is invisible, on ten million it is the difference between "the table fits in memory" and "the kernel died". It also gives correct sorting: <code>ordered=True</code> knows that free comes before pro.</div>
+<div class="dd-h3" data-i18n="s33_h">3.3 · Long and wide format</div>
+<p data-i18n="s33_p1">This is the central idea of data organisation. <b>Wide</b> is comfortable for a human reading a report. <b>Long</b> (or "tidy") is the only shape that group-bys and plotting libraries work with naturally.</p>
+<button class="code-toggle" onclick="toggleCode(this)" aria-expanded="false"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="c_did_code_show">Show Python code</span></button>
 <div class="code-collapse" hidden>
-<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)">Copy</button><pre><span class="tok-k">import</span> numpy <span class="tok-k">as</span> <span class="tok-b">np</span>
+<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="tok-k">import</span> pandas <span class="tok-k">as</span> <span class="tok-b">pd</span>
 
-rng = <span class="tok-b">np</span>.random.default_rng(42)     <span class="tok-c"># ✅ современный способ, зерно зафиксировано</span>
-sample = rng.choice(np.arange(5000), size=1000, replace=<span class="tok-k">False</span>)
+wide = <span class="tok-b">pd</span>.DataFrame({
+    &quot;user_id&quot;: [1, 2, 3],
+    &quot;jan&quot;: [100, 150, 90], &quot;feb&quot;: [120, 140, 110], &quot;mar&quot;: [130, 160, 95],
+})
+print(&quot;WIDE — easy <span class="tok-k">for</span> a human to read:&quot;)
+print(wide.to_string(index=<span class="tok-k">False</span>))
 
-<span class="tok-c"># ❌ <span class="tok-b">np</span>.random.seed(42) — устаревший глобальный подход:</span>
-<span class="tok-c">#    любая библиотека может незаметно перебить состояние</span></pre></div>
+<span class="tok-c"># melt: wide -&gt; long. One row = one observation</span>
+long = wide.melt(id_vars=&quot;user_id&quot;, var_name=&quot;month&quot;, value_name=&quot;revenue&quot;)
+print(&quot;\nLONG — easy to analyse:&quot;)
+print(long.head(4).to_string(index=<span class="tok-k">False</span>))
+
+<span class="tok-c"># pivot: long -&gt; wide again, <span class="tok-k">for</span> a report</span>
+print(&quot;\nBack via pivot:&quot;)
+print(long.pivot(index=&quot;user_id&quot;, columns=&quot;month&quot;, values=&quot;revenue&quot;).to_string())</pre></div>
+<div class="code-output"><span class="code-output-label" data-i18n="py_out_label"># output when run (verified):</span>WIDE — easy for a human to read:
+ user_id  jan  feb  mar
+       1  100  120  130
+       2  150  140  160
+       3   90  110   95
+
+LONG — easy to analyse:
+ user_id month  revenue
+       1   jan      100
+       2   jan      150
+       3   jan       90
+       1   feb      120
+
+Back via pivot:
+month    feb  jan  mar
+user_id               
+1        120  100  130
+2        140  150  160
+3        110   90   95</div>
 </div>
 
-
-<div class="dd-h3">Правило 5 · Цепочка вместо промежуточных переменных</div>
-<button class="code-toggle" onclick="toggleCode(this)"><svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="c_did_code_show">Show Python code</span></button>
+<div class="cs-takeaway" data-i18n="s33_take"><b>The tidy rule:</b> one row is one observation, one column is one variable. If column names contain <i>values</i> (jan, feb, mar are values of the variable "month"), the table is wide and should be reshaped with <code>melt</code> before analysis.</div>
+<div class="callout-box" data-i18n="s33_note"><b>Spot the detail in the output:</b> after <code>pivot</code> the columns came back alphabetically — feb, jan, mar. For months that is wrong. This is exactly why a month should be stored as a date or an ordered category, never as a plain string.</div>
+<div class="dd-h3" data-i18n="s34_h">3.4 · pandas: select, group, join</div>
+<p data-i18n="s34_p1">Four operations cover most day-to-day work: look at the data, select what you need, group it, and join it to another table. Everything else is a variation.</p>
+<button class="code-toggle" onclick="toggleCode(this)" aria-expanded="false"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="c_did_code_show">Show Python code</span></button>
 <div class="code-collapse" hidden>
-<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)">Copy</button><pre><span class="tok-k">import</span> <span class="tok-b">pandas</span> <span class="tok-k">as</span> <span class="tok-b">pd</span>
-<span class="tok-c"># таблица для примеров ниже</span>
-orders = pd.DataFrame({<span class="tok-s">&quot;country&quot;</span>: [<span class="tok-s">&quot;RU&quot;</span>,<span class="tok-s">&quot;KZ&quot;</span>,<span class="tok-s">&quot;RU&quot;</span>],
-                       <span class="tok-s">&quot;amount&quot;</span>: [1200, 300, 800],
-                       <span class="tok-s">&quot;status&quot;</span>: [<span class="tok-s">&quot;paid&quot;</span>,<span class="tok-s">&quot;paid&quot;</span>,<span class="tok-s">&quot;cancelled&quot;</span>]})
-
-<span class="tok-c"># ❌ пять переменных, легко запутаться какая актуальна</span>
-t1 = orders[orders[&quot;status&quot;] == &quot;paid&quot;]
-t2 = t1[t1[&quot;amount&quot;] &gt; 0]
-t3 = t2.groupby(&quot;country&quot;)[&quot;amount&quot;].sum()
-t4 = t3.sort_values(ascending=<span class="tok-k">False</span>)
-top = t4.head(5)
-
-<span class="tok-c"># ✅ одна читаемая цепочка — скобки позволяют переносить строки</span>
-top = (
-    orders
-    .query(&quot;status == &<span class="tok-c">#x27;paid&#x27; <span class="tok-k">and</span> amount &gt; 0&quot;)</span>
-    .groupby(&quot;country&quot;)[&quot;amount&quot;]
-    .sum()
-    .sort_values(ascending=<span class="tok-k">False</span>)
-    .head(5)
-)</pre></div>
-</div>
-
-<div class="cs-takeaway"><b>Главное правило:</b> код пишется один раз, а читается десятки. Если приходится «расшифровывать» собственный скрипт — это не экономия времени, а отложенная ошибка.</div>
-</div>
-<div class="card" id="t-pandas">
-<div class="card-title">3 · pandas: выбор, группировка, соединение</div>
-<p>pandas — это Excel, которым управляют кодом. Четыре операции закрывают большинство задач: посмотреть данные, выбрать нужное, сгруппировать, соединить с другой таблицей.</p>
-<button class="code-toggle" onclick="toggleCode(this)"><svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="c_did_code_show">Show Python code</span></button>
-<div class="code-collapse" hidden>
-<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)">Copy</button><pre><span class="tok-k">import</span> pandas <span class="tok-k">as</span> <span class="tok-b">pd</span>
+<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="tok-k">import</span> pandas <span class="tok-k">as</span> <span class="tok-b">pd</span>
 
 orders = <span class="tok-b">pd</span>.DataFrame({
-    &quot;order_id&quot;:  [1, 2, 3, 4, 5, 6],
-    &quot;user_id&quot;:   [10, 10, 11, 12, 12, 13],
-    &quot;country&quot;:   [&quot;RU&quot;, &quot;RU&quot;, &quot;KZ&quot;, &quot;KZ&quot;, &quot;RU&quot;, &quot;KZ&quot;],
-    &quot;amount&quot;:    [120.0, 0.0, 340.5, 55.0, 0.0, 780.0],
-    &quot;status&quot;:    [&quot;paid&quot;,&quot;cancelled&quot;,&quot;paid&quot;,&quot;paid&quot;,&quot;cancelled&quot;,&quot;paid&quot;],
+    &quot;order_id&quot;: [1, 2, 3, 4, 5, 6],
+    &quot;user_id&quot;:  [10, 10, 11, 12, 12, 13],
+    &quot;country&quot;:  [&quot;RU&quot;, &quot;RU&quot;, &quot;KZ&quot;, &quot;KZ&quot;, &quot;RU&quot;, &quot;KZ&quot;],
+    &quot;amount&quot;:   [120.0, 0.0, 340.5, 55.0, 0.0, 780.0],
+    &quot;status&quot;:   [&quot;paid&quot;,&quot;cancelled&quot;,&quot;paid&quot;,&quot;paid&quot;,&quot;cancelled&quot;,&quot;paid&quot;],
 })
 
-<span class="tok-c"># ── Смотрим, что вообще пришло ──</span>
-print(orders.shape)            <span class="tok-c"># (6, 5)  строк, колонок</span>
-print(orders.dtypes.to_dict()) <span class="tok-c"># типы колонок — частый источник багов</span>
+print(orders.shape)                    <span class="tok-c"># rows, columns</span>
+print(orders.loc[0, &quot;amount&quot;])         <span class="tok-c"># by label</span>
+print(orders.iloc[0, 3])               <span class="tok-c"># by position</span>
 
-<span class="tok-c"># ── Выбор данных: loc (по имени) и iloc (по номеру) ──</span>
-print(orders.loc[0, &quot;amount&quot;])        <span class="tok-c"># 120.0 — строка 0, колонка amount</span>
-print(orders.iloc[0, 3])              <span class="tok-c"># 120.0 — то же по индексам</span>
-print(orders.loc[orders.status == &quot;paid&quot;, [&quot;user_id&quot;,&quot;amount&quot;]].head(3))
-
-<span class="tok-c"># ── Группировка с несколькими метриками ──</span>
 by_country = orders.query(&quot;status == &<span class="tok-c">#x27;paid&#x27;&quot;).groupby(&quot;country&quot;).agg(</span>
     orders=(&quot;order_id&quot;, &quot;count&quot;),
-    buyers=(&quot;user_id&quot;, &quot;nunique&quot;),     <span class="tok-c"># уникальные, не строки!</span>
+    buyers=(&quot;user_id&quot;, &quot;nunique&quot;),     <span class="tok-c"># distinct, <span class="tok-k">not</span> rows</span>
     revenue=(&quot;amount&quot;, &quot;sum&quot;),
-    avg_check=(&quot;amount&quot;, &quot;mean&quot;),
 ).round(1)
 print(by_country)
 
-<span class="tok-c"># ── Соединение таблиц (merge = SQL JOIN) ──</span>
-users = <span class="tok-b">pd</span>.DataFrame({&quot;user_id&quot;:[10,11,12,13], &quot;plan&quot;:[&quot;free&quot;,&quot;pro&quot;,&quot;free&quot;,&quot;pro&quot;]})
-joined = orders.merge(users, on=&quot;user_id&quot;, how=&quot;left&quot;)   <span class="tok-c"># how: left / inner / outer</span>
-print(joined.groupby(&quot;plan&quot;)[&quot;amount&quot;].sum())</pre></div>
-<div class="code-output"><span class="code-output-label"># вывод при запуске (проверено):</span>(6, 5)
-{&#x27;order_id&#x27;: dtype(&#x27;int64&#x27;), &#x27;user_id&#x27;: dtype(&#x27;int64&#x27;), &#x27;country&#x27;: dtype(&#x27;O&#x27;), &#x27;amount&#x27;: dtype(&#x27;float64&#x27;), &#x27;status&#x27;: dtype(&#x27;O&#x27;)}
+users = <span class="tok-b">pd</span>.DataFrame({&quot;user_id&quot;: [10,11,12,13], &quot;plan&quot;: [&quot;free&quot;,&quot;pro&quot;,&quot;free&quot;,&quot;pro&quot;]})
+print(orders.merge(users, on=&quot;user_id&quot;, how=&quot;left&quot;).groupby(&quot;plan&quot;)[&quot;amount&quot;].sum())</pre></div>
+<div class="code-output"><span class="code-output-label" data-i18n="py_out_label"># output when run (verified):</span>(6, 5)
 120.0
 120.0
-   user_id  amount
-0       10   120.0
-2       11   340.5
-3       12    55.0
-         orders  buyers  revenue  avg_check
-country                                    
-KZ            3       3   1175.5      391.8
-RU            1       1    120.0      120.0
+         orders  buyers  revenue
+country                         
+KZ            3       3   1175.5
+RU            1       1    120.0
 plan
 free    175.0
 pro    1120.5
 Name: amount, dtype: float64</div>
 </div>
 
-<div class="callout-box"><b>Разница, которую спрашивают на собеседованиях:</b> <code>.loc</code> обращается по <b>имени</b> (метке), <code>.iloc</code> — по <b>номеру</b> позиции. И ещё: <code>count()</code> считает строки, <code>nunique()</code> — уникальные значения. Перепутать их — самая частая причина завышенных метрик.</div>
-</div>
-<div class="card" id="t-clean">
-<div class="card-title">4 · Проверка и чистка данных — до всякой аналитики</div>
-<p>Это тот шаг, который отличает аналитика от человека, умеющего писать код. Красивый график по битым данным — хуже, чем отсутствие графика: ему поверят.</p>
-<div class="callout-box warn"><b>Обязательный ритуал</b> после каждой загрузки данных: посмотреть размер, пропуски, дубликаты, типы и диапазоны значений. Пять строк кода, которые ловят большинство ошибок до того, как они попадут в презентацию.</div>
-<button class="code-toggle" onclick="toggleCode(this)"><svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="c_did_code_show">Show Python code</span></button>
+<div class="callout-box" data-i18n="s34_take"><b>The distinction people get wrong:</b> <code>.loc</code> addresses by <b>label</b>, <code>.iloc</code> by <b>position</b>. And <code>count()</code> counts rows while <code>nunique()</code> counts distinct values — confusing those two is the most common cause of inflated metrics.</div>
+<div class="dd-h3" data-i18n="s35_h">3.5 · Checking and cleaning</div>
+<p data-i18n="s35_p1">This is the step that separates an analyst from someone who can write code. A beautiful chart built on broken data is worse than no chart at all, because people will believe it.</p>
+<div class="callout-box warn" data-i18n="s35_task"><b>The ritual after every load:</b> shape, missing values, duplicates, types, and value ranges. Five lines that catch most problems before they reach a presentation.</div>
+<button class="code-toggle" onclick="toggleCode(this)" aria-expanded="false"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="c_did_code_show">Show Python code</span></button>
 <div class="code-collapse" hidden>
-<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)">Copy</button><pre><span class="tok-k">import</span> pandas <span class="tok-k">as</span> <span class="tok-b">pd</span>, numpy <span class="tok-k">as</span> <span class="tok-b">np</span>
+<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="tok-k">import</span> pandas <span class="tok-k">as</span> <span class="tok-b">pd</span>, numpy <span class="tok-k">as</span> <span class="tok-b">np</span>
 
 df = <span class="tok-b">pd</span>.DataFrame({
     &quot;user_id&quot;: [1, 2, 2, 3, 4, 5],
@@ -254,59 +476,85 @@ df = <span class="tok-b">pd</span>.DataFrame({
     &quot;country&quot;: [&quot;RU&quot;,&quot;ru &quot;,&quot; KZ&quot;,&quot;KZ&quot;,&quot;RU&quot;,&quot;XX&quot;],
 })
 
-<span class="tok-c"># ── Шаг 1. Что вообще внутри ──</span>
-print(&quot;строк/колонок:&quot;, df.shape)
-print(&quot;\nПропуски:\n&quot;, df.isna().sum().to_string())
-print(&quot;\nДубликатов строк:&quot;, df.duplicated().sum())
+print(&quot;shape:&quot;, df.shape)
+print(&quot;\nmissing values:\n&quot;, df.isna().sum().to_string())
+print(&quot;\nfull duplicate rows:&quot;, df.duplicated().sum())
 
-<span class="tok-c"># ── Шаг 2. Типы: даты должны быть датами, а не строками ──</span>
-df[&quot;signup&quot;] = <span class="tok-b">pd</span>.to_datetime(df[&quot;signup&quot;], errors=&quot;coerce&quot;)
+df[&quot;signup&quot;]  = <span class="tok-b">pd</span>.to_datetime(df[&quot;signup&quot;], errors=&quot;coerce&quot;)   <span class="tok-c"># dates <span class="tok-k">as</span> dates</span>
+df[&quot;country&quot;] = df[&quot;country&quot;].str.strip().str.upper()           <span class="tok-c"># unify categories</span>
+print(&quot;\ncountries after cleaning:&quot;, df[&quot;country&quot;].unique().tolist())
+print(&quot;negative revenue:&quot;, (df[&quot;revenue&quot;] &lt; 0).sum(), &quot;rows&quot;)
 
-<span class="tok-c"># ── Шаг 3. Приводим категории к единому виду ──</span>
-df[&quot;country&quot;] = df[&quot;country&quot;].str.strip().str.upper()
-print(&quot;\nСтраны после чистки:&quot;, df[&quot;country&quot;].unique().tolist())
+df = df.drop_duplicates(subset=[&quot;user_id&quot;])      <span class="tok-c"># duplicate users</span>
+df = df[df[&quot;revenue&quot;].fillna(0) &gt;= 0]            <span class="tok-c"># drop impossible values</span>
+df[&quot;revenue&quot;] = df[&quot;revenue&quot;].fillna(0)          <span class="tok-c"># NaN here means &quot;did <span class="tok-k">not</span> pay&quot;</span>
 
-<span class="tok-c"># ── Шаг 4. Ищем невозможные значения ──</span>
-print(&quot;Отрицательная выручка:&quot;, (df[&quot;revenue&quot;] &lt; 0).sum(), &quot;строк&quot;)
+print(&quot;\nresult:&quot;, df.shape)</pre></div>
+<div class="code-output"><span class="code-output-label" data-i18n="py_out_label"># output when run (verified):</span>shape: (6, 4)
 
-<span class="tok-c"># ── Шаг 5. Осознанные решения по проблемам ──</span>
-df = df.drop_duplicates(subset=[&quot;user_id&quot;])            <span class="tok-c"># дубли пользователей</span>
-df = df[df[&quot;revenue&quot;].fillna(0) &gt;= 0]                  <span class="tok-c"># выкидываем брак</span>
-df[&quot;revenue&quot;] = df[&quot;revenue&quot;].fillna(0)                <span class="tok-c"># NaN = не платил</span>
-
-print(&quot;\nИтог:&quot;, df.shape)
-print(df.to_string(index=<span class="tok-k">False</span>))</pre></div>
-<div class="code-output"><span class="code-output-label"># вывод при запуске (проверено):</span>строк/колонок: (6, 4)
-
-Пропуски:
+missing values:
  user_id    0
 signup     1
 revenue    2
 country    0
 
-Дубликатов строк: 0
+full duplicate rows: 0
 
-Страны после чистки: [&#x27;RU&#x27;, &#x27;KZ&#x27;, &#x27;XX&#x27;]
-Отрицательная выручка: 1 строк
+countries after cleaning: [&#x27;RU&#x27;, &#x27;KZ&#x27;, &#x27;XX&#x27;]
+negative revenue: 1 rows
 
-Итог: (4, 4)
- user_id     signup  revenue country
-       1 2026-01-05    100.0      RU
-       2 2026-01-07      0.0      RU
-       3 2026-02-01    250.0      KZ
-       4        NaT     80.0      RU</div>
+result: (4, 4)</div>
 </div>
 
-<div class="callout-box"><b>Тонкость, которую видно в выводе:</b> <code>duplicated()</code> нашёл <b>0</b> полных дубликатов, хотя пользователь <code>2</code> встречается дважды — строки различаются в колонке <code>revenue</code>. Поэтому дубли пользователей ловятся через <code>drop_duplicates(subset=["user_id"])</code>, а не проверкой целых строк. Классическая ловушка.</div>
-<div class="cs-takeaway"><b>Обратите внимание на «XX»</b> — это несуществующая страна, которую чистка не убрала: код привёл регистр, но не проверил справочник. Такие вещи ловятся только глазами через <code>value_counts()</code>. Автоматика помогает, но не заменяет взгляд на данные.</div>
-</div>
-<div class="card" id="c-funnel">
-<div class="card-title">Кейс 1 · Воронка регистрации</div>
-<div class="callout-box warn"><b>Задача:</b> «Регистраций мало. На каком шаге отваливаются?»</div>
-<p>Главное — считать <b>уникальных пользователей</b>, а не события: иначе один человек, дважды открывший форму, посчитается дважды.</p>
-<button class="code-toggle" onclick="toggleCode(this)"><svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="c_did_code_show">Show Python code</span></button>
+<div class="callout-box" data-i18n="s35_note"><b>A subtlety visible in the output:</b> <code>duplicated()</code> found <b>zero</b> full duplicates even though user 2 appears twice — the rows differ in the revenue column. That is why duplicate users are caught with <code>drop_duplicates(subset=[...])</code>, not by comparing whole rows.</div>
+<div class="cs-takeaway" data-i18n="s35_take"><b>And note "XX"</b> — a country that does not exist, which cleaning did not remove: the code fixed the case but never checked against a reference list. Such things are only caught by looking at <code>value_counts()</code>. Automation helps; it does not replace looking at your data.</div>
+<div class="dd-h3" data-i18n="s36_h">3.6 · Writing code you can trust</div>
+<p data-i18n="s36_p1">Analytical code is read more often than it is written, and decisions are made from its output. Badly written code is not merely ugly — it quietly produces wrong numbers.</p>
+<p data-i18n="s36_r1"><b>Names instead of riddles.</b> <code>d</code>, <code>x</code>, <code>tmp2</code> mean nothing a week later. <code>orders</code>, <code>paid_orders</code>, <code>arpu_by_country</code> read like a sentence. A variable name is free documentation.</p>
+<p data-i18n="s36_r2"><b>An explicit copy instead of a warning.</b> The most common pandas trap: you filter a table, then write into the result, and pandas cannot tell whether you meant to change the copy or the original. The result is a warning and values that silently do not get written.</p>
+<p data-i18n="s36_r3"><b>One readable chain instead of five variables.</b> With <code>t1</code>…<code>t5</code> it is easy to lose track of which one is current and accidentally carry a stale table into the final calculation.</p>
+<button class="code-toggle" onclick="toggleCode(this)" aria-expanded="false"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="c_did_code_show">Show Python code</span></button>
 <div class="code-collapse" hidden>
-<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)">Copy</button><pre><span class="tok-k">import</span> pandas <span class="tok-k">as</span> <span class="tok-b">pd</span>
+<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="tok-k">import</span> pandas <span class="tok-k">as</span> <span class="tok-b">pd</span>
+
+orders = <span class="tok-b">pd</span>.DataFrame({&quot;country&quot;: [&quot;RU&quot;,&quot;KZ&quot;,&quot;RU&quot;],
+                       &quot;amount&quot;:  [1200, 300, 800],
+                       &quot;status&quot;:  [&quot;paid&quot;,&quot;paid&quot;,&quot;cancelled&quot;]})
+
+<span class="tok-c"># BAD: pandas cannot tell <span class="tok-k">if</span> you mean the copy <span class="tok-k">or</span> the original</span>
+subset = orders[orders[&quot;country&quot;] == &quot;RU&quot;]
+<span class="tok-c"># subset[&quot;is_big&quot;] = subset[&quot;amount&quot;] &gt; 1000    -&gt; SettingWithCopyWarning</span>
+
+<span class="tok-c"># GOOD 1: say explicitly that this is a separate table</span>
+subset = orders[orders[&quot;country&quot;] == &quot;RU&quot;].copy()
+subset[&quot;is_big&quot;] = subset[&quot;amount&quot;] &gt; 1000
+
+<span class="tok-c"># GOOD 2: modify the original through .loc, no intermediate table</span>
+orders.loc[orders[&quot;country&quot;] == &quot;RU&quot;, &quot;is_big&quot;] = orders[&quot;amount&quot;] &gt; 1000
+
+<span class="tok-c"># One readable chain instead of five throwaway variables</span>
+top = (orders
+       .query(&quot;status == &<span class="tok-c">#x27;paid&#x27; <span class="tok-k">and</span> amount &gt; 0&quot;)</span>
+       .groupby(&quot;country&quot;)[&quot;amount&quot;]
+       .sum()
+       .sort_values(ascending=<span class="tok-k">False</span>)
+       .head(5))
+print(top.to_string())</pre></div>
+<div class="code-output"><span class="code-output-label" data-i18n="py_out_label"># output when run (verified):</span>country
+RU    1200
+KZ     300</div>
+</div>
+
+<div class="cs-takeaway" data-i18n="s36_take"><b>The underlying point:</b> code is written once and read dozens of times. If you have to decode your own script, that is not saved time — it is a deferred error.</div>
+</div>
+<div class="card" id="s-cases"><div class="card-title" data-i18n="s4_h">4 · Business cases</div>
+<p data-i18n="s4_lead">Six tasks in the form they actually arrive: a question from a product manager, a trap in the naive answer, and the code that gets it right.</p>
+<div class="dd-h3" data-i18n="c1_h">Case 1 · Signup funnel</div>
+<div class="callout-box warn" data-i18n="c1_task"><b>Task:</b> "Signups are low. Which step do people drop at?"</div>
+<p data-i18n="c1_p">The thing to get right: count <b>distinct users</b>, not events. Otherwise one person who opened the form twice is counted twice and the funnel inflates.</p>
+<button class="code-toggle" onclick="toggleCode(this)" aria-expanded="false"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="c_did_code_show">Show Python code</span></button>
+<div class="code-collapse" hidden>
+<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="tok-k">import</span> pandas <span class="tok-k">as</span> <span class="tok-b">pd</span>
 <span class="tok-k">import</span> matplotlib.pyplot <span class="tok-k">as</span> <span class="tok-b">plt</span>
 
 events = <span class="tok-b">pd</span>.DataFrame({
@@ -326,13 +574,14 @@ fig, ax = <span class="tok-b">plt</span>.subplots(figsize=(7,3.2))
 ax.barh(range(len(funnel))[::-1], funnel.values, color=&quot;<span class="tok-c">#5B5FE9&quot;, height=.62)</span>
 ax.set_yticks(range(len(funnel))[::-1]); ax.set_yticklabels(order)
 <span class="tok-b">plt</span>.show()</pre></div>
-<div class="code-output"><span class="code-output-label"># вывод при запуске (проверено):</span>             users  conv_%
+<div class="code-output"><span class="code-output-label" data-i18n="py_out_label"># output when run (verified):</span>             users  conv_%
 step                      
 visit            8   100.0
 signup_form      6    75.0
 submitted        4    50.0
 activated        2    25.0</div>
 </div>
+
 <div class="chart"><svg style="width:100%;height:auto;max-width:660px" xmlns:xlink="http://www.w3.org/1999/xlink" width="504pt" height="230.4pt" viewBox="0 0 504 230.4" xmlns="http://www.w3.org/2000/svg" version="1.1">
  <metadata>
   <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
@@ -1704,37 +1953,37 @@ z
    <rect x="79.54" y="10.8" width="407.315" height="177.64"/>
   </clipPath>
  </defs>
-</svg><div class="chart-caption">Результат кода выше</div></div>
-<div class="cs-takeaway"><b>Вывод:</b> потери одинаковы по абсолюту (по 2 человека), но в процентах больнее последний переход — активируется лишь половина отправивших форму. Чинить надо онбординг, а не форму.</div>
-</div>
-<div class="card" id="c-arpu">
-<div class="card-title">Кейс 2 · «ARPU вырос» — стало ли лучше?</div>
-<div class="callout-box warn"><b>Задача:</b> «Средняя выручка выросла с 22 до 24.7. Празднуем?»</div>
-<button class="code-toggle" onclick="toggleCode(this)"><svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="c_did_code_show">Show Python code</span></button>
+</svg><div class="chart-caption" data-i18n="py_chart_cap">Produced by the code above</div></div>
+<div class="cs-takeaway" data-i18n="c1_take"><b>Answer for the product manager:</b> the absolute losses are equal (two people per step), but in relative terms the last transition hurts most — only half of those who submit ever activate. Fix the onboarding, not the form.</div>
+<div class="dd-h3" data-i18n="c2_h">Case 2 · "ARPU is up" — is it?</div>
+<div class="callout-box warn" data-i18n="c2_task"><b>Task:</b> "Average revenue per user went from 22 to 24.7. Time to celebrate?"</div>
+<p data-i18n="c2_p">Revenue is almost always skewed: a handful of large customers drag the mean upwards. One number hides that; the distribution reveals it.</p>
+<button class="code-toggle" onclick="toggleCode(this)" aria-expanded="false"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="c_did_code_show">Show Python code</span></button>
 <div class="code-collapse" hidden>
-<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)">Copy</button><pre><span class="tok-k">import</span> numpy <span class="tok-k">as</span> <span class="tok-b">np</span>, pandas <span class="tok-k">as</span> <span class="tok-b">pd</span>, seaborn <span class="tok-k">as</span> <span class="tok-b">sns</span>
+<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="tok-k">import</span> numpy <span class="tok-k">as</span> <span class="tok-b">np</span>, pandas <span class="tok-k">as</span> <span class="tok-b">pd</span>, seaborn <span class="tok-k">as</span> <span class="tok-b">sns</span>
 <span class="tok-k">import</span> matplotlib.pyplot <span class="tok-k">as</span> <span class="tok-b">plt</span>
 
 rng = <span class="tok-b">np</span>.random.default_rng(7)
 revenue = <span class="tok-b">pd</span>.Series(<span class="tok-b">np</span>.round(rng.lognormal(2.6, 1.15, 2000), 2))
 
-print(&quot;Среднее (ARPU):&quot;, round(revenue.mean(), 2))
-print(&quot;Медиана:       &quot;, round(revenue.median(), 2))
+print(&quot;mean (ARPU):&quot;, round(revenue.mean(), 2))
+print(&quot;median:     &quot;, round(revenue.median(), 2))
 top10 = revenue.nlargest(200).sum() / revenue.sum() * 100
-print(&quot;Доля выручки топ-10%:&quot;, round(top10, 1), &quot;%&quot;)
-print(&quot;Ниже среднего:&quot;, round((revenue &lt; revenue.mean()).mean()*100, 1), &quot;%&quot;)
+print(&quot;top 10% share of revenue:&quot;, round(top10, 1), &quot;%&quot;)
+print(&quot;users below the mean:&quot;, round((revenue &lt; revenue.mean()).mean()*100, 1), &quot;%&quot;)
 
 fig, ax = <span class="tok-b">plt</span>.subplots(figsize=(7,3.2))
 <span class="tok-b">sns</span>.histplot(revenue, bins=60, color=&quot;<span class="tok-c">#5B5FE9&quot;, alpha=.55, ax=ax)</span>
-ax.axvline(revenue.mean(),   color=&quot;<span class="tok-c">#E11D48&quot;, lw=2, label=&quot;Среднее&quot;)</span>
-ax.axvline(revenue.median(), color=&quot;<span class="tok-c">#059669&quot;, lw=2, ls=&quot;--&quot;, label=&quot;Медиана&quot;)</span>
+ax.axvline(revenue.mean(),   color=&quot;<span class="tok-c">#E11D48&quot;, lw=2, label=&quot;mean&quot;)</span>
+ax.axvline(revenue.median(), color=&quot;<span class="tok-c">#059669&quot;, lw=2, ls=&quot;--&quot;, label=&quot;median&quot;)</span>
 ax.set_xlim(0, revenue.quantile(.99)); ax.legend()
 <span class="tok-b">plt</span>.show()</pre></div>
-<div class="code-output"><span class="code-output-label"># вывод при запуске (проверено):</span>Среднее (ARPU): 24.66
-Медиана:        12.54
-Доля выручки топ-10%: 45.0 %
-Ниже среднего: 71.9 %</div>
+<div class="code-output"><span class="code-output-label" data-i18n="py_out_label"># output when run (verified):</span>mean (ARPU): 24.66
+median:      12.54
+top 10% share of revenue: 45.0 %
+users below the mean: 71.9 %</div>
 </div>
+
 <div class="chart"><svg style="width:100%;height:auto;max-width:660px" xmlns:xlink="http://www.w3.org/1999/xlink" width="504pt" height="230.4pt" viewBox="0 0 504 230.4" xmlns="http://www.w3.org/2000/svg" version="1.1">
  <metadata>
   <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
@@ -3288,15 +3537,14 @@ z
    <rect x="50.87" y="10.8" width="442.33" height="177.64"/>
   </clipPath>
  </defs>
-</svg><div class="chart-caption">Красная — среднее, зелёная пунктирная — медиана</div></div>
-<div class="cs-takeaway"><b>Вывод:</b> <b>72% пользователей зарабатывают меньше «среднего»</b>, топ-10% дают 45% выручки. Рост ARPU мог случиться от пары крупных сделок. Смотреть надо медиану и сегменты.</div>
-</div>
-<div class="card" id="c-cohort">
-<div class="card-title">Кейс 3 · Когорты: продукт правда улучшается?</div>
-<div class="callout-box warn"><b>Задача:</b> «Квартал улучшали онбординг. Есть эффект?» Общий retention не подходит — он смешивает старых и новых.</div>
-<button class="code-toggle" onclick="toggleCode(this)"><svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="c_did_code_show">Show Python code</span></button>
+</svg><div class="chart-caption" data-i18n="py_chart_cap">Produced by the code above</div></div>
+<div class="cs-takeaway" data-i18n="c2_take"><b>Conclusion:</b> <b>72% of users earn less than the "average"</b>, and the top 10% bring 45% of all revenue. The ARPU rise could come from a couple of large deals while the typical user did not change at all. Track the median and segment.</div>
+<div class="dd-h3" data-i18n="c3_h">Case 3 · Cohorts</div>
+<div class="callout-box warn" data-i18n="c3_task"><b>Task:</b> "We spent a quarter improving onboarding. Did it work?" Overall retention will not answer — it mixes old and new users.</div>
+<p data-i18n="c3_p">The technique: <code>pivot</code> turns a long table into a cohort matrix, then each row is divided by its own month zero.</p>
+<button class="code-toggle" onclick="toggleCode(this)" aria-expanded="false"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="c_did_code_show">Show Python code</span></button>
 <div class="code-collapse" hidden>
-<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)">Copy</button><pre><span class="tok-k">import</span> pandas <span class="tok-k">as</span> <span class="tok-b">pd</span>, seaborn <span class="tok-k">as</span> <span class="tok-b">sns</span>
+<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="tok-k">import</span> pandas <span class="tok-k">as</span> <span class="tok-b">pd</span>, seaborn <span class="tok-k">as</span> <span class="tok-b">sns</span>
 <span class="tok-k">import</span> matplotlib.pyplot <span class="tok-k">as</span> <span class="tok-b">plt</span>
 
 df = <span class="tok-b">pd</span>.DataFrame({
@@ -3306,20 +3554,21 @@ df = <span class="tok-b">pd</span>.DataFrame({
 })
 
 pivot = df.pivot(index=&quot;cohort&quot;, columns=&quot;month&quot;, values=&quot;retained&quot;)
-ret = pivot.div(pivot[0], axis=0) * 100     <span class="tok-c"># % от своего нулевого месяца</span>
+ret = pivot.div(pivot[0], axis=0) * 100      <span class="tok-c"># % of each cohort&#x27;s own month 0</span>
 print(ret.round(1).to_string())
 
 fig, ax = <span class="tok-b">plt</span>.subplots(figsize=(7,3.0))
 <span class="tok-b">sns</span>.heatmap(ret, annot=<span class="tok-k">True</span>, fmt=&quot;.0f&quot;, cmap=&quot;Purples&quot;, cbar=<span class="tok-k">False</span>,
             linewidths=3, linecolor=&quot;white&quot;, ax=ax)
 <span class="tok-b">plt</span>.show()</pre></div>
-<div class="code-output"><span class="code-output-label"># вывод при запуске (проверено):</span>month        0     1     2     3
+<div class="code-output"><span class="code-output-label" data-i18n="py_out_label"># output when run (verified):</span>month        0     1     2     3
 cohort                          
 2026-01  100.0  42.0  30.2  21.7
 2026-02  100.0  32.4  23.3   NaN
 2026-03  100.0  34.6   NaN   NaN
 2026-04  100.0   NaN   NaN   NaN</div>
 </div>
+
 <div class="chart"><svg style="width:100%;height:auto;max-width:660px" xmlns:xlink="http://www.w3.org/1999/xlink" width="504pt" height="216pt" viewBox="0 0 504 216" xmlns="http://www.w3.org/2000/svg" version="1.1">
  <metadata>
   <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
@@ -4197,17 +4446,15 @@ z
    <rect x="41.96" y="10.8" width="451.24" height="163.24"/>
   </clipPath>
  </defs>
-</svg><div class="chart-caption">Читать вниз по столбцу — сравнение когорт на одном месяце жизни</div></div>
-<div class="cs-takeaway"><b>Как читать:</b> вниз по столбцу «1»: 30.2 → 32.4 → 34.6. Каждая следующая когорта держится лучше на том же месяце жизни — вот доказательство эффекта. Общий retention этого не показал бы.</div>
-</div>
-<div class="card" id="c-ab">
-<div class="card-title">Кейс 4 · A/B-тест: есть ли победитель</div>
-<div class="callout-box warn"><b>Задача:</b> «Вариант A даёт 11.36% против 9.80% у контроля. Раскатываем?»</div>
-<p>Точечная оценка сама по себе ничего не значит — нужен доверительный интервал. Если интервалы пересекаются, разница может быть шумом.</p>
-<button class="code-toggle" onclick="toggleCode(this)"><svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="c_did_code_show">Show Python code</span></button>
+</svg><div class="chart-caption" data-i18n="py_chart_cap">Produced by the code above</div></div>
+<div class="cs-takeaway" data-i18n="c3_take"><b>How to read it:</b> look <b>down column 1</b> — 30.2 → 32.4 → 34.6. Each later cohort retains better at the same age. That is the proof the onboarding worked, and overall retention would never have shown it.</div>
+<div class="dd-h3" data-i18n="c4_h">Case 4 · A/B test</div>
+<div class="callout-box warn" data-i18n="c4_task"><b>Task:</b> "Variant A shows 11.36% against the control's 9.80%. Ship it?"</div>
+<p data-i18n="c4_p">A point estimate alone means nothing — you need the confidence interval. If the intervals overlap, the difference may well be noise.</p>
+<button class="code-toggle" onclick="toggleCode(this)" aria-expanded="false"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="c_did_code_show">Show Python code</span></button>
 <div class="code-collapse" hidden>
-<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)">Copy</button><pre><span class="tok-k">import</span> numpy <span class="tok-k">as</span> <span class="tok-b">np</span>, pandas <span class="tok-k">as</span> <span class="tok-b">pd</span>
-<span class="tok-k">from</span> <span class="tok-b">scipy</span> <span class="tok-k">import</span> stats
+<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="tok-k">import</span> numpy <span class="tok-k">as</span> <span class="tok-b">np</span>, pandas <span class="tok-k">as</span> <span class="tok-b">pd</span>
+<span class="tok-k">from</span> scipy <span class="tok-k">import</span> stats
 <span class="tok-k">import</span> matplotlib.pyplot <span class="tok-k">as</span> <span class="tok-b">plt</span>
 
 data = {&quot;Control&quot;: (2500, 245), &quot;Variant A&quot;: (2500, 284), &quot;Variant B&quot;: (2500, 262)}
@@ -4215,19 +4462,17 @@ data = {&quot;Control&quot;: (2500, 245), &quot;Variant A&quot;: (2500, 284), &q
 rows = []
 <span class="tok-k">for</span> name, (n, c) <span class="tok-k">in</span> data.items():
     p  = c / n
-    se = <span class="tok-b">np</span>.sqrt(p * (1 - p) / n)          <span class="tok-c"># стандартная ошибка доли</span>
+    se = <span class="tok-b">np</span>.sqrt(p * (1 - p) / n)            <span class="tok-c"># standard error of a proportion</span>
     rows.append({&quot;group&quot;: name, &quot;p&quot;: p*100,
                  &quot;lo&quot;: (p - 1.96*se)*100, &quot;hi&quot;: (p + 1.96*se)*100})
 df = <span class="tok-b">pd</span>.DataFrame(rows)
 print(df.round(2).to_string(index=<span class="tok-k">False</span>))
 
-<span class="tok-c"># Проверка значимости: Control vs Variant A</span>
 n1, c1 = data[&quot;Control&quot;]; n2, c2 = data[&quot;Variant A&quot;]
 p1, p2 = c1/n1, c2/n2
 se_diff = <span class="tok-b">np</span>.sqrt(p1*(1-p1)/n1 + p2*(1-p2)/n2)
 z = (p2 - p1) / se_diff
-pval = 2 * (1 - stats.norm.cdf(abs(z)))
-print(f&quot;\nz = {z:.3f}, p-value = {pval:.4f}&quot;)
+print(f&quot;\nz = {z:.3f}, p-value = {2*(1-stats.norm.cdf(abs(z))):.4f}&quot;)
 
 fig, ax = <span class="tok-b">plt</span>.subplots(figsize=(7,3.1))
 ax.errorbar(df[&quot;p&quot;], range(len(df)),
@@ -4235,13 +4480,14 @@ ax.errorbar(df[&quot;p&quot;], range(len(df)),
             fmt=&quot;o&quot;, capsize=6, color=&quot;<span class="tok-c">#5B5FE9&quot;)</span>
 ax.set_yticks(range(len(df))); ax.set_yticklabels(df[&quot;group&quot;])
 <span class="tok-b">plt</span>.show()</pre></div>
-<div class="code-output"><span class="code-output-label"># вывод при запуске (проверено):</span>    group     p    lo    hi
+<div class="code-output"><span class="code-output-label" data-i18n="py_out_label"># output when run (verified):</span>    group     p    lo    hi
   Control  9.80  8.63 10.97
 Variant A 11.36 10.12 12.60
 Variant B 10.48  9.28 11.68
 
-z = 1.793, p-value = 0.0729</div>
+z = 1.794, p-value = 0.0729</div>
 </div>
+
 <div class="chart"><svg style="width:100%;height:auto;max-width:660px" xmlns:xlink="http://www.w3.org/1999/xlink" width="496.682876pt" height="215.129531pt" viewBox="0 0 496.682876 215.129531" xmlns="http://www.w3.org/2000/svg" version="1.1">
  <metadata>
   <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
@@ -6028,16 +6274,14 @@ z
    <rect x="55.157031" y="26.31375" width="434.325845" height="152.71125"/>
   </clipPath>
  </defs>
-</svg><div class="chart-caption">Усы — 95% доверительный интервал; пунктир — уровень контроля</div></div>
-<div class="cs-takeaway"><b>Вывод:</b> p = 0.073 > 0.05, и интервал варианта A пересекается с контролем. Разница <b>не значима</b> — раскатывать рано, нужно больше данных. Именно поэтому график с усами честнее, чем столбики с одной цифрой.</div>
-</div>
-<div class="card" id="c-rfm">
-<div class="card-title">Кейс 5 · RFM-сегментация клиентской базы</div>
-<div class="callout-box warn"><b>Задача:</b> «У нас 800 клиентов и один бюджет на рассылку. Кому писать?»</div>
-<p>RFM делит базу по трём осям: <b>R</b>ecency (как давно покупал), <b>F</b>requency (как часто), <b>M</b>onetary (на сколько). Приём — разбить каждую ось на квинтили через <code>qcut</code> и составить из них сегменты.</p>
-<button class="code-toggle" onclick="toggleCode(this)"><svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="c_did_code_show">Show Python code</span></button>
+</svg><div class="chart-caption" data-i18n="py_chart_cap">Produced by the code above</div></div>
+<div class="cs-takeaway" data-i18n="c4_take"><b>Conclusion:</b> p = 0.073 > 0.05 and variant A's interval overlaps the control. The difference is <b>not significant</b> — shipping now would be premature. This is exactly why error bars are more honest than bare bars.</div>
+<div class="dd-h3" data-i18n="c5_h">Case 5 · RFM segmentation</div>
+<div class="callout-box warn" data-i18n="c5_task"><b>Task:</b> "We have 800 customers and one campaign budget. Who do we write to?"</div>
+<p data-i18n="c5_p">RFM splits the base along three axes: <b>R</b>ecency, <b>F</b>requency, <b>M</b>onetary. Each axis is cut into quintiles with <code>qcut</code>, and the scores combine into segments.</p>
+<button class="code-toggle" onclick="toggleCode(this)" aria-expanded="false"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="c_did_code_show">Show Python code</span></button>
 <div class="code-collapse" hidden>
-<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)">Copy</button><pre><span class="tok-k">import</span> numpy <span class="tok-k">as</span> <span class="tok-b">np</span>, pandas <span class="tok-k">as</span> <span class="tok-b">pd</span>
+<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="tok-k">import</span> numpy <span class="tok-k">as</span> <span class="tok-b">np</span>, pandas <span class="tok-k">as</span> <span class="tok-b">pd</span>
 <span class="tok-k">import</span> matplotlib.pyplot <span class="tok-k">as</span> <span class="tok-b">plt</span>
 
 rng = <span class="tok-b">np</span>.random.default_rng(5)
@@ -6047,42 +6291,38 @@ df = <span class="tok-b">pd</span>.DataFrame({
     &quot;monetary&quot;:  rng.lognormal(3.2, 1.0, 800).round(2),
 })
 
-<span class="tok-c"># qcut режет на равные по числу наблюдений группы (квинтили)</span>
-<span class="tok-c"># для recency шкала перевёрнута: меньше дней = лучше = балл 5</span>
+<span class="tok-c"># qcut splits into equally sized groups (quintiles).</span>
+<span class="tok-c"># Recency is reversed: fewer days = better = score 5</span>
 df[&quot;R&quot;] = <span class="tok-b">pd</span>.qcut(df[&quot;recency&quot;], 5, labels=[5,4,3,2,1]).astype(int)
 df[&quot;F&quot;] = <span class="tok-b">pd</span>.qcut(df[&quot;frequency&quot;].rank(method=&quot;first&quot;), 5, labels=[1,2,3,4,5]).astype(int)
 df[&quot;M&quot;] = <span class="tok-b">pd</span>.qcut(df[&quot;monetary&quot;], 5, labels=[1,2,3,4,5]).astype(int)
 
 <span class="tok-k">def</span> segment(r):
-    <span class="tok-k">if</span> r.R &gt;= 4 <span class="tok-k">and</span> r.F &gt;= 4: <span class="tok-k">return</span> &quot;Чемпионы&quot;
-    <span class="tok-k">if</span> r.R &gt;= 4 <span class="tok-k">and</span> r.F &lt;= 2: <span class="tok-k">return</span> &quot;Новички&quot;
-    <span class="tok-k">if</span> r.R &lt;= 2 <span class="tok-k">and</span> r.F &gt;= 4: <span class="tok-k">return</span> &quot;В зоне риска&quot;
-    <span class="tok-k">if</span> r.R &lt;= 2 <span class="tok-k">and</span> r.F &lt;= 2: <span class="tok-k">return</span> &quot;Спящие&quot;
-    <span class="tok-k">return</span> &quot;Середина&quot;
+    <span class="tok-k">if</span> r.R &gt;= 4 <span class="tok-k">and</span> r.F &gt;= 4: <span class="tok-k">return</span> &quot;Champions&quot;
+    <span class="tok-k">if</span> r.R &gt;= 4 <span class="tok-k">and</span> r.F &lt;= 2: <span class="tok-k">return</span> &quot;New&quot;
+    <span class="tok-k">if</span> r.R &lt;= 2 <span class="tok-k">and</span> r.F &gt;= 4: <span class="tok-k">return</span> &quot;At risk&quot;
+    <span class="tok-k">if</span> r.R &lt;= 2 <span class="tok-k">and</span> r.F &lt;= 2: <span class="tok-k">return</span> &quot;Dormant&quot;
+    <span class="tok-k">return</span> &quot;Middle&quot;
 
 df[&quot;segment&quot;] = df.apply(segment, axis=1)
 print(df.groupby(&quot;segment&quot;).agg(
-    users=(&quot;recency&quot;,&quot;size&quot;),
-    avg_monetary=(&quot;monetary&quot;,&quot;mean&quot;),
-    avg_recency=(&quot;recency&quot;,&quot;mean&quot;),
+    users=(&quot;recency&quot;,&quot;size&quot;), avg_monetary=(&quot;monetary&quot;,&quot;mean&quot;),
 ).round(1).sort_values(&quot;users&quot;, ascending=<span class="tok-k">False</span>).to_string())
 
 fig, ax = <span class="tok-b">plt</span>.subplots(figsize=(7,3.4))
-palette = {&quot;Чемпионы&quot;:&quot;<span class="tok-c">#059669&quot;,&quot;В зоне риска&quot;:&quot;#E11D48&quot;,</span>
-           &quot;Новички&quot;:&quot;<span class="tok-c">#5B5FE9&quot;,&quot;Спящие&quot;:&quot;#5b6178&quot;,&quot;Середина&quot;:&quot;#a59cf7&quot;}</span>
 <span class="tok-k">for</span> name, g <span class="tok-k">in</span> df.groupby(&quot;segment&quot;):
     ax.scatter(g[&quot;recency&quot;], g[&quot;frequency&quot;],
-               s=<span class="tok-b">np</span>.sqrt(g[&quot;monetary&quot;])*3.2,     <span class="tok-c"># размер = сумма покупок</span>
-               alpha=.55, color=palette[name], label=name)
+               s=<span class="tok-b">np</span>.sqrt(g[&quot;monetary&quot;])*3.2, alpha=.55, label=name)
 ax.legend(); <span class="tok-b">plt</span>.show()</pre></div>
-<div class="code-output"><span class="code-output-label"># вывод при запуске (проверено):</span>              users  avg_monetary  avg_recency
-segment                                       
-Середина        287          39.8         26.4
-Чемпионы        150          35.1          6.5
-Спящие          138          48.8         51.9
-Новички         114          36.4          6.7
-В зоне риска    111          37.2         52.2</div>
+<div class="code-output"><span class="code-output-label" data-i18n="py_out_label"># output when run (verified):</span>           users  avg_monetary
+segment                       
+Middle       287          39.8
+Champions    150          35.1
+Dormant      138          48.8
+New          114          36.4
+At risk      111          37.2</div>
 </div>
+
 <div class="chart"><svg style="width:100%;height:auto;max-width:660px" xmlns:xlink="http://www.w3.org/1999/xlink" width="496.656719pt" height="236.870156pt" viewBox="0 0 496.656719 236.870156" xmlns="http://www.w3.org/2000/svg" version="1.1">
  <metadata>
   <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
@@ -16797,43 +17037,42 @@ z
    <rect x="38.846719" y="25.925625" width="450.61" height="174.84"/>
   </clipPath>
  </defs>
-</svg><div class="chart-caption">Три метрики на одном графике: оси R и F, размер точки — M</div></div>
-<div class="cs-takeaway"><b>Вывод для маркетинга:</b> «В зоне риска» — 111 человек, которые покупали часто, но давно пропали. Это самый выгодный сегмент для реактивации: они уже доказали, что готовы платить. «Спящих» (138) дешевле отпустить.</div>
-</div>
-<div class="card" id="c-anom">
-<div class="card-title">Кейс 6 · Поиск аномалий во временном ряду</div>
-<div class="callout-box warn"><b>Задача:</b> «Кажется, в начале июля что-то сломалось, но по графику не видно. Проверь.»</div>
-<p>Приём: сгладить ряд скользящим средним, вычесть его из факта и найти точки, где отклонение превышает несколько стандартных отклонений.</p>
-<button class="code-toggle" onclick="toggleCode(this)"><svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="c_did_code_show">Show Python code</span></button>
+</svg><div class="chart-caption" data-i18n="py_chart_cap">Produced by the code above</div></div>
+<div class="cs-takeaway" data-i18n="c5_take"><b>Answer for marketing:</b> "At risk" is 111 people who used to buy often and then disappeared. They are the most profitable target for reactivation — they have already proved they will pay. The 138 "dormant" are cheaper to let go.</div>
+<div class="dd-h3" data-i18n="c6_h">Case 6 · Finding anomalies</div>
+<div class="callout-box warn" data-i18n="c6_task"><b>Task:</b> "Something broke in early July but the chart looks normal. Check it."</div>
+<p data-i18n="c6_p">The technique: smooth the series with a rolling mean, subtract it from the actual values, and flag points where the deviation exceeds a few standard deviations.</p>
+<button class="code-toggle" onclick="toggleCode(this)" aria-expanded="false"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="c_did_code_show">Show Python code</span></button>
 <div class="code-collapse" hidden>
-<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)">Copy</button><pre><span class="tok-k">import</span> numpy <span class="tok-k">as</span> <span class="tok-b">np</span>, pandas <span class="tok-k">as</span> <span class="tok-b">pd</span>
+<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="tok-k">import</span> numpy <span class="tok-k">as</span> <span class="tok-b">np</span>, pandas <span class="tok-k">as</span> <span class="tok-b">pd</span>
 <span class="tok-k">import</span> matplotlib.pyplot <span class="tok-k">as</span> <span class="tok-b">plt</span>
 
 rng = <span class="tok-b">np</span>.random.default_rng(3)
-days = <span class="tok-b">pd</span>.date_range(&quot;2026-05-01&quot;, periods=90)
+days   = <span class="tok-b">pd</span>.date_range(&quot;2026-05-01&quot;, periods=90)
 values = 1000 + <span class="tok-b">np</span>.arange(90)*4 + rng.normal(0, 45, 90)
-values[62:66] -= 380                       <span class="tok-c"># здесь был инцидент</span>
+values[62:66] -= 380                        <span class="tok-c"># an incident happened here</span>
 s = <span class="tok-b">pd</span>.Series(values.round(0), index=days)
 
-roll  = s.rolling(7, center=<span class="tok-k">True</span>).mean()   <span class="tok-c"># сглаживаем недельным окном</span>
-resid = s - roll                           <span class="tok-c"># отклонение факта от тренда</span>
-thr   = 2.5 * resid.std()                  <span class="tok-c"># порог: 2.5 сигмы</span>
+roll  = s.rolling(7, center=<span class="tok-k">True</span>).mean()    <span class="tok-c"># smooth <span class="tok-k">with</span> a weekly window</span>
+resid = s - roll                            <span class="tok-c"># deviation <span class="tok-k">from</span> the trend</span>
+thr   = 2.5 * resid.std()                   <span class="tok-c"># threshold: 2.5 sigma</span>
 anom  = s[<span class="tok-b">np</span>.abs(resid) &gt; thr]
 
-print(f&quot;Порог: ±{thr:.0f}   найдено точек: {len(anom)}&quot;)
+print(f&quot;threshold: +/-{thr:.0f}   points found: {len(anom)}&quot;)
 print(anom.to_string())
 
 fig, ax = <span class="tok-b">plt</span>.subplots(figsize=(7.4,3.2))
-ax.plot(s.index, s.values, color=&quot;<span class="tok-c">#a59cf7&quot;, lw=1.1, label=&quot;Факт&quot;)</span>
-ax.plot(roll.index, roll.values, color=&quot;<span class="tok-c">#5B5FE9&quot;, lw=2.4, label=&quot;Скользящее среднее&quot;)</span>
-ax.scatter(anom.index, anom.values, color=&quot;<span class="tok-c">#E11D48&quot;, s=52, zorder=5, label=&quot;Аномалия&quot;)</span>
+ax.plot(s.index, s.values, color=&quot;<span class="tok-c">#a59cf7&quot;, lw=1.1, label=&quot;actual&quot;)</span>
+ax.plot(roll.index, roll.values, color=&quot;<span class="tok-c">#5B5FE9&quot;, lw=2.4, label=&quot;rolling mean&quot;)</span>
+ax.scatter(anom.index, anom.values, color=&quot;<span class="tok-c">#E11D48&quot;, s=52, zorder=5, label=&quot;anomaly&quot;)</span>
 ax.legend(); <span class="tok-b">plt</span>.show()</pre></div>
-<div class="code-output"><span class="code-output-label"># вывод при запуске (проверено):</span>Порог: ±160   найдено точек: 4
+<div class="code-output"><span class="code-output-label" data-i18n="py_out_label"># output when run (verified):</span>threshold: +/-160   points found: 4
 2026-07-01    1219.0
 2026-07-02     797.0
 2026-07-03     777.0
 2026-07-06    1288.0</div>
 </div>
+
 <div class="chart"><svg style="width:100%;height:auto;max-width:660px" xmlns:xlink="http://www.w3.org/1999/xlink" width="561.935937pt" height="222.338828pt" viewBox="0 0 561.935937 222.338828" xmlns="http://www.w3.org/2000/svg" version="1.1">
  <metadata>
   <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
@@ -18946,37 +19185,33 @@ z
    <rect x="50.299219" y="25.988516" width="447.905771" height="173.44"/>
   </clipPath>
  </defs>
-</svg><div class="chart-caption">Скользящее среднее показывает провал, который теряется в шуме</div></div>
-<div class="callout-box"><b>Важная деталь:</b> метод пометил и <b>всплески вверх</b> (1&nbsp;июля, 6&nbsp;июля) — это «отскок» после провала, а не поломка. Автоматический детектор находит <i>необычное</i>, а интерпретирует всегда человек. Не отправляйте алерты без этой проверки.</div>
+</svg><div class="chart-caption" data-i18n="py_chart_cap">Produced by the code above</div></div>
+<div class="callout-box" data-i18n="c6_note"><b>Important detail:</b> the method also flagged <b>upward</b> spikes — those are the rebound after the dip, not a failure. An automatic detector finds the <i>unusual</i>; a human always interprets it. Never wire this straight into alerts without that step.</div>
 </div>
-<div class="card" id="v-adv">
-<div class="card-title">Продвинутая визуализация</div>
-<p>Три приёма, которые отличают график аналитика от графика «из Excel». Каждый решает конкретную проблему восприятия.</p>
-
-<div class="dd-h3">Приём 1 · Small multiples вместо каши из линий</div>
-<p>Когда сегментов больше трёх, все линии на одном графике превращаются в спагетти. Решение — разбить на маленькие панели и на каждой подсветить свой сегмент, оставив остальные серым фоном для сравнения.</p>
-<button class="code-toggle" onclick="toggleCode(this)"><svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="c_did_code_show">Show Python code</span></button>
+<div class="card" id="s-viz"><div class="card-title" data-i18n="s5_h">5 · Advanced visualisation</div>
+<p data-i18n="s5_lead">Three techniques that separate an analyst's chart from a spreadsheet default. Each solves a specific perception problem.</p>
+<div class="dd-h3" data-i18n="v1_h">Small multiples instead of spaghetti</div>
+<p data-i18n="v1_p">Beyond three series, lines on a single chart become unreadable. The fix is to split into small panels and highlight one segment per panel, keeping the others as grey context.</p>
+<button class="code-toggle" onclick="toggleCode(this)" aria-expanded="false"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="c_did_code_show">Show Python code</span></button>
 <div class="code-collapse" hidden>
-<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)">Copy</button><pre><span class="tok-k">import</span> pandas <span class="tok-k">as</span> <span class="tok-b">pd</span>
-<span class="tok-k">import</span> matplotlib.pyplot <span class="tok-k">as</span> <span class="tok-b">plt</span>
+<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="tok-k">import</span> matplotlib.pyplot <span class="tok-k">as</span> <span class="tok-b">plt</span>
 
 segs = [&quot;Mobile iOS&quot;, &quot;Mobile Android&quot;, &quot;Desktop&quot;, &quot;Tablet&quot;]
 
 fig, axes = <span class="tok-b">plt</span>.subplots(2, 2, figsize=(7.4,4.0), sharex=<span class="tok-k">True</span>, sharey=<span class="tok-k">True</span>)
-<span class="tok-k">for</span> ax, s <span class="tok-k">in</span> zip(axes.ravel(), segs):
-    <span class="tok-c"># серым — все остальные сегменты как контекст</span>
-    <span class="tok-k">for</span> other <span class="tok-k">in</span> segs:
-        <span class="tok-k">if</span> other != s:
+<span class="tok-k">for</span> ax, seg <span class="tok-k">in</span> zip(axes.ravel(), segs):
+    <span class="tok-k">for</span> other <span class="tok-k">in</span> segs:                     <span class="tok-c"># grey context lines</span>
+        <span class="tok-k">if</span> other != seg:
             g = d[d.segment == other]
             ax.plot(g[&quot;week&quot;], g[&quot;retention&quot;], color=&quot;<span class="tok-c">#e6e8f0&quot;, lw=1.2)</span>
-    <span class="tok-c"># цветом — текущий</span>
-    g = d[d.segment == s]
+    g = d[d.segment == seg]                <span class="tok-c"># the highlighted one</span>
     ax.plot(g[&quot;week&quot;], g[&quot;retention&quot;], color=&quot;<span class="tok-c">#5B5FE9&quot;, lw=2.4)</span>
-    ax.set_title(s, fontsize=9.5, loc=&quot;left&quot;, fontweight=&quot;bold&quot;)
+    ax.set_title(seg, fontsize=9.5, loc=&quot;left&quot;, fontweight=&quot;bold&quot;)
 
-fig.supxlabel(&quot;Неделя&quot;); fig.supylabel(&quot;Удержание, %&quot;)
+fig.supxlabel(&quot;Week&quot;); fig.supylabel(&quot;Retention, %&quot;)
 <span class="tok-b">plt</span>.tight_layout(); <span class="tok-b">plt</span>.show()</pre></div>
 </div>
+
 <div class="chart"><svg style="width:100%;height:auto;max-width:660px" xmlns:xlink="http://www.w3.org/1999/xlink" width="525.744pt" height="288.738516pt" viewBox="0 0 525.744 288.738516" xmlns="http://www.w3.org/2000/svg" version="1.1">
  <metadata>
   <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
@@ -20741,35 +20976,32 @@ z
    <rect x="288.759" y="143.588516" width="229.785" height="95.67"/>
   </clipPath>
  </defs>
-</svg><div class="chart-caption">Каждый сегмент виден отдельно, но сравним с остальными</div></div>
-<div class="cs-takeaway"><b>Почему работает:</b> серый фон даёт контекст — сразу видно, что Tablet падает круче всех, а Desktop держится. На одном общем графике это утонуло бы в пересечениях.</div>
-
-<div class="dd-h3">Приём 2 · Показывать распределение, а не только среднее</div>
-<p>Два столбика со средними скрывают всё интересное. Комбинация «ящик + сами точки + маркер среднего» показывает форму данных, разброс и выбросы одновременно.</p>
-<button class="code-toggle" onclick="toggleCode(this)"><svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="c_did_code_show">Show Python code</span></button>
+</svg><div class="chart-caption" data-i18n="py_chart_cap">Produced by the code above</div></div>
+<div class="cs-takeaway" data-i18n="v1_take"><b>Why it works:</b> the grey background provides comparison — you see immediately that Tablet falls fastest while Desktop holds. On one combined chart that would drown in crossings.</div>
+<div class="dd-h3" data-i18n="v2_h">Show the distribution, not just the mean</div>
+<p data-i18n="v2_p">Two bars of averages hide everything interesting. A box plus the raw points plus a mean marker shows shape, spread and outliers at once.</p>
+<button class="code-toggle" onclick="toggleCode(this)" aria-expanded="false"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="c_did_code_show">Show Python code</span></button>
 <div class="code-collapse" hidden>
-<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)">Copy</button><pre><span class="tok-k">import</span> seaborn <span class="tok-k">as</span> <span class="tok-b">sns</span>
+<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="tok-k">import</span> seaborn <span class="tok-k">as</span> <span class="tok-b">sns</span>
 <span class="tok-k">import</span> matplotlib.pyplot <span class="tok-k">as</span> <span class="tok-b">plt</span>
 
 fig, ax = <span class="tok-b">plt</span>.subplots(figsize=(7,3.1))
 
-<span class="tok-c"># ящик: медиана и квартили</span>
 <span class="tok-b">sns</span>.boxplot(data=dd, x=&quot;value&quot;, y=&quot;group&quot;, hue=&quot;group&quot;, legend=<span class="tok-k">False</span>,
             ax=ax, width=.45, showfliers=<span class="tok-k">False</span>,
             palette=[&quot;<span class="tok-c">#5b6178&quot;, &quot;#5B5FE9&quot;], linewidth=1.3)</span>
 
-<span class="tok-c"># сами наблюдения полупрозрачными точками</span>
 <span class="tok-b">sns</span>.stripplot(data=dd, x=&quot;value&quot;, y=&quot;group&quot;, ax=ax,
               size=2.6, alpha=.32, color=&quot;<span class="tok-c">#1e2233&quot;, jitter=.28)</span>
 
-<span class="tok-c"># среднее отдельным маркером — видно расхождение с медианой</span>
-<span class="tok-k">for</span> i, (name, g) <span class="tok-k">in</span> enumerate(dd.groupby(&quot;group&quot;)):
+<span class="tok-k">for</span> i, (name, g) <span class="tok-k">in</span> enumerate(dd.groupby(&quot;group&quot;)):     <span class="tok-c"># mean <span class="tok-k">as</span> a diamond</span>
     ax.scatter(g[&quot;value&quot;].mean(), i, marker=&quot;D&quot;, s=52,
                color=&quot;<span class="tok-c">#E11D48&quot;, zorder=6, edgecolors=&quot;white&quot;)</span>
 
 ax.set_xlim(0, dd[&quot;value&quot;].quantile(.985))
 <span class="tok-b">plt</span>.show()</pre></div>
 </div>
+
 <div class="chart"><svg style="width:100%;height:auto;max-width:660px" xmlns:xlink="http://www.w3.org/1999/xlink" width="533.819687pt" height="215.129531pt" viewBox="0 0 533.819687 215.129531" xmlns="http://www.w3.org/2000/svg" version="1.1">
  <metadata>
   <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
@@ -23131,17 +23363,16 @@ z
    <rect x="60.406094" y="26.31375" width="428.83" height="152.71125"/>
   </clipPath>
  </defs>
-</svg><div class="chart-caption">Ящик, точки и среднее — три уровня информации на одном графике</div></div>
-<div class="callout-box"><b>Обратите внимание:</b> красный ромб (среднее) заметно правее середины ящика (медианы) — это визуальный признак скошенности. На столбчатой диаграмме вы бы этого не увидели.</div>
-
-<div class="dd-h3">Приём 3 · Waterfall — декомпозиция изменения</div>
-<p>Вопрос «выручка выросла на 73 тысячи — за счёт чего?» лучше всего отвечает водопад: каждый фактор виден отдельно, положительные и отрицательные разделены цветом.</p>
-<button class="code-toggle" onclick="toggleCode(this)"><svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="c_did_code_show">Show Python code</span></button>
+</svg><div class="chart-caption" data-i18n="py_chart_cap">Produced by the code above</div></div>
+<div class="callout-box" data-i18n="v2_note"><b>Look closely:</b> the red diamond (mean) sits clearly to the right of the box centre (median) — that is skewness made visible. A bar chart would never show it.</div>
+<div class="dd-h3" data-i18n="v3_h">Waterfall: decomposing a change</div>
+<p data-i18n="v3_p">The question "revenue grew by 73k — where from?" is best answered by a waterfall: every contribution is separate, and gains are distinguished from losses by colour.</p>
+<button class="code-toggle" onclick="toggleCode(this)" aria-expanded="false"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="c_did_code_show">Show Python code</span></button>
 <div class="code-collapse" hidden>
-<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)">Copy</button><pre><span class="tok-k">import</span> matplotlib.pyplot <span class="tok-k">as</span> <span class="tok-b">plt</span>
+<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="tok-k">import</span> matplotlib.pyplot <span class="tok-k">as</span> <span class="tok-b">plt</span>
 
-steps  = [&quot;Выручка\nмай&quot;,&quot;Новые\nклиенты&quot;,&quot;Возврат\nоттока&quot;,
-          &quot;Апгрейды&quot;,&quot;Даунгрейды&quot;,&quot;Отток&quot;,&quot;Выручка\nиюнь&quot;]
+steps  = [&quot;Revenue\nMay&quot;,&quot;New\ncustomers&quot;,&quot;Win-back&quot;,
+          &quot;Upgrades&quot;,&quot;Downgrades&quot;,&quot;Churn&quot;,&quot;Revenue\nJune&quot;]
 start  = 420
 deltas = [85, 22, 48, -19, -63]
 
@@ -23150,17 +23381,17 @@ cum = start
 ax.bar(0, start, color=&quot;<span class="tok-c">#5B5FE9&quot;, width=.6)</span>
 
 <span class="tok-k">for</span> i, v <span class="tok-k">in</span> enumerate(deltas, start=1):
-    bottom = cum <span class="tok-k">if</span> v &gt; 0 <span class="tok-k">else</span> cum + v      <span class="tok-c"># ключевая строка водопада</span>
+    bottom = cum <span class="tok-k">if</span> v &gt; 0 <span class="tok-k">else</span> cum + v      <span class="tok-c"># the key line of a waterfall</span>
     ax.bar(i, abs(v), bottom=bottom, width=.6,
            color=&quot;<span class="tok-c">#059669&quot; <span class="tok-k">if</span> v &gt; 0 <span class="tok-k">else</span> &quot;#E11D48&quot;)</span>
     ax.plot([i-1+.3, i-.3], [cum, cum], color=&quot;<span class="tok-c">#5b6178&quot;, lw=1, ls=&quot;:&quot;)</span>
-    ax.text(i, bottom+abs(v)+12, f&quot;{v:+d}&quot;, ha=&quot;center&quot;, fontweight=&quot;bold&quot;)
     cum += v
 
 ax.bar(len(steps)-1, cum, color=&quot;<span class="tok-c">#5B5FE9&quot;, width=.6)</span>
 ax.set_xticks(range(len(steps))); ax.set_xticklabels(steps, fontsize=8.3)
 <span class="tok-b">plt</span>.show()</pre></div>
 </div>
+
 <div class="chart"><svg style="width:100%;height:auto;max-width:660px" xmlns:xlink="http://www.w3.org/1999/xlink" width="525.332969pt" height="235.606547pt" viewBox="0 0 525.332969 235.606547" xmlns="http://www.w3.org/2000/svg" version="1.1">
  <metadata>
   <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
@@ -25208,45 +25439,38 @@ z
    <rect x="44.572969" y="25.938203" width="473.56" height="176.68"/>
   </clipPath>
  </defs>
-</svg><div class="chart-caption">420 → 493: видно вклад каждого фактора</div></div>
-<div class="cs-takeaway"><b>Тонкость реализации:</b> для отрицательных значений основание столбца — <code>cum + v</code>, а высота — <code>abs(v)</code>. Если передать отрицательную высоту вместе со смещённым основанием, столбец нарисуется вдвое ниже — частая ошибка при ручной сборке водопада.</div>
-</div>
-<div class="card" id="v-rules">
-<div class="card-title">Правила хорошего графика</div>
-<table><thead><tr><th>Правило</th><th>Почему</th></tr></thead><tbody>
-<tr><td>Заголовок = вывод, а не название</td><td>«Варианты пересекаются → победителя нет» полезнее, чем «Конверсия по группам». Читатель получает мысль, а не данные</td></tr>
-<tr><td>Убрать рамку и лишнюю сетку</td><td>Всё, что не несёт информации, крадёт внимание у того, что несёт</td></tr>
-<tr><td>Подписывать значения прямо на графике</td><td>Экономит взгляд туда-обратно к оси</td></tr>
-<tr><td>Не начинать ось Y не с нуля для столбиков</td><td>Столбики сравнивают по длине — обрезанная ось преувеличивает разницу. Для линий допустимо</td></tr>
-<tr><td>Цвет — смысл, а не украшение</td><td>Один акцентный для главного, серый для контекста. Радуга без смысла усложняет чтение</td></tr>
-<tr><td>Показывать неопределённость</td><td>Доверительные интервалы честнее точечных оценок и защищают от преждевременных выводов</td></tr>
-<tr><td>Не более 5–6 категорий в легенде</td><td>Дальше глаз не удерживает соответствие цвет↔категория; используйте фасеты</td></tr>
+</svg><div class="chart-caption" data-i18n="py_chart_cap">Produced by the code above</div></div>
+<div class="cs-takeaway" data-i18n="v3_take"><b>Implementation subtlety:</b> for negative values the bar's base is <code>cum + v</code> and its height is <code>abs(v)</code>. Passing a negative height together with a shifted base draws the bar at half its size — a classic bug when building a waterfall by hand.</div>
+<div class="dd-h3" data-i18n="vr_h">Rules for a good chart</div>
+<table class="ref-table"><tbody>
+<tr><td data-i18n="vr1a">The title is the conclusion, not the label</td><td data-i18n="vr1b">"Variants overlap the control — no winner" beats "Conversion by group". The reader gets the thought, not the raw data.</td></tr>
+<tr><td data-i18n="vr2a">Remove the frame and surplus gridlines</td><td data-i18n="vr2b">Anything that carries no information steals attention from what does.</td></tr>
+<tr><td data-i18n="vr3a">Label values directly on the chart</td><td data-i18n="vr3b">It saves the reader from looking back and forth to the axis.</td></tr>
+<tr><td data-i18n="vr4a">Do not truncate the Y axis on bar charts</td><td data-i18n="vr4b">Bars are compared by length, so a cut axis exaggerates the difference. For lines it is acceptable.</td></tr>
+<tr><td data-i18n="vr5a">Colour is meaning, not decoration</td><td data-i18n="vr5b">One accent for the point being made, grey for context. A rainbow without meaning slows reading down.</td></tr>
+<tr><td data-i18n="vr6a">Show uncertainty</td><td data-i18n="vr6b">Confidence intervals are more honest than point estimates and prevent premature conclusions.</td></tr>
 </tbody></table>
-<div class="callout-box"><b>Проверка перед отправкой:</b> закройте заголовок и покажите график коллеге. Если он не может сказать, какой вывод вы хотели донести, — график не готов.</div>
+<div class="callout-box" data-i18n="vr_check"><b>The test before you send it:</b> cover the title and show the chart to a colleague. If they cannot tell you what point you were making, the chart is not finished.</div>
 </div>
-<div class="card" id="t-errors">
-<div class="card-title">Частые ошибки, из-за которых цифры врут</div>
-<table><thead><tr><th>Ошибка</th><th>Чем грозит</th><th>Как правильно</th></tr></thead><tbody>
-<tr><td><code>count()</code> вместо <code>nunique()</code></td><td>Воронка раздувается, конверсия завышена</td><td>Считать уникальных по <code>user_id</code></td></tr>
-<tr><td>Только среднее</td><td>Пара крупных клиентов маскирует падение у остальных</td><td>Медиана, перцентили, гистограмма</td></tr>
-<tr><td>Общий retention вместо когорт</td><td>Смешивает новых и старых — эффект изменений не виден</td><td>Когортная матрица</td></tr>
-<tr><td>Цикл вместо векторизации</td><td>Медленно, длинно, больше шансов ошибиться</td><td>Операции над столбцом целиком</td></tr>
-<tr><td>Игнорировать <code>SettingWithCopyWarning</code></td><td>Значения молча не записываются</td><td><code>.copy()</code> или <code>.loc[...]</code></td></tr>
-<tr><td>Не проверить <code>isna()</code></td><td><code>mean()</code> тихо пропускает пропуски — метрика едет</td><td>Считать пропуски до расчёта</td></tr>
-<tr><td>Не зафиксировать зерно</td><td>Результат меняется между запусками, выводы невоспроизводимы</td><td><code>default_rng(42)</code></td></tr>
-<tr><td>Сравнивать группы разного размера по абсолюту</td><td>Больший сегмент всегда «выигрывает»</td><td>Сравнивать доли и нормировать</td></tr>
-</tbody></table>
-</div>
+<div class="card" id="s-errors"><div class="card-title" data-i18n="s6_h">6 · Common mistakes</div>
+<table class="ref-table"><thead><tr><th data-i18n="s6_c1">Mistake</th><th data-i18n="s6_c2">What it costs you</th><th data-i18n="s6_c3">Do this instead</th></tr></thead><tbody>
+<tr><td data-i18n="m1a"><code>count()</code> instead of <code>nunique()</code></td><td data-i18n="m1b">The funnel inflates and conversion is overstated</td><td data-i18n="m1c">Count distinct users</td></tr>
+<tr><td data-i18n="m2a">Reporting only the mean</td><td data-i18n="m2b">A few large customers mask a decline in everyone else</td><td data-i18n="m2c">Median, percentiles, histogram</td></tr>
+<tr><td data-i18n="m3a">Overall retention instead of cohorts</td><td data-i18n="m3b">Mixes old and new users, so improvements stay invisible</td><td data-i18n="m3c">A cohort matrix</td></tr>
+<tr><td data-i18n="m4a">A loop instead of vectorisation</td><td data-i18n="m4b">Slow, longer to write, more room for error</td><td data-i18n="m4c">Operate on the whole column</td></tr>
+<tr><td data-i18n="m5a">Ignoring <code>SettingWithCopyWarning</code></td><td data-i18n="m5b">Values silently fail to be written</td><td data-i18n="m5c"><code>.copy()</code> or <code>.loc[...]</code></td></tr>
+<tr><td data-i18n="m6a">Never checking <code>isna()</code></td><td data-i18n="m6b"><code>mean()</code> quietly skips gaps and the metric drifts</td><td data-i18n="m6c">Count missing values before calculating</td></tr>
+<tr><td data-i18n="m7a">Not fixing the random seed</td><td data-i18n="m7b">Results change between runs and cannot be reproduced</td><td data-i18n="m7c"><code>default_rng(42)</code></td></tr>
+<tr><td data-i18n="m8a">Comparing groups of different size by absolute numbers</td><td data-i18n="m8b">The bigger segment always appears to win</td><td data-i18n="m8c">Compare shares, normalise</td></tr>
+</tbody></table></div>
 </div>
 </div>
-
 <div class="causal-back">
   <a href="ab-testing.html" class="causal-back-link" data-i18n="py_back_ab">← A/B Testing Calculator</a>
   <a href="causal.html" class="causal-back-link" data-i18n="py_back_causal">Causal Inference</a>
   <a href="index.html" class="causal-back-link" data-i18n="c_back_home">Home</a>
 </div>
 </main>
-
 <script src="i18n.js"></script>
 <script src="stats.js"></script>
 <script src="app.js"></script>
@@ -25259,7 +25483,8 @@ function toggleCode(btn){
   btn.classList.toggle('open', open);
   const lbl = btn.querySelector('span[data-i18n]');
   if(lbl && typeof T!=='undefined' && T[currentLang]){
-    lbl.textContent = open ? (T[currentLang].c_did_code_hide||'Hide code') : (T[currentLang].c_did_code_show||'Show code');
+    lbl.textContent = open ? (T[currentLang].c_did_code_hide||'Hide Python code')
+                           : (T[currentLang].c_did_code_show||'Show Python code');
     lbl.setAttribute('data-i18n', open?'c_did_code_hide':'c_did_code_show');
   }
 }
@@ -25267,11 +25492,17 @@ function toggleCode(btn){
   const nav=document.getElementById('py-nav'); if(!nav) return;
   const items=[...nav.querySelectorAll('.toc-link')];
   const secs=items.map(a=>document.querySelector(a.getAttribute('href'))).filter(Boolean);
-  function spy(){let act=0;const y=window.scrollY+130;secs.forEach((s,i)=>{if(s.offsetTop<=y)act=i;});
-    items.forEach((a,i)=>a.classList.toggle('active',i===act));}
+  function spy(){
+    let act=0; const y=window.scrollY+140;
+    secs.forEach((el,i)=>{ const top=el.getBoundingClientRect().top+window.scrollY; if(top<=y) act=i; });
+    items.forEach((a,i)=>a.classList.toggle('active',i===act));
+  }
   window.addEventListener('scroll',spy,{passive:true}); spy();
-  items.forEach(a=>a.addEventListener('click',e=>{const t=document.querySelector(a.getAttribute('href'));
-    if(t){e.preventDefault();window.scrollTo({top:t.offsetTop-90,behavior:'smooth'});}}));
+  items.forEach(a=>a.addEventListener('click',e=>{
+    const t=document.querySelector(a.getAttribute('href')); if(!t) return;
+    e.preventDefault();
+    window.scrollTo({top:t.getBoundingClientRect().top+window.scrollY-90,behavior:'smooth'});
+  }));
 })();
 </script>
 </body>
