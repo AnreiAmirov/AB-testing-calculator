@@ -2325,3 +2325,48 @@ table.up-summary th { background: var(--pill-bg); font-weight: 700; color: var(-
   #tab-reference .chart-card > .chart-title,
   .causal-content .card > .card-title { font-size: 1.04rem; }
 }
+
+/* ── Home: three entry cards ──
+   With a third card the two-column grid gets cramped, so switch to three
+   columns on wide screens and degrade gracefully below. */
+.home-main { max-width: 1140px; }
+.home-cards { grid-template-columns: repeat(3, 1fr); }
+@media (max-width: 1040px) { .home-cards { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 720px)  { .home-cards { grid-template-columns: 1fr; } }
+.home-card h3 { font-size: 1.18rem; }
+.home-card > p { font-size: 0.9rem; }
+
+/* Python page: keep long code blocks and wide charts inside their card */
+#tab-reference .chart { overflow-x: auto; }
+#tab-reference .chart svg { max-width: 100%; height: auto; }
+
+/* ── Python page: keep wide content inside the viewport on mobile ──
+   Chart SVGs have an intrinsic width and tables can be wide; both are wrapped
+   in a horizontally scrollable container instead of stretching the page. */
+#tab-reference .chart {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  max-width: 100%;
+}
+#tab-reference .chart svg {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+#tab-reference .card table {
+  display: block;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  max-width: 100%;
+  white-space: normal;
+}
+#tab-reference .code-block,
+#tab-reference .code-output {
+  max-width: 100%;
+  overflow-x: auto;
+}
+@media (max-width: 640px) {
+  #tab-reference .card { padding: 20px 15px; }
+  #tab-reference .code-block pre { font-size: 0.72rem; }
+}
