@@ -2370,3 +2370,108 @@ table.up-summary th { background: var(--pill-bg); font-weight: 700; color: var(-
   #tab-reference .card { padding: 20px 15px; }
   #tab-reference .code-block pre { font-size: 0.72rem; }
 }
+
+/* ═══════════════════════════════════════════════════════════════════════
+   SQL PAGE: schema viewer + execution-order strip + task cards
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* ── Visual table schema with PK / FK / NULL badges ── */
+.schema-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 14px;
+  margin: 16px 0;
+}
+.schema-card {
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  overflow: hidden;
+  background: var(--card);
+}
+.schema-head {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 8px;
+  background: var(--accent-hover-bg);
+  padding: 9px 13px;
+  border-bottom: 1px solid var(--border);
+}
+.schema-name {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-weight: 600; font-size: 0.92rem; color: var(--accent);
+}
+.schema-count { font-size: 0.72rem; color: var(--ink-faint); white-space: nowrap; }
+.schema-cols { width: 100%; border-collapse: collapse; margin: 0; font-size: 0.8rem; }
+.schema-cols td {
+  border: none;
+  border-bottom: 1px solid var(--border);
+  padding: 6px 13px;
+  vertical-align: middle;
+}
+.schema-cols tr:last-child td { border-bottom: none; }
+.c-name {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  color: var(--ink); white-space: nowrap;
+}
+.c-type { color: var(--ink-faint); font-size: 0.74rem; white-space: nowrap; }
+.c-badges { text-align: right; white-space: nowrap; }
+.schema-ref {
+  display: block; font-size: 0.66rem; color: var(--ink-faint);
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+}
+.badge {
+  display: inline-block; font-size: 0.6rem; font-weight: 700;
+  letter-spacing: 0.04em; padding: 2px 6px; border-radius: 5px; margin-left: 3px;
+}
+.badge.pk  { background: #e8e6fb; color: #4845c7; }
+.badge.fk  { background: #e3f2fd; color: #1565c0; }
+.badge.nul { background: #f0f1f6; color: #6b6f85; }
+[data-theme="dark"] .badge.pk  { background: rgba(165,156,247,.2); color: #c4bcff; }
+[data-theme="dark"] .badge.fk  { background: rgba(100,181,246,.18); color: #90caf9; }
+[data-theme="dark"] .badge.nul { background: rgba(255,255,255,.09); color: #a8adc4; }
+
+.schema-legend {
+  display: flex; flex-wrap: wrap; gap: 16px;
+  font-size: 0.78rem; color: var(--ink-muted); margin-top: 10px;
+}
+.schema-legend > span { display: inline-flex; align-items: center; gap: 5px; }
+
+/* ── Execution-order strip ── */
+.exec-order { display: flex; flex-wrap: wrap; gap: 7px; align-items: center; margin: 14px 0; }
+.exec-order span {
+  background: var(--accent-hover-bg); color: var(--accent);
+  border-radius: 8px; padding: 6px 11px;
+  font-size: 0.78rem; font-weight: 600;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+}
+.exec-order i { color: var(--ink-faint); font-style: normal; }
+
+/* ── Task cards ── */
+.task {
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 11px 11px 0;
+  padding: 16px 18px; margin: 16px 0;
+  background: var(--card);
+  scroll-margin-top: 90px;
+}
+.task-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 4px; }
+.task-num {
+  width: 25px; height: 25px; border-radius: 50%;
+  background: var(--accent); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.76rem; font-weight: 700; flex-shrink: 0;
+}
+.task-title { font-weight: 700; font-size: 1rem; }
+.lv {
+  font-size: 0.65rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.05em; padding: 3px 9px; border-radius: 999px; margin-left: auto;
+}
+.lv-easy { background: #eefaf4; color: #059669; }
+.lv-med  { background: #fff4e6; color: #B45309; }
+[data-theme="dark"] .lv-easy { background: rgba(5,150,105,.18); color: #6ee7b7; }
+[data-theme="dark"] .lv-med  { background: rgba(217,119,6,.18);  color: #fcd34d; }
+
+@media (max-width: 640px) {
+  .schema-grid { grid-template-columns: 1fr; }
+  .task { padding: 14px 14px; }
+  .lv { margin-left: 0; }
+}

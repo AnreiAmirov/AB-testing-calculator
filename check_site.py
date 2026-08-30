@@ -19,7 +19,7 @@ import re, sys, json, pathlib, subprocess
 from html.parser import HTMLParser
 
 BASE = pathlib.Path(__file__).parent
-PAGES = ['index.html', 'python.html', 'causal.html', 'ab-testing.html']
+PAGES = ['index.html', 'python.html', 'sql.html', 'causal.html', 'ab-testing.html']
 problems = []
 notes = []
 
@@ -97,6 +97,9 @@ def check_i18n(page, html, en, ru):
         if 'data-i18n' in attrs:
             continue
         if text in PROPER:
+            continue
+        # имена таблиц и колонок из БД одинаковы в обоих языках
+        if re.match(r'^[→ ]*[a-z_]+[.][a-z_]+$', text):
             continue
         # ячейки, состоящие в основном из чисел/формул, переводить нечего
         letters = len(re.findall(r'[А-Яа-яA-Za-z]', text))
