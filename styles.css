@@ -2475,3 +2475,87 @@ table.up-summary th { background: var(--pill-bg); font-weight: 700; color: var(-
   .task { padding: 14px 14px; }
   .lv { margin-left: 0; }
 }
+
+/* ═══════════════════════════════════════════════════════════════════════
+   HOME: flagship card + row of three
+   Four equal cards in a three-column grid left the fourth one orphaned on a
+   second row, wasting a third of the screen. The calculator is the only
+   interactive tool here, so it takes a wide card of its own and the three
+   learning sections sit in an even row below.
+   ═══════════════════════════════════════════════════════════════════════ */
+.home-flagship {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  grid-template-areas:
+    "main side"
+    "cta  side";
+  gap: 10px 28px;
+  align-items: start;
+  background: linear-gradient(135deg, var(--card), var(--accent-hover-bg));
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 28px 26px;
+  margin-bottom: 18px;
+  text-decoration: none;
+  color: var(--ink);
+  box-shadow: var(--shadow-card);
+  transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
+}
+.home-flagship:hover {
+  transform: translateY(-3px);
+  border-color: var(--accent);
+  box-shadow: 0 12px 30px rgba(20, 25, 50, 0.12);
+}
+.home-flagship .home-card-icon { width: 52px; height: 52px; }
+.home-flagship h3 {
+  font-size: 1.34rem;
+  margin: 0 0 8px;
+  letter-spacing: -0.015em;
+}
+.home-flagship > .flagship-main > p {
+  color: var(--ink-muted);
+  font-size: 0.94rem;
+  line-height: 1.6;
+  margin: 0 0 14px;
+}
+.flagship-main { grid-area: main; display: flex; flex-direction: column; }
+.flagship-side { grid-area: side; min-width: 0; align-self: center; }
+.flagship-cta  { grid-area: cta; align-self: end; }
+.flagship-side .home-card-list { margin: 0; }
+.flagship-tag {
+  display: inline-block;
+  align-self: flex-start;   /* не растягиваться на ширину flex-колонки */
+  width: fit-content;
+  font-size: 0.64rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  background: var(--accent);
+  color: #fff;
+  padding: 4px 11px;
+  border-radius: 999px;
+  margin-bottom: 12px;
+}
+
+/* the three learning sections below */
+.home-cards { grid-template-columns: repeat(3, 1fr); }
+
+[data-theme="dark"] .home-flagship {
+  background: linear-gradient(135deg, var(--card), rgba(165, 156, 247, 0.10));
+}
+
+@media (max-width: 900px) {
+  /* stack in reading order: icon, tag, title, text, checklist, then the CTA */
+  .home-flagship {
+    grid-template-columns: 1fr;
+    grid-template-areas: "main" "side" "cta";
+    gap: 14px;
+    padding: 24px 20px;
+  }
+  .flagship-side { align-self: start; }
+  .home-flagship h3 { font-size: 1.18rem; }
+  .home-cards { grid-template-columns: 1fr; }
+}
+@media (min-width: 901px) and (max-width: 1040px) {
+  .home-cards { grid-template-columns: repeat(3, 1fr); }
+}
