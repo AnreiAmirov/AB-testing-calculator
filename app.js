@@ -2409,3 +2409,53 @@ function parseUploadedData(rows, metric) {
     document.addEventListener('DOMContentLoaded', setup);
   } else { setup(); }
 })();
+
+/* ── Inline code highlighting ──────────────────────────────────────────
+   Keywords inside short <code> fragments in prose (if, else, for, with,
+   None, WHERE, NULL…) get a distinct colour so they do not blend with the
+   surrounding words. It runs after every language switch, because
+   applyLang() replaces the text of translated elements and would wipe out
+   highlighting baked into the page. Only <code> made purely of text is
+   touched; code blocks (<pre>) have their own build-time highlighting. */
+(function () {
+  const PY_KW = new Set(['if','elif','else','for','while','break','continue','return','try','except',
+    'finally','raise','with','yield','pass','assert','def','class','lambda','import','from','as',
+    'global','nonlocal','del','and','or','not','in','is']);
+  const PY_CONST = new Set(['True','False','None']);
+  const SQL_KW = new Set(['SELECT','FROM','WHERE','GROUP','BY','ORDER','HAVING','LIMIT','JOIN','LEFT',
+    'RIGHT','INNER','OUTER','FULL','CROSS','ON','AS','WITH','UNION','DISTINCT','OVER','PARTITION',
+    'ROWS','BETWEEN','FILTER','CASE','WHEN','THEN','ELSE','END','AND','OR','NOT','IN','IS','EXISTS',
+    'LIKE','ASC','DESC','INTERVAL']);
+  const SQL_CONST = new Set(['NULL','TRUE','FALSE']);
+  const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+  function paint(code) {
+    if (code.closest('pre') || code.dataset.hl === '1') return;
+    if ([...code.childNodes].some(n => n.nodeType !== 3)) return;   // only plain-text <code>
+    const text = code.textContent;
+    let changed = false;
+    const html = text.split(/([A-Za-z_][A-Za-z0-9_]*)/).map((part, i) => {
+      if (i % 2 === 0) return esc(part);                // separators
+      if (PY_KW.has(part) || SQL_KW.has(part)) { changed = true; return '<span class="ik">' + part + '</span>'; }
+      if (PY_CONST.has(part) || SQL_CONST.has(part)) { changed = true; return '<span class="ic">' + part + '</span>'; }
+      return esc(part);
+    }).join('');
+    if (changed) { code.innerHTML = html; }
+    code.dataset.hl = '1';
+  }
+  window.highlightInlineCode = function () {
+    document.querySelectorAll('code').forEach(paint);
+  };
+  // re-run after every language switch
+  if (typeof applyLang === 'function') {
+    const original = applyLang;
+    applyLang = function (lang) {
+      original(lang);
+      document.querySelectorAll('code[data-hl]').forEach(c => { delete c.dataset.hl; });
+      window.highlightInlineCode();
+    };
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => window.highlightInlineCode());
+  } else { window.highlightInlineCode(); }
+})();

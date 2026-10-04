@@ -2733,3 +2733,56 @@ html[lang="ru"] .chart-ru { display: block; }
   .anat-legend li { flex-wrap: wrap; row-gap: 2px; }
   .anat-legend li > span[data-i18n] { flex-basis: 100%; padding-left: 26px; }
 }
+
+/* ═══════════════════════════════════════════════════════════════════════
+   SYNTAX HIGHLIGHTING (single-pass tokenizer, syntax_hl.py)
+   Control-flow words carry the structure of the code, so they get the
+   strongest treatment: a bright colour AND bold weight. Everything else
+   has its own hue so the eye can separate strings, numbers and calls.
+   Code blocks are dark in both themes, so one palette serves both.
+   ═══════════════════════════════════════════════════════════════════════ */
+pre .hl-ctl   { color: #ff7eb6; font-weight: 700; }   /* if else for while return with try */
+pre .hl-kw    { color: #c792ea; font-weight: 600; }   /* def class import as lambda */
+pre .hl-opw   { color: #89ddff; font-weight: 600; }   /* and or not in is */
+pre .hl-const { color: #ff9e64; font-weight: 600; }   /* True False None / NULL */
+pre .hl-num   { color: #f78c6c; }
+pre .hl-str   { color: #c3e88d; }
+pre .hl-com   { color: #8b93b8; font-style: italic; }
+pre .hl-bi    { color: #82aaff; }                      /* print len range … / COUNT SUM … */
+pre .hl-lib   { color: #ffcb6b; }                      /* pd np plt self */
+pre .hl-def   { color: #ffcb6b; font-weight: 700; }   /* the name right after def / class */
+pre .hl-call  { color: #7fdbca; }                      /* your own functions being called */
+pre .hl-type  { color: #ffcb6b; }                      /* SQL column types */
+
+/* inline code in prose: keywords and constants stand out from the text */
+code .ik { color: #b4236b; font-weight: 700; }
+code .ic { color: #c2410c; font-weight: 600; }
+[data-theme="dark"] code .ik { color: #ff8cc6; }
+[data-theme="dark"] code .ic { color: #ffa36c; }
+
+/* ── Algorithms: logic section + easy problems ── */
+.lg-h { font-size: 1.08rem; font-weight: 700; color: var(--ink); margin: 30px 0 6px;
+  padding-top: 18px; border-top: 1px solid var(--border); display: flex; align-items: center; gap: 8px; }
+#a-logic > .lg-h:first-of-type, #a-easy > .lg-h:first-of-type { border-top: none; padding-top: 4px; }
+.lg-count { font-size: .7rem; font-weight: 700; color: var(--accent); background: var(--accent-hover-bg);
+  border-radius: 999px; padding: 2px 9px; }
+.logic-steps { counter-reset: ls; list-style: none; padding: 0; margin: 10px 0; }
+.logic-steps li { counter-increment: ls; position: relative; padding: 6px 0 6px 36px;
+  color: var(--ink-muted); line-height: 1.6; }
+.logic-steps li::before { content: counter(ls); position: absolute; left: 0; top: 6px;
+  width: 24px; height: 24px; border-radius: 50%; background: var(--accent-hover-bg); color: var(--accent);
+  border: 1px solid var(--accent); font-size: .76rem; font-weight: 700;
+  display: flex; align-items: center; justify-content: center; }
+.etask { border: 1px solid var(--border); border-left: 3px solid #059669; border-radius: 0 12px 12px 0;
+  padding: 16px 18px; margin: 14px 0; background: var(--card); scroll-margin-top: 90px; }
+.badge-classic { font-size: .7rem; font-weight: 600; padding: 3px 9px; border-radius: 999px;
+  border: 1px dashed var(--border); color: var(--ink-faint); }
+.shape-tag { display: inline-flex; width: 26px; height: 26px; border-radius: 7px; background: var(--accent);
+  color: #fff; align-items: center; justify-content: center; }
+[data-theme="dark"] .shape-tag { color: #12132a; }
+@media (max-width: 640px) { .etask { padding: 14px 13px; } }
+/* pointer labels sit 9px above a cell; leave room so the first row is not clipped
+   by the scroll container */
+.strip-wrap { padding-top: 10px; }
+/* on narrow screens the Copy button would sit on top of the first code line */
+@media (max-width: 640px) { .code-block { padding-top: 48px; } }

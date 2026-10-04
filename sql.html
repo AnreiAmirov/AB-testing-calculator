@@ -92,41 +92,41 @@
 <div class="dd-h3" data-i18n="sc_ddl_h">The DDL that creates it</div>
 <button class="code-toggle" onclick="toggleCode(this)" aria-expanded="false"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="sql_show">Show SQL</span></button>
 <div class="code-collapse" hidden>
-<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="tok-k">CREATE TABLE</span> users (
-    user_id     <span class="tok-k">INT</span> <span class="tok-k">PRIMARY KEY</span>,
-    signup_date <span class="tok-k">DATE</span> <span class="tok-k">NOT</span> <span class="tok-k">NULL</span>,
-    country     <span class="tok-k">TEXT</span>,             <span class="tok-c">-- may be <span class="tok-k">NULL</span>: geo not resolved</span>
-    plan        <span class="tok-k">TEXT</span>,             <span class="tok-c">-- free / pro, may be <span class="tok-k">NULL</span></span>
-    channel     <span class="tok-k">TEXT</span>
+<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-kw">CREATE</span> <span class="hl-kw">TABLE</span> users (
+    user_id     <span class="hl-type">INT</span> <span class="hl-kw">PRIMARY</span> <span class="hl-kw">KEY</span>,
+    signup_date <span class="hl-type">DATE</span> <span class="hl-ctl">NOT</span> <span class="hl-const">NULL</span>,
+    country     <span class="hl-type">TEXT</span>,             <span class="hl-com">-- may be NULL: geo not resolved</span>
+    plan        <span class="hl-type">TEXT</span>,             <span class="hl-com">-- free / pro, may be NULL</span>
+    channel     <span class="hl-type">TEXT</span>
 );
 
-<span class="tok-k">CREATE TABLE</span> events (
-    event_id  <span class="tok-k">BIGSERIAL</span> <span class="tok-k">PRIMARY KEY</span>,
-    user_id   <span class="tok-k">INT</span> <span class="tok-k">NOT</span> <span class="tok-k">NULL</span> <span class="tok-k">REFERENCES</span> users(user_id),
-    event_at  <span class="tok-k">TIMESTAMP</span> <span class="tok-k">NOT</span> <span class="tok-k">NULL</span>,
-    event     <span class="tok-k">TEXT</span> <span class="tok-k">NOT</span> <span class="tok-k">NULL</span>       <span class="tok-c">-- open / view / add_to_cart / purchase</span>
+<span class="hl-kw">CREATE</span> <span class="hl-kw">TABLE</span> events (
+    event_id  <span class="hl-type">BIGSERIAL</span> <span class="hl-kw">PRIMARY</span> <span class="hl-kw">KEY</span>,
+    user_id   <span class="hl-type">INT</span> <span class="hl-ctl">NOT</span> <span class="hl-const">NULL</span> <span class="hl-kw">REFERENCES</span> users(user_id),
+    event_at  <span class="hl-type">TIMESTAMP</span> <span class="hl-ctl">NOT</span> <span class="hl-const">NULL</span>,
+    event     <span class="hl-type">TEXT</span> <span class="hl-ctl">NOT</span> <span class="hl-const">NULL</span>       <span class="hl-com">-- open / view / add_to_cart / purchase</span>
 );
 
-<span class="tok-k">CREATE TABLE</span> orders (
-    order_id   <span class="tok-k">INT</span> <span class="tok-k">PRIMARY KEY</span>,
-    user_id    <span class="tok-k">INT</span> <span class="tok-k">REFERENCES</span> users(user_id),
-    created_at <span class="tok-k">TIMESTAMP</span> <span class="tok-k">NOT</span> <span class="tok-k">NULL</span>,
-    amount     <span class="tok-k">NUMERIC</span>(10,2),     <span class="tok-c">-- <span class="tok-k">NULL</span> when the order is not paid</span>
-    status     <span class="tok-k">TEXT</span>               <span class="tok-c">-- paid / cancelled / pending</span>
+<span class="hl-kw">CREATE</span> <span class="hl-kw">TABLE</span> orders (
+    order_id   <span class="hl-type">INT</span> <span class="hl-kw">PRIMARY</span> <span class="hl-kw">KEY</span>,
+    user_id    <span class="hl-type">INT</span> <span class="hl-kw">REFERENCES</span> users(user_id),
+    created_at <span class="hl-type">TIMESTAMP</span> <span class="hl-ctl">NOT</span> <span class="hl-const">NULL</span>,
+    amount     <span class="hl-type">NUMERIC</span>(<span class="hl-num">10</span>,<span class="hl-num">2</span>),     <span class="hl-com">-- NULL when the order is not paid</span>
+    status     <span class="hl-type">TEXT</span>               <span class="hl-com">-- paid / cancelled / pending</span>
 );
 
-<span class="tok-k">CREATE TABLE</span> subscriptions (
-    sub_id     <span class="tok-k">INT</span> <span class="tok-k">PRIMARY KEY</span>,
-    user_id    <span class="tok-k">INT</span> <span class="tok-k">REFERENCES</span> users(user_id),
-    started_on <span class="tok-k">DATE</span> <span class="tok-k">NOT</span> <span class="tok-k">NULL</span>,
-    ended_on   <span class="tok-k">DATE</span>               <span class="tok-c">-- <span class="tok-k">NULL</span> = still active</span>
+<span class="hl-kw">CREATE</span> <span class="hl-kw">TABLE</span> subscriptions (
+    sub_id     <span class="hl-type">INT</span> <span class="hl-kw">PRIMARY</span> <span class="hl-kw">KEY</span>,
+    user_id    <span class="hl-type">INT</span> <span class="hl-kw">REFERENCES</span> users(user_id),
+    started_on <span class="hl-type">DATE</span> <span class="hl-ctl">NOT</span> <span class="hl-const">NULL</span>,
+    ended_on   <span class="hl-type">DATE</span>               <span class="hl-com">-- NULL = still active</span>
 );</pre></div>
 </div>
 
 <div class="dd-h3" data-i18n="sc_peek_h">What the data looks like</div>
 <button class="code-toggle" onclick="toggleCode(this)" aria-expanded="false"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="sql_show">Show SQL</span></button>
 <div class="code-collapse" hidden>
-<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="tok-k">SELECT</span> * <span class="tok-k">FROM</span> users <span class="tok-k">ORDER BY</span> user_id <span class="tok-k">LIMIT</span> 5;</pre></div>
+<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-kw">SELECT</span> * <span class="hl-kw">FROM</span> users <span class="hl-kw">ORDER</span> <span class="hl-kw">BY</span> user_id <span class="hl-kw">LIMIT</span> <span class="hl-num">5</span>;</pre></div>
 <div class="code-output"><span class="code-output-label" data-i18n="sql_out_label"># result (verified on PostgreSQL 16):</span>user_id | signup_date | country | plan | channel  
 ---------+-------------+---------+------+----------
        1 | 2026-01-01  | KZ      | free | organic
@@ -162,8 +162,8 @@
 <p data-i18n="nl_p">SQL logic is three-valued: true, false and <b>unknown</b>. <code>NULL</code> means "unknown", any comparison with it yields "unknown" again — and "unknown" does not pass a filter.</p>
 <button class="code-toggle" onclick="toggleCode(this)" aria-expanded="false"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="sql_show">Show SQL</span></button>
 <div class="code-collapse" hidden>
-<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="tok-k">SELECT</span> (<span class="tok-k">NULL</span> = <span class="tok-k">NULL</span>) <span class="tok-k">AS</span> eq, (<span class="tok-k">NULL</span> <span class="tok-k">IS</span> <span class="tok-k">NULL</span>) <span class="tok-k">AS</span> is_null,
-       (5 &gt; <span class="tok-k">NULL</span>) <span class="tok-k">AS</span> cmp, <span class="tok-k">COALESCE</span>(<span class="tok-k">NULL</span>, <span class="tok-s">&#x27;fallback&#x27;</span>) <span class="tok-k">AS</span> coalesced</pre></div>
+<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-kw">SELECT</span> (<span class="hl-const">NULL</span> = <span class="hl-const">NULL</span>) <span class="hl-kw">AS</span> eq, (<span class="hl-const">NULL</span> <span class="hl-ctl">IS</span> <span class="hl-const">NULL</span>) <span class="hl-kw">AS</span> is_null,
+       (<span class="hl-num">5</span> &gt; <span class="hl-const">NULL</span>) <span class="hl-kw">AS</span> cmp, <span class="hl-bi">COALESCE</span>(<span class="hl-const">NULL</span>, <span class="hl-str">'fallback'</span>) <span class="hl-kw">AS</span> coalesced</pre></div>
 <div class="code-output"><span class="code-output-label" data-i18n="sql_out_label"># result (verified on PostgreSQL 16):</span>eq | is_null | cmp | coalesced 
 ----+---------+-----+-----------
     | t       |     | fallback
@@ -177,12 +177,12 @@
 <p data-i18n="dt_p">Three operations cover almost everything: the difference between two dates, truncating to a period, and shifting by an interval. In PostgreSQL subtracting two <code>date</code> values gives an integer number of days, while subtracting two timestamps gives an <code>interval</code>.</p>
 <button class="code-toggle" onclick="toggleCode(this)" aria-expanded="false"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="sql_show">Show SQL</span></button>
 <div class="code-collapse" hidden>
-<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="tok-k">SELECT</span>
-  <span class="tok-k">DATE</span> <span class="tok-s">&#x27;2026-03-15&#x27;</span> - <span class="tok-k">DATE</span> <span class="tok-s">&#x27;2026-03-01&#x27;</span>                    <span class="tok-k">AS</span> days_between,
-  <span class="tok-k">date_trunc</span>(<span class="tok-s">&#x27;week&#x27;</span>,  <span class="tok-k">TIMESTAMP</span> <span class="tok-s">&#x27;2026-03-15 12:00&#x27;</span>)::date  <span class="tok-k">AS</span> week_start,
-  <span class="tok-k">date_trunc</span>(<span class="tok-s">&#x27;month&#x27;</span>, <span class="tok-k">TIMESTAMP</span> <span class="tok-s">&#x27;2026-03-15 12:00&#x27;</span>)::date  <span class="tok-k">AS</span> month_start,
-  <span class="tok-k">DATE</span> <span class="tok-s">&#x27;2026-03-15&#x27;</span> - <span class="tok-k">INTERVAL</span> <span class="tok-s">&#x27;7 days&#x27;</span>                    <span class="tok-k">AS</span> week_ago,
-  to_char(<span class="tok-k">DATE</span> <span class="tok-s">&#x27;2026-03-15&#x27;</span>, <span class="tok-s">&#x27;Day&#x27;</span>)                        <span class="tok-k">AS</span> weekday</pre></div>
+<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-kw">SELECT</span>
+  <span class="hl-type">DATE</span> <span class="hl-str">'2026-03-15'</span> - <span class="hl-type">DATE</span> <span class="hl-str">'2026-03-01'</span>                    <span class="hl-kw">AS</span> days_between,
+  <span class="hl-bi">date_trunc</span>(<span class="hl-str">'week'</span>,  <span class="hl-type">TIMESTAMP</span> <span class="hl-str">'2026-03-15 12:00'</span>)::<span class="hl-type">date</span>  <span class="hl-kw">AS</span> week_start,
+  <span class="hl-bi">date_trunc</span>(<span class="hl-str">'month'</span>, <span class="hl-type">TIMESTAMP</span> <span class="hl-str">'2026-03-15 12:00'</span>)::<span class="hl-type">date</span>  <span class="hl-kw">AS</span> month_start,
+  <span class="hl-type">DATE</span> <span class="hl-str">'2026-03-15'</span> - <span class="hl-kw">INTERVAL</span> <span class="hl-str">'7 days'</span>                    <span class="hl-kw">AS</span> week_ago,
+  <span class="hl-bi">to_char</span>(<span class="hl-type">DATE</span> <span class="hl-str">'2026-03-15'</span>, <span class="hl-str">'Day'</span>)                        <span class="hl-kw">AS</span> weekday</pre></div>
 <div class="code-output"><span class="code-output-label" data-i18n="sql_out_label"># result (verified on PostgreSQL 16):</span>days_between | week_start | month_start |      week_ago       |  weekday  
 --------------+------------+-------------+---------------------+-----------
            14 | 2026-03-09 | 2026-03-01  | 2026-03-08 00:00:00 | Sunday   
@@ -198,15 +198,15 @@
 <p data-i18n="wn_rank_p">People confuse these constantly, because with no ties they behave identically. The difference only appears on a tie — so in the example Anna and Boris both have 500.</p>
 <button class="code-toggle" onclick="toggleCode(this)" aria-expanded="false"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="sql_show">Show SQL</span></button>
 <div class="code-collapse" hidden>
-<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="tok-k">WITH</span> sales(rep, region, amount) <span class="tok-k">AS</span> (<span class="tok-k">VALUES</span>
-  (<span class="tok-s">&#x27;Anna&#x27;</span>,<span class="tok-s">&#x27;RU&#x27;</span>,500),(<span class="tok-s">&#x27;Boris&#x27;</span>,<span class="tok-s">&#x27;RU&#x27;</span>,500),(<span class="tok-s">&#x27;Clara&#x27;</span>,<span class="tok-s">&#x27;RU&#x27;</span>,300),
-  (<span class="tok-s">&#x27;Dmitry&#x27;</span>,<span class="tok-s">&#x27;KZ&#x27;</span>,700),(<span class="tok-s">&#x27;Elena&#x27;</span>,<span class="tok-s">&#x27;KZ&#x27;</span>,400))
-<span class="tok-k">SELECT</span> rep, region, amount,
-  <span class="tok-k">ROW_NUMBER</span>() <span class="tok-k">OVER</span> (<span class="tok-k">PARTITION BY</span> region <span class="tok-k">ORDER BY</span> amount DESC) <span class="tok-k">AS</span> row_num,
-  <span class="tok-k">RANK</span>()       <span class="tok-k">OVER</span> (<span class="tok-k">PARTITION BY</span> region <span class="tok-k">ORDER BY</span> amount DESC) <span class="tok-k">AS</span> rnk,
-  <span class="tok-k">DENSE_RANK</span>() <span class="tok-k">OVER</span> (<span class="tok-k">PARTITION BY</span> region <span class="tok-k">ORDER BY</span> amount DESC) <span class="tok-k">AS</span> dense
-<span class="tok-k">FROM</span> sales
-<span class="tok-k">ORDER BY</span> region, amount DESC</pre></div>
+<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-kw">WITH</span> sales(rep, region, amount) <span class="hl-kw">AS</span> (<span class="hl-kw">VALUES</span>
+  (<span class="hl-str">'Anna'</span>,<span class="hl-str">'RU'</span>,<span class="hl-num">500</span>),(<span class="hl-str">'Boris'</span>,<span class="hl-str">'RU'</span>,<span class="hl-num">500</span>),(<span class="hl-str">'Clara'</span>,<span class="hl-str">'RU'</span>,<span class="hl-num">300</span>),
+  (<span class="hl-str">'Dmitry'</span>,<span class="hl-str">'KZ'</span>,<span class="hl-num">700</span>),(<span class="hl-str">'Elena'</span>,<span class="hl-str">'KZ'</span>,<span class="hl-num">400</span>))
+<span class="hl-kw">SELECT</span> rep, region, amount,
+  <span class="hl-bi">ROW_NUMBER</span>() <span class="hl-kw">OVER</span> (<span class="hl-kw">PARTITION</span> <span class="hl-kw">BY</span> region <span class="hl-kw">ORDER</span> <span class="hl-kw">BY</span> amount <span class="hl-kw">DESC</span>) <span class="hl-kw">AS</span> row_num,
+  <span class="hl-bi">RANK</span>()       <span class="hl-kw">OVER</span> (<span class="hl-kw">PARTITION</span> <span class="hl-kw">BY</span> region <span class="hl-kw">ORDER</span> <span class="hl-kw">BY</span> amount <span class="hl-kw">DESC</span>) <span class="hl-kw">AS</span> rnk,
+  <span class="hl-bi">DENSE_RANK</span>() <span class="hl-kw">OVER</span> (<span class="hl-kw">PARTITION</span> <span class="hl-kw">BY</span> region <span class="hl-kw">ORDER</span> <span class="hl-kw">BY</span> amount <span class="hl-kw">DESC</span>) <span class="hl-kw">AS</span> dense
+<span class="hl-kw">FROM</span> sales
+<span class="hl-kw">ORDER</span> <span class="hl-kw">BY</span> region, amount <span class="hl-kw">DESC</span></pre></div>
 <div class="code-output"><span class="code-output-label" data-i18n="sql_out_label"># result (verified on PostgreSQL 16):</span>rep   | region | amount | row_num | rnk | dense 
 --------+--------+--------+---------+-----+-------
  Dmitry | KZ     |    700 |       1 |   1 |     1
@@ -220,14 +220,14 @@
 <div class="cs-takeaway" data-i18n="wn_rank_take"><b>Clara's row explains it all:</b> <code>ROW_NUMBER</code> gave her 3 (just a sequence number), <code>RANK</code> also 3 (places 1 and 1 are taken, so 2 is skipped), and <code>DENSE_RANK</code> gave 2 (no gaps). Use <code>ROW_NUMBER</code> for "top-N per group" and <code>RANK</code> for an honest leaderboard position.</div>
 <button class="code-toggle" onclick="toggleCode(this)" aria-expanded="false"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="sql_show">Show SQL</span></button>
 <div class="code-collapse" hidden>
-<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="tok-k">WITH</span> sales(rep, amount) <span class="tok-k">AS</span> (<span class="tok-k">VALUES</span>
-  (<span class="tok-s">&#x27;Anna&#x27;</span>,500),(<span class="tok-s">&#x27;Boris&#x27;</span>,500),(<span class="tok-s">&#x27;Clara&#x27;</span>,300),(<span class="tok-s">&#x27;Dmitry&#x27;</span>,700),(<span class="tok-s">&#x27;Elena&#x27;</span>,400))
-<span class="tok-k">SELECT</span> rep, amount,
-  <span class="tok-k">SUM</span>(amount) <span class="tok-k">OVER</span> (<span class="tok-k">ORDER BY</span> amount DESC
-                    <span class="tok-k">ROWS UNBOUNDED PRECEDING</span>)      <span class="tok-k">AS</span> running_total,
-  <span class="tok-k">ROUND</span>(100.0 * amount / <span class="tok-k">SUM</span>(amount) <span class="tok-k">OVER</span> (), 1)   <span class="tok-k">AS</span> pct_of_total
-<span class="tok-k">FROM</span> sales
-<span class="tok-k">ORDER BY</span> amount DESC</pre></div>
+<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-kw">WITH</span> sales(rep, amount) <span class="hl-kw">AS</span> (<span class="hl-kw">VALUES</span>
+  (<span class="hl-str">'Anna'</span>,<span class="hl-num">500</span>),(<span class="hl-str">'Boris'</span>,<span class="hl-num">500</span>),(<span class="hl-str">'Clara'</span>,<span class="hl-num">300</span>),(<span class="hl-str">'Dmitry'</span>,<span class="hl-num">700</span>),(<span class="hl-str">'Elena'</span>,<span class="hl-num">400</span>))
+<span class="hl-kw">SELECT</span> rep, amount,
+  <span class="hl-bi">SUM</span>(amount) <span class="hl-kw">OVER</span> (<span class="hl-kw">ORDER</span> <span class="hl-kw">BY</span> amount <span class="hl-kw">DESC</span>
+                    <span class="hl-kw">ROWS</span> <span class="hl-kw">UNBOUNDED</span> <span class="hl-kw">PRECEDING</span>)      <span class="hl-kw">AS</span> running_total,
+  <span class="hl-bi">ROUND</span>(<span class="hl-num">100.0</span> * amount / <span class="hl-bi">SUM</span>(amount) <span class="hl-kw">OVER</span> (), <span class="hl-num">1</span>)   <span class="hl-kw">AS</span> pct_of_total
+<span class="hl-kw">FROM</span> sales
+<span class="hl-kw">ORDER</span> <span class="hl-kw">BY</span> amount <span class="hl-kw">DESC</span></pre></div>
 <div class="code-output"><span class="code-output-label" data-i18n="sql_out_label"># result (verified on PostgreSQL 16):</span>rep   | amount | running_total | pct_of_total 
 --------+--------+---------------+--------------
  Dmitry |    700 |           700 |         29.2
@@ -249,13 +249,13 @@
 <p data-i18n="sqlt1_i">The most basic product metric. The key word is <code>DISTINCT</code>: a user counts once per day no matter how many events they fire.</p>
 <button class="code-toggle" onclick="toggleCode(this)" aria-expanded="false"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="sql_show">Show SQL</span></button>
 <div class="code-collapse" hidden>
-<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="tok-k">SELECT</span> event_at::date <span class="tok-k">AS</span> day,
-       <span class="tok-k">COUNT</span>(<span class="tok-k">DISTINCT</span> user_id) <span class="tok-k">AS</span> dau
-<span class="tok-k">FROM</span> events
-<span class="tok-k">WHERE</span> event_at &gt;= <span class="tok-s">&#x27;2026-03-01&#x27;</span>
-  <span class="tok-k">AND</span> event_at &lt;  <span class="tok-s">&#x27;2026-03-08&#x27;</span>
-<span class="tok-k">GROUP BY</span> 1
-<span class="tok-k">ORDER BY</span> 1;</pre></div>
+<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-kw">SELECT</span> event_at::<span class="hl-type">date</span> <span class="hl-kw">AS</span> day,
+       <span class="hl-bi">COUNT</span>(<span class="hl-kw">DISTINCT</span> user_id) <span class="hl-kw">AS</span> dau
+<span class="hl-kw">FROM</span> events
+<span class="hl-kw">WHERE</span> event_at &gt;= <span class="hl-str">'2026-03-01'</span>
+  <span class="hl-ctl">AND</span> event_at &lt;  <span class="hl-str">'2026-03-08'</span>
+<span class="hl-kw">GROUP</span> <span class="hl-kw">BY</span> <span class="hl-num">1</span>
+<span class="hl-kw">ORDER</span> <span class="hl-kw">BY</span> <span class="hl-num">1</span>;</pre></div>
 <div class="code-output"><span class="code-output-label" data-i18n="sql_out_label"># result (verified on PostgreSQL 16):</span>day     | dau 
 ------------+-----
  2026-03-01 |  13
@@ -277,13 +277,13 @@
 <p data-i18n="sqlt2_i"><code>FILTER (WHERE ...)</code> computes several conditional metrics in a single pass, without subqueries. <code>NULLIF</code> guards against division by zero.</p>
 <button class="code-toggle" onclick="toggleCode(this)" aria-expanded="false"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="sql_show">Show SQL</span></button>
 <div class="code-collapse" hidden>
-<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="tok-k">SELECT</span>
-  <span class="tok-k">COUNT</span>(<span class="tok-k">DISTINCT</span> user_id)                                    <span class="tok-k">AS</span> visitors,
-  <span class="tok-k">COUNT</span>(<span class="tok-k">DISTINCT</span> user_id) <span class="tok-k">FILTER</span> (<span class="tok-k">WHERE</span> event=<span class="tok-s">&#x27;add_to_cart&#x27;</span>) <span class="tok-k">AS</span> carted,
-  <span class="tok-k">COUNT</span>(<span class="tok-k">DISTINCT</span> user_id) <span class="tok-k">FILTER</span> (<span class="tok-k">WHERE</span> event=<span class="tok-s">&#x27;purchase&#x27;</span>)    <span class="tok-k">AS</span> purchased,
-  <span class="tok-k">ROUND</span>(100.0 * <span class="tok-k">COUNT</span>(<span class="tok-k">DISTINCT</span> user_id) <span class="tok-k">FILTER</span> (<span class="tok-k">WHERE</span> event=<span class="tok-s">&#x27;purchase&#x27;</span>)
-              / <span class="tok-k">NULLIF</span>(<span class="tok-k">COUNT</span>(<span class="tok-k">DISTINCT</span> user_id), 0), 2)       <span class="tok-k">AS</span> cr_pct
-<span class="tok-k">FROM</span> events;</pre></div>
+<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-kw">SELECT</span>
+  <span class="hl-bi">COUNT</span>(<span class="hl-kw">DISTINCT</span> user_id)                                    <span class="hl-kw">AS</span> visitors,
+  <span class="hl-bi">COUNT</span>(<span class="hl-kw">DISTINCT</span> user_id) <span class="hl-kw">FILTER</span> (<span class="hl-kw">WHERE</span> event=<span class="hl-str">'add_to_cart'</span>) <span class="hl-kw">AS</span> carted,
+  <span class="hl-bi">COUNT</span>(<span class="hl-kw">DISTINCT</span> user_id) <span class="hl-kw">FILTER</span> (<span class="hl-kw">WHERE</span> event=<span class="hl-str">'purchase'</span>)    <span class="hl-kw">AS</span> purchased,
+  <span class="hl-bi">ROUND</span>(<span class="hl-num">100.0</span> * <span class="hl-bi">COUNT</span>(<span class="hl-kw">DISTINCT</span> user_id) <span class="hl-kw">FILTER</span> (<span class="hl-kw">WHERE</span> event=<span class="hl-str">'purchase'</span>)
+              / <span class="hl-bi">NULLIF</span>(<span class="hl-bi">COUNT</span>(<span class="hl-kw">DISTINCT</span> user_id), <span class="hl-num">0</span>), <span class="hl-num">2</span>)       <span class="hl-kw">AS</span> cr_pct
+<span class="hl-kw">FROM</span> events;</pre></div>
 <div class="code-output"><span class="code-output-label" data-i18n="sql_out_label"># result (verified on PostgreSQL 16):</span>visitors | carted | purchased | cr_pct 
 ----------+--------+-----------+--------
        59 |     53 |        37 |  62.71
@@ -299,22 +299,22 @@
 <p data-i18n="sqlt3_i">Sticky factor = average DAU ÷ MAU. It shows what share of your monthly audience you see on a typical day. Around 20% or higher is considered good for most products.</p>
 <button class="code-toggle" onclick="toggleCode(this)" aria-expanded="false"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="sql_show">Show SQL</span></button>
 <div class="code-collapse" hidden>
-<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="tok-k">WITH</span> daily <span class="tok-k">AS</span> (
-  <span class="tok-k">SELECT</span> event_at::date <span class="tok-k">AS</span> day, <span class="tok-k">COUNT</span>(<span class="tok-k">DISTINCT</span> user_id) <span class="tok-k">AS</span> dau
-  <span class="tok-k">FROM</span> events
-  <span class="tok-k">WHERE</span> event_at &gt;= <span class="tok-s">&#x27;2026-03-01&#x27;</span> <span class="tok-k">AND</span> event_at &lt; <span class="tok-s">&#x27;2026-04-01&#x27;</span>
-  <span class="tok-k">GROUP BY</span> 1
+<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-kw">WITH</span> daily <span class="hl-kw">AS</span> (
+  <span class="hl-kw">SELECT</span> event_at::<span class="hl-type">date</span> <span class="hl-kw">AS</span> day, <span class="hl-bi">COUNT</span>(<span class="hl-kw">DISTINCT</span> user_id) <span class="hl-kw">AS</span> dau
+  <span class="hl-kw">FROM</span> events
+  <span class="hl-kw">WHERE</span> event_at &gt;= <span class="hl-str">'2026-03-01'</span> <span class="hl-ctl">AND</span> event_at &lt; <span class="hl-str">'2026-04-01'</span>
+  <span class="hl-kw">GROUP</span> <span class="hl-kw">BY</span> <span class="hl-num">1</span>
 ),
-monthly <span class="tok-k">AS</span> (
-  <span class="tok-k">SELECT</span> <span class="tok-k">COUNT</span>(<span class="tok-k">DISTINCT</span> user_id) <span class="tok-k">AS</span> mau
-  <span class="tok-k">FROM</span> events
-  <span class="tok-k">WHERE</span> event_at &gt;= <span class="tok-s">&#x27;2026-03-01&#x27;</span> <span class="tok-k">AND</span> event_at &lt; <span class="tok-s">&#x27;2026-04-01&#x27;</span>
+monthly <span class="hl-kw">AS</span> (
+  <span class="hl-kw">SELECT</span> <span class="hl-bi">COUNT</span>(<span class="hl-kw">DISTINCT</span> user_id) <span class="hl-kw">AS</span> mau
+  <span class="hl-kw">FROM</span> events
+  <span class="hl-kw">WHERE</span> event_at &gt;= <span class="hl-str">'2026-03-01'</span> <span class="hl-ctl">AND</span> event_at &lt; <span class="hl-str">'2026-04-01'</span>
 )
-<span class="tok-k">SELECT</span> <span class="tok-k">ROUND</span>(<span class="tok-k">AVG</span>(daily.dau), 1)                    <span class="tok-k">AS</span> avg_dau,
+<span class="hl-kw">SELECT</span> <span class="hl-bi">ROUND</span>(<span class="hl-bi">AVG</span>(daily.dau), <span class="hl-num">1</span>)                    <span class="hl-kw">AS</span> avg_dau,
        monthly.mau,
-       <span class="tok-k">ROUND</span>(100.0 * <span class="tok-k">AVG</span>(daily.dau) / monthly.mau, 1) <span class="tok-k">AS</span> sticky_pct
-<span class="tok-k">FROM</span> daily <span class="tok-k">CROSS JOIN</span> monthly
-<span class="tok-k">GROUP BY</span> monthly.mau;</pre></div>
+       <span class="hl-bi">ROUND</span>(<span class="hl-num">100.0</span> * <span class="hl-bi">AVG</span>(daily.dau) / monthly.mau, <span class="hl-num">1</span>) <span class="hl-kw">AS</span> sticky_pct
+<span class="hl-kw">FROM</span> daily <span class="hl-kw">CROSS</span> <span class="hl-kw">JOIN</span> monthly
+<span class="hl-kw">GROUP</span> <span class="hl-kw">BY</span> monthly.mau;</pre></div>
 <div class="code-output"><span class="code-output-label" data-i18n="sql_out_label"># result (verified on PostgreSQL 16):</span>avg_dau | mau | sticky_pct 
 ---------+-----+------------
     13.3 |  59 |       22.5
@@ -330,14 +330,14 @@ monthly <span class="tok-k">AS</span> (
 <p data-i18n="sqlt4_i">A window function accumulates the sum without collapsing rows. Note the nested <code>SUM(SUM(...))</code>: the inner one aggregates per day, the outer accumulates.</p>
 <button class="code-toggle" onclick="toggleCode(this)" aria-expanded="false"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="sql_show">Show SQL</span></button>
 <div class="code-collapse" hidden>
-<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="tok-k">SELECT</span> created_at::date <span class="tok-k">AS</span> day,
-       <span class="tok-k">SUM</span>(amount)                                    <span class="tok-k">AS</span> daily,
-       <span class="tok-k">SUM</span>(<span class="tok-k">SUM</span>(amount)) <span class="tok-k">OVER</span> (<span class="tok-k">ORDER BY</span> created_at::date) <span class="tok-k">AS</span> running_total
-<span class="tok-k">FROM</span> orders
-<span class="tok-k">WHERE</span> status = <span class="tok-s">&#x27;paid&#x27;</span>
-  <span class="tok-k">AND</span> created_at &lt; <span class="tok-s">&#x27;2026-03-08&#x27;</span>
-<span class="tok-k">GROUP BY</span> 1
-<span class="tok-k">ORDER BY</span> 1;</pre></div>
+<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-kw">SELECT</span> created_at::<span class="hl-type">date</span> <span class="hl-kw">AS</span> day,
+       <span class="hl-bi">SUM</span>(amount)                                    <span class="hl-kw">AS</span> daily,
+       <span class="hl-bi">SUM</span>(<span class="hl-bi">SUM</span>(amount)) <span class="hl-kw">OVER</span> (<span class="hl-kw">ORDER</span> <span class="hl-kw">BY</span> created_at::<span class="hl-type">date</span>) <span class="hl-kw">AS</span> running_total
+<span class="hl-kw">FROM</span> orders
+<span class="hl-kw">WHERE</span> status = <span class="hl-str">'paid'</span>
+  <span class="hl-ctl">AND</span> created_at &lt; <span class="hl-str">'2026-03-08'</span>
+<span class="hl-kw">GROUP</span> <span class="hl-kw">BY</span> <span class="hl-num">1</span>
+<span class="hl-kw">ORDER</span> <span class="hl-kw">BY</span> <span class="hl-num">1</span>;</pre></div>
 <div class="code-output"><span class="code-output-label" data-i18n="sql_out_label"># result (verified on PostgreSQL 16):</span>day     | daily  | running_total 
 ------------+--------+---------------
  2026-01-02 |  49.23 |         49.23
@@ -381,20 +381,20 @@ monthly <span class="tok-k">AS</span> (
 <p data-i18n="sqlt5_i">A classic payback question: how much a cohort brings in its first week. Subtracting dates in PostgreSQL yields an integer number of days.</p>
 <button class="code-toggle" onclick="toggleCode(this)" aria-expanded="false"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="sql_show">Show SQL</span></button>
 <div class="code-collapse" hidden>
-<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="tok-k">WITH</span> spend <span class="tok-k">AS</span> (
-  <span class="tok-k">SELECT</span> <span class="tok-k">date_trunc</span>(<span class="tok-s">&#x27;month&#x27;</span>, u.signup_date)::date <span class="tok-k">AS</span> cohort_month,
-         o.created_at::date - u.signup_date       <span class="tok-k">AS</span> day_no,
+<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-kw">WITH</span> spend <span class="hl-kw">AS</span> (
+  <span class="hl-kw">SELECT</span> <span class="hl-bi">date_trunc</span>(<span class="hl-str">'month'</span>, u.signup_date)::<span class="hl-type">date</span> <span class="hl-kw">AS</span> cohort_month,
+         o.created_at::<span class="hl-type">date</span> - u.signup_date       <span class="hl-kw">AS</span> day_no,
          o.amount
-  <span class="tok-k">FROM</span> users u
-  <span class="tok-k">JOIN</span> orders o <span class="tok-k">ON</span> o.user_id = u.user_id <span class="tok-k">AND</span> o.status = <span class="tok-s">&#x27;paid&#x27;</span>
-  <span class="tok-k">WHERE</span> o.created_at::date &gt;= u.signup_date
+  <span class="hl-kw">FROM</span> users u
+  <span class="hl-kw">JOIN</span> orders o <span class="hl-kw">ON</span> o.user_id = u.user_id <span class="hl-ctl">AND</span> o.status = <span class="hl-str">'paid'</span>
+  <span class="hl-kw">WHERE</span> o.created_at::<span class="hl-type">date</span> &gt;= u.signup_date
 )
-<span class="tok-k">SELECT</span> cohort_month,
-       <span class="tok-k">SUM</span>(amount) <span class="tok-k">FILTER</span> (<span class="tok-k">WHERE</span> day_no &lt;= 7) <span class="tok-k">AS</span> revenue_day_7,
-       <span class="tok-k">SUM</span>(amount)                            <span class="tok-k">AS</span> revenue_total
-<span class="tok-k">FROM</span> spend
-<span class="tok-k">GROUP BY</span> 1
-<span class="tok-k">ORDER BY</span> 1;</pre></div>
+<span class="hl-kw">SELECT</span> cohort_month,
+       <span class="hl-bi">SUM</span>(amount) <span class="hl-kw">FILTER</span> (<span class="hl-kw">WHERE</span> day_no &lt;= <span class="hl-num">7</span>) <span class="hl-kw">AS</span> revenue_day_7,
+       <span class="hl-bi">SUM</span>(amount)                            <span class="hl-kw">AS</span> revenue_total
+<span class="hl-kw">FROM</span> spend
+<span class="hl-kw">GROUP</span> <span class="hl-kw">BY</span> <span class="hl-num">1</span>
+<span class="hl-kw">ORDER</span> <span class="hl-kw">BY</span> <span class="hl-num">1</span>;</pre></div>
 <div class="code-output"><span class="code-output-label" data-i18n="sql_out_label"># result (verified on PostgreSQL 16):</span>cohort_month | revenue_day_7 | revenue_total 
 --------------+---------------+---------------
  2026-01-01   |        743.70 |       1842.46
@@ -412,21 +412,21 @@ monthly <span class="tok-k">AS</span> (
 <p data-i18n="sqlt6_i">Churn for a period = those who left ÷ those active at the start. The subtlety: <code>ended_on IS NULL</code> means "still active", not "data missing".</p>
 <button class="code-toggle" onclick="toggleCode(this)" aria-expanded="false"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="sql_show">Show SQL</span></button>
 <div class="code-collapse" hidden>
-<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="tok-k">SELECT</span>
-  <span class="tok-k">COUNT</span>(*) <span class="tok-k">FILTER</span> (
-      <span class="tok-k">WHERE</span> started_on &lt; <span class="tok-s">&#x27;2026-03-01&#x27;</span>
-        <span class="tok-k">AND</span> (ended_on <span class="tok-k">IS</span> <span class="tok-k">NULL</span> <span class="tok-k">OR</span> ended_on &gt;= <span class="tok-s">&#x27;2026-03-01&#x27;</span>)
-  ) <span class="tok-k">AS</span> active_at_start,
-  <span class="tok-k">COUNT</span>(*) <span class="tok-k">FILTER</span> (
-      <span class="tok-k">WHERE</span> ended_on &gt;= <span class="tok-s">&#x27;2026-03-01&#x27;</span> <span class="tok-k">AND</span> ended_on &lt; <span class="tok-s">&#x27;2026-04-01&#x27;</span>
-  ) <span class="tok-k">AS</span> churned,
-  <span class="tok-k">ROUND</span>(100.0
-      * <span class="tok-k">COUNT</span>(*) <span class="tok-k">FILTER</span> (<span class="tok-k">WHERE</span> ended_on &gt;= <span class="tok-s">&#x27;2026-03-01&#x27;</span> <span class="tok-k">AND</span> ended_on &lt; <span class="tok-s">&#x27;2026-04-01&#x27;</span>)
-      / <span class="tok-k">NULLIF</span>(<span class="tok-k">COUNT</span>(*) <span class="tok-k">FILTER</span> (
-          <span class="tok-k">WHERE</span> started_on &lt; <span class="tok-s">&#x27;2026-03-01&#x27;</span>
-            <span class="tok-k">AND</span> (ended_on <span class="tok-k">IS</span> <span class="tok-k">NULL</span> <span class="tok-k">OR</span> ended_on &gt;= <span class="tok-s">&#x27;2026-03-01&#x27;</span>)), 0)
-    , 1) <span class="tok-k">AS</span> churn_pct
-<span class="tok-k">FROM</span> subscriptions;</pre></div>
+<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-kw">SELECT</span>
+  <span class="hl-bi">COUNT</span>(*) <span class="hl-kw">FILTER</span> (
+      <span class="hl-kw">WHERE</span> started_on &lt; <span class="hl-str">'2026-03-01'</span>
+        <span class="hl-ctl">AND</span> (ended_on <span class="hl-ctl">IS</span> <span class="hl-const">NULL</span> <span class="hl-ctl">OR</span> ended_on &gt;= <span class="hl-str">'2026-03-01'</span>)
+  ) <span class="hl-kw">AS</span> active_at_start,
+  <span class="hl-bi">COUNT</span>(*) <span class="hl-kw">FILTER</span> (
+      <span class="hl-kw">WHERE</span> ended_on &gt;= <span class="hl-str">'2026-03-01'</span> <span class="hl-ctl">AND</span> ended_on &lt; <span class="hl-str">'2026-04-01'</span>
+  ) <span class="hl-kw">AS</span> churned,
+  <span class="hl-bi">ROUND</span>(<span class="hl-num">100.0</span>
+      * <span class="hl-bi">COUNT</span>(*) <span class="hl-kw">FILTER</span> (<span class="hl-kw">WHERE</span> ended_on &gt;= <span class="hl-str">'2026-03-01'</span> <span class="hl-ctl">AND</span> ended_on &lt; <span class="hl-str">'2026-04-01'</span>)
+      / <span class="hl-bi">NULLIF</span>(<span class="hl-bi">COUNT</span>(*) <span class="hl-kw">FILTER</span> (
+          <span class="hl-kw">WHERE</span> started_on &lt; <span class="hl-str">'2026-03-01'</span>
+            <span class="hl-ctl">AND</span> (ended_on <span class="hl-ctl">IS</span> <span class="hl-const">NULL</span> <span class="hl-ctl">OR</span> ended_on &gt;= <span class="hl-str">'2026-03-01'</span>)), <span class="hl-num">0</span>)
+    , <span class="hl-num">1</span>) <span class="hl-kw">AS</span> churn_pct
+<span class="hl-kw">FROM</span> subscriptions;</pre></div>
 <div class="code-output"><span class="code-output-label" data-i18n="sql_out_label"># result (verified on PostgreSQL 16):</span>active_at_start | churned | churn_pct 
 -----------------+---------+-----------
               10 |       1 |      10.0
@@ -442,22 +442,22 @@ monthly <span class="tok-k">AS</span> (
 <p data-i18n="sqlt7_i">The share of users who returned exactly seven days after their first visit. <code>EXISTS</code> beats a join here: we only need existence, not every matching row.</p>
 <button class="code-toggle" onclick="toggleCode(this)" aria-expanded="false"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="sql_show">Show SQL</span></button>
 <div class="code-collapse" hidden>
-<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="tok-k">WITH</span> first_day <span class="tok-k">AS</span> (
-  <span class="tok-k">SELECT</span> user_id, <span class="tok-k">MIN</span>(event_at::date) <span class="tok-k">AS</span> d0
-  <span class="tok-k">FROM</span> events
-  <span class="tok-k">GROUP BY</span> 1
+<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-kw">WITH</span> first_day <span class="hl-kw">AS</span> (
+  <span class="hl-kw">SELECT</span> user_id, <span class="hl-bi">MIN</span>(event_at::<span class="hl-type">date</span>) <span class="hl-kw">AS</span> d0
+  <span class="hl-kw">FROM</span> events
+  <span class="hl-kw">GROUP</span> <span class="hl-kw">BY</span> <span class="hl-num">1</span>
 )
-<span class="tok-k">SELECT</span> <span class="tok-k">COUNT</span>(*)                                   <span class="tok-k">AS</span> users,
-       <span class="tok-k">COUNT</span>(*) <span class="tok-k">FILTER</span> (<span class="tok-k">WHERE</span> returned)           <span class="tok-k">AS</span> retained_d7,
-       <span class="tok-k">ROUND</span>(100.0 * <span class="tok-k">COUNT</span>(*) <span class="tok-k">FILTER</span> (<span class="tok-k">WHERE</span> returned) / <span class="tok-k">COUNT</span>(*), 1) <span class="tok-k">AS</span> retention_pct
-<span class="tok-k">FROM</span> (
-  <span class="tok-k">SELECT</span> f.user_id,
-         <span class="tok-k">EXISTS</span> (
-           <span class="tok-k">SELECT</span> 1 <span class="tok-k">FROM</span> events e
-           <span class="tok-k">WHERE</span> e.user_id = f.user_id
-             <span class="tok-k">AND</span> e.event_at::date = f.d0 + 7
-         ) <span class="tok-k">AS</span> returned
-  <span class="tok-k">FROM</span> first_day f
+<span class="hl-kw">SELECT</span> <span class="hl-bi">COUNT</span>(*)                                   <span class="hl-kw">AS</span> users,
+       <span class="hl-bi">COUNT</span>(*) <span class="hl-kw">FILTER</span> (<span class="hl-kw">WHERE</span> returned)           <span class="hl-kw">AS</span> retained_d7,
+       <span class="hl-bi">ROUND</span>(<span class="hl-num">100.0</span> * <span class="hl-bi">COUNT</span>(*) <span class="hl-kw">FILTER</span> (<span class="hl-kw">WHERE</span> returned) / <span class="hl-bi">COUNT</span>(*), <span class="hl-num">1</span>) <span class="hl-kw">AS</span> retention_pct
+<span class="hl-kw">FROM</span> (
+  <span class="hl-kw">SELECT</span> f.user_id,
+         <span class="hl-kw">EXISTS</span> (
+           <span class="hl-kw">SELECT</span> <span class="hl-num">1</span> <span class="hl-kw">FROM</span> events e
+           <span class="hl-kw">WHERE</span> e.user_id = f.user_id
+             <span class="hl-ctl">AND</span> e.event_at::<span class="hl-type">date</span> = f.d0 + <span class="hl-num">7</span>
+         ) <span class="hl-kw">AS</span> returned
+  <span class="hl-kw">FROM</span> first_day f
 ) t;</pre></div>
 <div class="code-output"><span class="code-output-label" data-i18n="sql_out_label"># result (verified on PostgreSQL 16):</span>users | retained_d7 | retention_pct 
 -------+-------------+---------------
@@ -474,25 +474,25 @@ monthly <span class="tok-k">AS</span> (
 <p data-i18n="sqlt8_i">A session is a chain of events with no gap longer than 30 minutes. Three steps: <code>LAG</code> fetches the previous event, a gap raises a flag, and the running sum of flags becomes the session number.</p>
 <button class="code-toggle" onclick="toggleCode(this)" aria-expanded="false"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="sql_show">Show SQL</span></button>
 <div class="code-collapse" hidden>
-<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="tok-k">WITH</span> gaps <span class="tok-k">AS</span> (
-  <span class="tok-k">SELECT</span> user_id, event_at, event,
-         <span class="tok-k">LAG</span>(event_at) <span class="tok-k">OVER</span> (<span class="tok-k">PARTITION BY</span> user_id <span class="tok-k">ORDER BY</span> event_at) <span class="tok-k">AS</span> prev_at
-  <span class="tok-k">FROM</span> events
-  <span class="tok-k">WHERE</span> user_id <span class="tok-k">IN</span> (1, 2)
+<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-kw">WITH</span> gaps <span class="hl-kw">AS</span> (
+  <span class="hl-kw">SELECT</span> user_id, event_at, event,
+         <span class="hl-bi">LAG</span>(event_at) <span class="hl-kw">OVER</span> (<span class="hl-kw">PARTITION</span> <span class="hl-kw">BY</span> user_id <span class="hl-kw">ORDER</span> <span class="hl-kw">BY</span> event_at) <span class="hl-kw">AS</span> prev_at
+  <span class="hl-kw">FROM</span> events
+  <span class="hl-kw">WHERE</span> user_id <span class="hl-ctl">IN</span> (<span class="hl-num">1</span>, <span class="hl-num">2</span>)
 ),
-flags <span class="tok-k">AS</span> (
-  <span class="tok-k">SELECT</span> *,
-         <span class="tok-k">CASE</span> <span class="tok-k">WHEN</span> prev_at <span class="tok-k">IS</span> <span class="tok-k">NULL</span>
-                <span class="tok-k">OR</span> event_at - prev_at &gt; <span class="tok-k">INTERVAL</span> <span class="tok-s">&#x27;30 minutes&#x27;</span>
-              <span class="tok-k">THEN</span> 1 <span class="tok-k">ELSE</span> 0 <span class="tok-k">END</span> <span class="tok-k">AS</span> is_new
-  <span class="tok-k">FROM</span> gaps
+flags <span class="hl-kw">AS</span> (
+  <span class="hl-kw">SELECT</span> *,
+         <span class="hl-ctl">CASE</span> <span class="hl-ctl">WHEN</span> prev_at <span class="hl-ctl">IS</span> <span class="hl-const">NULL</span>
+                <span class="hl-ctl">OR</span> event_at - prev_at &gt; <span class="hl-kw">INTERVAL</span> <span class="hl-str">'30 minutes'</span>
+              <span class="hl-ctl">THEN</span> <span class="hl-num">1</span> <span class="hl-ctl">ELSE</span> <span class="hl-num">0</span> <span class="hl-ctl">END</span> <span class="hl-kw">AS</span> is_new
+  <span class="hl-kw">FROM</span> gaps
 )
-<span class="tok-k">SELECT</span> user_id, event_at, event,
-       <span class="tok-k">SUM</span>(is_new) <span class="tok-k">OVER</span> (<span class="tok-k">PARTITION BY</span> user_id <span class="tok-k">ORDER BY</span> event_at
-                         <span class="tok-k">ROWS UNBOUNDED PRECEDING</span>) <span class="tok-k">AS</span> session_no
-<span class="tok-k">FROM</span> flags
-<span class="tok-k">ORDER BY</span> user_id, event_at
-<span class="tok-k">LIMIT</span> 8;</pre></div>
+<span class="hl-kw">SELECT</span> user_id, event_at, event,
+       <span class="hl-bi">SUM</span>(is_new) <span class="hl-kw">OVER</span> (<span class="hl-kw">PARTITION</span> <span class="hl-kw">BY</span> user_id <span class="hl-kw">ORDER</span> <span class="hl-kw">BY</span> event_at
+                         <span class="hl-kw">ROWS</span> <span class="hl-kw">UNBOUNDED</span> <span class="hl-kw">PRECEDING</span>) <span class="hl-kw">AS</span> session_no
+<span class="hl-kw">FROM</span> flags
+<span class="hl-kw">ORDER</span> <span class="hl-kw">BY</span> user_id, event_at
+<span class="hl-kw">LIMIT</span> <span class="hl-num">8</span>;</pre></div>
 <div class="code-output"><span class="code-output-label" data-i18n="sql_out_label"># result (verified on PostgreSQL 16):</span>user_id |      event_at       |    event    | session_no 
 ---------+---------------------+-------------+------------
        1 | 2026-03-14 12:13:00 | open        |          1
@@ -515,21 +515,21 @@ flags <span class="tok-k">AS</span> (
 <p data-i18n="sqlt9_i">The classic "top-N per group" task. Rank in a subquery and filter outside it — a window function cannot be used directly in <code>WHERE</code>.</p>
 <button class="code-toggle" onclick="toggleCode(this)" aria-expanded="false"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="sql_show">Show SQL</span></button>
 <div class="code-collapse" hidden>
-<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="tok-k">WITH</span> revenue <span class="tok-k">AS</span> (
-  <span class="tok-k">SELECT</span> u.country, u.user_id, <span class="tok-k">SUM</span>(o.amount) <span class="tok-k">AS</span> revenue
-  <span class="tok-k">FROM</span> users u
-  <span class="tok-k">JOIN</span> orders o <span class="tok-k">ON</span> o.user_id = u.user_id <span class="tok-k">AND</span> o.status = <span class="tok-s">&#x27;paid&#x27;</span>
-  <span class="tok-k">WHERE</span> u.country <span class="tok-k">IS</span> <span class="tok-k">NOT</span> <span class="tok-k">NULL</span>
-  <span class="tok-k">GROUP BY</span> 1, 2
+<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-kw">WITH</span> revenue <span class="hl-kw">AS</span> (
+  <span class="hl-kw">SELECT</span> u.country, u.user_id, <span class="hl-bi">SUM</span>(o.amount) <span class="hl-kw">AS</span> revenue
+  <span class="hl-kw">FROM</span> users u
+  <span class="hl-kw">JOIN</span> orders o <span class="hl-kw">ON</span> o.user_id = u.user_id <span class="hl-ctl">AND</span> o.status = <span class="hl-str">'paid'</span>
+  <span class="hl-kw">WHERE</span> u.country <span class="hl-ctl">IS</span> <span class="hl-ctl">NOT</span> <span class="hl-const">NULL</span>
+  <span class="hl-kw">GROUP</span> <span class="hl-kw">BY</span> <span class="hl-num">1</span>, <span class="hl-num">2</span>
 )
-<span class="tok-k">SELECT</span> country, user_id, revenue, rn
-<span class="tok-k">FROM</span> (
-  <span class="tok-k">SELECT</span> *,
-         <span class="tok-k">ROW_NUMBER</span>() <span class="tok-k">OVER</span> (<span class="tok-k">PARTITION BY</span> country <span class="tok-k">ORDER BY</span> revenue DESC) <span class="tok-k">AS</span> rn
-  <span class="tok-k">FROM</span> revenue
+<span class="hl-kw">SELECT</span> country, user_id, revenue, rn
+<span class="hl-kw">FROM</span> (
+  <span class="hl-kw">SELECT</span> *,
+         <span class="hl-bi">ROW_NUMBER</span>() <span class="hl-kw">OVER</span> (<span class="hl-kw">PARTITION</span> <span class="hl-kw">BY</span> country <span class="hl-kw">ORDER</span> <span class="hl-kw">BY</span> revenue <span class="hl-kw">DESC</span>) <span class="hl-kw">AS</span> rn
+  <span class="hl-kw">FROM</span> revenue
 ) ranked
-<span class="tok-k">WHERE</span> rn &lt;= 3
-<span class="tok-k">ORDER BY</span> country, rn;</pre></div>
+<span class="hl-kw">WHERE</span> rn &lt;= <span class="hl-num">3</span>
+<span class="hl-kw">ORDER</span> <span class="hl-kw">BY</span> country, rn;</pre></div>
 <div class="code-output"><span class="code-output-label" data-i18n="sql_out_label"># result (verified on PostgreSQL 16):</span>country | user_id | revenue | rn 
 ---------+---------+---------+----
  BY      |       8 |   74.96 |  1
@@ -553,11 +553,11 @@ flags <span class="tok-k">AS</span> (
 <p data-i18n="sqlt10_i">A join multiplies rows: a user with three orders occupies three rows. After that <code>COUNT(*)</code> no longer counts people.</p>
 <button class="code-toggle" onclick="toggleCode(this)" aria-expanded="false"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="sql_show">Show SQL</span></button>
 <div class="code-collapse" hidden>
-<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="tok-k">SELECT</span> <span class="tok-k">COUNT</span>(*)                  <span class="tok-k">AS</span> rows_after_join,
-       <span class="tok-k">COUNT</span>(o.order_id)         <span class="tok-k">AS</span> orders,
-       <span class="tok-k">COUNT</span>(<span class="tok-k">DISTINCT</span> u.user_id) <span class="tok-k">AS</span> users
-<span class="tok-k">FROM</span> users u
-<span class="tok-k">LEFT JOIN</span> orders o <span class="tok-k">ON</span> o.user_id = u.user_id;</pre></div>
+<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-kw">SELECT</span> <span class="hl-bi">COUNT</span>(*)                  <span class="hl-kw">AS</span> rows_after_join,
+       <span class="hl-bi">COUNT</span>(o.order_id)         <span class="hl-kw">AS</span> orders,
+       <span class="hl-bi">COUNT</span>(<span class="hl-kw">DISTINCT</span> u.user_id) <span class="hl-kw">AS</span> users
+<span class="hl-kw">FROM</span> users u
+<span class="hl-kw">LEFT</span> <span class="hl-kw">JOIN</span> orders o <span class="hl-kw">ON</span> o.user_id = u.user_id;</pre></div>
 <div class="code-output"><span class="code-output-label" data-i18n="sql_out_label"># result (verified on PostgreSQL 16):</span>rows_after_join | orders | users 
 -----------------+--------+-------
              123 |    120 |    60
@@ -573,13 +573,13 @@ flags <span class="tok-k">AS</span> (
 <p data-i18n="sqlt11_i">ARPU divides by <b>all</b> users, ARPPU only by <b>paying</b> ones. The gap between them shows what share of your audience pays at all.</p>
 <button class="code-toggle" onclick="toggleCode(this)" aria-expanded="false"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="sql_show">Show SQL</span></button>
 <div class="code-collapse" hidden>
-<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="tok-k">SELECT</span>
-  <span class="tok-k">ROUND</span>(<span class="tok-k">SUM</span>(o.amount) / <span class="tok-k">COUNT</span>(<span class="tok-k">DISTINCT</span> u.user_id), 2) <span class="tok-k">AS</span> arpu,
-  <span class="tok-k">ROUND</span>(<span class="tok-k">SUM</span>(o.amount) / <span class="tok-k">COUNT</span>(<span class="tok-k">DISTINCT</span> o.user_id), 2) <span class="tok-k">AS</span> arppu,
-  <span class="tok-k">COUNT</span>(<span class="tok-k">DISTINCT</span> u.user_id)                           <span class="tok-k">AS</span> all_users,
-  <span class="tok-k">COUNT</span>(<span class="tok-k">DISTINCT</span> o.user_id)                           <span class="tok-k">AS</span> paying_users
-<span class="tok-k">FROM</span> users u
-<span class="tok-k">LEFT JOIN</span> orders o <span class="tok-k">ON</span> o.user_id = u.user_id <span class="tok-k">AND</span> o.status = <span class="tok-s">&#x27;paid&#x27;</span>;</pre></div>
+<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-kw">SELECT</span>
+  <span class="hl-bi">ROUND</span>(<span class="hl-bi">SUM</span>(o.amount) / <span class="hl-bi">COUNT</span>(<span class="hl-kw">DISTINCT</span> u.user_id), <span class="hl-num">2</span>) <span class="hl-kw">AS</span> arpu,
+  <span class="hl-bi">ROUND</span>(<span class="hl-bi">SUM</span>(o.amount) / <span class="hl-bi">COUNT</span>(<span class="hl-kw">DISTINCT</span> o.user_id), <span class="hl-num">2</span>) <span class="hl-kw">AS</span> arppu,
+  <span class="hl-bi">COUNT</span>(<span class="hl-kw">DISTINCT</span> u.user_id)                           <span class="hl-kw">AS</span> all_users,
+  <span class="hl-bi">COUNT</span>(<span class="hl-kw">DISTINCT</span> o.user_id)                           <span class="hl-kw">AS</span> paying_users
+<span class="hl-kw">FROM</span> users u
+<span class="hl-kw">LEFT</span> <span class="hl-kw">JOIN</span> orders o <span class="hl-kw">ON</span> o.user_id = u.user_id <span class="hl-ctl">AND</span> o.status = <span class="hl-str">'paid'</span>;</pre></div>
 <div class="code-output"><span class="code-output-label" data-i18n="sql_out_label"># result (verified on PostgreSQL 16):</span>arpu  | arppu | all_users | paying_users 
 -------+-------+-----------+--------------
  66.82 | 77.10 |        60 |           52
@@ -595,11 +595,11 @@ flags <span class="tok-k">AS</span> (
 <p data-i18n="sqlt12_i"><code>COUNT(*)</code> counts rows; <code>COUNT(column)</code> counts only non-null values. The difference between them is the number of gaps.</p>
 <button class="code-toggle" onclick="toggleCode(this)" aria-expanded="false"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="sql_show">Show SQL</span></button>
 <div class="code-collapse" hidden>
-<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="tok-k">SELECT</span> <span class="tok-k">COUNT</span>(*)                             <span class="tok-k">AS</span> total,
-       <span class="tok-k">COUNT</span>(country)                       <span class="tok-k">AS</span> with_country,
-       <span class="tok-k">COUNT</span>(*) - <span class="tok-k">COUNT</span>(country)            <span class="tok-k">AS</span> null_country,
-       <span class="tok-k">COUNT</span>(*) <span class="tok-k">FILTER</span> (<span class="tok-k">WHERE</span> plan <span class="tok-k">IS</span> <span class="tok-k">NULL</span>) <span class="tok-k">AS</span> null_plan
-<span class="tok-k">FROM</span> users;</pre></div>
+<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-kw">SELECT</span> <span class="hl-bi">COUNT</span>(*)                             <span class="hl-kw">AS</span> total,
+       <span class="hl-bi">COUNT</span>(country)                       <span class="hl-kw">AS</span> with_country,
+       <span class="hl-bi">COUNT</span>(*) - <span class="hl-bi">COUNT</span>(country)            <span class="hl-kw">AS</span> null_country,
+       <span class="hl-bi">COUNT</span>(*) <span class="hl-kw">FILTER</span> (<span class="hl-kw">WHERE</span> plan <span class="hl-ctl">IS</span> <span class="hl-const">NULL</span>) <span class="hl-kw">AS</span> null_plan
+<span class="hl-kw">FROM</span> users;</pre></div>
 <div class="code-output"><span class="code-output-label" data-i18n="sql_out_label"># result (verified on PostgreSQL 16):</span>total | with_country | null_country | null_plan 
 -------+--------------+--------------+-----------
     60 |           58 |            2 |         6
@@ -615,16 +615,16 @@ flags <span class="tok-k">AS</span> (
 <p data-i18n="sqlt13_i">The nastiest trap in SQL. If the <code>NOT IN</code> list contains even one NULL, the query returns <b>zero rows</b> — silently, with no error or warning.</p>
 <button class="code-toggle" onclick="toggleCode(this)" aria-expanded="false"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="sql_show">Show SQL</span></button>
 <div class="code-collapse" hidden>
-<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="tok-k">SELECT</span>
-  (<span class="tok-k">SELECT</span> <span class="tok-k">COUNT</span>(*) <span class="tok-k">FROM</span> users
-   <span class="tok-k">WHERE</span> country <span class="tok-k">NOT</span> <span class="tok-k">IN</span> (<span class="tok-k">SELECT</span> country <span class="tok-k">FROM</span> users
-                         <span class="tok-k">WHERE</span> country <span class="tok-k">IS</span> <span class="tok-k">NULL</span> <span class="tok-k">OR</span> country = <span class="tok-s">&#x27;KZ&#x27;</span>)) <span class="tok-k">AS</span> with_null_in_list,
-  (<span class="tok-k">SELECT</span> <span class="tok-k">COUNT</span>(*) <span class="tok-k">FROM</span> users
-   <span class="tok-k">WHERE</span> country <span class="tok-k">NOT</span> <span class="tok-k">IN</span> (<span class="tok-k">SELECT</span> country <span class="tok-k">FROM</span> users
-                         <span class="tok-k">WHERE</span> country = <span class="tok-s">&#x27;KZ&#x27;</span>))                    <span class="tok-k">AS</span> without_null,
-  (<span class="tok-k">SELECT</span> <span class="tok-k">COUNT</span>(*) <span class="tok-k">FROM</span> users u
-   <span class="tok-k">WHERE</span> <span class="tok-k">NOT</span> <span class="tok-k">EXISTS</span> (<span class="tok-k">SELECT</span> 1 <span class="tok-k">FROM</span> users x
-                     <span class="tok-k">WHERE</span> x.country = <span class="tok-s">&#x27;KZ&#x27;</span> <span class="tok-k">AND</span> x.country = u.country)) <span class="tok-k">AS</span> not_exists_ok;</pre></div>
+<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-kw">SELECT</span>
+  (<span class="hl-kw">SELECT</span> <span class="hl-bi">COUNT</span>(*) <span class="hl-kw">FROM</span> users
+   <span class="hl-kw">WHERE</span> country <span class="hl-ctl">NOT</span> <span class="hl-ctl">IN</span> (<span class="hl-kw">SELECT</span> country <span class="hl-kw">FROM</span> users
+                         <span class="hl-kw">WHERE</span> country <span class="hl-ctl">IS</span> <span class="hl-const">NULL</span> <span class="hl-ctl">OR</span> country = <span class="hl-str">'KZ'</span>)) <span class="hl-kw">AS</span> with_null_in_list,
+  (<span class="hl-kw">SELECT</span> <span class="hl-bi">COUNT</span>(*) <span class="hl-kw">FROM</span> users
+   <span class="hl-kw">WHERE</span> country <span class="hl-ctl">NOT</span> <span class="hl-ctl">IN</span> (<span class="hl-kw">SELECT</span> country <span class="hl-kw">FROM</span> users
+                         <span class="hl-kw">WHERE</span> country = <span class="hl-str">'KZ'</span>))                    <span class="hl-kw">AS</span> without_null,
+  (<span class="hl-kw">SELECT</span> <span class="hl-bi">COUNT</span>(*) <span class="hl-kw">FROM</span> users u
+   <span class="hl-kw">WHERE</span> <span class="hl-ctl">NOT</span> <span class="hl-kw">EXISTS</span> (<span class="hl-kw">SELECT</span> <span class="hl-num">1</span> <span class="hl-kw">FROM</span> users x
+                     <span class="hl-kw">WHERE</span> x.country = <span class="hl-str">'KZ'</span> <span class="hl-ctl">AND</span> x.country = u.country)) <span class="hl-kw">AS</span> not_exists_ok;</pre></div>
 <div class="code-output"><span class="code-output-label" data-i18n="sql_out_label"># result (verified on PostgreSQL 16):</span>with_null_in_list | without_null | not_exists_ok 
 -------------------+--------------+---------------
                  0 |           38 |            40
@@ -640,16 +640,16 @@ flags <span class="tok-k">AS</span> (
 <p data-i18n="sqlt14_i">An activation-speed metric. Subtracting dates in PostgreSQL gives an integer number of days; subtracting timestamps gives an interval.</p>
 <button class="code-toggle" onclick="toggleCode(this)" aria-expanded="false"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="sql_show">Show SQL</span></button>
 <div class="code-collapse" hidden>
-<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="tok-k">SELECT</span> u.user_id,
+<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-kw">SELECT</span> u.user_id,
        u.signup_date,
-       <span class="tok-k">MIN</span>(o.created_at)::date                     <span class="tok-k">AS</span> first_order,
-       <span class="tok-k">MIN</span>(o.created_at)::date - u.signup_date     <span class="tok-k">AS</span> days_to_first_order
-<span class="tok-k">FROM</span> users u
-<span class="tok-k">JOIN</span> orders o <span class="tok-k">ON</span> o.user_id = u.user_id <span class="tok-k">AND</span> o.status = <span class="tok-s">&#x27;paid&#x27;</span>
-<span class="tok-k">GROUP BY</span> 1, 2
-<span class="tok-k">HAVING</span> <span class="tok-k">MIN</span>(o.created_at)::date &gt;= u.signup_date
-<span class="tok-k">ORDER BY</span> days_to_first_order
-<span class="tok-k">LIMIT</span> 5;</pre></div>
+       <span class="hl-bi">MIN</span>(o.created_at)::<span class="hl-type">date</span>                     <span class="hl-kw">AS</span> first_order,
+       <span class="hl-bi">MIN</span>(o.created_at)::<span class="hl-type">date</span> - u.signup_date     <span class="hl-kw">AS</span> days_to_first_order
+<span class="hl-kw">FROM</span> users u
+<span class="hl-kw">JOIN</span> orders o <span class="hl-kw">ON</span> o.user_id = u.user_id <span class="hl-ctl">AND</span> o.status = <span class="hl-str">'paid'</span>
+<span class="hl-kw">GROUP</span> <span class="hl-kw">BY</span> <span class="hl-num">1</span>, <span class="hl-num">2</span>
+<span class="hl-kw">HAVING</span> <span class="hl-bi">MIN</span>(o.created_at)::<span class="hl-type">date</span> &gt;= u.signup_date
+<span class="hl-kw">ORDER</span> <span class="hl-kw">BY</span> days_to_first_order
+<span class="hl-kw">LIMIT</span> <span class="hl-num">5</span>;</pre></div>
 <div class="code-output"><span class="code-output-label" data-i18n="sql_out_label"># result (verified on PostgreSQL 16):</span>user_id | signup_date | first_order | days_to_first_order 
 ---------+-------------+-------------+---------------------
       48 | 2026-01-07  | 2026-01-07  |                   0
@@ -669,11 +669,11 @@ flags <span class="tok-k">AS</span> (
 <p data-i18n="sqlt15_i"><code>date_trunc</code> rounds a date down to the start of a week, month or quarter. It is the main tool for any periodic reporting.</p>
 <button class="code-toggle" onclick="toggleCode(this)" aria-expanded="false"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="sql_show">Show SQL</span></button>
 <div class="code-collapse" hidden>
-<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="tok-k">SELECT</span> <span class="tok-k">date_trunc</span>(<span class="tok-s">&#x27;week&#x27;</span>, event_at)::date <span class="tok-k">AS</span> week_start,
-       <span class="tok-k">COUNT</span>(<span class="tok-k">DISTINCT</span> user_id)             <span class="tok-k">AS</span> wau
-<span class="tok-k">FROM</span> events
-<span class="tok-k">GROUP BY</span> 1
-<span class="tok-k">ORDER BY</span> 1;</pre></div>
+<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-kw">SELECT</span> <span class="hl-bi">date_trunc</span>(<span class="hl-str">'week'</span>, event_at)::<span class="hl-type">date</span> <span class="hl-kw">AS</span> week_start,
+       <span class="hl-bi">COUNT</span>(<span class="hl-kw">DISTINCT</span> user_id)             <span class="hl-kw">AS</span> wau
+<span class="hl-kw">FROM</span> events
+<span class="hl-kw">GROUP</span> <span class="hl-kw">BY</span> <span class="hl-num">1</span>
+<span class="hl-kw">ORDER</span> <span class="hl-kw">BY</span> <span class="hl-num">1</span>;</pre></div>
 <div class="code-output"><span class="code-output-label" data-i18n="sql_out_label"># result (verified on PostgreSQL 16):</span>week_start | wau 
 ------------+-----
  2026-02-23 |  13
