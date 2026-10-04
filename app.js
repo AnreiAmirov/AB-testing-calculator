@@ -2,6 +2,9 @@ let currentLang = 'en';
 
 function applyLang(lang) {
   currentLang = lang;
+  // Mark the document language: screen readers pronounce text correctly,
+  // and CSS can show the matching version of bilingual charts.
+  document.documentElement.setAttribute('lang', lang);
   const dict = T[lang];
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const key = el.getAttribute('data-i18n');

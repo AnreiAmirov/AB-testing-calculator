@@ -2559,3 +2559,177 @@ table.up-summary th { background: var(--pill-bg); font-weight: 700; color: var(-
 @media (min-width: 901px) and (max-width: 1040px) {
   .home-cards { grid-template-columns: repeat(3, 1fr); }
 }
+
+/* ═══════════════════════════════════════════════════════════════════════
+   CHARTS ON A PAPER PANEL — fixes unreadable charts in dark mode.
+   Charts are rendered with dark text on white; in dark mode a transparent
+   container made labels vanish. A white "paper" panel keeps them legible
+   in both themes (the same convention docs sites use for figures).
+   ═══════════════════════════════════════════════════════════════════════ */
+#tab-reference .chart {
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 14px 10px;
+  margin: 14px 0;
+  text-align: center;
+}
+#tab-reference .chart .chart-svg,
+#tab-reference .chart svg {
+  width: 100%;
+  max-width: 680px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+#tab-reference .chart .chart-caption {
+  color: #686b85;               /* fixed: the panel is always white */
+  font-size: 0.78rem;
+  margin-top: 6px;
+}
+[data-theme="dark"] #tab-reference .chart {
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+}
+
+/* link to the algorithms page from the Python page */
+.callout-box.algo-link a { color: var(--accent); font-weight: 700; text-decoration: none; }
+.callout-box.algo-link a:hover { text-decoration: underline; }
+
+/* ── Bilingual charts: each chart is rendered twice (EN / RU) and the one that
+   matches <html lang> is shown. Labels inside an SVG are invisible to i18n. ── */
+.chart-ru { display: none; }
+html[lang="ru"] .chart-en { display: none; }
+html[lang="ru"] .chart-ru { display: block; }
+
+/* ═══════════════════════════════════════════════════════════════════════
+   ALGORITHMS PAGE: method steps · traces · array strips · intervals · filter
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* ── Six-step method ── */
+.method-steps { counter-reset: ms; list-style: none; padding: 0; margin: 16px 0;
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+.method-steps li { counter-increment: ms; position: relative; background: var(--card);
+  border: 1px solid var(--border); border-radius: 11px; padding: 14px 14px 14px 52px; font-size: .88rem; }
+.method-steps li::before { content: counter(ms); position: absolute; left: 14px; top: 13px;
+  width: 26px; height: 26px; border-radius: 50%; background: var(--accent); color: #fff;
+  display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: .8rem; }
+.method-steps b { display: block; margin-bottom: 4px; color: var(--ink); }
+.method-steps span { color: var(--ink-muted); line-height: 1.55; }
+
+/* ── Walkthrough / practice blocks ── */
+.walk, .ptask { border: 1px solid var(--border); border-left: 3px solid var(--accent);
+  border-radius: 0 12px 12px 0; padding: 18px 20px; margin: 20px 0; background: var(--card);
+  scroll-margin-top: 90px; }
+.walk-head { display: flex; align-items: center; gap: 10px; }
+.walk-title { font-weight: 700; font-size: 1.06rem; }
+.walk-badges { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: 8px 0 4px; }
+.walk-label { font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .07em;
+  color: var(--accent); margin: 16px 0 4px; }
+.walk-facts .walk-label { display: inline-block; margin-right: 10px; }
+.walk-facts { margin-top: 14px; }
+.badge-topic { font-size: .7rem; font-weight: 600; padding: 3px 9px; border-radius: 999px;
+  background: var(--accent-hover-bg); color: var(--accent); white-space: nowrap; }
+.walk .lv, .ptask .lv { margin-left: 0; }
+.lc-link, .lc-link:link, .lc-link:visited { font-size: .74rem; font-weight: 600; color: var(--ink-muted);
+  text-decoration: none; padding: 3px 9px; border: 1px solid var(--border); border-radius: 999px; }
+.lc-link:hover { color: var(--accent); border-color: var(--accent); }
+.ex-line { background: var(--pill-bg); border-radius: 8px; padding: 9px 12px; margin: 8px 0;
+  overflow-x: auto; }
+.ex-line code { background: none; padding: 0; white-space: pre; font-size: .8rem; }
+.trace-note { font-size: .86rem; color: var(--ink-muted); }
+
+/* ── Trace table ── */
+.trace-wrap { overflow-x: auto; margin: 8px 0; }
+.trace { border-collapse: collapse; font-size: .78rem; min-width: 100%; }
+.trace th, .trace td { border: 1px solid var(--border); padding: 6px 10px; text-align: left;
+  font-family: 'JetBrains Mono', ui-monospace, monospace; white-space: nowrap; }
+.trace th { background: var(--accent-hover-bg); font-weight: 600; }
+.trace th code { background: none; padding: 0; color: var(--accent); }
+.trace td.step { color: var(--ink-faint); text-align: center; width: 30px; }
+.trace tr.hit td { background: rgba(5,150,105,.09); }
+[data-theme="dark"] .trace tr.hit td { background: rgba(5,150,105,.18); }
+
+/* ── Array strip: cells + highlighted window/pointers ── */
+.strip-wrap { overflow-x: auto; margin: 8px 0; padding-bottom: 4px; }
+.strip-row { display: flex; align-items: center; gap: 4px; margin: 4px 0; min-width: max-content; }
+.strip-n { width: 22px; flex-shrink: 0; text-align: center; font-size: .72rem; color: var(--ink-faint); }
+.sc { position: relative; width: 34px; height: 34px; flex-shrink: 0; display: flex; align-items: center;
+  justify-content: center; border: 1px solid var(--border); border-radius: 6px; font-size: .8rem;
+  font-family: 'JetBrains Mono', ui-monospace, monospace; background: var(--card); color: var(--ink-muted); }
+.sc.idx { border: none; background: none; height: 16px; font-size: .66rem; color: var(--ink-faint); }
+.sc.in { background: var(--accent-hover-bg); border-color: var(--accent); color: var(--ink); }
+.sc.ptr { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 700; }
+.sc i { position: absolute; top: -9px; right: -4px; font-style: normal; font-size: .6rem; font-weight: 700;
+  background: var(--ink); color: var(--card); border-radius: 4px; padding: 0 3px; line-height: 1.35; }
+.strip-note { margin-left: 10px; font-size: .74rem; white-space: nowrap; }
+.strip-note code { background: none; padding: 0; color: var(--ink-muted); }
+[data-theme="dark"] .sc.ptr { color: #12132a; }
+
+/* ── Interval timeline ── */
+.iv-wrap { margin: 10px 0; padding: 4px 4px 0; }
+.iv-label { font-size: .72rem; color: var(--ink-faint); margin: 8px 0 4px;
+  font-family: 'JetBrains Mono', ui-monospace, monospace; }
+.iv-row { position: relative; height: 26px; margin: 3px 0; }
+.iv { position: absolute; top: 0; height: 24px; border-radius: 6px; font-size: .68rem; font-weight: 600;
+  display: flex; align-items: center; justify-content: center; white-space: nowrap; overflow: hidden;
+  font-family: 'JetBrains Mono', ui-monospace, monospace; }
+.iv.before { background: var(--accent-hover-bg); border: 1px solid var(--accent); color: var(--accent); }
+.iv.after { background: var(--accent); color: #fff; }
+[data-theme="dark"] .iv.after { color: #12132a; }
+.iv-axis { position: relative; height: 20px; border-top: 1px solid var(--border); margin-top: 8px; }
+.iv-axis span { position: absolute; top: 3px; transform: translateX(-50%); font-size: .66rem; color: var(--ink-faint); }
+
+/* ── Practice filter ── */
+.flt { margin: 14px 0 6px; }
+.flt-row { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: 6px 0; }
+.flt-lab { font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em;
+  color: var(--ink-faint); min-width: 64px; }
+.chip { font-family: inherit; font-size: .78rem; font-weight: 600; padding: 6px 12px; border-radius: 999px;
+  border: 1px solid var(--border); background: var(--card); color: var(--ink-muted); cursor: pointer; }
+.chip:hover { border-color: var(--accent); color: var(--accent); }
+.chip.on { background: var(--accent); border-color: var(--accent); color: #fff; }
+[data-theme="dark"] .chip.on { color: #12132a; }
+.flt-empty { color: var(--ink-faint); font-style: italic; }
+.ptask[hidden] { display: none; }
+.hint-btn { margin-right: 8px; }
+
+/* ── Plan list ── */
+.plan-list { padding-left: 20px; }
+.plan-list li { margin: 8px 0; color: var(--ink-muted); line-height: 1.6; }
+
+@media (pointer: coarse), (max-width: 820px) {
+  .chip, .lc-link { min-height: 44px; display: inline-flex; align-items: center; }
+}
+@media (max-width: 640px) {
+  .walk, .ptask { padding: 14px 13px; }
+  .sc { width: 30px; height: 30px; font-size: .74rem; }
+  .flt-lab { min-width: 100%; }
+}
+
+/* ── Python page: anatomy of a function ── */
+.anat { overflow-x: auto; margin: 10px 0 6px; }
+.anat-code { margin: 0; background: #1e2233; color: #e4e6f0; border-radius: 12px; padding: 18px 20px;
+  font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: .82rem; line-height: 2.1; }
+.an { position: relative; border-radius: 4px; padding: 1px 3px; }
+.an::after { position: absolute; top: -9px; right: -7px; font-family: Inter, sans-serif; font-size: .58rem;
+  font-weight: 700; line-height: 1; background: #a59cf7; color: #12132a; border-radius: 999px; padding: 2px 5px; }
+.an1 { background: rgba(199,146,234,.18); } .an1::after { content: '1'; }
+.an2 { background: rgba(130,170,255,.18); } .an2::after { content: '2'; }
+.an3 { background: rgba(195,232,141,.16); } .an3::after { content: '3'; }
+.an4 { background: rgba(247,140,108,.18); } .an4::after { content: '4'; }
+.an5 { background: rgba(124,134,176,.22); } .an5::after { content: '5'; }
+.an6 { background: rgba(255,203,107,.16); } .an6::after { content: '6'; }
+.an7 { background: rgba(240,113,120,.18); } .an7::after { content: '7'; }
+.an8 { background: rgba(137,221,255,.16); } .an8::after { content: '8'; }
+.anat-legend { list-style: none; padding: 0; margin: 10px 0;
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 6px 18px; }
+.anat-legend li { display: flex; gap: 8px; align-items: baseline; font-size: .85rem; color: var(--ink-muted); }
+.an-n { flex-shrink: 0; width: 18px; height: 18px; border-radius: 50%; background: var(--accent); color: #fff;
+  font-size: .64rem; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; }
+[data-theme="dark"] .an-n { color: #12132a; }
+.anat-legend code { flex-shrink: 0; font-size: .78rem; }
+@media (max-width: 640px) {
+  .anat-legend li { flex-wrap: wrap; row-gap: 2px; }
+  .anat-legend li > span[data-i18n] { flex-basis: 100%; padding-left: 26px; }
+}

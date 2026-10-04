@@ -19,7 +19,7 @@ import re, sys, json, pathlib, subprocess
 from html.parser import HTMLParser
 
 BASE = pathlib.Path(__file__).parent
-PAGES = ['index.html', 'python.html', 'sql.html', 'causal.html', 'ab-testing.html']
+PAGES = ['index.html', 'python.html', 'algorithms.html', 'sql.html', 'causal.html', 'ab-testing.html']
 problems = []
 notes = []
 
@@ -74,6 +74,23 @@ def load_dict():
     return set(d['en']), set(d['ru'])
 
 
+
+def strip_no_translate(body):
+    """Убирает блоки с translate="no" (код, трассировки) с учётом вложенных div."""
+    out, i = [], 0
+    while True:
+        m = re.search(r'<div\b[^>]*translate="no"[^>]*>', body[i:])
+        if not m:
+            out.append(body[i:]); break
+        start = i + m.start(); out.append(body[i:start])
+        depth, j = 0, start
+        for tag in re.finditer(r'<(/?)div\b[^>]*>', body[start:]):
+            depth += -1 if tag.group(1) else 1
+            if depth == 0:
+                j = start + tag.end(); break
+        i = j if j > start else start + m.end()
+    return "".join(out)
+
 def check_i18n(page, html, en, ru):
     keys = re.findall(r'data-i18n="([^"]+)"', html)
     missing = sorted({k for k in keys if k not in en or k not in ru})
@@ -85,6 +102,7 @@ def check_i18n(page, html, en, ru):
     # текст без data-i18n — страница не переведётся
     body = html[html.find('<body'):]
     body = re.sub(r'<pre>.*?</pre>', '', body, flags=re.S)          # код не переводим
+    body = strip_no_translate(body)                                 # явно помеченный код
     body = re.sub(r'<script.*?</script>', '', body, flags=re.S)
     body = re.sub(r'<svg.*?</svg>', '', body, flags=re.S)
     PROPER = {'Difference-in-Differences', 'Regression Discontinuity',
@@ -111,6 +129,32 @@ def check_i18n(page, html, en, ru):
         fail(page, f"текст без data-i18n ({len(untranslated)} фрагм.)", untranslated[0])
     else:
         ok(f"{page}: весь текст подключён к переводу")
+
+
+
+# ── 9. Внутренние ссылки ведут на существующие страницы и якоря ──────
+def check_links(page, html):
+    # ссылки и в разметке, и внутри строк перевода (там они экранированы)
+    src = html + (BASE / 'i18n.js').read_text(encoding='utf-8')
+    own = re.findall(r'href=\\?"([^"#\\]*?\.html)(#[^"\\]*)?\\?"', html)
+    for target, anchor in own:
+        if target.startswith('http'):
+            continue
+        f = BASE / target
+        if not f.exists():
+            fail(page, "битая ссылка", f"{target} — такого файла нет")
+            continue
+        if anchor:
+            if f'id="{anchor[1:]}"' not in f.read_text(encoding='utf-8'):
+                fail(page, "битый якорь в ссылке", f"{target}{anchor}")
+    global _I18N_LINKS_DONE
+    if globals().get('_I18N_LINKS_DONE'):
+        return
+    _I18N_LINKS_DONE = True
+    i18n_links = set(re.findall(r'href=\\?"([a-z0-9_-]+\.html)', (BASE / 'i18n.js').read_text(encoding='utf-8')))
+    for target in i18n_links:
+        if not (BASE / target).exists():
+            fail('i18n.js', "битая ссылка в переводе", f"{target} — такого файла нет")
 
 
 # ── 5. Размеры иконок ─────────────────────────────────────────────────
@@ -262,6 +306,7 @@ def main():
         check_i18n(page, html, en, ru)
         check_icons(page, html)
         check_balance(page, html)
+        check_links(page, html)
 
     if existing:
         check_browser(existing)
