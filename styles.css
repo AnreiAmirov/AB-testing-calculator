@@ -2785,4 +2785,22 @@ code .ic { color: #c2410c; font-weight: 600; }
    by the scroll container */
 .strip-wrap { padding-top: 10px; }
 /* on narrow screens the Copy button would sit on top of the first code line */
-@media (max-width: 640px) { .code-block { padding-top: 48px; } }
+/* the dark background lives on <pre>, so the room for the button goes INSIDE it */
+@media (max-width: 640px) { .code-block pre { padding-top: 48px; } }
+
+/* ── «Дано → Ответ» ── */
+.io-box { display: grid; grid-template-columns: 1fr auto 1fr; gap: 10px; align-items: stretch; margin: 12px 0; }
+.io-col { border: 1px solid var(--border); border-radius: 10px; padding: 10px 13px; background: var(--card); min-width: 0; }
+.io-ans { border-color: #059669; background: rgba(5,150,105,.06); }
+[data-theme="dark"] .io-ans { background: rgba(5,150,105,.12); }
+.io-lab { font-size: .68rem; font-weight: 700; text-transform: uppercase; letter-spacing: .07em;
+  color: var(--ink-faint); margin-bottom: 6px; }
+.io-ans .io-lab { color: #059669; }
+.io-line { margin: 3px 0; overflow-x: auto; }
+.io-line code { background: none; padding: 0; font-size: .8rem; white-space: pre; }
+.io-arrow { align-self: center; font-size: 1.3rem; color: var(--accent); font-weight: 700; }
+.sc.wide { width: auto; min-width: 42px; padding: 0 6px; }
+@media (max-width: 760px) {
+  .io-box { grid-template-columns: 1fr; }
+  .io-arrow { transform: rotate(90deg); justify-self: center; }
+}

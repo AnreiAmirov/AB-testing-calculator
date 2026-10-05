@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Algorithms for Interviews — Data for Everyone</title>
-<meta name="description" content="Fifty problems for analyst interviews: the logic behind strings, sorting and two pointers, 23 easy classics, 27 LeetCode problems by pattern, with walkthroughs, visual traces and practice.">
+<meta name="description" content="Sixty-four problems for analyst interviews: the logic behind strings, statistics, sorting and two pointers, 37 easy classics, 27 LeetCode problems by pattern, with walkthroughs, visual traces and practice.">
 <link rel="canonical" href="https://data-for-everyone.com/algorithms.html">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
@@ -12,7 +12,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Algorithms for Interviews — Data for Everyone">
-<meta property="og:description" content="Fifty interview problems: the logic, easy classics, walkthroughs and practice.">
+<meta property="og:description" content="Sixty-four interview problems: the logic, easy classics, walkthroughs and practice.">
 <meta property="og:url" content="https://data-for-everyone.com/algorithms.html">
 <meta property="og:image" content="https://data-for-everyone.com/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -46,7 +46,7 @@
         </button>
       </div>
     </div>
-    <p data-i18n="al_sub">Fifty problems for interview prep.</p>
+    <p data-i18n="al_sub">Sixty-four problems for interview prep.</p>
   </div>
 </header>
 <main class="causal-main" id="tab-reference">
@@ -56,7 +56,7 @@
 <a class="toc-link" href="#a-logic"><span class="toc-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/></svg></span><span data-i18n="al_nav_lg">The logic behind solutions</span></a>
 <a class="toc-link" href="#a-bigo"><span class="toc-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20h18"/><path d="M5 17c4-1 7-5 9-11"/><path d="M5 17l14-2"/></svg></span><span data-i18n="al_nav_2">Complexity: Big-O</span></a>
 <a class="toc-link" href="#a-map"><span class="toc-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4L3 6v14l6-2 6 2 6-2V4l-6 2z"/><path d="M9 4v14M15 6v14"/></svg></span><span data-i18n="al_nav_3">Pattern map</span></a>
-<a class="toc-link" href="#a-easy"><span class="toc-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.4 6.8 19.1l1-5.8L3.5 9.2l5.9-.9z"/></svg></span><span data-i18n="al_nav_ez">23 easy interview problems</span></a>
+<a class="toc-link" href="#a-easy"><span class="toc-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.4 6.8 19.1l1-5.8L3.5 9.2l5.9-.9z"/></svg></span><span data-i18n="al_nav_ez">37 easy interview problems</span></a>
 <a class="toc-link" href="#a-walk"><span class="toc-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V6a2 2 0 0 1 2-2h13v15H6a2 2 0 0 0-2 2z"/><path d="M9 8h7M9 12h5"/></svg></span><span data-i18n="al_nav_4">9 walkthroughs</span></a>
 <a class="toc-link" href="#a-practice"><span class="toc-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3 8-8"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></span><span data-i18n="al_nav_5">18 practice problems</span></a>
 <a class="toc-link" href="#a-plan"><span class="toc-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></span><span data-i18n="al_nav_6">How to practise</span></a>
@@ -79,40 +79,76 @@
 <ol class="logic-steps"><li data-i18n="lg_q1"><b>Does order matter?</b> "Count the letters" and "count letters in a row" are different tasks.</li><li data-i18n="lg_q2"><b>What must I remember while walking through the data?</b> A counter, the previous element, the best value so far, what I have already seen.</li><li data-i18n="lg_q3"><b>When does what I remember change?</b> This moment — "the run broke", "the sum got too big" — is the heart of the algorithm.</li><li data-i18n="lg_q4"><b>What is left over at the end?</b> Many bugs live here: the last group is never written because the loop ended first.</li></ol>
 <h3 class="lg-h" data-i18n="lg1_h">1 · Strings and counting characters</h3>
 <p data-i18n="lg1_p1">A string is a sequence of characters, just like a list. You can loop over it, take <code>s[i]</code> by position and look back at the previous character with <code>s[i - 1]</code>. One difference matters: strings cannot be changed in place. So the result is collected in a list and glued together once at the end with <code>"".join(parts)</code>.</p>
-<div class="dd-h3" data-i18n="lg1_fork_h">The fork that decides everything: "in total" or "in a row"?</div>
-<p data-i18n="lg1_fork_p">The task "count the characters and print 2a2b3c" hides two different questions. For <code>aabbccc</code> they give the same answer — which is exactly why the difference goes unnoticed. Take <code>abab</code>: counting <b>in total</b> gives <code>2a2b</code>, counting <b>runs in a row</b> gives <code>1a1b1a1b</code>. Ask the interviewer which one they mean — that question alone shows you think before you code.</p>
-<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-com"># compress() and count_chars() are defined further down this page</span>
-<span class="hl-ctl">for</span> s <span class="hl-opw">in</span> [<span class="hl-str">"aabbccc"</span>, <span class="hl-str">"abab"</span>]:
-    <span class="hl-bi">print</span>(s, <span class="hl-str">"→ in a row:"</span>, <span class="hl-call">compress</span>(s), <span class="hl-str">"| in total:"</span>, <span class="hl-call">count_chars</span>(s))</pre></div><div class="code-output"><span class="code-output-label" data-i18n="al_run_out"># output when run:</span>aabbccc → in a row: 2a2b3c | in total: 2a2b3c
-abab → in a row: 1a1b1a1b | in total: 2a2b</div>
-<div class="dd-h3" data-i18n="lg1_runs_h">How to reason about "in a row"</div>
-<ol class="logic-steps"><li data-i18n="lg1_s1">Walk through the string and compare every character with the <b>previous</b> one.</li><li data-i18n="lg1_s2">Keep one counter for the current run. Same character — the run continues, add one.</li><li data-i18n="lg1_s3">Different character — the run has broken: write down "count + character" and reset the counter to 1.</li><li data-i18n="lg1_s4">After the loop, write down the <b>last</b> run. Nothing inside the loop ever triggers it — this is the most common bug.</li></ol>
-<div class="trace-wrap" translate="no"><table class="trace"><thead><tr><th>#</th><th><code>i</code></th><th><code>s[i]</code></th><th><code>s[i] == s[i-1]?</code></th><th><code>count</code></th><th><code>written</code></th></tr></thead><tbody><tr class=""><td class="step">1</td><td>0</td><td>a</td><td>—</td><td>1</td><td>&quot;&quot;</td></tr><tr class=""><td class="step">2</td><td>1</td><td>a</td><td>True → count += 1</td><td>2</td><td>&quot;&quot;</td></tr><tr class=""><td class="step">3</td><td>2</td><td>b</td><td>False → write &quot;2a&quot;</td><td>1</td><td>&quot;2a&quot;</td></tr><tr class=""><td class="step">4</td><td>3</td><td>b</td><td>True → count += 1</td><td>2</td><td>&quot;2a&quot;</td></tr><tr class=""><td class="step">5</td><td>4</td><td>c</td><td>False → write &quot;2b&quot;</td><td>1</td><td>&quot;2a2b&quot;</td></tr><tr class=""><td class="step">6</td><td>5</td><td>c</td><td>True → count += 1</td><td>2</td><td>&quot;2a2b&quot;</td></tr><tr class=""><td class="step">7</td><td>6</td><td>c</td><td>True → count += 1</td><td>3</td><td>&quot;2a2b&quot;</td></tr><tr class="hit"><td class="step">8</td><td>end</td><td>·</td><td>flush last run → &quot;3c&quot;</td><td>·</td><td>&quot;2a2b3c&quot; ✓</td></tr></tbody></table></div>
-<p class="trace-note" data-i18n="lg1_trace_note">Follow the <code>written</code> column: a run is written only at the moment it breaks. The <code>ccc</code> run never breaks inside the loop — it is only saved by the final line after it.</p>
-<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-kw">def</span> <span class="hl-def">compress</span>(s):
-    <span class="hl-str">"""'aabbccc' -&gt; '2a2b3c': count each run of identical neighbours."""</span>
-    <span class="hl-ctl">if</span> <span class="hl-opw">not</span> s:
-        <span class="hl-ctl">return</span> <span class="hl-str">""</span>
-    parts = []
-    count = <span class="hl-num">1</span>
-    <span class="hl-ctl">for</span> i <span class="hl-opw">in</span> <span class="hl-bi">range</span>(<span class="hl-num">1</span>, <span class="hl-bi">len</span>(s)):
-        <span class="hl-ctl">if</span> s[i] == s[i - <span class="hl-num">1</span>]:          <span class="hl-com"># same as the previous char: the run goes on</span>
-            count += <span class="hl-num">1</span>
-        <span class="hl-ctl">else</span>:                         <span class="hl-com"># the run broke: write it down, start a new one</span>
-            parts.<span class="hl-call">append</span>(<span class="hl-str">f"{count}{s[i - 1]}"</span>)
-            count = <span class="hl-num">1</span>
-    parts.<span class="hl-call">append</span>(<span class="hl-str">f"{count}{s[-1]}"</span>)   <span class="hl-com"># the loop never writes the LAST run</span>
-    <span class="hl-ctl">return</span> <span class="hl-str">""</span>.<span class="hl-call">join</span>(parts)</pre></div>
-<div class="dd-h3" data-i18n="lg1_total_h">And "in total": a dictionary as a tally</div>
-<p data-i18n="lg1_total_p">Here order does not matter, so we do not look at neighbours at all. A dictionary stores "character → how many times". The line <code>counts.get(ch, 0) + 1</code> means "take the current count, or 0 if this is the first time, and add one". <code>Counter</code> does the same in one word, but interviewers often ask for the version without imports — know both.</p>
+<div class="dd-h3" data-i18n="lg1_fork_h">The classic task: count every character</div>
+<p data-i18n="lg1_fork_p">The most frequent string problem at analyst interviews: print how many times each character appears, as "count + character". The count is the <b>total</b> for the whole string, so <code>abab</code> gives <code>2a2b</code> — the two a's are counted together even though they are not neighbours. Characters go in the order they first appear.</p>
+<div class="io-box" translate="no"><div class="io-col"><div class="io-lab" data-i18n="io_given">Given</div><div class="io-line"><code>s = &quot;aabbccc&quot;</code></div><div class="io-line"><code>s = &quot;abab&quot;</code></div></div><div class="io-arrow" aria-hidden="true">→</div><div class="io-col io-ans"><div class="io-lab" data-i18n="io_answer">Answer</div><div class="io-line"><code>count_chars(&quot;aabbccc&quot;)  →  &#x27;2a2b3c&#x27;</code></div><div class="io-line"><code>count_chars(&quot;abab&quot;)  →  &#x27;2a2b&#x27;</code></div></div></div>
+<div class="dd-h3" data-i18n="lg1_runs_h">How to reason about it</div>
+<ol class="logic-steps"><li data-i18n="lg1_s1">Order of neighbours does not matter — only "how many of each". So we need a place to keep a running tally per character: a dictionary <code>character → count</code>.</li><li data-i18n="lg1_s2">Walk through the string once. For each character: take its current count, or 0 if it is new, and add one — <code>counts.get(ch, 0) + 1</code>.</li><li data-i18n="lg1_s3">A dictionary remembers the order in which keys were first added (Python 3.7+). So walking through it gives the characters in order of first appearance — no extra work needed.</li><li data-i18n="lg1_s4">Build the answer from the dictionary: for every pair write "count + character" and join.</li></ol>
+<div class="trace-wrap" translate="no"><table class="trace"><thead><tr><th>#</th><th><code>i</code></th><th><code>ch</code></th><th><code>counts[ch] = counts.get(ch, 0) + 1</code></th><th><code>counts</code></th></tr></thead><tbody><tr class=""><td class="step">1</td><td>0</td><td>a</td><td>1</td><td>{&#x27;a&#x27;: 1}</td></tr><tr class=""><td class="step">2</td><td>1</td><td>b</td><td>1</td><td>{&#x27;a&#x27;: 1, &#x27;b&#x27;: 1}</td></tr><tr class=""><td class="step">3</td><td>2</td><td>a</td><td>2</td><td>{&#x27;a&#x27;: 2, &#x27;b&#x27;: 1}</td></tr><tr class=""><td class="step">4</td><td>3</td><td>b</td><td>2</td><td>{&#x27;a&#x27;: 2, &#x27;b&#x27;: 2}</td></tr><tr class="hit"><td class="step">5</td><td>end</td><td>·</td><td>·</td><td>→ &quot;2a2b&quot; ✓</td></tr></tbody></table></div>
+<p class="trace-note" data-i18n="lg1_trace_note">Look at the row with <code>i = 2</code>: the second <code>a</code> is not next to the first one, yet its count simply goes from 1 to 2. Neighbours never matter — only the running total for each character.</p>
 <div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-kw">def</span> <span class="hl-def">count_chars</span>(s):
-    <span class="hl-str">"""'abcab' -&gt; '2a2b1c': total count of every char, in alphabetical order."""</span>
-    counts = {}
+    <span class="hl-str">"""'aabbccc' -&gt; '2a2b3c', 'abab' -&gt; '2a2b': how many times each char appears
+    in total, in the order chars first appear."""</span>
+    counts = {}                       <span class="hl-com"># a dict remembers insertion order (Python 3.7+)</span>
     <span class="hl-ctl">for</span> ch <span class="hl-opw">in</span> s:
         counts[ch] = counts.<span class="hl-call">get</span>(ch, <span class="hl-num">0</span>) + <span class="hl-num">1</span>
-    <span class="hl-ctl">return</span> <span class="hl-str">""</span>.<span class="hl-call">join</span>(<span class="hl-str">f"{counts[ch]}{ch}"</span> <span class="hl-ctl">for</span> ch <span class="hl-opw">in</span> <span class="hl-bi">sorted</span>(counts))</pre></div>
-<div class="callout-box warn" data-i18n="lg1_trap"><b>Where people slip:</b> forgetting the last run; crashing on an empty string; and a run of ten or more — <code>12a</code> — which breaks any decoder that reads only one digit. Test all three before saying "done".</div>
-<h3 class="lg-h" data-i18n="lg2_h">2 · Sorting: when it helps and how to control it</h3>
+    <span class="hl-ctl">return</span> <span class="hl-str">""</span>.<span class="hl-call">join</span>(<span class="hl-str">f"{n}{ch}"</span> <span class="hl-ctl">for</span> ch, n <span class="hl-opw">in</span> counts.<span class="hl-call">items</span>())</pre></div>
+<div class="dd-h3" data-i18n="lg1_var_h">Variations you will meet</div>
+<p data-i18n="lg1_var_p">The same dictionary answers a whole family of questions — only the last step changes. Sort its keys for alphabetical order; sort its items by count for "most frequent first"; filter by <code>n &gt; 1</code> for the characters that repeat; take <code>max</code> for the single most frequent one. Learn the tally once and every variant is one line.</p>
+<div class="io-box" translate="no"><div class="io-col"><div class="io-lab" data-i18n="io_given">Given</div><div class="io-line"><code>s = &quot;aabbccc&quot;</code></div></div><div class="io-arrow" aria-hidden="true">→</div><div class="io-col io-ans"><div class="io-lab" data-i18n="io_answer">Answer</div><div class="io-line"><code>count_chars_sorted(s)  →  &#x27;2a2b3c&#x27;</code></div><div class="io-line"><code>count_by_frequency(s)  →  &#x27;3c2a2b&#x27;</code></div><div class="io-line"><code>most_frequent_char(s)  →  &#x27;c&#x27;</code></div><div class="io-line"><code>repeated_chars(s)  →  [&#x27;a&#x27;, &#x27;b&#x27;, &#x27;c&#x27;]</code></div></div></div>
+<div class="dd-h3" data-i18n="lg1_total_h">Without a dictionary? Counter</div>
+<p data-i18n="lg1_total_p"><code>Counter</code> from the <code>collections</code> module does the tally in one word and also keeps first-appearance order. Interviewers often ask for the version without imports first — show the dictionary, then mention <code>Counter</code> as the shortcut.</p>
+<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-kw">from</span> <span class="hl-lib">collections</span> <span class="hl-kw">import</span> <span class="hl-bi">Counter</span>
+
+counts = <span class="hl-bi">Counter</span>(<span class="hl-str">"abab"</span>)
+<span class="hl-bi">print</span>(counts)
+<span class="hl-bi">print</span>(<span class="hl-str">""</span>.<span class="hl-call">join</span>(<span class="hl-str">f"{n}{ch}"</span> <span class="hl-ctl">for</span> ch, n <span class="hl-opw">in</span> counts.<span class="hl-call">items</span>()))</pre></div><div class="code-output"><span class="code-output-label" data-i18n="al_run_out"># output when run:</span>Counter({&#x27;a&#x27;: 2, &#x27;b&#x27;: 2})
+2a2b</div>
+<div class="dd-h3" data-i18n="lg1_rle_h">Not to be confused with: counting runs in a row</div>
+<p data-i18n="lg1_rle_p">A different, rarer task — run-length encoding — counts only <b>neighbouring</b> repeats: <code>abab</code> becomes <code>1a1b1a1b</code>. For <code>aabbccc</code> both tasks print the same <code>2a2b3c</code>, so test your solution on <code>abab</code> to make sure you solved the one that was asked. If the wording is ambiguous, ask.</p>
+<div class="io-box" translate="no"><div class="io-col"><div class="io-lab" data-i18n="io_given">Given</div><div class="io-line"><code>s = &quot;abab&quot;</code></div><div class="io-line"><code>s = &quot;aabbcca&quot;</code></div></div><div class="io-arrow" aria-hidden="true">→</div><div class="io-col io-ans"><div class="io-lab" data-i18n="io_answer">Answer</div><div class="io-line"><code>count_chars(&quot;abab&quot;)  →  &#x27;2a2b&#x27;</code></div><div class="io-line"><code>compress(&quot;abab&quot;)  →  &#x27;1a1b1a1b&#x27;</code></div><div class="io-line"><code>compress(&quot;aabbcca&quot;)  →  &#x27;2a2b2c1a&#x27;</code></div></div></div>
+<div class="trace-wrap" translate="no"><table class="trace"><thead><tr><th>#</th><th><code>i</code></th><th><code>s[i]</code></th><th><code>s[i] == s[i-1]?</code></th><th><code>count</code></th><th><code>written</code></th></tr></thead><tbody><tr class=""><td class="step">1</td><td>0</td><td>a</td><td>—</td><td>1</td><td>&quot;&quot;</td></tr><tr class=""><td class="step">2</td><td>1</td><td>a</td><td>True → count += 1</td><td>2</td><td>&quot;&quot;</td></tr><tr class=""><td class="step">3</td><td>2</td><td>b</td><td>False → write &quot;2a&quot;</td><td>1</td><td>&quot;2a&quot;</td></tr><tr class=""><td class="step">4</td><td>3</td><td>b</td><td>True → count += 1</td><td>2</td><td>&quot;2a&quot;</td></tr><tr class=""><td class="step">5</td><td>4</td><td>c</td><td>False → write &quot;2b&quot;</td><td>1</td><td>&quot;2a2b&quot;</td></tr><tr class=""><td class="step">6</td><td>5</td><td>c</td><td>True → count += 1</td><td>2</td><td>&quot;2a2b&quot;</td></tr><tr class=""><td class="step">7</td><td>6</td><td>a</td><td>False → write &quot;2c&quot;</td><td>1</td><td>&quot;2a2b2c&quot;</td></tr><tr class="hit"><td class="step">8</td><td>end</td><td>·</td><td>flush last run → &quot;1a&quot;</td><td>·</td><td>&quot;2a2b2c1a&quot; ✓</td></tr></tbody></table></div>
+<p class="trace-note" data-i18n="lg1_rle_note">Here the dictionary is replaced by a single counter that resets whenever the character changes — and the last run has to be written after the loop ends.</p>
+<div class="callout-box warn" data-i18n="lg1_trap"><b>Where people slip:</b> counting only neighbours when the task asks for totals (test on <code>abab</code>); sorting alphabetically when the order of appearance was expected; and forgetting the empty string, which should return an empty answer, not crash.</div>
+<h3 class="lg-h" data-i18n="lgs_h">2 · Mean, median and mode — by hand</h3>
+<p data-i18n="lgs_p1">An analyst's favourite warm-up: "compute the average, the median and the most frequent value without NumPy". It checks three things at once — that you know what each statistic means, that you handle the edge cases, and that you know which one to trust.</p>
+<div class="io-box" translate="no"><div class="io-col"><div class="io-lab" data-i18n="io_given">Given</div><div class="io-line"><code>amounts = [120, 80, 340, 55, 80, 2000]</code></div></div><div class="io-arrow" aria-hidden="true">→</div><div class="io-col io-ans"><div class="io-lab" data-i18n="io_answer">Answer</div><div class="io-line"><code>round(mean(amounts), 2)  →  445.83</code></div><div class="io-line"><code>median(amounts)  →  100.0</code></div><div class="io-line"><code>mode(amounts)  →  [80]</code></div></div></div>
+<div class="dd-h3" data-i18n="lgs_mean_h">Mean: sum divided by count</div>
+<p data-i18n="lgs_mean_p">The definition is the algorithm: add everything up, divide by how many there are. The only trap is the empty list — dividing by zero crashes, so return <code>None</code> first.</p>
+<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-kw">def</span> <span class="hl-def">mean</span>(nums):
+    <span class="hl-ctl">if</span> <span class="hl-opw">not</span> nums:
+        <span class="hl-ctl">return</span> <span class="hl-const">None</span>                   <span class="hl-com"># an empty list has no mean (and avoids / 0)</span>
+    <span class="hl-ctl">return</span> <span class="hl-bi">sum</span>(nums) / <span class="hl-bi">len</span>(nums)</pre></div>
+<div class="dd-h3" data-i18n="lgs_med_h">Median: the middle of the sorted data</div>
+<p data-i18n="lgs_med_p">Sort first — the median of unsorted data is meaningless. With an <b>odd</b> number of values there is one middle element. With an <b>even</b> number there are two, and the median is their average. The index of the middle is <code>n // 2</code>.</p>
+<div class="io-box" translate="no"><div class="io-col"><div class="io-lab" data-i18n="io_given">Given</div><div class="io-line"><code>odd  = [340, 55, 120, 80, 80]</code></div><div class="io-line"><code>even = [340, 55, 120, 80, 80, 2000]</code></div></div><div class="io-arrow" aria-hidden="true">→</div><div class="io-col io-ans"><div class="io-lab" data-i18n="io_answer">Answer</div><div class="io-line"><code>median(odd)  →  80</code></div><div class="io-line"><code>median(even)  →  100.0</code></div></div></div>
+<div class="strip-wrap" translate="no"><div class="strip-row"><span class="strip-n">1</span><span class="sc wide">55</span><span class="sc wide">80</span><span class="sc wide in ptr">80<i>M</i></span><span class="sc wide">120</span><span class="sc wide">340</span><span class="strip-note"><code>n=5 odd → s[2] = 80</code></span></div><div class="strip-row"><span class="strip-n">2</span><span class="sc wide">55</span><span class="sc wide">80</span><span class="sc wide in ptr">80<i>M</i></span><span class="sc wide in ptr">120<i>M</i></span><span class="sc wide">340</span><span class="sc wide">2000</span><span class="strip-note"><code>n=6 even → (s[2] + s[3]) / 2 = (80 + 120) / 2 = 100.0</code></span></div></div>
+<p class="trace-note" data-i18n="lgs_med_note">Row 1 has five values: the single middle one is the median. Row 2 adds one more value, so there are two middles and the median is their average.</p>
+<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-kw">def</span> <span class="hl-def">median</span>(nums):
+    <span class="hl-ctl">if</span> <span class="hl-opw">not</span> nums:
+        <span class="hl-ctl">return</span> <span class="hl-const">None</span>
+    s = <span class="hl-bi">sorted</span>(nums)                  <span class="hl-com"># the median only makes sense on sorted data</span>
+    n = <span class="hl-bi">len</span>(s)
+    mid = n // <span class="hl-num">2</span>
+    <span class="hl-ctl">if</span> n % <span class="hl-num">2</span> == <span class="hl-num">1</span>:                    <span class="hl-com"># odd length: one middle element</span>
+        <span class="hl-ctl">return</span> s[mid]
+    <span class="hl-ctl">return</span> (s[mid - <span class="hl-num">1</span>] + s[mid]) / <span class="hl-num">2</span>  <span class="hl-com"># even length: average of the two middles</span></pre></div>
+<div class="dd-h3" data-i18n="lgs_mode_h">Mode: the most frequent value — and there can be several</div>
+<p data-i18n="lgs_mode_p">The mode is the counting pattern from the strings section applied to numbers: tally every value, find the highest count, return the values that have it. Return a <b>list</b> — two values can tie, and silently picking one would hide that.</p>
+<div class="io-box" translate="no"><div class="io-col"><div class="io-lab" data-i18n="io_given">Given</div><div class="io-line"><code>amounts = [120, 80, 340, 55, 80, 2000]</code></div><div class="io-line"><code>tie = [1, 1, 2, 2, 3]</code></div></div><div class="io-arrow" aria-hidden="true">→</div><div class="io-col io-ans"><div class="io-lab" data-i18n="io_answer">Answer</div><div class="io-line"><code>mode(amounts)  →  [80]</code></div><div class="io-line"><code>mode(tie)  →  [1, 2]</code></div></div></div>
+<div class="trace-wrap" translate="no"><table class="trace"><thead><tr><th>#</th><th><code>x</code></th><th><code>counts[x]</code></th><th><code>c == top?</code></th></tr></thead><tbody><tr class=""><td class="step">1</td><td>120</td><td>1</td><td>—</td></tr><tr class="hit"><td class="step">2</td><td>80</td><td>2</td><td>✓ 2 == 2</td></tr><tr class=""><td class="step">3</td><td>340</td><td>1</td><td>—</td></tr><tr class=""><td class="step">4</td><td>55</td><td>1</td><td>—</td></tr><tr class=""><td class="step">5</td><td>2000</td><td>1</td><td>—</td></tr></tbody></table></div>
+<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-kw">def</span> <span class="hl-def">mode</span>(nums):
+    <span class="hl-str">"""All most frequent values, sorted (there can be several)."""</span>
+    <span class="hl-ctl">if</span> <span class="hl-opw">not</span> nums:
+        <span class="hl-ctl">return</span> []
+    counts = {}
+    <span class="hl-ctl">for</span> x <span class="hl-opw">in</span> nums:
+        counts[x] = counts.<span class="hl-call">get</span>(x, <span class="hl-num">0</span>) + <span class="hl-num">1</span>
+    top = <span class="hl-bi">max</span>(counts.<span class="hl-call">values</span>())
+    <span class="hl-ctl">return</span> <span class="hl-bi">sorted</span>(x <span class="hl-ctl">for</span> x, c <span class="hl-opw">in</span> counts.<span class="hl-call">items</span>() <span class="hl-ctl">if</span> c == top)</pre></div>
+<div class="cs-takeaway" data-i18n="lgs_take"><b>Which one to trust:</b> one large order of 2000 pulls the mean up to almost 446, while the median stays at 100 — closer to a typical order. With skewed data like revenue, report the median alongside the mean. Saying this unprompted is what turns a coding answer into an analyst's answer.</div>
+<div class="callout-box warn" data-i18n="lgs_trap"><b>Where people slip:</b> forgetting to sort before taking the median; using <code>n / 2</code> instead of <code>n // 2</code> (a float cannot be an index); forgetting the even-length case; and returning one mode when there are several.</div>
+<h3 class="lg-h" data-i18n="lg2_h">3 · Sorting: when it helps and how to control it</h3>
 <p data-i18n="lg2_p1">Sorting is rarely the answer by itself — it is the step that makes the answer easy. After sorting, <b>similar things stand next to each other</b>: duplicates sit in a row, close values become neighbours, and the smallest and largest are at the two ends. That is what makes two pointers and "compare with the neighbour" work. The price is O(n log n), so it pays off when it removes an O(n²) search.</p>
 <div class="dd-h3" data-i18n="lg2_api_h">sorted() or .sort() — and the classic bug</div>
 <p data-i18n="lg2_api_p"><code>sorted(x)</code> returns a <b>new</b> sorted list and leaves <code>x</code> untouched. <code>x.sort()</code> sorts the list itself and returns <code>None</code>. So <code>x = x.sort()</code> silently replaces your data with <code>None</code> — one of the most frequent mistakes in live coding.</p>
@@ -125,6 +161,7 @@ result = data.<span class="hl-call">sort</span>()
 None [1, 2, 3]</div>
 <div class="dd-h3" data-i18n="lg2_key_h">Sorting by several rules at once: the key</div>
 <p data-i18n="lg2_key_p">The <code>key</code> argument is a function that turns each element into "what to compare". If it returns a <b>tuple</b>, Python compares the first values, and only on a tie looks at the second. A minus sign flips a number into descending order. So <code>key=lambda kv: (-kv[1], kv[0])</code> reads as: "most frequent first; on a tie — alphabetically".</p>
+<div class="io-box" translate="no"><div class="io-col"><div class="io-lab" data-i18n="io_given">Given</div><div class="io-line"><code>s = &quot;mississippi&quot;</code></div></div><div class="io-arrow" aria-hidden="true">→</div><div class="io-col io-ans"><div class="io-lab" data-i18n="io_answer">Answer</div><div class="io-line"><code>count_by_frequency(s)  →  &#x27;4i4s2p1m&#x27;</code></div></div></div>
 <div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-kw">from</span> <span class="hl-lib">collections</span> <span class="hl-kw">import</span> <span class="hl-bi">Counter</span>
 
 counts = <span class="hl-bi">Counter</span>(<span class="hl-str">"mississippi"</span>)
@@ -136,6 +173,7 @@ ranked = <span class="hl-bi">sorted</span>(counts.<span class="hl-call">items</s
 <p class="trace-note" data-i18n="lg2_key_note">Look at <code>i</code> and <code>s</code>: both appear 4 times, so the first part of the key is equal. The tie is broken by the second part — the letter itself — and <code>i</code> comes before <code>s</code>.</p>
 <div class="dd-h3" data-i18n="lg2_in_h">If you are asked to write a sort yourself</div>
 <p data-i18n="lg2_in_p">Insertion sort is the easiest to explain, because it is how people sort cards in their hand. The left part is always sorted. Take the next card and slide it left past every bigger card until it fits. It is O(n²), so in real work you use <code>sorted()</code> — Python's built-in algorithm is O(n log n). But being able to state the rule "the left part stays sorted" is exactly what the interviewer is checking.</p>
+<div class="io-box" translate="no"><div class="io-col"><div class="io-lab" data-i18n="io_given">Given</div><div class="io-line"><code>nums = [5, 2, 4, 6, 1, 3]</code></div></div><div class="io-arrow" aria-hidden="true">→</div><div class="io-col io-ans"><div class="io-lab" data-i18n="io_answer">Answer</div><div class="io-line"><code>insertion_sort(nums)  →  [1, 2, 3, 4, 5, 6]</code></div></div></div>
 <div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-kw">def</span> <span class="hl-def">insertion_sort</span>(nums):
     nums = nums[:]
     <span class="hl-ctl">for</span> i <span class="hl-opw">in</span> <span class="hl-bi">range</span>(<span class="hl-num">1</span>, <span class="hl-bi">len</span>(nums)):
@@ -149,10 +187,11 @@ ranked = <span class="hl-bi">sorted</span>(counts.<span class="hl-call">items</s
 <div class="strip-wrap" translate="no"><div class="strip-row"><span class="strip-n">1</span><span class="sc in ptr">5<i>✓</i></span><span class="sc">2</span><span class="sc">4</span><span class="sc">6</span><span class="sc">1</span><span class="sc">3</span><span class="strip-note"><code>a[:1] → sorted ✓</code></span></div><div class="strip-row"><span class="strip-n">2</span><span class="sc in ptr">2<i>▲</i></span><span class="sc in">5</span><span class="sc">4</span><span class="sc">6</span><span class="sc">1</span><span class="sc">3</span><span class="strip-note"><code>insert 2 at index 0</code></span></div><div class="strip-row"><span class="strip-n">3</span><span class="sc in">2</span><span class="sc in ptr">4<i>▲</i></span><span class="sc in">5</span><span class="sc">6</span><span class="sc">1</span><span class="sc">3</span><span class="strip-note"><code>insert 4 at index 1</code></span></div><div class="strip-row"><span class="strip-n">4</span><span class="sc in">2</span><span class="sc in">4</span><span class="sc in">5</span><span class="sc in ptr">6<i>▲</i></span><span class="sc">1</span><span class="sc">3</span><span class="strip-note"><code>insert 6 at index 3</code></span></div><div class="strip-row"><span class="strip-n">5</span><span class="sc in ptr">1<i>▲</i></span><span class="sc in">2</span><span class="sc in">4</span><span class="sc in">5</span><span class="sc in">6</span><span class="sc">3</span><span class="strip-note"><code>insert 1 at index 0</code></span></div><div class="strip-row"><span class="strip-n">6</span><span class="sc in">1</span><span class="sc in">2</span><span class="sc in ptr">3<i>▲</i></span><span class="sc in">4</span><span class="sc in">5</span><span class="sc in">6</span><span class="strip-note"><code>insert 3 at index 2</code></span></div></div>
 <p class="trace-note" data-i18n="lg2_in_note">The shaded cells are the part that is already sorted — it grows by one on every row. <code>▲</code> marks where the new element landed.</p>
 <div class="callout-box warn" data-i18n="lg2_trap"><b>Where people slip:</b> <code>x = x.sort()</code>; sorting numbers stored as strings (<code>"10"</code> comes before <code>"9"</code>); and sorting when the answer needs the <b>original positions</b> — as in Two Sum, where sorting would lose them and a dictionary is the right tool.</div>
-<h3 class="lg-h" data-i18n="lg3_h">3 · Two pointers: three shapes of one idea</h3>
+<h3 class="lg-h" data-i18n="lg3_h">4 · Two pointers and duplicates</h3>
 <p data-i18n="lg3_p1">Two indexes move through the data by a rule, instead of a loop inside a loop. Every step moves at least one pointer, so the whole walk takes at most n steps — O(n). Everything depends on the <b>rule</b>: which pointer moves, and why that move can never skip the right answer. If you can say that sentence out loud, you understand the solution.</p>
 <div class="dd-h3" data-i18n="lg3_a_h">Shape A · towards each other</div>
 <p data-i18n="lg3_a_p">One pointer at each end, moving inwards. Works on <b>sorted</b> data and on symmetric questions (palindromes, reversing). Take a sorted list and a target sum. If the sum of the two ends is too small, the left number cannot be part of any answer — even paired with the largest remaining number it falls short. So we drop it and move left. If the sum is too big, the same logic drops the right number.</p>
+<div class="io-box" translate="no"><div class="io-col"><div class="io-lab" data-i18n="io_given">Given</div><div class="io-line"><code>nums = [1, 3, 4, 6, 8, 11]</code></div><div class="io-line"><code>target = 10</code></div></div><div class="io-arrow" aria-hidden="true">→</div><div class="io-col io-ans"><div class="io-lab" data-i18n="io_answer">Answer</div><div class="io-line"><code>two_sum_sorted(nums, target)  →  [2, 3]</code></div></div></div>
 <div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-kw">def</span> <span class="hl-def">two_sum_sorted</span>(nums, target):
     <span class="hl-str">"""Sorted list: positions of two numbers that add up to target (opposite pointers)."""</span>
     left, right = <span class="hl-num">0</span>, <span class="hl-bi">len</span>(nums) - <span class="hl-num">1</span>
@@ -169,6 +208,7 @@ ranked = <span class="hl-bi">sorted</span>(counts.<span class="hl-call">items</s
 <p class="trace-note" data-i18n="lg3_a_note">Each row throws away one number that provably cannot be in the answer. Five steps instead of fifteen pair checks.</p>
 <div class="dd-h3" data-i18n="lg3_b_h">Shape B · same direction, fast and slow</div>
 <p data-i18n="lg3_b_p">Both pointers start on the left. <code>F</code> (fast) reads every element. <code>S</code> (slow) marks where the "good" part of the array ends. When fast finds something worth keeping, it is copied to the slow position and slow moves on. This is how you clean an array <b>in place</b> without a second list: removing duplicates, moving zeroes to the end, compressing.</p>
+<div class="io-box" translate="no"><div class="io-col"><div class="io-lab" data-i18n="io_given">Given</div><div class="io-line"><code>nums = [1, 1, 2, 3, 3, 3, 4]</code></div></div><div class="io-arrow" aria-hidden="true">→</div><div class="io-col io-ans"><div class="io-lab" data-i18n="io_answer">Answer</div><div class="io-line"><code>remove_duplicates(nums)  →  4</code></div><div class="io-line"><code>nums[:4]  →  [1, 2, 3, 4]</code></div></div></div>
 <div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-kw">def</span> <span class="hl-def">remove_duplicates</span>(nums):
     <span class="hl-str">"""Sorted list: keep unique values at the front, return how many."""</span>
     <span class="hl-ctl">if</span> <span class="hl-opw">not</span> nums:
@@ -181,8 +221,30 @@ ranked = <span class="hl-bi">sorted</span>(counts.<span class="hl-call">items</s
     <span class="hl-ctl">return</span> slow + <span class="hl-num">1</span></pre></div>
 <div class="strip-wrap" translate="no"><div class="strip-row"><span class="strip-n">1</span><span class="sc in ptr">1<i>S</i></span><span class="sc ptr">1<i>F</i></span><span class="sc">2</span><span class="sc">3</span><span class="sc">3</span><span class="sc">3</span><span class="sc">4</span><span class="strip-note"><code>a[F]=1 == a[S] → skip</code></span></div><div class="strip-row"><span class="strip-n">2</span><span class="sc in">1</span><span class="sc in ptr">2<i>S</i></span><span class="sc ptr">2<i>F</i></span><span class="sc">3</span><span class="sc">3</span><span class="sc">3</span><span class="sc">4</span><span class="strip-note"><code>a[F]=2 != a[S] → S += 1, a[S] = 2</code></span></div><div class="strip-row"><span class="strip-n">3</span><span class="sc in">1</span><span class="sc in">2</span><span class="sc in ptr">3<i>S</i></span><span class="sc ptr">3<i>F</i></span><span class="sc">3</span><span class="sc">3</span><span class="sc">4</span><span class="strip-note"><code>a[F]=3 != a[S] → S += 1, a[S] = 3</code></span></div><div class="strip-row"><span class="strip-n">4</span><span class="sc in">1</span><span class="sc in">2</span><span class="sc in ptr">3<i>S</i></span><span class="sc">3</span><span class="sc ptr">3<i>F</i></span><span class="sc">3</span><span class="sc">4</span><span class="strip-note"><code>a[F]=3 == a[S] → skip</code></span></div><div class="strip-row"><span class="strip-n">5</span><span class="sc in">1</span><span class="sc in">2</span><span class="sc in ptr">3<i>S</i></span><span class="sc">3</span><span class="sc">3</span><span class="sc ptr">3<i>F</i></span><span class="sc">4</span><span class="strip-note"><code>a[F]=3 == a[S] → skip</code></span></div><div class="strip-row"><span class="strip-n">6</span><span class="sc in">1</span><span class="sc in">2</span><span class="sc in">3</span><span class="sc in ptr">4<i>S</i></span><span class="sc">3</span><span class="sc">3</span><span class="sc ptr">4<i>F</i></span><span class="strip-note"><code>a[F]=4 != a[S] → S += 1, a[S] = 4</code></span></div></div>
 <p class="trace-note" data-i18n="lg3_b_note">The shaded part is the clean result growing on the left. When <code>F</code> sees a value equal to the one at <code>S</code>, it is a duplicate and simply skipped.</p>
+<div class="dd-h3" data-i18n="lgd_h">Removing duplicates: two different questions</div>
+<p data-i18n="lgd_p">Shape B above removes duplicates <b>in place</b> from a <b>sorted</b> array — that is a LeetCode-style constraint. The everyday interview version is simpler and more common: "return the list without duplicates". Then order matters. <code>list(set(x))</code> removes repeats but does not keep the original order: a set makes no promise about order. In the example below it even happens to come out sorted — a coincidence of how small numbers are stored, not something to rely on. To keep the first occurrence of each value, walk once and remember what you have already taken.</p>
+<div class="io-box" translate="no"><div class="io-col"><div class="io-lab" data-i18n="io_given">Given</div><div class="io-line"><code>items = [3, 1, 3, 2, 1]</code></div></div><div class="io-arrow" aria-hidden="true">→</div><div class="io-col io-ans"><div class="io-lab" data-i18n="io_answer">Answer</div><div class="io-line"><code>list(set(items))  →  [1, 2, 3]</code></div><div class="io-line"><code>dedup_keep_order(items)  →  [3, 1, 2]</code></div><div class="io-line"><code>unique_sorted(items)  →  [1, 2, 3]</code></div><div class="io-line"><code>only_unique(items)  →  [2]</code></div><div class="io-line"><code>find_duplicates(items)  →  [3, 1]</code></div></div></div>
+<div class="trace-wrap" translate="no"><table class="trace"><thead><tr><th>#</th><th><code>x</code></th><th><code>x in seen?</code></th><th><code>seen</code></th><th><code>result</code></th></tr></thead><tbody><tr class="hit"><td class="step">1</td><td>3</td><td>False → take ✓</td><td>[3]</td><td>[3]</td></tr><tr class="hit"><td class="step">2</td><td>1</td><td>False → take ✓</td><td>[1, 3]</td><td>[3, 1]</td></tr><tr class=""><td class="step">3</td><td>3</td><td>True → skip</td><td>[1, 3]</td><td>[3, 1]</td></tr><tr class="hit"><td class="step">4</td><td>2</td><td>False → take ✓</td><td>[1, 2, 3]</td><td>[3, 1, 2]</td></tr><tr class=""><td class="step">5</td><td>1</td><td>True → skip</td><td>[1, 2, 3]</td><td>[3, 1, 2]</td></tr></tbody></table></div>
+<p class="trace-note" data-i18n="lgd_note">The set <code>seen</code> answers "have I taken this already?" instantly; the list <code>result</code> keeps the order. Two structures, each doing what it is good at.</p>
+<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-kw">def</span> <span class="hl-def">dedup_keep_order</span>(items):
+    <span class="hl-str">"""[3, 1, 3, 2, 1] -&gt; [3, 1, 2]: drop repeats, keep the first occurrence."""</span>
+    seen = <span class="hl-bi">set</span>()                      <span class="hl-com"># what we have already taken</span>
+    result = []
+    <span class="hl-ctl">for</span> x <span class="hl-opw">in</span> items:
+        <span class="hl-ctl">if</span> x <span class="hl-opw">not</span> <span class="hl-opw">in</span> seen:
+            seen.<span class="hl-call">add</span>(x)
+            result.<span class="hl-call">append</span>(x)
+    <span class="hl-ctl">return</span> result</pre></div>
+<table class="ref-table"><thead><tr><th data-i18n="lgd_c1">The question</th><th data-i18n="lgd_c2">Tool</th></tr></thead><tbody>
+<tr><td data-i18n="lgd_r1">Without duplicates, original order kept</td><td><code>seen + result  /  list(dict.fromkeys(x))</code></td></tr>
+<tr><td data-i18n="lgd_r2">Without duplicates, sorted</td><td><code>sorted(set(x))</code></td></tr>
+<tr><td data-i18n="lgd_r3">Only values that appear exactly once</td><td><code>counts[x] == 1</code></td></tr>
+<tr><td data-i18n="lgd_r4">Which values repeat</td><td><code>counts[x] &gt; 1</code></td></tr>
+<tr><td data-i18n="lgd_r5">In place, in a sorted array</td><td><code>slow / fast</code></td></tr>
+</tbody></table>
 <div class="dd-h3" data-i18n="lg3_c_h">Shape C · one pointer on each of two lists</div>
 <p data-i18n="lg3_c_p">When two sorted lists have to be combined or compared, give each its own pointer. At every step compare the two current elements, use the right one, and move <b>only that pointer</b>. Merging sorted lists, checking whether one string is a subsequence of another, and finding common elements all follow this shape.</p>
+<div class="io-box" translate="no"><div class="io-col"><div class="io-lab" data-i18n="io_given">Given</div><div class="io-line"><code>s = &quot;abc&quot;</code></div><div class="io-line"><code>t = &quot;ahbgdc&quot;</code></div></div><div class="io-arrow" aria-hidden="true">→</div><div class="io-col io-ans"><div class="io-lab" data-i18n="io_answer">Answer</div><div class="io-line"><code>is_subsequence(s, t)  →  True</code></div></div></div>
 <div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-kw">def</span> <span class="hl-def">is_subsequence</span>(s, t):
     i = <span class="hl-num">0</span>                             <span class="hl-com"># how much of s is already matched</span>
     <span class="hl-ctl">for</span> ch <span class="hl-opw">in</span> t:
@@ -2001,13 +2063,126 @@ L 368.040551 30.778149
 </div>
 <div class="card" id="a-easy"><div class="card-title" data-i18n="ez_h">Easy problems interviewers actually ask</div>
 <p data-i18n="ez_lead">Most analyst interviews use short, simple problems — the point is to watch how you think, not to stump you. Each problem below has its <b>line of reasoning</b> hidden separately from the solution: open it if you are stuck, but try to reach the idea yourself first.</p>
-<h3 class="lg-h"><span data-i18n="eb_strings">Strings and characters</span> <span class="lg-count">7</span></h3>
+<h3 class="lg-h"><span data-i18n="eb_strings">Strings and characters</span> <span class="lg-count">13</span></h3>
 <div class="etask" id="easy-e1">
-<div class="walk-head"><span class="task-num">1</span><span class="walk-title" data-i18n="e1_t">Run-length encoding: aabbccc → 2a2b3c</span></div>
+<div class="walk-head"><span class="task-num">1</span><span class="walk-title" data-i18n="e1_t">Count characters: aabbccc → 2a2b3c</span></div>
 <div class="walk-badges"><span class="badge-topic" data-i18n="eb_strings">Strings and characters</span><span class="lv lv-easy" data-i18n="al_lv_easy">Easy</span><span class="badge-classic" data-i18n="ez_classic">Interview classic</span></div>
-<p data-i18n="e1_task">Replace every run of identical neighbouring characters with "count + character".</p>
-<div class="ex-line"><code>&quot;aabbccc&quot; → &quot;2a2b3c&quot;        &quot;abab&quot; → &quot;1a1b1a1b&quot;        &quot;&quot; → &quot;&quot;</code></div>
-<button class="code-toggle hint-btn" onclick="algToggle(this)" aria-expanded="false" data-k-show="ez_think_btn" data-k-hide="ez_think_hide"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="ez_think_btn">Show the line of reasoning</span></button><div class="code-collapse" hidden><ol class="logic-steps"><li data-i18n="e1_s1">Order matters — this is "in a row", not "in total". So compare each character with the previous one.</li><li data-i18n="e1_s2">Keep a counter. Same as previous → +1. Different → write the finished run and reset the counter to 1.</li><li data-i18n="e1_s3">After the loop the last run is still unwritten — write it. And handle the empty string first.</li></ol></div>
+<p data-i18n="e1_task">Print how many times each character appears in total, as "count + character", in the order characters first appear.</p>
+<div class="ex-line"><code>&quot;aabbccc&quot; → &quot;2a2b3c&quot;        &quot;abab&quot; → &quot;2a2b&quot;        &quot;&quot; → &quot;&quot;</code></div>
+<button class="code-toggle hint-btn" onclick="algToggle(this)" aria-expanded="false" data-k-show="ez_think_btn" data-k-hide="ez_think_hide"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="ez_think_btn">Show the line of reasoning</span></button><div class="code-collapse" hidden><ol class="logic-steps"><li data-i18n="e1_s1">Totals, not neighbours: <code>abab</code> must give <code>2a2b</code>. So the order of letters in the string does not matter — only how many of each.</li><li data-i18n="e1_s2">Keep a dictionary <code>character → count</code> and update it in one pass with <code>counts.get(ch, 0) + 1</code>.</li><li data-i18n="e1_s3">The dictionary already keeps first-appearance order, so just walk its items and write "count + character".</li></ol></div>
+<button class="code-toggle " onclick="algToggle(this)" aria-expanded="false" data-k-show="al_show" data-k-hide="al_hide"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="al_show">Show solution</span></button><div class="code-collapse" hidden><div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-kw">def</span> <span class="hl-def">count_chars</span>(s):
+    <span class="hl-str">"""'aabbccc' -&gt; '2a2b3c', 'abab' -&gt; '2a2b': how many times each char appears
+    in total, in the order chars first appear."""</span>
+    counts = {}                       <span class="hl-com"># a dict remembers insertion order (Python 3.7+)</span>
+    <span class="hl-ctl">for</span> ch <span class="hl-opw">in</span> s:
+        counts[ch] = counts.<span class="hl-call">get</span>(ch, <span class="hl-num">0</span>) + <span class="hl-num">1</span>
+    <span class="hl-ctl">return</span> <span class="hl-str">""</span>.<span class="hl-call">join</span>(<span class="hl-str">f"{n}{ch}"</span> <span class="hl-ctl">for</span> ch, n <span class="hl-opw">in</span> counts.<span class="hl-call">items</span>())</pre></div><div class="walk-label" data-i18n="pr_why">Why it works</div><div class="cs-takeaway" data-i18n="e1_why">One pass, O(n). The test that proves you solved the right task is <code>abab</code> → <code>2a2b</code>.</div><div class="walk-label" data-i18n="pr_tests">Tests to check yourself</div><div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-call">count_chars</span>(<span class="hl-str">"aabbccc"</span>)
+<span class="hl-call">count_chars</span>(<span class="hl-str">"abab"</span>)
+<span class="hl-call">count_chars</span>(<span class="hl-str">""</span>)</pre></div><div class="code-output"><span class="code-output-label" data-i18n="al_out"># tests (all passed):</span>&gt;&gt;&gt; count_chars(&quot;aabbccc&quot;)
+&#x27;2a2b3c&#x27;
+&gt;&gt;&gt; count_chars(&quot;abab&quot;)
+&#x27;2a2b&#x27;
+&gt;&gt;&gt; count_chars(&quot;&quot;)
+&#x27;&#x27;</div></div>
+</div>
+<div class="etask" id="easy-e1b">
+<div class="walk-head"><span class="task-num">2</span><span class="walk-title" data-i18n="e1b_t">Count characters in alphabetical order</span></div>
+<div class="walk-badges"><span class="badge-topic" data-i18n="eb_strings">Strings and characters</span><span class="lv lv-easy" data-i18n="al_lv_easy">Easy</span><span class="badge-classic" data-i18n="ez_classic">Interview classic</span></div>
+<p data-i18n="e1b_task">The same totals, but listed in alphabetical order of the characters.</p>
+<div class="ex-line"><code>&quot;cabbac&quot; → &quot;2a2b2c&quot;        &quot;banana&quot; → &quot;3a1b2n&quot;</code></div>
+<button class="code-toggle hint-btn" onclick="algToggle(this)" aria-expanded="false" data-k-show="ez_think_btn" data-k-hide="ez_think_hide"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="ez_think_btn">Show the line of reasoning</span></button><div class="code-collapse" hidden><ol class="logic-steps"><li data-i18n="e1b_s1">The tally is identical to the previous task. Only the output order changes.</li><li data-i18n="e1b_s2">Walk the keys through <code>sorted(counts)</code> instead of in insertion order.</li></ol></div>
+<button class="code-toggle " onclick="algToggle(this)" aria-expanded="false" data-k-show="al_show" data-k-hide="al_hide"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="al_show">Show solution</span></button><div class="code-collapse" hidden><div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-kw">def</span> <span class="hl-def">count_chars_sorted</span>(s):
+    <span class="hl-str">"""'cabbac' -&gt; '2a2b2c': the same totals, but in alphabetical order."""</span>
+    counts = {}
+    <span class="hl-ctl">for</span> ch <span class="hl-opw">in</span> s:
+        counts[ch] = counts.<span class="hl-call">get</span>(ch, <span class="hl-num">0</span>) + <span class="hl-num">1</span>
+    <span class="hl-ctl">return</span> <span class="hl-str">""</span>.<span class="hl-call">join</span>(<span class="hl-str">f"{counts[ch]}{ch}"</span> <span class="hl-ctl">for</span> ch <span class="hl-opw">in</span> <span class="hl-bi">sorted</span>(counts))</pre></div><div class="walk-label" data-i18n="pr_why">Why it works</div><div class="cs-takeaway" data-i18n="e1b_why">A one-word change — which is why asking "in what order?" is worth it before writing anything.</div><div class="walk-label" data-i18n="pr_tests">Tests to check yourself</div><div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-call">count_chars_sorted</span>(<span class="hl-str">"cabbac"</span>)
+<span class="hl-call">count_chars_sorted</span>(<span class="hl-str">"banana"</span>)</pre></div><div class="code-output"><span class="code-output-label" data-i18n="al_out"># tests (all passed):</span>&gt;&gt;&gt; count_chars_sorted(&quot;cabbac&quot;)
+&#x27;2a2b2c&#x27;
+&gt;&gt;&gt; count_chars_sorted(&quot;banana&quot;)
+&#x27;3a1b2n&#x27;</div></div>
+</div>
+<div class="etask" id="easy-e1c">
+<div class="walk-head"><span class="task-num">3</span><span class="walk-title" data-i18n="e1c_t">Most frequent characters first</span></div>
+<div class="walk-badges"><span class="badge-topic" data-i18n="eb_strings">Strings and characters</span><span class="lv lv-easy" data-i18n="al_lv_easy">Easy</span><span class="badge-classic" data-i18n="ez_classic">Interview classic</span></div>
+<p data-i18n="e1c_task">Print the counts with the most frequent character first. On a tie, keep the order of first appearance.</p>
+<div class="ex-line"><code>&quot;aabbccc&quot; → &quot;3c2a2b&quot;        &quot;abab&quot; → &quot;2a2b&quot;</code></div>
+<button class="code-toggle hint-btn" onclick="algToggle(this)" aria-expanded="false" data-k-show="ez_think_btn" data-k-hide="ez_think_hide"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="ez_think_btn">Show the line of reasoning</span></button><div class="code-collapse" hidden><ol class="logic-steps"><li data-i18n="e1c_s1">Count as usual, then sort the pairs by count, descending: <code>key=lambda kv: -kv[1]</code>.</li><li data-i18n="e1c_s2">Ties sort themselves out: Python's <code>sorted()</code> is <b>stable</b> — equal elements keep the order they had, which here is first appearance.</li></ol></div>
+<button class="code-toggle " onclick="algToggle(this)" aria-expanded="false" data-k-show="al_show" data-k-hide="al_hide"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="al_show">Show solution</span></button><div class="code-collapse" hidden><div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-kw">def</span> <span class="hl-def">count_by_frequency</span>(s):
+    <span class="hl-str">"""'aabbccc' -&gt; '3c2a2b': most frequent first; ties keep first-appearance order."""</span>
+    counts = {}
+    <span class="hl-ctl">for</span> ch <span class="hl-opw">in</span> s:
+        counts[ch] = counts.<span class="hl-call">get</span>(ch, <span class="hl-num">0</span>) + <span class="hl-num">1</span>
+    ranked = <span class="hl-bi">sorted</span>(counts.<span class="hl-call">items</span>(), key=<span class="hl-kw">lambda</span> kv: -kv[<span class="hl-num">1</span>])   <span class="hl-com"># sorted() is stable</span>
+    <span class="hl-ctl">return</span> <span class="hl-str">""</span>.<span class="hl-call">join</span>(<span class="hl-str">f"{n}{ch}"</span> <span class="hl-ctl">for</span> ch, n <span class="hl-opw">in</span> ranked)</pre></div><div class="walk-label" data-i18n="pr_why">Why it works</div><div class="cs-takeaway" data-i18n="e1c_why">Knowing that sorting is stable saves you writing a second key. It is a good detail to mention out loud.</div><div class="walk-label" data-i18n="pr_tests">Tests to check yourself</div><div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-call">count_by_frequency</span>(<span class="hl-str">"aabbccc"</span>)
+<span class="hl-call">count_by_frequency</span>(<span class="hl-str">"abab"</span>)</pre></div><div class="code-output"><span class="code-output-label" data-i18n="al_out"># tests (all passed):</span>&gt;&gt;&gt; count_by_frequency(&quot;aabbccc&quot;)
+&#x27;3c2a2b&#x27;
+&gt;&gt;&gt; count_by_frequency(&quot;abab&quot;)
+&#x27;2a2b&#x27;</div></div>
+</div>
+<div class="etask" id="easy-e1d">
+<div class="walk-head"><span class="task-num">4</span><span class="walk-title" data-i18n="e1d_t">Count letters only, ignoring case</span></div>
+<div class="walk-badges"><span class="badge-topic" data-i18n="eb_strings">Strings and characters</span><span class="lv lv-easy" data-i18n="al_lv_easy">Easy</span><span class="badge-classic" data-i18n="ez_classic">Interview classic</span></div>
+<p data-i18n="e1d_task">Count the letters of a phrase, treating upper and lower case as the same and ignoring spaces and punctuation.</p>
+<div class="ex-line"><code>&quot;Hello, World!&quot; → &quot;1h1e3l2o1w1r1d&quot;</code></div>
+<button class="code-toggle hint-btn" onclick="algToggle(this)" aria-expanded="false" data-k-show="ez_think_btn" data-k-hide="ez_think_hide"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="ez_think_btn">Show the line of reasoning</span></button><div class="code-collapse" hidden><ol class="logic-steps"><li data-i18n="e1d_s1">Normalise first: <code>text.lower()</code> makes "H" and "h" the same character.</li><li data-i18n="e1d_s2">Inside the loop, skip anything that is not a letter with <code>ch.isalpha()</code>, then count as usual.</li></ol></div>
+<button class="code-toggle " onclick="algToggle(this)" aria-expanded="false" data-k-show="al_show" data-k-hide="al_hide"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="al_show">Show solution</span></button><div class="code-collapse" hidden><div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-kw">def</span> <span class="hl-def">count_letters</span>(text):
+    <span class="hl-str">"""'Hello, World!' -&gt; '1h1e3l2o1w1r1d': ignore case, spaces and punctuation."""</span>
+    counts = {}
+    <span class="hl-ctl">for</span> ch <span class="hl-opw">in</span> text.<span class="hl-call">lower</span>():
+        <span class="hl-ctl">if</span> ch.<span class="hl-call">isalpha</span>():              <span class="hl-com"># skip everything that is not a letter</span>
+            counts[ch] = counts.<span class="hl-call">get</span>(ch, <span class="hl-num">0</span>) + <span class="hl-num">1</span>
+    <span class="hl-ctl">return</span> <span class="hl-str">""</span>.<span class="hl-call">join</span>(<span class="hl-str">f"{n}{ch}"</span> <span class="hl-ctl">for</span> ch, n <span class="hl-opw">in</span> counts.<span class="hl-call">items</span>())</pre></div><div class="walk-label" data-i18n="pr_why">Why it works</div><div class="cs-takeaway" data-i18n="e1d_why">"Clean, then count" — the same two steps as preparing a text column before a group-by.</div><div class="walk-label" data-i18n="pr_tests">Tests to check yourself</div><div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-call">count_letters</span>(<span class="hl-str">"Hello, World!"</span>)</pre></div><div class="code-output"><span class="code-output-label" data-i18n="al_out"># tests (all passed):</span>&gt;&gt;&gt; count_letters(&quot;Hello, World!&quot;)
+&#x27;1h1e3l2o1w1r1d&#x27;</div></div>
+</div>
+<div class="etask" id="easy-e1e">
+<div class="walk-head"><span class="task-num">5</span><span class="walk-title" data-i18n="e1e_t">The most frequent character</span></div>
+<div class="walk-badges"><span class="badge-topic" data-i18n="eb_strings">Strings and characters</span><span class="lv lv-easy" data-i18n="al_lv_easy">Easy</span><span class="badge-classic" data-i18n="ez_classic">Interview classic</span></div>
+<p data-i18n="e1e_task">Return the character that appears most often. On a tie, return the one that appears first.</p>
+<div class="ex-line"><code>&quot;abracadabra&quot; → &quot;a&quot;        &quot;aabb&quot; → &quot;a&quot;</code></div>
+<button class="code-toggle hint-btn" onclick="algToggle(this)" aria-expanded="false" data-k-show="ez_think_btn" data-k-hide="ez_think_hide"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="ez_think_btn">Show the line of reasoning</span></button><div class="code-collapse" hidden><ol class="logic-steps"><li data-i18n="e1e_s1">Count, then pick the key with the largest value: <code>max(counts, key=counts.get)</code>.</li><li data-i18n="e1e_s2">On a tie <code>max</code> keeps the first maximum it meets, and the dictionary is in first-appearance order — so the tie rule is satisfied for free.</li></ol></div>
+<button class="code-toggle " onclick="algToggle(this)" aria-expanded="false" data-k-show="al_show" data-k-hide="al_hide"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="al_show">Show solution</span></button><div class="code-collapse" hidden><div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-kw">def</span> <span class="hl-def">most_frequent_char</span>(s):
+    counts = {}
+    <span class="hl-ctl">for</span> ch <span class="hl-opw">in</span> s:
+        counts[ch] = counts.<span class="hl-call">get</span>(ch, <span class="hl-num">0</span>) + <span class="hl-num">1</span>
+    <span class="hl-ctl">return</span> <span class="hl-bi">max</span>(counts, key=counts.get)    <span class="hl-com"># on a tie: the one that appeared first</span></pre></div><div class="walk-label" data-i18n="pr_why">Why it works</div><div class="cs-takeaway" data-i18n="e1e_why"><code>key=counts.get</code> means "compare the keys by their counts" — a pattern worth remembering.</div><div class="walk-label" data-i18n="pr_tests">Tests to check yourself</div><div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-call">most_frequent_char</span>(<span class="hl-str">"abracadabra"</span>)
+<span class="hl-call">most_frequent_char</span>(<span class="hl-str">"aabb"</span>)</pre></div><div class="code-output"><span class="code-output-label" data-i18n="al_out"># tests (all passed):</span>&gt;&gt;&gt; most_frequent_char(&quot;abracadabra&quot;)
+&#x27;a&#x27;
+&gt;&gt;&gt; most_frequent_char(&quot;aabb&quot;)
+&#x27;a&#x27;</div></div>
+</div>
+<div class="etask" id="easy-e1f">
+<div class="walk-head"><span class="task-num">6</span><span class="walk-title" data-i18n="e1f_t">Which characters repeat</span></div>
+<div class="walk-badges"><span class="badge-topic" data-i18n="eb_strings">Strings and characters</span><span class="lv lv-easy" data-i18n="al_lv_easy">Easy</span><span class="badge-classic" data-i18n="ez_classic">Interview classic</span></div>
+<p data-i18n="e1f_task">List every character that appears more than once, each one time, in order of first appearance.</p>
+<div class="ex-line"><code>&quot;programming&quot; → [&quot;r&quot;, &quot;g&quot;, &quot;m&quot;]</code></div>
+<button class="code-toggle hint-btn" onclick="algToggle(this)" aria-expanded="false" data-k-show="ez_think_btn" data-k-hide="ez_think_hide"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="ez_think_btn">Show the line of reasoning</span></button><div class="code-collapse" hidden><ol class="logic-steps"><li data-i18n="e1f_s1">Count, then keep only the pairs whose count is above one.</li></ol></div>
+<button class="code-toggle " onclick="algToggle(this)" aria-expanded="false" data-k-show="al_show" data-k-hide="al_hide"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="al_show">Show solution</span></button><div class="code-collapse" hidden><div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-kw">def</span> <span class="hl-def">repeated_chars</span>(s):
+    counts = {}
+    <span class="hl-ctl">for</span> ch <span class="hl-opw">in</span> s:
+        counts[ch] = counts.<span class="hl-call">get</span>(ch, <span class="hl-num">0</span>) + <span class="hl-num">1</span>
+    <span class="hl-ctl">return</span> [ch <span class="hl-ctl">for</span> ch, n <span class="hl-opw">in</span> counts.<span class="hl-call">items</span>() <span class="hl-ctl">if</span> n &gt; <span class="hl-num">1</span>]</pre></div><div class="walk-label" data-i18n="pr_why">Why it works</div><div class="cs-takeaway" data-i18n="e1f_why">Count first, filter after — instead of comparing every character with every other.</div><div class="walk-label" data-i18n="pr_tests">Tests to check yourself</div><div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-call">repeated_chars</span>(<span class="hl-str">"programming"</span>)</pre></div><div class="code-output"><span class="code-output-label" data-i18n="al_out"># tests (all passed):</span>&gt;&gt;&gt; repeated_chars(&quot;programming&quot;)
+[&#x27;r&#x27;, &#x27;g&#x27;, &#x27;m&#x27;]</div></div>
+</div>
+<div class="etask" id="easy-e1g">
+<div class="walk-head"><span class="task-num">7</span><span class="walk-title" data-i18n="e1g_t">Word frequency</span></div>
+<div class="walk-badges"><span class="badge-topic" data-i18n="eb_strings">Strings and characters</span><span class="lv lv-easy" data-i18n="al_lv_easy">Easy</span><span class="badge-classic" data-i18n="ez_classic">Interview classic</span></div>
+<p data-i18n="e1g_task">Count how many times each word appears in a sentence, ignoring case.</p>
+<div class="ex-line"><code>&quot;The cat and the hat&quot; → {&quot;the&quot;: 2, &quot;cat&quot;: 1, &quot;and&quot;: 1, &quot;hat&quot;: 1}</code></div>
+<button class="code-toggle hint-btn" onclick="algToggle(this)" aria-expanded="false" data-k-show="ez_think_btn" data-k-hide="ez_think_hide"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="ez_think_btn">Show the line of reasoning</span></button><div class="code-collapse" hidden><ol class="logic-steps"><li data-i18n="e1g_s1">The counting is identical — only the unit changes. Split the sentence into words with <code>.split()</code>.</li><li data-i18n="e1g_s2">Lower-case the text first, so "The" and "the" count as one word.</li></ol></div>
+<button class="code-toggle " onclick="algToggle(this)" aria-expanded="false" data-k-show="al_show" data-k-hide="al_hide"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="al_show">Show solution</span></button><div class="code-collapse" hidden><div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-kw">def</span> <span class="hl-def">word_frequency</span>(text):
+    counts = {}
+    <span class="hl-ctl">for</span> word <span class="hl-opw">in</span> text.<span class="hl-call">lower</span>().<span class="hl-call">split</span>():
+        counts[word] = counts.<span class="hl-call">get</span>(word, <span class="hl-num">0</span>) + <span class="hl-num">1</span>
+    <span class="hl-ctl">return</span> counts</pre></div><div class="walk-label" data-i18n="pr_why">Why it works</div><div class="cs-takeaway" data-i18n="e1g_why">Characters, words, user IDs, product names — the tally pattern does not care what it counts.</div><div class="walk-label" data-i18n="pr_tests">Tests to check yourself</div><div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-call">word_frequency</span>(<span class="hl-str">"The cat and the hat"</span>)</pre></div><div class="code-output"><span class="code-output-label" data-i18n="al_out"># tests (all passed):</span>&gt;&gt;&gt; word_frequency(&quot;The cat and the hat&quot;)
+{&#x27;the&#x27;: 2, &#x27;cat&#x27;: 1, &#x27;and&#x27;: 1, &#x27;hat&#x27;: 1}</div></div>
+</div>
+<div class="etask" id="easy-e2">
+<div class="walk-head"><span class="task-num">8</span><span class="walk-title" data-i18n="e2_t">Not to be confused with: runs in a row</span></div>
+<div class="walk-badges"><span class="badge-topic" data-i18n="eb_strings">Strings and characters</span><span class="lv lv-easy" data-i18n="al_lv_easy">Easy</span><span class="badge-classic" data-i18n="ez_classic">Interview classic</span></div>
+<p data-i18n="e2_task">Count only <b>neighbouring</b> repeats (run-length encoding). Here <code>abab</code> is four separate runs.</p>
+<div class="ex-line"><code>&quot;aabbccc&quot; → &quot;2a2b3c&quot;        &quot;abab&quot; → &quot;1a1b1a1b&quot;        &quot;aabbcca&quot; → &quot;2a2b2c1a&quot;</code></div>
+<button class="code-toggle hint-btn" onclick="algToggle(this)" aria-expanded="false" data-k-show="ez_think_btn" data-k-hide="ez_think_hide"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="ez_think_btn">Show the line of reasoning</span></button><div class="code-collapse" hidden><ol class="logic-steps"><li data-i18n="e2_s1">Order matters now, so a dictionary does not help. Compare each character with the previous one.</li><li data-i18n="e2_s2">Same as previous — add one. Different — write the finished run and reset the counter to 1.</li><li data-i18n="e2_s3">After the loop the last run is still unwritten — write it.</li></ol></div>
 <button class="code-toggle " onclick="algToggle(this)" aria-expanded="false" data-k-show="al_show" data-k-hide="al_hide"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="al_show">Show solution</span></button><div class="code-collapse" hidden><div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-kw">def</span> <span class="hl-def">compress</span>(s):
     <span class="hl-str">"""'aabbccc' -&gt; '2a2b3c': count each run of identical neighbours."""</span>
     <span class="hl-ctl">if</span> <span class="hl-opw">not</span> s:
@@ -2021,24 +2196,21 @@ L 368.040551 30.778149
             parts.<span class="hl-call">append</span>(<span class="hl-str">f"{count}{s[i - 1]}"</span>)
             count = <span class="hl-num">1</span>
     parts.<span class="hl-call">append</span>(<span class="hl-str">f"{count}{s[-1]}"</span>)   <span class="hl-com"># the loop never writes the LAST run</span>
-    <span class="hl-ctl">return</span> <span class="hl-str">""</span>.<span class="hl-call">join</span>(parts)</pre></div><div class="walk-label" data-i18n="pr_why">Why it works</div><div class="cs-takeaway" data-i18n="e1_why">One pass, O(n). The only non-obvious line is the one after the loop — exactly the one interviewers watch for.</div><div class="walk-label" data-i18n="pr_tests">Tests to check yourself</div><div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-call">compress</span>(<span class="hl-str">"aabbccc"</span>)
+    <span class="hl-ctl">return</span> <span class="hl-str">""</span>.<span class="hl-call">join</span>(parts)</pre></div><div class="walk-label" data-i18n="pr_why">Why it works</div><div class="cs-takeaway" data-i18n="e2_why">Put it side by side with the first task: same output for <code>aabbccc</code>, different for <code>abab</code>. That is why the test on <code>abab</code> matters.</div><div class="walk-label" data-i18n="pr_tests">Tests to check yourself</div><div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-call">compress</span>(<span class="hl-str">"aabbccc"</span>)
 <span class="hl-call">compress</span>(<span class="hl-str">"abab"</span>)
-<span class="hl-call">compress</span>(<span class="hl-str">""</span>)
-<span class="hl-call">compress</span>(<span class="hl-str">"zzzzzzzzzzzz"</span>)</pre></div><div class="code-output"><span class="code-output-label" data-i18n="al_out"># tests (all passed):</span>&gt;&gt;&gt; compress(&quot;aabbccc&quot;)
+<span class="hl-call">compress</span>(<span class="hl-str">"aabbcca"</span>)</pre></div><div class="code-output"><span class="code-output-label" data-i18n="al_out"># tests (all passed):</span>&gt;&gt;&gt; compress(&quot;aabbccc&quot;)
 &#x27;2a2b3c&#x27;
 &gt;&gt;&gt; compress(&quot;abab&quot;)
 &#x27;1a1b1a1b&#x27;
-&gt;&gt;&gt; compress(&quot;&quot;)
-&#x27;&#x27;
-&gt;&gt;&gt; compress(&quot;zzzzzzzzzzzz&quot;)
-&#x27;12z&#x27;</div></div>
+&gt;&gt;&gt; compress(&quot;aabbcca&quot;)
+&#x27;2a2b2c1a&#x27;</div></div>
 </div>
-<div class="etask" id="easy-e2">
-<div class="walk-head"><span class="task-num">2</span><span class="walk-title" data-i18n="e2_t">The reverse: 2a2b3c → aabbccc</span></div>
+<div class="etask" id="easy-e2b">
+<div class="walk-head"><span class="task-num">9</span><span class="walk-title" data-i18n="e2b_t">The reverse: 2a2b3c → aabbccc</span></div>
 <div class="walk-badges"><span class="badge-topic" data-i18n="eb_strings">Strings and characters</span><span class="lv lv-easy" data-i18n="al_lv_easy">Easy</span><span class="badge-classic" data-i18n="ez_classic">Interview classic</span></div>
-<p data-i18n="e2_task">Decode a string of "count + character" back to the original. Counts can have more than one digit.</p>
+<p data-i18n="e2b_task">Decode a string of "count + character" back. Counts can have more than one digit.</p>
 <div class="ex-line"><code>&quot;2a2b3c&quot; → &quot;aabbccc&quot;        &quot;12z&quot; → &quot;zzzzzzzzzzzz&quot;</code></div>
-<button class="code-toggle hint-btn" onclick="algToggle(this)" aria-expanded="false" data-k-show="ez_think_btn" data-k-hide="ez_think_hide"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="ez_think_btn">Show the line of reasoning</span></button><div class="code-collapse" hidden><ol class="logic-steps"><li data-i18n="e2_s1">A number can be "12", so you cannot read one digit and move on. Collect digits until a letter appears.</li><li data-i18n="e2_s2">When the letter comes, repeat it as many times as the collected number says, then clear the number.</li></ol></div>
+<button class="code-toggle hint-btn" onclick="algToggle(this)" aria-expanded="false" data-k-show="ez_think_btn" data-k-hide="ez_think_hide"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="ez_think_btn">Show the line of reasoning</span></button><div class="code-collapse" hidden><ol class="logic-steps"><li data-i18n="e2b_s1">A number can be "12", so collect digits until a letter appears.</li><li data-i18n="e2b_s2">When the letter comes, repeat it as many times as the collected number says, then clear the number.</li></ol></div>
 <button class="code-toggle " onclick="algToggle(this)" aria-expanded="false" data-k-show="al_show" data-k-hide="al_hide"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="al_show">Show solution</span></button><div class="code-collapse" hidden><div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-kw">def</span> <span class="hl-def">decompress</span>(code):
     <span class="hl-str">"""'2a2b3c' -&gt; 'aabbccc'. Counts may have several digits: '12a'."""</span>
     out = []
@@ -2049,37 +2221,14 @@ L 368.040551 30.778149
         <span class="hl-ctl">else</span>:
             out.<span class="hl-call">append</span>(ch * <span class="hl-bi">int</span>(digits))
             digits = <span class="hl-str">""</span>
-    <span class="hl-ctl">return</span> <span class="hl-str">""</span>.<span class="hl-call">join</span>(out)</pre></div><div class="walk-label" data-i18n="pr_why">Why it works</div><div class="cs-takeaway" data-i18n="e2_why">A good self-check: decoding your own encoder must give back the original. The cross-check of this page does exactly that on random strings.</div><div class="walk-label" data-i18n="pr_tests">Tests to check yourself</div><div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-call">decompress</span>(<span class="hl-str">"2a2b3c"</span>)
-<span class="hl-call">decompress</span>(<span class="hl-str">"12z"</span>)
-<span class="hl-call">decompress</span>(<span class="hl-call">compress</span>(<span class="hl-str">"aaabccdddd"</span>))</pre></div><div class="code-output"><span class="code-output-label" data-i18n="al_out"># tests (all passed):</span>&gt;&gt;&gt; decompress(&quot;2a2b3c&quot;)
+    <span class="hl-ctl">return</span> <span class="hl-str">""</span>.<span class="hl-call">join</span>(out)</pre></div><div class="walk-label" data-i18n="pr_why">Why it works</div><div class="cs-takeaway" data-i18n="e2b_why">Self-check: decoding your own encoder must give back the original.</div><div class="walk-label" data-i18n="pr_tests">Tests to check yourself</div><div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-call">decompress</span>(<span class="hl-str">"2a2b3c"</span>)
+<span class="hl-call">decompress</span>(<span class="hl-str">"12z"</span>)</pre></div><div class="code-output"><span class="code-output-label" data-i18n="al_out"># tests (all passed):</span>&gt;&gt;&gt; decompress(&quot;2a2b3c&quot;)
 &#x27;aabbccc&#x27;
 &gt;&gt;&gt; decompress(&quot;12z&quot;)
-&#x27;zzzzzzzzzzzz&#x27;
-&gt;&gt;&gt; decompress(compress(&quot;aaabccdddd&quot;))
-&#x27;aaabccdddd&#x27;</div></div>
-</div>
-<div class="etask" id="easy-e3">
-<div class="walk-head"><span class="task-num">3</span><span class="walk-title" data-i18n="e3_t">Count every character in total: abcab → 2a2b1c</span></div>
-<div class="walk-badges"><span class="badge-topic" data-i18n="eb_strings">Strings and characters</span><span class="lv lv-easy" data-i18n="al_lv_easy">Easy</span><span class="badge-classic" data-i18n="ez_classic">Interview classic</span></div>
-<p data-i18n="e3_task">Count how many times each character appears anywhere in the string, and print them in alphabetical order.</p>
-<div class="ex-line"><code>&quot;abcab&quot; → &quot;2a2b1c&quot;        &quot;banana&quot; → &quot;3a1b2n&quot;</code></div>
-<button class="code-toggle hint-btn" onclick="algToggle(this)" aria-expanded="false" data-k-show="ez_think_btn" data-k-hide="ez_think_hide"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="ez_think_btn">Show the line of reasoning</span></button><div class="code-collapse" hidden><ol class="logic-steps"><li data-i18n="e3_s1">Order does not matter — this is "in total". Neighbours are irrelevant, a dictionary "character → count" is enough.</li><li data-i18n="e3_s2">Fill it in one pass with <code>counts.get(ch, 0) + 1</code>, then walk the keys in sorted order to build the answer.</li></ol></div>
-<button class="code-toggle " onclick="algToggle(this)" aria-expanded="false" data-k-show="al_show" data-k-hide="al_hide"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="al_show">Show solution</span></button><div class="code-collapse" hidden><div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-kw">def</span> <span class="hl-def">count_chars</span>(s):
-    <span class="hl-str">"""'abcab' -&gt; '2a2b1c': total count of every char, in alphabetical order."""</span>
-    counts = {}
-    <span class="hl-ctl">for</span> ch <span class="hl-opw">in</span> s:
-        counts[ch] = counts.<span class="hl-call">get</span>(ch, <span class="hl-num">0</span>) + <span class="hl-num">1</span>
-    <span class="hl-ctl">return</span> <span class="hl-str">""</span>.<span class="hl-call">join</span>(<span class="hl-str">f"{counts[ch]}{ch}"</span> <span class="hl-ctl">for</span> ch <span class="hl-opw">in</span> <span class="hl-bi">sorted</span>(counts))</pre></div><div class="walk-label" data-i18n="pr_why">Why it works</div><div class="cs-takeaway" data-i18n="e3_why">Compare with the previous problem on "abab": same output format, different meaning. Clarifying which one is wanted is half of the answer.</div><div class="walk-label" data-i18n="pr_tests">Tests to check yourself</div><div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-call">count_chars</span>(<span class="hl-str">"abcab"</span>)
-<span class="hl-call">count_chars</span>(<span class="hl-str">"banana"</span>)
-<span class="hl-call">count_chars</span>(<span class="hl-str">"abab"</span>)</pre></div><div class="code-output"><span class="code-output-label" data-i18n="al_out"># tests (all passed):</span>&gt;&gt;&gt; count_chars(&quot;abcab&quot;)
-&#x27;2a2b1c&#x27;
-&gt;&gt;&gt; count_chars(&quot;banana&quot;)
-&#x27;3a1b2n&#x27;
-&gt;&gt;&gt; count_chars(&quot;abab&quot;)
-&#x27;2a2b&#x27;</div></div>
+&#x27;zzzzzzzzzzzz&#x27;</div></div>
 </div>
 <div class="etask" id="easy-e4">
-<div class="walk-head"><span class="task-num">4</span><span class="walk-title" data-i18n="e4_t">First unique character</span></div>
+<div class="walk-head"><span class="task-num">10</span><span class="walk-title" data-i18n="e4_t">First unique character</span></div>
 <div class="walk-badges"><span class="badge-topic" data-i18n="eb_strings">Strings and characters</span><span class="lv lv-easy" data-i18n="al_lv_easy">Easy</span><a class="lc-link" href="https://leetcode.com/problems/first-unique-character-in-a-string/" target="_blank" rel="noopener">#387 <span data-i18n="al_open_lc">Open on LeetCode ↗</span></a></div>
 <p data-i18n="e4_task">Return the position of the first character that appears exactly once, or −1 if there is none.</p>
 <div class="ex-line"><code>&quot;leetcode&quot; → 0        &quot;loveleetcode&quot; → 2        &quot;aabb&quot; → -1</code></div>
@@ -2099,7 +2248,7 @@ L 368.040551 30.778149
 -1</div></div>
 </div>
 <div class="etask" id="easy-e5">
-<div class="walk-head"><span class="task-num">5</span><span class="walk-title" data-i18n="e5_t">Valid anagram</span></div>
+<div class="walk-head"><span class="task-num">11</span><span class="walk-title" data-i18n="e5_t">Valid anagram</span></div>
 <div class="walk-badges"><span class="badge-topic" data-i18n="eb_strings">Strings and characters</span><span class="lv lv-easy" data-i18n="al_lv_easy">Easy</span><a class="lc-link" href="https://leetcode.com/problems/valid-anagram/" target="_blank" rel="noopener">#242 <span data-i18n="al_open_lc">Open on LeetCode ↗</span></a></div>
 <p data-i18n="e5_task">Decide whether two strings consist of exactly the same letters, the same number of times.</p>
 <div class="ex-line"><code>(&quot;anagram&quot;, &quot;nagaram&quot;) → True        (&quot;rat&quot;, &quot;car&quot;) → False</code></div>
@@ -2114,7 +2263,7 @@ True
 False</div></div>
 </div>
 <div class="etask" id="easy-e6">
-<div class="walk-head"><span class="task-num">6</span><span class="walk-title" data-i18n="e6_t">Reverse each word</span></div>
+<div class="walk-head"><span class="task-num">12</span><span class="walk-title" data-i18n="e6_t">Reverse each word</span></div>
 <div class="walk-badges"><span class="badge-topic" data-i18n="eb_strings">Strings and characters</span><span class="lv lv-easy" data-i18n="al_lv_easy">Easy</span><a class="lc-link" href="https://leetcode.com/problems/reverse-words-in-a-string-iii/" target="_blank" rel="noopener">#557 <span data-i18n="al_open_lc">Open on LeetCode ↗</span></a></div>
 <p data-i18n="e6_task">Reverse the letters of every word, keeping the words in their original order.</p>
 <div class="ex-line"><code>&quot;Let&#x27;s take LeetCode contest&quot; → &quot;s&#x27;teL ekat edoCteeL tsetnoc&quot;</code></div>
@@ -2124,7 +2273,7 @@ False</div></div>
 &quot;s&#x27;teL ekat edoCteeL tsetnoc&quot;</div></div>
 </div>
 <div class="etask" id="easy-e7">
-<div class="walk-head"><span class="task-num">7</span><span class="walk-title" data-i18n="e7_t">Longest common prefix</span></div>
+<div class="walk-head"><span class="task-num">13</span><span class="walk-title" data-i18n="e7_t">Longest common prefix</span></div>
 <div class="walk-badges"><span class="badge-topic" data-i18n="eb_strings">Strings and characters</span><span class="lv lv-easy" data-i18n="al_lv_easy">Easy</span><a class="lc-link" href="https://leetcode.com/problems/longest-common-prefix/" target="_blank" rel="noopener">#14 <span data-i18n="al_open_lc">Open on LeetCode ↗</span></a></div>
 <p data-i18n="e7_task">Find the longest beginning shared by all the words.</p>
 <div class="ex-line"><code>[&quot;flower&quot;, &quot;flow&quot;, &quot;flight&quot;] → &quot;fl&quot;        [&quot;dog&quot;, &quot;car&quot;] → &quot;&quot;</code></div>
@@ -2142,9 +2291,150 @@ False</div></div>
 &gt;&gt;&gt; longest_common_prefix([&quot;dog&quot;, &quot;car&quot;])
 &#x27;&#x27;</div></div>
 </div>
+<h3 class="lg-h"><span data-i18n="eb_dups">Duplicates</span> <span class="lg-count">5</span></h3>
+<div class="etask" id="easy-d1">
+<div class="walk-head"><span class="task-num">14</span><span class="walk-title" data-i18n="d1_t">A list without duplicates, order kept</span></div>
+<div class="walk-badges"><span class="badge-topic" data-i18n="eb_dups">Duplicates</span><span class="lv lv-easy" data-i18n="al_lv_easy">Easy</span><span class="badge-classic" data-i18n="ez_classic">Interview classic</span></div>
+<p data-i18n="d1_task">Return the list with every repeat removed, keeping the first occurrence of each value in its original place.</p>
+<div class="ex-line"><code>[3, 1, 3, 2, 1] → [3, 1, 2]</code></div>
+<button class="code-toggle hint-btn" onclick="algToggle(this)" aria-expanded="false" data-k-show="ez_think_btn" data-k-hide="ez_think_hide"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="ez_think_btn">Show the line of reasoning</span></button><div class="code-collapse" hidden><ol class="logic-steps"><li data-i18n="d1_s1"><code>list(set(x))</code> removes repeats but loses the order — a set does not remember it. So a set alone is not enough.</li><li data-i18n="d1_s2">Use two structures: a set <code>seen</code> to answer "already taken?" instantly, and a list <code>result</code> to keep the order.</li><li data-i18n="d1_s3">Walk once: if the value is not in <code>seen</code>, add it to both.</li></ol></div>
+<button class="code-toggle " onclick="algToggle(this)" aria-expanded="false" data-k-show="al_show" data-k-hide="al_hide"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="al_show">Show solution</span></button><div class="code-collapse" hidden><div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-kw">def</span> <span class="hl-def">dedup_keep_order</span>(items):
+    <span class="hl-str">"""[3, 1, 3, 2, 1] -&gt; [3, 1, 2]: drop repeats, keep the first occurrence."""</span>
+    seen = <span class="hl-bi">set</span>()                      <span class="hl-com"># what we have already taken</span>
+    result = []
+    <span class="hl-ctl">for</span> x <span class="hl-opw">in</span> items:
+        <span class="hl-ctl">if</span> x <span class="hl-opw">not</span> <span class="hl-opw">in</span> seen:
+            seen.<span class="hl-call">add</span>(x)
+            result.<span class="hl-call">append</span>(x)
+    <span class="hl-ctl">return</span> result</pre></div><div class="walk-label" data-i18n="pr_why">Why it works</div><div class="cs-takeaway" data-i18n="d1_why">O(n). A one-line equivalent is <code>list(dict.fromkeys(x))</code> — a dictionary keeps insertion order and drops repeated keys.</div><div class="walk-label" data-i18n="pr_tests">Tests to check yourself</div><div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-call">dedup_keep_order</span>([<span class="hl-num">3</span>, <span class="hl-num">1</span>, <span class="hl-num">3</span>, <span class="hl-num">2</span>, <span class="hl-num">1</span>])
+<span class="hl-call">dedup_keep_order</span>([<span class="hl-str">"b"</span>, <span class="hl-str">"a"</span>, <span class="hl-str">"b"</span>])
+<span class="hl-call">dedup_keep_order</span>([])</pre></div><div class="code-output"><span class="code-output-label" data-i18n="al_out"># tests (all passed):</span>&gt;&gt;&gt; dedup_keep_order([3, 1, 3, 2, 1])
+[3, 1, 2]
+&gt;&gt;&gt; dedup_keep_order([&quot;b&quot;, &quot;a&quot;, &quot;b&quot;])
+[&#x27;b&#x27;, &#x27;a&#x27;]
+&gt;&gt;&gt; dedup_keep_order([])
+[]</div></div>
+</div>
+<div class="etask" id="easy-d2">
+<div class="walk-head"><span class="task-num">15</span><span class="walk-title" data-i18n="d2_t">Unique values, sorted</span></div>
+<div class="walk-badges"><span class="badge-topic" data-i18n="eb_dups">Duplicates</span><span class="lv lv-easy" data-i18n="al_lv_easy">Easy</span><span class="badge-classic" data-i18n="ez_classic">Interview classic</span></div>
+<p data-i18n="d2_task">Return the distinct values in ascending order.</p>
+<div class="ex-line"><code>[3, 1, 3, 2, 1] → [1, 2, 3]</code></div>
+<button class="code-toggle hint-btn" onclick="algToggle(this)" aria-expanded="false" data-k-show="ez_think_btn" data-k-hide="ez_think_hide"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="ez_think_btn">Show the line of reasoning</span></button><div class="code-collapse" hidden><ol class="logic-steps"><li data-i18n="d2_s1">Here the original order does not matter, so a set is exactly the right tool: <code>set(x)</code> drops repeats.</li><li data-i18n="d2_s2">Then <code>sorted()</code> puts them in order and returns a list.</li></ol></div>
+<button class="code-toggle " onclick="algToggle(this)" aria-expanded="false" data-k-show="al_show" data-k-hide="al_hide"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="al_show">Show solution</span></button><div class="code-collapse" hidden><div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-kw">def</span> <span class="hl-def">unique_sorted</span>(items):
+    <span class="hl-ctl">return</span> <span class="hl-bi">sorted</span>(<span class="hl-bi">set</span>(items))         <span class="hl-com"># a set drops repeats but forgets the order</span></pre></div><div class="walk-label" data-i18n="pr_why">Why it works</div><div class="cs-takeaway" data-i18n="d2_why">Compare with the previous task: the question "is order important?" decides between a one-liner and a loop.</div><div class="walk-label" data-i18n="pr_tests">Tests to check yourself</div><div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-call">unique_sorted</span>([<span class="hl-num">3</span>, <span class="hl-num">1</span>, <span class="hl-num">3</span>, <span class="hl-num">2</span>, <span class="hl-num">1</span>])</pre></div><div class="code-output"><span class="code-output-label" data-i18n="al_out"># tests (all passed):</span>&gt;&gt;&gt; unique_sorted([3, 1, 3, 2, 1])
+[1, 2, 3]</div></div>
+</div>
+<div class="etask" id="easy-d3">
+<div class="walk-head"><span class="task-num">16</span><span class="walk-title" data-i18n="d3_t">Values that appear exactly once</span></div>
+<div class="walk-badges"><span class="badge-topic" data-i18n="eb_dups">Duplicates</span><span class="lv lv-easy" data-i18n="al_lv_easy">Easy</span><span class="badge-classic" data-i18n="ez_classic">Interview classic</span></div>
+<p data-i18n="d3_task">Keep only the values that appear once in the whole list; drop everything that has a repeat.</p>
+<div class="ex-line"><code>[3, 1, 3, 2, 1] → [2]</code></div>
+<button class="code-toggle hint-btn" onclick="algToggle(this)" aria-expanded="false" data-k-show="ez_think_btn" data-k-hide="ez_think_hide"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="ez_think_btn">Show the line of reasoning</span></button><div class="code-collapse" hidden><ol class="logic-steps"><li data-i18n="d3_s1">Not the same as removing duplicates: 3 and 1 must disappear <b>completely</b>.</li><li data-i18n="d3_s2">You cannot decide while reading — a value looks unique until its twin shows up. So count first, then filter: keep <code>x</code> where <code>counts[x] == 1</code>.</li></ol></div>
+<button class="code-toggle " onclick="algToggle(this)" aria-expanded="false" data-k-show="al_show" data-k-hide="al_hide"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="al_show">Show solution</span></button><div class="code-collapse" hidden><div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-kw">def</span> <span class="hl-def">only_unique</span>(items):
+    <span class="hl-str">"""Values that appear exactly once: [3, 1, 3, 2, 1] -&gt; [2]."""</span>
+    counts = {}
+    <span class="hl-ctl">for</span> x <span class="hl-opw">in</span> items:
+        counts[x] = counts.<span class="hl-call">get</span>(x, <span class="hl-num">0</span>) + <span class="hl-num">1</span>
+    <span class="hl-ctl">return</span> [x <span class="hl-ctl">for</span> x <span class="hl-opw">in</span> items <span class="hl-ctl">if</span> counts[x] == <span class="hl-num">1</span>]</pre></div><div class="walk-label" data-i18n="pr_why">Why it works</div><div class="cs-takeaway" data-i18n="d3_why">Two passes, still O(n). "Count first, decide second" again — the same idea as the first unique character.</div><div class="walk-label" data-i18n="pr_tests">Tests to check yourself</div><div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-call">only_unique</span>([<span class="hl-num">3</span>, <span class="hl-num">1</span>, <span class="hl-num">3</span>, <span class="hl-num">2</span>, <span class="hl-num">1</span>])</pre></div><div class="code-output"><span class="code-output-label" data-i18n="al_out"># tests (all passed):</span>&gt;&gt;&gt; only_unique([3, 1, 3, 2, 1])
+[2]</div></div>
+</div>
+<div class="etask" id="easy-d4">
+<div class="walk-head"><span class="task-num">17</span><span class="walk-title" data-i18n="d4_t">Which values are duplicated</span></div>
+<div class="walk-badges"><span class="badge-topic" data-i18n="eb_dups">Duplicates</span><span class="lv lv-easy" data-i18n="al_lv_easy">Easy</span><span class="badge-classic" data-i18n="ez_classic">Interview classic</span></div>
+<p data-i18n="d4_task">List every value that appears more than once, each value one time.</p>
+<div class="ex-line"><code>[3, 1, 3, 2, 1] → [3, 1]</code></div>
+<button class="code-toggle hint-btn" onclick="algToggle(this)" aria-expanded="false" data-k-show="ez_think_btn" data-k-hide="ez_think_hide"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="ez_think_btn">Show the line of reasoning</span></button><div class="code-collapse" hidden><ol class="logic-steps"><li data-i18n="d4_s1">Count every value, then keep the keys with a count above one.</li></ol></div>
+<button class="code-toggle " onclick="algToggle(this)" aria-expanded="false" data-k-show="al_show" data-k-hide="al_hide"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="al_show">Show solution</span></button><div class="code-collapse" hidden><div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-kw">def</span> <span class="hl-def">find_duplicates</span>(items):
+    <span class="hl-str">"""Which values repeat, each listed once: [3, 1, 3, 2, 1] -&gt; [3, 1]."""</span>
+    counts = {}
+    <span class="hl-ctl">for</span> x <span class="hl-opw">in</span> items:
+        counts[x] = counts.<span class="hl-call">get</span>(x, <span class="hl-num">0</span>) + <span class="hl-num">1</span>
+    <span class="hl-ctl">return</span> [x <span class="hl-ctl">for</span> x, n <span class="hl-opw">in</span> counts.<span class="hl-call">items</span>() <span class="hl-ctl">if</span> n &gt; <span class="hl-num">1</span>]</pre></div><div class="walk-label" data-i18n="pr_why">Why it works</div><div class="cs-takeaway" data-i18n="d4_why">This is the data-quality check you run on any ID column before joining: duplicated keys multiply rows.</div><div class="walk-label" data-i18n="pr_tests">Tests to check yourself</div><div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-call">find_duplicates</span>([<span class="hl-num">3</span>, <span class="hl-num">1</span>, <span class="hl-num">3</span>, <span class="hl-num">2</span>, <span class="hl-num">1</span>])
+<span class="hl-call">find_duplicates</span>([<span class="hl-num">1</span>, <span class="hl-num">2</span>, <span class="hl-num">3</span>])</pre></div><div class="code-output"><span class="code-output-label" data-i18n="al_out"># tests (all passed):</span>&gt;&gt;&gt; find_duplicates([3, 1, 3, 2, 1])
+[3, 1]
+&gt;&gt;&gt; find_duplicates([1, 2, 3])
+[]</div></div>
+</div>
+<div class="etask" id="easy-d5">
+<div class="walk-head"><span class="task-num">18</span><span class="walk-title" data-i18n="d5_t">Remove repeated characters from a string</span></div>
+<div class="walk-badges"><span class="badge-topic" data-i18n="eb_dups">Duplicates</span><span class="lv lv-easy" data-i18n="al_lv_easy">Easy</span><span class="badge-classic" data-i18n="ez_classic">Interview classic</span></div>
+<p data-i18n="d5_task">Keep the first occurrence of every character, in order.</p>
+<div class="ex-line"><code>&quot;banana&quot; → &quot;ban&quot;        &quot;mississippi&quot; → &quot;misp&quot;</code></div>
+<button class="code-toggle hint-btn" onclick="algToggle(this)" aria-expanded="false" data-k-show="ez_think_btn" data-k-hide="ez_think_hide"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="ez_think_btn">Show the line of reasoning</span></button><div class="code-collapse" hidden><ol class="logic-steps"><li data-i18n="d5_s1">Exactly the list version — a string is a sequence too. Collect kept characters in a list and join at the end.</li></ol></div>
+<button class="code-toggle " onclick="algToggle(this)" aria-expanded="false" data-k-show="al_show" data-k-hide="al_hide"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="al_show">Show solution</span></button><div class="code-collapse" hidden><div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-kw">def</span> <span class="hl-def">dedup_string</span>(s):
+    <span class="hl-str">"""'banana' -&gt; 'ban'."""</span>
+    seen = <span class="hl-bi">set</span>()
+    out = []
+    <span class="hl-ctl">for</span> ch <span class="hl-opw">in</span> s:
+        <span class="hl-ctl">if</span> ch <span class="hl-opw">not</span> <span class="hl-opw">in</span> seen:
+            seen.<span class="hl-call">add</span>(ch)
+            out.<span class="hl-call">append</span>(ch)
+    <span class="hl-ctl">return</span> <span class="hl-str">""</span>.<span class="hl-call">join</span>(out)</pre></div><div class="walk-label" data-i18n="pr_why">Why it works</div><div class="cs-takeaway" data-i18n="d5_why">Recognising that a string task is a list task in disguise is half the solution.</div><div class="walk-label" data-i18n="pr_tests">Tests to check yourself</div><div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-call">dedup_string</span>(<span class="hl-str">"banana"</span>)
+<span class="hl-call">dedup_string</span>(<span class="hl-str">"mississippi"</span>)</pre></div><div class="code-output"><span class="code-output-label" data-i18n="al_out"># tests (all passed):</span>&gt;&gt;&gt; dedup_string(&quot;banana&quot;)
+&#x27;ban&#x27;
+&gt;&gt;&gt; dedup_string(&quot;mississippi&quot;)
+&#x27;misp&#x27;</div></div>
+</div>
+<h3 class="lg-h"><span data-i18n="eb_stats">Mean, median, mode</span> <span class="lg-count">3</span></h3>
+<div class="etask" id="easy-s1">
+<div class="walk-head"><span class="task-num">19</span><span class="walk-title" data-i18n="s1_t">Mean without NumPy</span></div>
+<div class="walk-badges"><span class="badge-topic" data-i18n="eb_stats">Mean, median, mode</span><span class="lv lv-easy" data-i18n="al_lv_easy">Easy</span><span class="badge-classic" data-i18n="ez_classic">Interview classic</span></div>
+<p data-i18n="s1_task">Return the arithmetic mean of a list, and <code>None</code> for an empty list.</p>
+<div class="ex-line"><code>[120, 80, 340, 55, 80, 2000] → 445.83…        [] → None</code></div>
+<button class="code-toggle hint-btn" onclick="algToggle(this)" aria-expanded="false" data-k-show="ez_think_btn" data-k-hide="ez_think_hide"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="ez_think_btn">Show the line of reasoning</span></button><div class="code-collapse" hidden><ol class="logic-steps"><li data-i18n="s1_s1">Sum divided by count — <code>sum(nums) / len(nums)</code>.</li><li data-i18n="s1_s2">Guard the empty list first: <code>len([])</code> is 0 and division by zero crashes.</li></ol></div>
+<button class="code-toggle " onclick="algToggle(this)" aria-expanded="false" data-k-show="al_show" data-k-hide="al_hide"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="al_show">Show solution</span></button><div class="code-collapse" hidden><div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-kw">def</span> <span class="hl-def">mean</span>(nums):
+    <span class="hl-ctl">if</span> <span class="hl-opw">not</span> nums:
+        <span class="hl-ctl">return</span> <span class="hl-const">None</span>                   <span class="hl-com"># an empty list has no mean (and avoids / 0)</span>
+    <span class="hl-ctl">return</span> <span class="hl-bi">sum</span>(nums) / <span class="hl-bi">len</span>(nums)</pre></div><div class="walk-label" data-i18n="pr_why">Why it works</div><div class="cs-takeaway" data-i18n="s1_why">The guard is the whole point of the question — the formula itself is trivial.</div><div class="walk-label" data-i18n="pr_tests">Tests to check yourself</div><div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-call">mean</span>([<span class="hl-num">120</span>, <span class="hl-num">80</span>, <span class="hl-num">340</span>, <span class="hl-num">55</span>, <span class="hl-num">80</span>, <span class="hl-num">2000</span>])
+<span class="hl-call">mean</span>([])</pre></div><div class="code-output"><span class="code-output-label" data-i18n="al_out"># tests (all passed):</span>&gt;&gt;&gt; mean([120, 80, 340, 55, 80, 2000])
+445.8333333333333
+&gt;&gt;&gt; mean([])
+None</div></div>
+</div>
+<div class="etask" id="easy-s2">
+<div class="walk-head"><span class="task-num">20</span><span class="walk-title" data-i18n="s2_t">Median without NumPy</span></div>
+<div class="walk-badges"><span class="badge-topic" data-i18n="eb_stats">Mean, median, mode</span><span class="lv lv-easy" data-i18n="al_lv_easy">Easy</span><span class="badge-classic" data-i18n="ez_classic">Interview classic</span></div>
+<p data-i18n="s2_task">Return the median: the middle value of the sorted data, or the average of the two middle values when the count is even.</p>
+<div class="ex-line"><code>[340, 55, 120, 80, 80] → 80        [340, 55, 120, 80, 80, 2000] → 100.0</code></div>
+<button class="code-toggle hint-btn" onclick="algToggle(this)" aria-expanded="false" data-k-show="ez_think_btn" data-k-hide="ez_think_hide"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="ez_think_btn">Show the line of reasoning</span></button><div class="code-collapse" hidden><ol class="logic-steps"><li data-i18n="s2_s1">Sort first. The middle index is <code>n // 2</code> — integer division, because an index cannot be a fraction.</li><li data-i18n="s2_s2">Odd length: return that element. Even length: average it with the one before it, <code>s[mid - 1]</code>.</li></ol></div>
+<button class="code-toggle " onclick="algToggle(this)" aria-expanded="false" data-k-show="al_show" data-k-hide="al_hide"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="al_show">Show solution</span></button><div class="code-collapse" hidden><div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-kw">def</span> <span class="hl-def">median</span>(nums):
+    <span class="hl-ctl">if</span> <span class="hl-opw">not</span> nums:
+        <span class="hl-ctl">return</span> <span class="hl-const">None</span>
+    s = <span class="hl-bi">sorted</span>(nums)                  <span class="hl-com"># the median only makes sense on sorted data</span>
+    n = <span class="hl-bi">len</span>(s)
+    mid = n // <span class="hl-num">2</span>
+    <span class="hl-ctl">if</span> n % <span class="hl-num">2</span> == <span class="hl-num">1</span>:                    <span class="hl-com"># odd length: one middle element</span>
+        <span class="hl-ctl">return</span> s[mid]
+    <span class="hl-ctl">return</span> (s[mid - <span class="hl-num">1</span>] + s[mid]) / <span class="hl-num">2</span>  <span class="hl-com"># even length: average of the two middles</span></pre></div><div class="walk-label" data-i18n="pr_why">Why it works</div><div class="cs-takeaway" data-i18n="s2_why">Checked against Python's own <code>statistics.median</code> on 300 random lists — identical results.</div><div class="walk-label" data-i18n="pr_tests">Tests to check yourself</div><div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-call">median</span>([<span class="hl-num">340</span>, <span class="hl-num">55</span>, <span class="hl-num">120</span>, <span class="hl-num">80</span>, <span class="hl-num">80</span>])
+<span class="hl-call">median</span>([<span class="hl-num">340</span>, <span class="hl-num">55</span>, <span class="hl-num">120</span>, <span class="hl-num">80</span>, <span class="hl-num">80</span>, <span class="hl-num">2000</span>])</pre></div><div class="code-output"><span class="code-output-label" data-i18n="al_out"># tests (all passed):</span>&gt;&gt;&gt; median([340, 55, 120, 80, 80])
+80
+&gt;&gt;&gt; median([340, 55, 120, 80, 80, 2000])
+100.0</div></div>
+</div>
+<div class="etask" id="easy-s3">
+<div class="walk-head"><span class="task-num">21</span><span class="walk-title" data-i18n="s3_t">Mode — and what to do with ties</span></div>
+<div class="walk-badges"><span class="badge-topic" data-i18n="eb_stats">Mean, median, mode</span><span class="lv lv-easy" data-i18n="al_lv_easy">Easy</span><span class="badge-classic" data-i18n="ez_classic">Interview classic</span></div>
+<p data-i18n="s3_task">Return the most frequent value. If several values share the top count, return all of them, sorted.</p>
+<div class="ex-line"><code>[120, 80, 340, 55, 80, 2000] → [80]        [1, 1, 2, 2, 3] → [1, 2]</code></div>
+<button class="code-toggle hint-btn" onclick="algToggle(this)" aria-expanded="false" data-k-show="ez_think_btn" data-k-hide="ez_think_hide"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="ez_think_btn">Show the line of reasoning</span></button><div class="code-collapse" hidden><ol class="logic-steps"><li data-i18n="s3_s1">It is the character-counting task again, on numbers: tally every value.</li><li data-i18n="s3_s2">Find the highest count with <code>max(counts.values())</code>, then keep every value that has it.</li></ol></div>
+<button class="code-toggle " onclick="algToggle(this)" aria-expanded="false" data-k-show="al_show" data-k-hide="al_hide"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="al_show">Show solution</span></button><div class="code-collapse" hidden><div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-kw">def</span> <span class="hl-def">mode</span>(nums):
+    <span class="hl-str">"""All most frequent values, sorted (there can be several)."""</span>
+    <span class="hl-ctl">if</span> <span class="hl-opw">not</span> nums:
+        <span class="hl-ctl">return</span> []
+    counts = {}
+    <span class="hl-ctl">for</span> x <span class="hl-opw">in</span> nums:
+        counts[x] = counts.<span class="hl-call">get</span>(x, <span class="hl-num">0</span>) + <span class="hl-num">1</span>
+    top = <span class="hl-bi">max</span>(counts.<span class="hl-call">values</span>())
+    <span class="hl-ctl">return</span> <span class="hl-bi">sorted</span>(x <span class="hl-ctl">for</span> x, c <span class="hl-opw">in</span> counts.<span class="hl-call">items</span>() <span class="hl-ctl">if</span> c == top)</pre></div><div class="walk-label" data-i18n="pr_why">Why it works</div><div class="cs-takeaway" data-i18n="s3_why">Returning a list is the honest answer: with a tie there is no single mode. Matches <code>statistics.multimode</code>.</div><div class="walk-label" data-i18n="pr_tests">Tests to check yourself</div><div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-call">mode</span>([<span class="hl-num">120</span>, <span class="hl-num">80</span>, <span class="hl-num">340</span>, <span class="hl-num">55</span>, <span class="hl-num">80</span>, <span class="hl-num">2000</span>])
+<span class="hl-call">mode</span>([<span class="hl-num">1</span>, <span class="hl-num">1</span>, <span class="hl-num">2</span>, <span class="hl-num">2</span>, <span class="hl-num">3</span>])</pre></div><div class="code-output"><span class="code-output-label" data-i18n="al_out"># tests (all passed):</span>&gt;&gt;&gt; mode([120, 80, 340, 55, 80, 2000])
+[80]
+&gt;&gt;&gt; mode([1, 1, 2, 2, 3])
+[1, 2]</div></div>
+</div>
 <h3 class="lg-h"><span data-i18n="eb_twoptr">Two pointers</span> <span class="lg-count">6</span></h3>
 <div class="etask" id="easy-e8">
-<div class="walk-head"><span class="task-num">8</span><span class="walk-title" data-i18n="e8_t">Reverse a string in place</span></div>
+<div class="walk-head"><span class="task-num">22</span><span class="walk-title" data-i18n="e8_t">Reverse a string in place</span></div>
 <div class="walk-badges"><span class="badge-topic" data-i18n="eb_twoptr">Two pointers</span><span class="lv lv-easy" data-i18n="al_lv_easy">Easy</span><a class="lc-link" href="https://leetcode.com/problems/reverse-string/" target="_blank" rel="noopener">#344 <span data-i18n="al_open_lc">Open on LeetCode ↗</span></a></div>
 <p data-i18n="e8_task">Reverse a list of characters without creating a new list.</p>
 <div class="ex-line"><code>[&quot;h&quot;,&quot;e&quot;,&quot;l&quot;,&quot;l&quot;,&quot;o&quot;] → [&quot;o&quot;,&quot;l&quot;,&quot;l&quot;,&quot;e&quot;,&quot;h&quot;]</code></div>
@@ -2159,7 +2449,7 @@ False</div></div>
 [&#x27;o&#x27;, &#x27;l&#x27;, &#x27;l&#x27;, &#x27;e&#x27;, &#x27;h&#x27;]</div></div>
 </div>
 <div class="etask" id="easy-e9">
-<div class="walk-head"><span class="task-num">9</span><span class="walk-title" data-i18n="e9_t">Remove duplicates from a sorted array</span></div>
+<div class="walk-head"><span class="task-num">23</span><span class="walk-title" data-i18n="e9_t">Remove duplicates from a sorted array</span></div>
 <div class="walk-badges"><span class="badge-topic" data-i18n="eb_twoptr">Two pointers</span><span class="lv lv-easy" data-i18n="al_lv_easy">Easy</span><a class="lc-link" href="https://leetcode.com/problems/remove-duplicates-from-sorted-array/" target="_blank" rel="noopener">#26 <span data-i18n="al_open_lc">Open on LeetCode ↗</span></a></div>
 <p data-i18n="e9_task">In a sorted list, move each distinct value to the front, in place, and return how many there are.</p>
 <div class="ex-line"><code>[1, 1, 2, 3, 3, 3, 4] → 4   # a[:4] = [1, 2, 3, 4]</code></div>
@@ -2177,7 +2467,7 @@ False</div></div>
 4 [1, 2, 3, 4]</div></div>
 </div>
 <div class="etask" id="easy-e10">
-<div class="walk-head"><span class="task-num">10</span><span class="walk-title" data-i18n="e10_t">Move zeroes to the end</span></div>
+<div class="walk-head"><span class="task-num">24</span><span class="walk-title" data-i18n="e10_t">Move zeroes to the end</span></div>
 <div class="walk-badges"><span class="badge-topic" data-i18n="eb_twoptr">Two pointers</span><span class="lv lv-easy" data-i18n="al_lv_easy">Easy</span><a class="lc-link" href="https://leetcode.com/problems/move-zeroes/" target="_blank" rel="noopener">#283 <span data-i18n="al_open_lc">Open on LeetCode ↗</span></a></div>
 <p data-i18n="e10_task">Move every zero to the end of the list, keeping the order of the other numbers, in place.</p>
 <div class="ex-line"><code>[0, 1, 0, 3, 12] → [1, 3, 12, 0, 0]</code></div>
@@ -2192,7 +2482,7 @@ False</div></div>
 [1, 3, 12, 0, 0]</div></div>
 </div>
 <div class="etask" id="easy-e11">
-<div class="walk-head"><span class="task-num">11</span><span class="walk-title" data-i18n="e11_t">Merge two sorted arrays</span></div>
+<div class="walk-head"><span class="task-num">25</span><span class="walk-title" data-i18n="e11_t">Merge two sorted arrays</span></div>
 <div class="walk-badges"><span class="badge-topic" data-i18n="eb_twoptr">Two pointers</span><span class="lv lv-easy" data-i18n="al_lv_easy">Easy</span><a class="lc-link" href="https://leetcode.com/problems/merge-sorted-array/" target="_blank" rel="noopener">#88 <span data-i18n="al_open_lc">Open on LeetCode ↗</span></a></div>
 <p data-i18n="e11_task">The first list has room at its end for the second. Merge them into the first list so it stays sorted.</p>
 <div class="ex-line"><code>nums1 = [1, 2, 3, 0, 0, 0], m = 3, nums2 = [2, 5, 6], n = 3 → [1, 2, 2, 3, 5, 6]</code></div>
@@ -2212,7 +2502,7 @@ False</div></div>
 [1, 2, 2, 3, 5, 6]</div></div>
 </div>
 <div class="etask" id="easy-e12">
-<div class="walk-head"><span class="task-num">12</span><span class="walk-title" data-i18n="e12_t">Squares of a sorted array</span></div>
+<div class="walk-head"><span class="task-num">26</span><span class="walk-title" data-i18n="e12_t">Squares of a sorted array</span></div>
 <div class="walk-badges"><span class="badge-topic" data-i18n="eb_twoptr">Two pointers</span><span class="lv lv-easy" data-i18n="al_lv_easy">Easy</span><a class="lc-link" href="https://leetcode.com/problems/squares-of-a-sorted-array/" target="_blank" rel="noopener">#977 <span data-i18n="al_open_lc">Open on LeetCode ↗</span></a></div>
 <p data-i18n="e12_task">Given a sorted list that may contain negatives, return the squares in sorted order.</p>
 <div class="ex-line"><code>[-4, -1, 0, 3, 10] → [0, 1, 9, 16, 100]</code></div>
@@ -2232,7 +2522,7 @@ False</div></div>
 [0, 1, 9, 16, 100]</div></div>
 </div>
 <div class="etask" id="easy-e13">
-<div class="walk-head"><span class="task-num">13</span><span class="walk-title" data-i18n="e13_t">Is subsequence</span></div>
+<div class="walk-head"><span class="task-num">27</span><span class="walk-title" data-i18n="e13_t">Is subsequence</span></div>
 <div class="walk-badges"><span class="badge-topic" data-i18n="eb_twoptr">Two pointers</span><span class="lv lv-easy" data-i18n="al_lv_easy">Easy</span><a class="lc-link" href="https://leetcode.com/problems/is-subsequence/" target="_blank" rel="noopener">#392 <span data-i18n="al_open_lc">Open on LeetCode ↗</span></a></div>
 <p data-i18n="e13_task">Check whether the letters of one string appear in another in the same order (not necessarily side by side).</p>
 <div class="ex-line"><code>(&quot;abc&quot;, &quot;ahbgdc&quot;) → True        (&quot;axc&quot;, &quot;ahbgdc&quot;) → False</code></div>
@@ -2250,7 +2540,7 @@ False</div></div>
 </div>
 <h3 class="lg-h"><span data-i18n="eb_sorting">Sorting</span> <span class="lg-count">3</span></h3>
 <div class="etask" id="easy-e14">
-<div class="walk-head"><span class="task-num">14</span><span class="walk-title" data-i18n="e14_t">Maximum product of three numbers</span></div>
+<div class="walk-head"><span class="task-num">28</span><span class="walk-title" data-i18n="e14_t">Maximum product of three numbers</span></div>
 <div class="walk-badges"><span class="badge-topic" data-i18n="eb_sorting">Sorting</span><span class="lv lv-easy" data-i18n="al_lv_easy">Easy</span><a class="lc-link" href="https://leetcode.com/problems/maximum-product-of-three-numbers/" target="_blank" rel="noopener">#628 <span data-i18n="al_open_lc">Open on LeetCode ↗</span></a></div>
 <p data-i18n="e14_task">Find the largest product of any three numbers in the list. Numbers can be negative.</p>
 <div class="ex-line"><code>[1, 2, 3, 4] → 24        [-10, -10, 1, 3, 2] → 300</code></div>
@@ -2265,7 +2555,7 @@ False</div></div>
 300</div></div>
 </div>
 <div class="etask" id="easy-e15">
-<div class="walk-head"><span class="task-num">15</span><span class="walk-title" data-i18n="e15_t">Height checker</span></div>
+<div class="walk-head"><span class="task-num">29</span><span class="walk-title" data-i18n="e15_t">Height checker</span></div>
 <div class="walk-badges"><span class="badge-topic" data-i18n="eb_sorting">Sorting</span><span class="lv lv-easy" data-i18n="al_lv_easy">Easy</span><a class="lc-link" href="https://leetcode.com/problems/height-checker/" target="_blank" rel="noopener">#1051 <span data-i18n="al_open_lc">Open on LeetCode ↗</span></a></div>
 <p data-i18n="e15_task">Count how many positions differ between the list and its sorted version.</p>
 <div class="ex-line"><code>[1, 1, 4, 2, 1, 3] → 3</code></div>
@@ -2276,7 +2566,7 @@ False</div></div>
 3</div></div>
 </div>
 <div class="etask" id="easy-e16">
-<div class="walk-head"><span class="task-num">16</span><span class="walk-title" data-i18n="e16_t">Largest perimeter triangle</span></div>
+<div class="walk-head"><span class="task-num">30</span><span class="walk-title" data-i18n="e16_t">Largest perimeter triangle</span></div>
 <div class="walk-badges"><span class="badge-topic" data-i18n="eb_sorting">Sorting</span><span class="lv lv-easy" data-i18n="al_lv_easy">Easy</span><a class="lc-link" href="https://leetcode.com/problems/largest-perimeter-triangle/" target="_blank" rel="noopener">#976 <span data-i18n="al_open_lc">Open on LeetCode ↗</span></a></div>
 <p data-i18n="e16_task">Pick three lengths that can form a triangle with the largest possible perimeter, or return 0.</p>
 <div class="ex-line"><code>[2, 1, 2] → 5        [1, 2, 1, 10] → 0</code></div>
@@ -2294,7 +2584,7 @@ False</div></div>
 </div>
 <h3 class="lg-h"><span data-i18n="eb_counting">Counting and sets</span> <span class="lg-count">4</span></h3>
 <div class="etask" id="easy-e17">
-<div class="walk-head"><span class="task-num">17</span><span class="walk-title" data-i18n="e17_t">Majority element</span></div>
+<div class="walk-head"><span class="task-num">31</span><span class="walk-title" data-i18n="e17_t">Majority element</span></div>
 <div class="walk-badges"><span class="badge-topic" data-i18n="eb_counting">Counting and sets</span><span class="lv lv-easy" data-i18n="al_lv_easy">Easy</span><a class="lc-link" href="https://leetcode.com/problems/majority-element/" target="_blank" rel="noopener">#169 <span data-i18n="al_open_lc">Open on LeetCode ↗</span></a></div>
 <p data-i18n="e17_task">One value appears more than half the time. Find it.</p>
 <div class="ex-line"><code>[3, 2, 3] → 3        [2, 2, 1, 1, 1, 2, 2] → 2</code></div>
@@ -2308,7 +2598,7 @@ False</div></div>
 2</div></div>
 </div>
 <div class="etask" id="easy-e18">
-<div class="walk-head"><span class="task-num">18</span><span class="walk-title" data-i18n="e18_t">Ransom note</span></div>
+<div class="walk-head"><span class="task-num">32</span><span class="walk-title" data-i18n="e18_t">Ransom note</span></div>
 <div class="walk-badges"><span class="badge-topic" data-i18n="eb_counting">Counting and sets</span><span class="lv lv-easy" data-i18n="al_lv_easy">Easy</span><a class="lc-link" href="https://leetcode.com/problems/ransom-note/" target="_blank" rel="noopener">#383 <span data-i18n="al_open_lc">Open on LeetCode ↗</span></a></div>
 <p data-i18n="e18_task">Can the note be built from the magazine's letters, using each letter at most once?</p>
 <div class="ex-line"><code>(&quot;aa&quot;, &quot;aab&quot;) → True        (&quot;aa&quot;, &quot;ab&quot;) → False</code></div>
@@ -2326,7 +2616,7 @@ True
 False</div></div>
 </div>
 <div class="etask" id="easy-e19">
-<div class="walk-head"><span class="task-num">19</span><span class="walk-title" data-i18n="e19_t">Single number</span></div>
+<div class="walk-head"><span class="task-num">33</span><span class="walk-title" data-i18n="e19_t">Single number</span></div>
 <div class="walk-badges"><span class="badge-topic" data-i18n="eb_counting">Counting and sets</span><span class="lv lv-easy" data-i18n="al_lv_easy">Easy</span><a class="lc-link" href="https://leetcode.com/problems/single-number/" target="_blank" rel="noopener">#136 <span data-i18n="al_open_lc">Open on LeetCode ↗</span></a></div>
 <p data-i18n="e19_task">Every number appears twice except one. Find that one.</p>
 <div class="ex-line"><code>[4, 1, 2, 1, 2] → 4</code></div>
@@ -2342,7 +2632,7 @@ False</div></div>
 4</div></div>
 </div>
 <div class="etask" id="easy-e20">
-<div class="walk-head"><span class="task-num">20</span><span class="walk-title" data-i18n="e20_t">Missing number</span></div>
+<div class="walk-head"><span class="task-num">34</span><span class="walk-title" data-i18n="e20_t">Missing number</span></div>
 <div class="walk-badges"><span class="badge-topic" data-i18n="eb_counting">Counting and sets</span><span class="lv lv-easy" data-i18n="al_lv_easy">Easy</span><a class="lc-link" href="https://leetcode.com/problems/missing-number/" target="_blank" rel="noopener">#268 <span data-i18n="al_open_lc">Open on LeetCode ↗</span></a></div>
 <p data-i18n="e20_task">The list holds every number from 0 to n except one. Find the missing one.</p>
 <div class="ex-line"><code>[3, 0, 1] → 2        [9, 6, 4, 2, 3, 5, 7, 0, 1] → 8</code></div>
@@ -2357,7 +2647,7 @@ False</div></div>
 </div>
 <h3 class="lg-h"><span data-i18n="eb_loops">Loops and arithmetic</span> <span class="lg-count">3</span></h3>
 <div class="etask" id="easy-e21">
-<div class="walk-head"><span class="task-num">21</span><span class="walk-title" data-i18n="e21_t">FizzBuzz</span></div>
+<div class="walk-head"><span class="task-num">35</span><span class="walk-title" data-i18n="e21_t">FizzBuzz</span></div>
 <div class="walk-badges"><span class="badge-topic" data-i18n="eb_loops">Loops and arithmetic</span><span class="lv lv-easy" data-i18n="al_lv_easy">Easy</span><a class="lc-link" href="https://leetcode.com/problems/fizz-buzz/" target="_blank" rel="noopener">#412 <span data-i18n="al_open_lc">Open on LeetCode ↗</span></a></div>
 <p data-i18n="e21_task">For numbers 1 to n: multiples of 3 become "Fizz", of 5 — "Buzz", of both — "FizzBuzz", others stay as numbers.</p>
 <div class="ex-line"><code>n = 15 → [..., &quot;13&quot;, &quot;14&quot;, &quot;FizzBuzz&quot;]</code></div>
@@ -2377,7 +2667,7 @@ False</div></div>
 [&#x27;1&#x27;, &#x27;2&#x27;, &#x27;Fizz&#x27;, &#x27;4&#x27;, &#x27;Buzz&#x27;, &#x27;Fizz&#x27;, &#x27;7&#x27;, &#x27;8&#x27;, &#x27;Fizz&#x27;, &#x27;Buzz&#x27;, &#x27;11&#x27;, &#x27;Fizz&#x27;, &#x27;13&#x27;, &#x27;14&#x27;, &#x27;FizzBuzz&#x27;]</div></div>
 </div>
 <div class="etask" id="easy-e22">
-<div class="walk-head"><span class="task-num">22</span><span class="walk-title" data-i18n="e22_t">Palindrome number</span></div>
+<div class="walk-head"><span class="task-num">36</span><span class="walk-title" data-i18n="e22_t">Palindrome number</span></div>
 <div class="walk-badges"><span class="badge-topic" data-i18n="eb_loops">Loops and arithmetic</span><span class="lv lv-easy" data-i18n="al_lv_easy">Easy</span><a class="lc-link" href="https://leetcode.com/problems/palindrome-number/" target="_blank" rel="noopener">#9 <span data-i18n="al_open_lc">Open on LeetCode ↗</span></a></div>
 <p data-i18n="e22_task">Decide whether a number reads the same backwards — without converting it to a string.</p>
 <div class="ex-line"><code>121 → True        -121 → False        10 → False</code></div>
@@ -2399,7 +2689,7 @@ False
 False</div></div>
 </div>
 <div class="etask" id="easy-e23">
-<div class="walk-head"><span class="task-num">23</span><span class="walk-title" data-i18n="e23_t">Roman to integer</span></div>
+<div class="walk-head"><span class="task-num">37</span><span class="walk-title" data-i18n="e23_t">Roman to integer</span></div>
 <div class="walk-badges"><span class="badge-topic" data-i18n="eb_loops">Loops and arithmetic</span><span class="lv lv-easy" data-i18n="al_lv_easy">Easy</span><a class="lc-link" href="https://leetcode.com/problems/roman-to-integer/" target="_blank" rel="noopener">#13 <span data-i18n="al_open_lc">Open on LeetCode ↗</span></a></div>
 <p data-i18n="e23_task">Convert a Roman numeral to an integer.</p>
 <div class="ex-line"><code>&quot;III&quot; → 3        &quot;IX&quot; → 9        &quot;MCMXCIV&quot; → 1994</code></div>
