@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Algorithms for Interviews — Data for Everyone</title>
-<meta name="description" content="Sixty-four problems for analyst interviews: the logic behind strings, statistics, sorting and two pointers, 37 easy classics, 27 LeetCode problems by pattern, with walkthroughs, visual traces and practice.">
+<meta name="description" content="Eighty-two problems for analyst coding interviews: the logic behind strings, statistics, sorting, two pointers and search, easy classics, LeetCode variations, walkthroughs with visual traces, and practice.">
 <link rel="canonical" href="https://data-for-everyone.com/algorithms.html">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
@@ -12,7 +12,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Algorithms for Interviews — Data for Everyone">
-<meta property="og:description" content="Sixty-four interview problems: the logic, easy classics, walkthroughs and practice.">
+<meta property="og:description" content="Eighty-two interview problems: the logic, easy classics, LeetCode variations, walkthroughs and practice.">
 <meta property="og:url" content="https://data-for-everyone.com/algorithms.html">
 <meta property="og:image" content="https://data-for-everyone.com/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -27,8 +27,6 @@
   <div class="site-header-inner">
     <nav class="crumbs" aria-label="Breadcrumb">
       <a href="index.html" data-i18n="home_brand">Data for Everyone</a>
-      <span class="crumb-sep" aria-hidden="true">/</span>
-      <a href="python.html" data-i18n="al_crumb_py">Python for Analysts</a>
       <span class="crumb-sep" aria-hidden="true">/</span>
       <span class="crumb-cur" data-i18n="al_title">Algorithms for Interviews</span>
     </nav>
@@ -46,7 +44,7 @@
         </button>
       </div>
     </div>
-    <p data-i18n="al_sub">Sixty-four problems for interview prep.</p>
+    <p data-i18n="al_sub">Eighty-two problems for interview prep.</p>
   </div>
 </header>
 <main class="causal-main" id="tab-reference">
@@ -57,6 +55,7 @@
 <a class="toc-link" href="#a-bigo"><span class="toc-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20h18"/><path d="M5 17c4-1 7-5 9-11"/><path d="M5 17l14-2"/></svg></span><span data-i18n="al_nav_2">Complexity: Big-O</span></a>
 <a class="toc-link" href="#a-map"><span class="toc-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4L3 6v14l6-2 6 2 6-2V4l-6 2z"/><path d="M9 4v14M15 6v14"/></svg></span><span data-i18n="al_nav_3">Pattern map</span></a>
 <a class="toc-link" href="#a-easy"><span class="toc-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.4 6.8 19.1l1-5.8L3.5 9.2l5.9-.9z"/></svg></span><span data-i18n="al_nav_ez">37 easy interview problems</span></a>
+<a class="toc-link" href="#a-more"><span class="toc-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3h5v5"/><path d="M4 20L21 3"/><path d="M21 16v5h-5"/><path d="M15 15l6 6"/><path d="M4 4l5 5"/></svg></span><span data-i18n="mv_nav">Similar problems</span></a>
 <a class="toc-link" href="#a-walk"><span class="toc-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V6a2 2 0 0 1 2-2h13v15H6a2 2 0 0 0-2 2z"/><path d="M9 8h7M9 12h5"/></svg></span><span data-i18n="al_nav_4">9 walkthroughs</span></a>
 <a class="toc-link" href="#a-practice"><span class="toc-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3 8-8"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></span><span data-i18n="al_nav_5">18 practice problems</span></a>
 <a class="toc-link" href="#a-plan"><span class="toc-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></span><span data-i18n="al_nav_6">How to practise</span></a>
@@ -2712,6 +2711,484 @@ False</div></div>
 1994</div></div>
 </div>
 </div>
+<!--MORE-->
+<div class="card" id="a-more"><div class="card-title" data-i18n="mv_h">Similar problems: pointers, search, windows</div>
+<p data-i18n="mv_lead">Interviewers rarely ask the exact LeetCode problem you memorised — they ask a cousin of it. This section trains that skill: each block opens with a <b>template</b> of the technique, followed by original LeetCode problems and product-flavoured variations built on them. Notice how little changes between them: usually one condition or one line.</p>
+<h3 class="lg-h"><span data-i18n="mvb_tp">Two pointers</span> <span class="lg-count">7</span></h3>
+<p data-i18n="mvb_tp_p">Two shapes cover every problem below. <b>Opposite ends</b>: the pointers walk towards each other, and at each step one element is ruled out. <b>Fast and slow</b>: the fast pointer reads, the slow one marks where the kept part ends. Before writing code, say which shape it is and what rule moves the pointer.</p>
+<div class="walk-label" data-i18n="mv_tpl">Template</div>
+<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-com"># Shape A — opposite ends</span>
+left, right = <span class="hl-num">0</span>, <span class="hl-bi">len</span>(items) - <span class="hl-num">1</span>
+<span class="hl-ctl">while</span> left &lt; right:
+    <span class="hl-ctl">if</span> ...:              <span class="hl-com"># the rule of the task decides</span>
+        left += <span class="hl-num">1</span>        <span class="hl-com"># which pointer is ruled out</span>
+    <span class="hl-ctl">else</span>:
+        right -= <span class="hl-num">1</span>
+
+<span class="hl-com"># Shape B — fast reads, slow writes</span>
+slow = <span class="hl-num">0</span>
+<span class="hl-ctl">for</span> fast <span class="hl-opw">in</span> <span class="hl-bi">range</span>(<span class="hl-bi">len</span>(items)):
+    <span class="hl-ctl">if</span> <span class="hl-call">keep</span>(items[fast]):
+        items[slow] = items[fast]
+        slow += <span class="hl-num">1</span></pre></div>
+<div class="etask" id="more-m1">
+<div class="walk-head"><span class="task-num">1</span><span class="walk-title" data-i18n="m1_t">Reverse only the vowels</span></div>
+<div class="walk-badges"><span class="badge-topic" data-i18n="mvb_tp">Two pointers</span><span class="lv lv-easy" data-i18n="al_lv_easy">Easy</span><a class="lc-link" href="https://leetcode.com/problems/reverse-vowels-of-a-string/" target="_blank" rel="noopener">#345 <span data-i18n="al_open_lc">Open on LeetCode ↗</span></a></div>
+<p data-i18n="m1_task">Reverse the order of the vowels in a string, leaving every other character where it is.</p>
+<div class="ex-line"><code>&quot;hello&quot; → &quot;holle&quot;        &quot;leetcode&quot; → &quot;leotcede&quot;</code></div>
+<button class="code-toggle hint-btn" onclick="algToggle(this)" aria-expanded="false" data-k-show="ez_think_btn" data-k-hide="ez_think_hide"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="ez_think_btn">Show the line of reasoning</span></button><div class="code-collapse" hidden><ol class="logic-steps"><li data-i18n="m1_s1">This is "reverse a string" with a filter: shape A, but each pointer first skips characters that are not vowels.</li><li data-i18n="m1_s2">Only when both pointers stand on vowels do you swap and move both. Copy the string into a list first — strings cannot be changed in place.</li></ol></div>
+<button class="code-toggle " onclick="algToggle(this)" aria-expanded="false" data-k-show="al_show" data-k-hide="al_hide"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="al_show">Show solution</span></button><div class="code-collapse" hidden><div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-kw">def</span> <span class="hl-def">reverse_vowels</span>(s):
+    vowels = <span class="hl-bi">set</span>(<span class="hl-str">"aeiouAEIOU"</span>)
+    chars = <span class="hl-bi">list</span>(s)                     <span class="hl-com"># strings cannot be changed in place</span>
+    left, right = <span class="hl-num">0</span>, <span class="hl-bi">len</span>(chars) - <span class="hl-num">1</span>
+    <span class="hl-ctl">while</span> left &lt; right:
+        <span class="hl-ctl">if</span> chars[left] <span class="hl-opw">not</span> <span class="hl-opw">in</span> vowels:
+            left += <span class="hl-num">1</span>
+        <span class="hl-ctl">elif</span> chars[right] <span class="hl-opw">not</span> <span class="hl-opw">in</span> vowels:
+            right -= <span class="hl-num">1</span>
+        <span class="hl-ctl">else</span>:                           <span class="hl-com"># both point at vowels: swap them</span>
+            chars[left], chars[right] = chars[right], chars[left]
+            left += <span class="hl-num">1</span>
+            right -= <span class="hl-num">1</span>
+    <span class="hl-ctl">return</span> <span class="hl-str">""</span>.<span class="hl-call">join</span>(chars)</pre></div><div class="walk-label" data-i18n="pr_why">Why it works</div><div class="cs-takeaway" data-i18n="m1_why">One line of difference from the plain reversal — the skip — is what the interviewer is testing.</div><div class="walk-label" data-i18n="pr_tests">Tests to check yourself</div><div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-call">reverse_vowels</span>(<span class="hl-str">"hello"</span>)
+<span class="hl-call">reverse_vowels</span>(<span class="hl-str">"leetcode"</span>)</pre></div><div class="code-output"><span class="code-output-label" data-i18n="al_out"># tests (all passed):</span>&gt;&gt;&gt; reverse_vowels(&quot;hello&quot;)
+&#x27;holle&#x27;
+&gt;&gt;&gt; reverse_vowels(&quot;leetcode&quot;)
+&#x27;leotcede&#x27;</div></div>
+</div>
+<div class="etask" id="more-m2">
+<div class="walk-head"><span class="task-num">2</span><span class="walk-title" data-i18n="m2_t">Palindrome after at most one deletion</span></div>
+<div class="walk-badges"><span class="badge-topic" data-i18n="mvb_tp">Two pointers</span><span class="lv lv-easy" data-i18n="al_lv_easy">Easy</span><a class="lc-link" href="https://leetcode.com/problems/valid-palindrome-ii/" target="_blank" rel="noopener">#680 <span data-i18n="al_open_lc">Open on LeetCode ↗</span></a></div>
+<p data-i18n="m2_task">Decide whether a string can become a palindrome by deleting at most one character.</p>
+<div class="ex-line"><code>&quot;aba&quot; → True        &quot;abca&quot; → True   # − &quot;c&quot;        &quot;abc&quot; → False</code></div>
+<button class="code-toggle hint-btn" onclick="algToggle(this)" aria-expanded="false" data-k-show="ez_think_btn" data-k-hide="ez_think_hide"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="ez_think_btn">Show the line of reasoning</span></button><div class="code-collapse" hidden><ol class="logic-steps"><li data-i18n="m2_s1">Check from both ends as usual. While characters match, nothing needs deleting.</li><li data-i18n="m2_s2">At the first mismatch you have exactly two options: skip the left character or the right one. Check whether either remaining middle is a palindrome.</li></ol></div>
+<button class="code-toggle " onclick="algToggle(this)" aria-expanded="false" data-k-show="al_show" data-k-hide="al_hide"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="al_show">Show solution</span></button><div class="code-collapse" hidden><div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-kw">def</span> <span class="hl-def">valid_palindrome_ii</span>(s):
+    <span class="hl-str">"""Can s become a palindrome after deleting at most one character?"""</span>
+    <span class="hl-kw">def</span> <span class="hl-def">is_pal</span>(lo, hi):
+        <span class="hl-ctl">while</span> lo &lt; hi:
+            <span class="hl-ctl">if</span> s[lo] != s[hi]:
+                <span class="hl-ctl">return</span> <span class="hl-const">False</span>
+            lo += <span class="hl-num">1</span>
+            hi -= <span class="hl-num">1</span>
+        <span class="hl-ctl">return</span> <span class="hl-const">True</span>
+    left, right = <span class="hl-num">0</span>, <span class="hl-bi">len</span>(s) - <span class="hl-num">1</span>
+    <span class="hl-ctl">while</span> left &lt; right:
+        <span class="hl-ctl">if</span> s[left] != s[right]:         <span class="hl-com"># first mismatch: try skipping either side</span>
+            <span class="hl-ctl">return</span> <span class="hl-call">is_pal</span>(left + <span class="hl-num">1</span>, right) <span class="hl-opw">or</span> <span class="hl-call">is_pal</span>(left, right - <span class="hl-num">1</span>)
+        left += <span class="hl-num">1</span>
+        right -= <span class="hl-num">1</span>
+    <span class="hl-ctl">return</span> <span class="hl-const">True</span></pre></div><div class="walk-label" data-i18n="pr_why">Why it works</div><div class="cs-takeaway" data-i18n="m2_why">Trying every possible deletion would be O(n²). The insight is that only the first mismatch matters — everything outside it already matched.</div><div class="walk-label" data-i18n="pr_tests">Tests to check yourself</div><div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-call">valid_palindrome_ii</span>(<span class="hl-str">"aba"</span>)
+<span class="hl-call">valid_palindrome_ii</span>(<span class="hl-str">"abca"</span>)
+<span class="hl-call">valid_palindrome_ii</span>(<span class="hl-str">"abc"</span>)</pre></div><div class="code-output"><span class="code-output-label" data-i18n="al_out"># tests (all passed):</span>&gt;&gt;&gt; valid_palindrome_ii(&quot;aba&quot;)
+True
+&gt;&gt;&gt; valid_palindrome_ii(&quot;abca&quot;)
+True
+&gt;&gt;&gt; valid_palindrome_ii(&quot;abc&quot;)
+False</div></div>
+</div>
+<div class="etask" id="more-m3">
+<div class="walk-head"><span class="task-num">3</span><span class="walk-title" data-i18n="m3_t">Remove every occurrence of a value</span></div>
+<div class="walk-badges"><span class="badge-topic" data-i18n="mvb_tp">Two pointers</span><span class="lv lv-easy" data-i18n="al_lv_easy">Easy</span><a class="lc-link" href="https://leetcode.com/problems/remove-element/" target="_blank" rel="noopener">#27 <span data-i18n="al_open_lc">Open on LeetCode ↗</span></a></div>
+<p data-i18n="m3_task">Remove every occurrence of a value in place, and return how many elements remain.</p>
+<div class="ex-line"><code>nums = [3, 2, 2, 3], val = 3 → 2   # nums[:2] = [2, 2]</code></div>
+<button class="code-toggle hint-btn" onclick="algToggle(this)" aria-expanded="false" data-k-show="ez_think_btn" data-k-hide="ez_think_hide"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="ez_think_btn">Show the line of reasoning</span></button><div class="code-collapse" hidden><ol class="logic-steps"><li data-i18n="m3_s1">Shape B. Fast reads every element; slow points to where the next element worth keeping goes.</li><li data-i18n="m3_s2">Not equal to <code>val</code> → copy it to the slow position and move slow on. The answer is where slow ended.</li></ol></div>
+<button class="code-toggle " onclick="algToggle(this)" aria-expanded="false" data-k-show="al_show" data-k-hide="al_hide"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="al_show">Show solution</span></button><div class="code-collapse" hidden><div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-kw">def</span> <span class="hl-def">remove_element</span>(nums, val):
+    <span class="hl-str">"""Keep every value except val at the front, in place; return how many."""</span>
+    slow = <span class="hl-num">0</span>
+    <span class="hl-ctl">for</span> fast <span class="hl-opw">in</span> <span class="hl-bi">range</span>(<span class="hl-bi">len</span>(nums)):
+        <span class="hl-ctl">if</span> nums[fast] != val:
+            nums[slow] = nums[fast]
+            slow += <span class="hl-num">1</span>
+    <span class="hl-ctl">return</span> slow</pre></div><div class="walk-label" data-i18n="pr_why">Why it works</div><div class="cs-takeaway" data-i18n="m3_why">The same skeleton as removing duplicates — only the "keep it?" condition changed.</div><div class="walk-label" data-i18n="pr_tests">Tests to check yourself</div><div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre>nums = [<span class="hl-num">3</span>, <span class="hl-num">2</span>, <span class="hl-num">2</span>, <span class="hl-num">3</span>]; k = <span class="hl-call">remove_element</span>(nums, <span class="hl-num">3</span>); <span class="hl-bi">print</span>(k, nums[:k])</pre></div><div class="code-output"><span class="code-output-label" data-i18n="al_out"># tests (all passed):</span>&gt;&gt;&gt; nums = [3, 2, 2, 3]; k = remove_element(nums, 3); print(k, nums[:k])
+2 [2, 2]</div></div>
+</div>
+<div class="etask" id="more-m4">
+<div class="walk-head"><span class="task-num">4</span><span class="walk-title" data-i18n="m4_t">Common elements of two sorted lists</span></div>
+<div class="walk-badges"><span class="badge-topic" data-i18n="mvb_tp">Two pointers</span><span class="lv lv-easy" data-i18n="al_lv_easy">Easy</span><a class="lc-link" href="https://leetcode.com/problems/intersection-of-two-arrays-ii/" target="_blank" rel="noopener">#350 <span data-i18n="al_open_lc">Open on LeetCode ↗</span></a></div>
+<p data-i18n="m4_task">Return the values present in both sorted lists, each as many times as it appears in both.</p>
+<div class="ex-line"><code>[1, 2, 2, 3, 5], [2, 2, 4, 5] → [2, 2, 5]</code></div>
+<button class="code-toggle hint-btn" onclick="algToggle(this)" aria-expanded="false" data-k-show="ez_think_btn" data-k-hide="ez_think_hide"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="ez_think_btn">Show the line of reasoning</span></button><div class="code-collapse" hidden><ol class="logic-steps"><li data-i18n="m4_s1">Shape C: one pointer on each list. Compare the two current values.</li><li data-i18n="m4_s2">The smaller one cannot appear in the other list any more — move its pointer. Equal — it is common: take it and move both.</li></ol></div>
+<button class="code-toggle " onclick="algToggle(this)" aria-expanded="false" data-k-show="al_show" data-k-hide="al_hide"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="al_show">Show solution</span></button><div class="code-collapse" hidden><div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-kw">def</span> <span class="hl-def">intersect_sorted</span>(a, b):
+    <span class="hl-str">"""Common values of two sorted lists, with repeats: [1,2,2,3] &amp; [2,2,4] -&gt; [2,2]."""</span>
+    i = j = <span class="hl-num">0</span>
+    result = []
+    <span class="hl-ctl">while</span> i &lt; <span class="hl-bi">len</span>(a) <span class="hl-opw">and</span> j &lt; <span class="hl-bi">len</span>(b):
+        <span class="hl-ctl">if</span> a[i] &lt; b[j]:
+            i += <span class="hl-num">1</span>                      <span class="hl-com"># a[i] is too small to appear in b</span>
+        <span class="hl-ctl">elif</span> a[i] &gt; b[j]:
+            j += <span class="hl-num">1</span>
+        <span class="hl-ctl">else</span>:                           <span class="hl-com"># equal: it is common, take it, move both</span>
+            result.<span class="hl-call">append</span>(a[i])
+            i += <span class="hl-num">1</span>
+            j += <span class="hl-num">1</span>
+    <span class="hl-ctl">return</span> result</pre></div><div class="walk-label" data-i18n="pr_why">Why it works</div><div class="cs-takeaway" data-i18n="m4_why">This is how a merge join works in a database: two sorted inputs walked in a single pass.</div><div class="walk-label" data-i18n="pr_tests">Tests to check yourself</div><div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-call">intersect_sorted</span>([<span class="hl-num">1</span>, <span class="hl-num">2</span>, <span class="hl-num">2</span>, <span class="hl-num">3</span>, <span class="hl-num">5</span>], [<span class="hl-num">2</span>, <span class="hl-num">2</span>, <span class="hl-num">4</span>, <span class="hl-num">5</span>])</pre></div><div class="code-output"><span class="code-output-label" data-i18n="al_out"># tests (all passed):</span>&gt;&gt;&gt; intersect_sorted([1, 2, 2, 3, 5], [2, 2, 4, 5])
+[2, 2, 5]</div></div>
+</div>
+<div class="etask" id="more-m5">
+<div class="walk-head"><span class="task-num">5</span><span class="walk-title" data-i18n="m5_t">Compare strings typed with backspaces</span></div>
+<div class="walk-badges"><span class="badge-topic" data-i18n="mvb_tp">Two pointers</span><span class="lv lv-easy" data-i18n="al_lv_easy">Easy</span><a class="lc-link" href="https://leetcode.com/problems/backspace-string-compare/" target="_blank" rel="noopener">#844 <span data-i18n="al_open_lc">Open on LeetCode ↗</span></a></div>
+<p data-i18n="m5_task">In each string <code>#</code> deletes the previous character. Decide whether both strings end up the same.</p>
+<div class="ex-line"><code>(&quot;ab#c&quot;, &quot;ad#c&quot;) → True        (&quot;a#c&quot;, &quot;b&quot;) → False</code></div>
+<button class="code-toggle hint-btn" onclick="algToggle(this)" aria-expanded="false" data-k-show="ez_think_btn" data-k-hide="ez_think_hide"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="ez_think_btn">Show the line of reasoning</span></button><div class="code-collapse" hidden><ol class="logic-steps"><li data-i18n="m5_s1">Simulate typing: keep a list as the "screen". A letter is appended, <code>#</code> removes the last one if there is any.</li><li data-i18n="m5_s2">Build both screens and compare. The follow-up "with O(1) memory" walks both strings from the end with two pointers, counting pending deletions.</li></ol></div>
+<button class="code-toggle " onclick="algToggle(this)" aria-expanded="false" data-k-show="al_show" data-k-hide="al_hide"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="al_show">Show solution</span></button><div class="code-collapse" hidden><div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-kw">def</span> <span class="hl-def">backspace_compare</span>(s, t):
+    <span class="hl-str">"""'#' deletes the previous character. Compare the typed results."""</span>
+    <span class="hl-kw">def</span> <span class="hl-def">typed</span>(text):
+        out = []
+        <span class="hl-ctl">for</span> ch <span class="hl-opw">in</span> text:
+            <span class="hl-ctl">if</span> ch == <span class="hl-str">"#"</span>:
+                <span class="hl-ctl">if</span> out:
+                    out.<span class="hl-call">pop</span>()
+            <span class="hl-ctl">else</span>:
+                out.<span class="hl-call">append</span>(ch)
+        <span class="hl-ctl">return</span> out
+    <span class="hl-ctl">return</span> <span class="hl-call">typed</span>(s) == <span class="hl-call">typed</span>(t)</pre></div><div class="walk-label" data-i18n="pr_why">Why it works</div><div class="cs-takeaway" data-i18n="m5_why">The list here works as a stack: the last typed character is the first to be deleted.</div><div class="walk-label" data-i18n="pr_tests">Tests to check yourself</div><div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-call">backspace_compare</span>(<span class="hl-str">"ab#c"</span>, <span class="hl-str">"ad#c"</span>)
+<span class="hl-call">backspace_compare</span>(<span class="hl-str">"a#c"</span>, <span class="hl-str">"b"</span>)</pre></div><div class="code-output"><span class="code-output-label" data-i18n="al_out"># tests (all passed):</span>&gt;&gt;&gt; backspace_compare(&quot;ab#c&quot;, &quot;ad#c&quot;)
+True
+&gt;&gt;&gt; backspace_compare(&quot;a#c&quot;, &quot;b&quot;)
+False</div></div>
+</div>
+<div class="etask" id="more-m6">
+<div class="walk-head"><span class="task-num">6</span><span class="walk-title" data-i18n="m6_t">Count pairs with a sum below target</span></div>
+<div class="walk-badges"><span class="badge-topic" data-i18n="mvb_tp">Two pointers</span><span class="lv lv-easy" data-i18n="al_lv_easy">Easy</span><a class="lc-link" href="https://leetcode.com/problems/count-pairs-whose-sum-is-less-than-target/" target="_blank" rel="noopener">#2824 <span data-i18n="al_open_lc">Open on LeetCode ↗</span></a></div>
+<p data-i18n="m6_task">Count the pairs of different positions whose values add up to less than the target.</p>
+<div class="ex-line"><code>nums = [-1, 1, 2, 3, 1], target = 2 → 3</code></div>
+<button class="code-toggle hint-btn" onclick="algToggle(this)" aria-expanded="false" data-k-show="ez_think_btn" data-k-hide="ez_think_hide"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="ez_think_btn">Show the line of reasoning</span></button><div class="code-collapse" hidden><ol class="logic-steps"><li data-i18n="m6_s1">Sort first — pairs do not depend on order, and sorting unlocks shape A.</li><li data-i18n="m6_s2">If the smallest plus the largest is below the target, then the smallest plus <b>every</b> value in between is too — count <code>right - left</code> pairs at once and move left.</li></ol></div>
+<button class="code-toggle " onclick="algToggle(this)" aria-expanded="false" data-k-show="al_show" data-k-hide="al_hide"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="al_show">Show solution</span></button><div class="code-collapse" hidden><div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-kw">def</span> <span class="hl-def">count_pairs_below</span>(nums, target):
+    <span class="hl-str">"""How many pairs i &lt; j have nums[i] + nums[j] &lt; target?"""</span>
+    nums = <span class="hl-bi">sorted</span>(nums)
+    left, right = <span class="hl-num">0</span>, <span class="hl-bi">len</span>(nums) - <span class="hl-num">1</span>
+    count = <span class="hl-num">0</span>
+    <span class="hl-ctl">while</span> left &lt; right:
+        <span class="hl-ctl">if</span> nums[left] + nums[right] &lt; target:
+            count += right - left       <span class="hl-com"># left pairs with EVERY index up to right</span>
+            left += <span class="hl-num">1</span>
+        <span class="hl-ctl">else</span>:
+            right -= <span class="hl-num">1</span>
+    <span class="hl-ctl">return</span> count</pre></div><div class="walk-label" data-i18n="pr_why">Why it works</div><div class="cs-takeaway" data-i18n="m6_why">Counting many pairs in one step is what turns O(n²) into O(n log n). It is the same reasoning as "drop the useless end".</div><div class="walk-label" data-i18n="pr_tests">Tests to check yourself</div><div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-call">count_pairs_below</span>([-<span class="hl-num">1</span>, <span class="hl-num">1</span>, <span class="hl-num">2</span>, <span class="hl-num">3</span>, <span class="hl-num">1</span>], <span class="hl-num">2</span>)</pre></div><div class="code-output"><span class="code-output-label" data-i18n="al_out"># tests (all passed):</span>&gt;&gt;&gt; count_pairs_below([-1, 1, 2, 3, 1], 2)
+3</div></div>
+</div>
+<div class="etask" id="more-m7">
+<div class="walk-head"><span class="task-num">7</span><span class="walk-title" data-i18n="m7_t">Two products that best fit a budget</span></div>
+<div class="walk-badges"><span class="badge-topic" data-i18n="mvb_tp">Two pointers</span><span class="lv lv-easy" data-i18n="al_lv_easy">Easy</span><a class="lc-link variant" href="https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/" target="_blank" rel="noopener"><span data-i18n="mv_variant">Variation of</span> #167 ↗</a></div>
+<p data-i18n="m7_task">Pick two products whose total price is as large as possible without exceeding the budget. Return the total, or −1 if no pair fits.</p>
+<div class="ex-line"><code>prices = [34, 23, 1, 24, 75, 33, 54, 8], budget = 60 → 58   # 34 + 24</code></div>
+<button class="code-toggle hint-btn" onclick="algToggle(this)" aria-expanded="false" data-k-show="ez_think_btn" data-k-hide="ez_think_hide"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="ez_think_btn">Show the line of reasoning</span></button><div class="code-collapse" hidden><ol class="logic-steps"><li data-i18n="m7_s1">This is Two Sum on sorted data, except you look for the best fit instead of an exact match.</li><li data-i18n="m7_s2">Sum fits → remember it and try a pricier left item. Too expensive → drop the priciest item on the right.</li></ol></div>
+<button class="code-toggle " onclick="algToggle(this)" aria-expanded="false" data-k-show="al_show" data-k-hide="al_hide"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="al_show">Show solution</span></button><div class="code-collapse" hidden><div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-kw">def</span> <span class="hl-def">best_pair_within_budget</span>(prices, budget):
+    <span class="hl-str">"""Two products with the largest total that still fits the budget (-1 if none)."""</span>
+    prices = <span class="hl-bi">sorted</span>(prices)
+    left, right = <span class="hl-num">0</span>, <span class="hl-bi">len</span>(prices) - <span class="hl-num">1</span>
+    best = -<span class="hl-num">1</span>
+    <span class="hl-ctl">while</span> left &lt; right:
+        total = prices[left] + prices[right]
+        <span class="hl-ctl">if</span> total &lt;= budget:
+            best = <span class="hl-bi">max</span>(best, total)
+            left += <span class="hl-num">1</span>                   <span class="hl-com"># fits: try a more expensive left item</span>
+        <span class="hl-ctl">else</span>:
+            right -= <span class="hl-num">1</span>                  <span class="hl-com"># too expensive: drop the priciest item</span>
+    <span class="hl-ctl">return</span> best</pre></div><div class="walk-label" data-i18n="pr_why">Why it works</div><div class="cs-takeaway" data-i18n="m7_why">Changing "== target" into "<= budget, keep the best" is a typical interview twist — the skeleton stays the same.</div><div class="walk-label" data-i18n="pr_tests">Tests to check yourself</div><div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-call">best_pair_within_budget</span>([<span class="hl-num">34</span>, <span class="hl-num">23</span>, <span class="hl-num">1</span>, <span class="hl-num">24</span>, <span class="hl-num">75</span>, <span class="hl-num">33</span>, <span class="hl-num">54</span>, <span class="hl-num">8</span>], <span class="hl-num">60</span>)
+<span class="hl-call">best_pair_within_budget</span>([<span class="hl-num">10</span>, <span class="hl-num">20</span>, <span class="hl-num">30</span>], <span class="hl-num">15</span>)</pre></div><div class="code-output"><span class="code-output-label" data-i18n="al_out"># tests (all passed):</span>&gt;&gt;&gt; best_pair_within_budget([34, 23, 1, 24, 75, 33, 54, 8], 60)
+58
+&gt;&gt;&gt; best_pair_within_budget([10, 20, 30], 15)
+-1</div></div>
+</div>
+<h3 class="lg-h"><span data-i18n="mvb_bs">Searching for a value</span> <span class="lg-count">8</span></h3>
+<p data-i18n="mvb_bs_p">On unsorted data you search by walking once and remembering the best so far — that is O(n), and you cannot do better. On <b>sorted</b> data one template solves almost everything: find the <b>first position where a condition becomes true</b>. It is called lower bound. The search insert position, first and last occurrence, counting occurrences, the closest value and "the first day revenue reached the target" are all this template with a different question on top.</p>
+<div class="walk-label" data-i18n="mv_tpl">Template</div>
+<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-kw">def</span> <span class="hl-def">lower_bound</span>(nums, target):
+    <span class="hl-str">"""The first index whose value is &gt;= target."""</span>
+    left, right = <span class="hl-num">0</span>, <span class="hl-bi">len</span>(nums)       <span class="hl-com"># the answer is somewhere in [left, right]</span>
+    <span class="hl-ctl">while</span> left &lt; right:
+        mid = (left + right) // <span class="hl-num">2</span>
+        <span class="hl-ctl">if</span> nums[mid] &lt; target:       <span class="hl-com"># mid is too small:</span>
+            left = mid + <span class="hl-num">1</span>           <span class="hl-com">#   the answer is to the right</span>
+        <span class="hl-ctl">else</span>:                        <span class="hl-com"># mid might be the answer:</span>
+            right = mid              <span class="hl-com">#   keep it in range</span>
+    <span class="hl-ctl">return</span> left</pre></div>
+<p class="trace-note" data-i18n="mvb_bs_note">Why <code>right = len(nums)</code> and not <code>len(nums) - 1</code>? Because "there is no such position" is a valid answer — the value is larger than everything. Keeping that slot in range is what makes the template work without special cases.</p>
+<div class="strip-wrap" translate="no"><div class="strip-row strip-idx"><span class="strip-n"></span><span class="sc idx wide">0</span><span class="sc idx wide">1</span><span class="sc idx wide">2</span><span class="sc idx wide">3</span><span class="sc idx wide">4</span><span class="sc idx wide">5</span><span class="sc idx wide">6</span><span class="strip-note"></span></div><div class="strip-row"><span class="strip-n">1</span><span class="sc wide in">120</span><span class="sc wide in">300</span><span class="sc wide in">455</span><span class="sc wide in ptr">610<i>M</i></span><span class="sc wide in">890</span><span class="sc wide in">1040</span><span class="sc wide in">1310</span><span class="strip-note"><code>cum[3]=610 &lt; 1000 → L = M + 1</code></span></div><div class="strip-row"><span class="strip-n">2</span><span class="sc wide">120</span><span class="sc wide">300</span><span class="sc wide">455</span><span class="sc wide">610</span><span class="sc wide in">890</span><span class="sc wide in ptr">1040<i>M</i></span><span class="sc wide in">1310</span><span class="strip-note"><code>cum[5]=1040 &gt;= 1000 → R = M</code></span></div><div class="strip-row"><span class="strip-n">3</span><span class="sc wide">120</span><span class="sc wide">300</span><span class="sc wide">455</span><span class="sc wide">610</span><span class="sc wide in ptr">890<i>M</i></span><span class="sc wide">1040</span><span class="sc wide">1310</span><span class="strip-note"><code>cum[4]=890 &lt; 1000 → L = M + 1</code></span></div><div class="strip-row"><span class="strip-n">4</span><span class="sc wide">120</span><span class="sc wide">300</span><span class="sc wide">455</span><span class="sc wide">610</span><span class="sc wide">890</span><span class="sc wide in ptr">1040</span><span class="sc wide">1310</span><span class="strip-note"><code>L == R = 5 ✓</code></span></div></div>
+<p class="trace-note" data-i18n="mvb_bs_trace">Searching for the first day cumulative revenue reached 1000. Each row halves the range. <code>M</code> is the middle; when it is too small, everything to its left is ruled out too.</p>
+<table class="ref-table"><thead><tr><th data-i18n="mvb_bs_c1">Question</th><th data-i18n="mvb_bs_c2">Through lower bound</th></tr></thead><tbody>
+<tr><td data-i18n="mvbr1">Where should the target be inserted?</td><td><code>lower_bound(nums, target)</code></td></tr>
+<tr><td data-i18n="mvbr2">First occurrence of the target</td><td><code>i = lower_bound(nums, target); nums[i] == target?</code></td></tr>
+<tr><td data-i18n="mvbr3">Last occurrence of the target</td><td><code>lower_bound(nums, target + 1) - 1</code></td></tr>
+<tr><td data-i18n="mvbr4">How many times does it occur?</td><td><code>lower_bound(nums, t + 1) - lower_bound(nums, t)</code></td></tr>
+<tr><td data-i18n="mvbr5">First day a growing metric reached a goal</td><td><code>lower_bound(cumulative, goal)</code></td></tr>
+</tbody></table>
+<div class="etask" id="more-m8">
+<div class="walk-head"><span class="task-num">8</span><span class="walk-title" data-i18n="m8_t">Position of the maximum without max()</span></div>
+<div class="walk-badges"><span class="badge-topic" data-i18n="mvb_bs">Searching for a value</span><span class="lv lv-easy" data-i18n="al_lv_easy">Easy</span><span class="badge-classic" data-i18n="ez_classic">Interview classic</span></div>
+<p data-i18n="m8_task">Return the index of the largest value — the first one if it repeats — without using <code>max</code>.</p>
+<div class="ex-line"><code>[3, 9, 2, 9, 1] → 1        [] → -1</code></div>
+<button class="code-toggle hint-btn" onclick="algToggle(this)" aria-expanded="false" data-k-show="ez_think_btn" data-k-hide="ez_think_hide"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="ez_think_btn">Show the line of reasoning</span></button><div class="code-collapse" hidden><ol class="logic-steps"><li data-i18n="m8_s1">Assume the first element is the best so far, then walk the rest and replace it whenever you see a larger value.</li><li data-i18n="m8_s2">Use strictly greater <code>&gt;</code>: on a tie the earlier position is kept. With <code>&gt;=</code> you would return the last one.</li></ol></div>
+<button class="code-toggle " onclick="algToggle(this)" aria-expanded="false" data-k-show="al_show" data-k-hide="al_hide"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="al_show">Show solution</span></button><div class="code-collapse" hidden><div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-kw">def</span> <span class="hl-def">index_of_max</span>(nums):
+    <span class="hl-str">"""Position of the largest value (first one on a tie), without max()."""</span>
+    <span class="hl-ctl">if</span> <span class="hl-opw">not</span> nums:
+        <span class="hl-ctl">return</span> -<span class="hl-num">1</span>
+    best_i = <span class="hl-num">0</span>
+    <span class="hl-ctl">for</span> i <span class="hl-opw">in</span> <span class="hl-bi">range</span>(<span class="hl-num">1</span>, <span class="hl-bi">len</span>(nums)):
+        <span class="hl-ctl">if</span> nums[i] &gt; nums[best_i]:      <span class="hl-com"># strictly greater: a tie keeps the first</span>
+            best_i = i
+    <span class="hl-ctl">return</span> best_i</pre></div><div class="walk-label" data-i18n="pr_why">Why it works</div><div class="cs-takeaway" data-i18n="m8_why">A whole interview question can hinge on <code>&gt;</code> versus <code>&gt;=</code> — say out loud which tie rule you chose.</div><div class="walk-label" data-i18n="pr_tests">Tests to check yourself</div><div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-call">index_of_max</span>([<span class="hl-num">3</span>, <span class="hl-num">9</span>, <span class="hl-num">2</span>, <span class="hl-num">9</span>, <span class="hl-num">1</span>])
+<span class="hl-call">index_of_max</span>([])</pre></div><div class="code-output"><span class="code-output-label" data-i18n="al_out"># tests (all passed):</span>&gt;&gt;&gt; index_of_max([3, 9, 2, 9, 1])
+1
+&gt;&gt;&gt; index_of_max([])
+-1</div></div>
+</div>
+<div class="etask" id="more-m9">
+<div class="walk-head"><span class="task-num">9</span><span class="walk-title" data-i18n="m9_t">The second largest distinct value</span></div>
+<div class="walk-badges"><span class="badge-topic" data-i18n="mvb_bs">Searching for a value</span><span class="lv lv-easy" data-i18n="al_lv_easy">Easy</span><a class="lc-link variant" href="https://leetcode.com/problems/third-maximum-number/" target="_blank" rel="noopener"><span data-i18n="mv_variant">Variation of</span> #414 ↗</a></div>
+<p data-i18n="m9_task">Find the second largest <b>distinct</b> value in one pass, or <code>None</code> if there is none.</p>
+<div class="ex-line"><code>[5, 3, 9, 9, 7] → 7        [4, 4] → None</code></div>
+<button class="code-toggle hint-btn" onclick="algToggle(this)" aria-expanded="false" data-k-show="ez_think_btn" data-k-hide="ez_think_hide"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="ez_think_btn">Show the line of reasoning</span></button><div class="code-collapse" hidden><ol class="logic-steps"><li data-i18n="m9_s1">Keep two slots: <code>first</code> and <code>second</code>. A new leader pushes the old leader down into second place.</li><li data-i18n="m9_s2">A value equal to the leader is not a new second place — that is what "distinct" means. Sorting would also work, but costs O(n log n).</li></ol></div>
+<button class="code-toggle " onclick="algToggle(this)" aria-expanded="false" data-k-show="al_show" data-k-hide="al_hide"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="al_show">Show solution</span></button><div class="code-collapse" hidden><div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-kw">def</span> <span class="hl-def">second_largest</span>(nums):
+    <span class="hl-str">"""The second largest DISTINCT value, or None."""</span>
+    first = second = <span class="hl-const">None</span>
+    <span class="hl-ctl">for</span> x <span class="hl-opw">in</span> nums:
+        <span class="hl-ctl">if</span> first <span class="hl-opw">is</span> <span class="hl-const">None</span> <span class="hl-opw">or</span> x &gt; first:
+            first, second = x, first    <span class="hl-com"># the old leader drops to second place</span>
+        <span class="hl-ctl">elif</span> x != first <span class="hl-opw">and</span> (second <span class="hl-opw">is</span> <span class="hl-const">None</span> <span class="hl-opw">or</span> x &gt; second):
+            second = x
+    <span class="hl-ctl">return</span> second</pre></div><div class="walk-label" data-i18n="pr_why">Why it works</div><div class="cs-takeaway" data-i18n="m9_why">The trap is <code>[9, 9, 7]</code>: a careless solution returns 9.</div><div class="walk-label" data-i18n="pr_tests">Tests to check yourself</div><div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-call">second_largest</span>([<span class="hl-num">5</span>, <span class="hl-num">3</span>, <span class="hl-num">9</span>, <span class="hl-num">9</span>, <span class="hl-num">7</span>])
+<span class="hl-call">second_largest</span>([<span class="hl-num">4</span>, <span class="hl-num">4</span>])</pre></div><div class="code-output"><span class="code-output-label" data-i18n="al_out"># tests (all passed):</span>&gt;&gt;&gt; second_largest([5, 3, 9, 9, 7])
+7
+&gt;&gt;&gt; second_largest([4, 4])
+None</div></div>
+</div>
+<div class="etask" id="more-m10">
+<div class="walk-head"><span class="task-num">10</span><span class="walk-title" data-i18n="m10_t">First and last position in a sorted list</span></div>
+<div class="walk-badges"><span class="badge-topic" data-i18n="mvb_bs">Searching for a value</span><span class="lv lv-med" data-i18n="al_lv_med">Medium</span><a class="lc-link" href="https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/" target="_blank" rel="noopener">#34 <span data-i18n="al_open_lc">Open on LeetCode ↗</span></a></div>
+<p data-i18n="m10_task">Find the first and last index of a value in a sorted list in O(log n), or <code>[-1, -1]</code>.</p>
+<div class="ex-line"><code>[5, 7, 7, 8, 8, 10], 8 → [3, 4]        6 → [-1, -1]</code></div>
+<button class="code-toggle hint-btn" onclick="algToggle(this)" aria-expanded="false" data-k-show="ez_think_btn" data-k-hide="ez_think_hide"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="ez_think_btn">Show the line of reasoning</span></button><div class="code-collapse" hidden><ol class="logic-steps"><li data-i18n="m10_s1">The first position is <code>lower_bound(target)</code>. If the value there is not the target, it is absent.</li><li data-i18n="m10_s2">The last position is "one before the first position of anything bigger": <code>lower_bound(target + 1) - 1</code>.</li></ol></div>
+<button class="code-toggle " onclick="algToggle(this)" aria-expanded="false" data-k-show="al_show" data-k-hide="al_hide"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="al_show">Show solution</span></button><div class="code-collapse" hidden><div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-kw">def</span> <span class="hl-def">lower_bound</span>(nums, target):
+    <span class="hl-str">"""The first index whose value is &gt;= target (len(nums) if there is none).
+    Almost every "search in sorted data" question is a variation of this."""</span>
+    left, right = <span class="hl-num">0</span>, <span class="hl-bi">len</span>(nums)          <span class="hl-com"># the answer lies somewhere in [left, right]</span>
+    <span class="hl-ctl">while</span> left &lt; right:
+        mid = (left + right) // <span class="hl-num">2</span>
+        <span class="hl-ctl">if</span> nums[mid] &lt; target:          <span class="hl-com"># mid is too small: the answer is to the right</span>
+            left = mid + <span class="hl-num">1</span>
+        <span class="hl-ctl">else</span>:                           <span class="hl-com"># mid could be the answer: keep it in range</span>
+            right = mid
+    <span class="hl-ctl">return</span> left
+
+
+<span class="hl-kw">def</span> <span class="hl-def">first_and_last</span>(nums, target):
+    <span class="hl-str">"""Positions of the first and last target in a sorted list, or [-1, -1]."""</span>
+    start = <span class="hl-call">lower_bound</span>(nums, target)
+    <span class="hl-ctl">if</span> start == <span class="hl-bi">len</span>(nums) <span class="hl-opw">or</span> nums[start] != target:
+        <span class="hl-ctl">return</span> [-<span class="hl-num">1</span>, -<span class="hl-num">1</span>]
+    end = <span class="hl-call">lower_bound</span>(nums, target + <span class="hl-num">1</span>) - <span class="hl-num">1</span>   <span class="hl-com"># first index of the NEXT value, minus one</span>
+    <span class="hl-ctl">return</span> [start, end]</pre></div><div class="walk-label" data-i18n="pr_why">Why it works</div><div class="cs-takeaway" data-i18n="m10_why">Two calls of the same template. No second binary search to write and debug.</div><div class="walk-label" data-i18n="pr_tests">Tests to check yourself</div><div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-call">first_and_last</span>([<span class="hl-num">5</span>, <span class="hl-num">7</span>, <span class="hl-num">7</span>, <span class="hl-num">8</span>, <span class="hl-num">8</span>, <span class="hl-num">10</span>], <span class="hl-num">8</span>)
+<span class="hl-call">first_and_last</span>([<span class="hl-num">5</span>, <span class="hl-num">7</span>, <span class="hl-num">7</span>, <span class="hl-num">8</span>, <span class="hl-num">8</span>, <span class="hl-num">10</span>], <span class="hl-num">6</span>)</pre></div><div class="code-output"><span class="code-output-label" data-i18n="al_out"># tests (all passed):</span>&gt;&gt;&gt; first_and_last([5, 7, 7, 8, 8, 10], 8)
+[3, 4]
+&gt;&gt;&gt; first_and_last([5, 7, 7, 8, 8, 10], 6)
+[-1, -1]</div></div>
+</div>
+<div class="etask" id="more-m11">
+<div class="walk-head"><span class="task-num">11</span><span class="walk-title" data-i18n="m11_t">Count occurrences in a sorted list</span></div>
+<div class="walk-badges"><span class="badge-topic" data-i18n="mvb_bs">Searching for a value</span><span class="lv lv-easy" data-i18n="al_lv_easy">Easy</span><a class="lc-link variant" href="https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/" target="_blank" rel="noopener"><span data-i18n="mv_variant">Variation of</span> #34 ↗</a></div>
+<p data-i18n="m11_task">Count how many times a value appears in a sorted list, faster than walking through it.</p>
+<div class="ex-line"><code>[1, 2, 2, 2, 3], 2 → 3        4 → 0</code></div>
+<button class="code-toggle hint-btn" onclick="algToggle(this)" aria-expanded="false" data-k-show="ez_think_btn" data-k-hide="ez_think_hide"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="ez_think_btn">Show the line of reasoning</span></button><div class="code-collapse" hidden><ol class="logic-steps"><li data-i18n="m11_s1">All copies of the value sit side by side. Their count is "where the next value starts" minus "where this value starts".</li></ol></div>
+<button class="code-toggle " onclick="algToggle(this)" aria-expanded="false" data-k-show="al_show" data-k-hide="al_hide"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="al_show">Show solution</span></button><div class="code-collapse" hidden><div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-kw">def</span> <span class="hl-def">lower_bound</span>(nums, target):
+    <span class="hl-str">"""The first index whose value is &gt;= target (len(nums) if there is none).
+    Almost every "search in sorted data" question is a variation of this."""</span>
+    left, right = <span class="hl-num">0</span>, <span class="hl-bi">len</span>(nums)          <span class="hl-com"># the answer lies somewhere in [left, right]</span>
+    <span class="hl-ctl">while</span> left &lt; right:
+        mid = (left + right) // <span class="hl-num">2</span>
+        <span class="hl-ctl">if</span> nums[mid] &lt; target:          <span class="hl-com"># mid is too small: the answer is to the right</span>
+            left = mid + <span class="hl-num">1</span>
+        <span class="hl-ctl">else</span>:                           <span class="hl-com"># mid could be the answer: keep it in range</span>
+            right = mid
+    <span class="hl-ctl">return</span> left
+
+
+<span class="hl-kw">def</span> <span class="hl-def">count_in_sorted</span>(nums, target):
+    <span class="hl-str">"""How many times target appears in a sorted list — in O(log n)."""</span>
+    <span class="hl-ctl">return</span> <span class="hl-call">lower_bound</span>(nums, target + <span class="hl-num">1</span>) - <span class="hl-call">lower_bound</span>(nums, target)</pre></div><div class="walk-label" data-i18n="pr_why">Why it works</div><div class="cs-takeaway" data-i18n="m11_why">O(log n) instead of <code>nums.count(x)</code>, which is O(n) — on a million sorted rows that is 20 steps instead of a million.</div><div class="walk-label" data-i18n="pr_tests">Tests to check yourself</div><div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-call">count_in_sorted</span>([<span class="hl-num">1</span>, <span class="hl-num">2</span>, <span class="hl-num">2</span>, <span class="hl-num">2</span>, <span class="hl-num">3</span>], <span class="hl-num">2</span>)
+<span class="hl-call">count_in_sorted</span>([<span class="hl-num">1</span>, <span class="hl-num">2</span>, <span class="hl-num">2</span>, <span class="hl-num">2</span>, <span class="hl-num">3</span>], <span class="hl-num">4</span>)</pre></div><div class="code-output"><span class="code-output-label" data-i18n="al_out"># tests (all passed):</span>&gt;&gt;&gt; count_in_sorted([1, 2, 2, 2, 3], 2)
+3
+&gt;&gt;&gt; count_in_sorted([1, 2, 2, 2, 3], 4)
+0</div></div>
+</div>
+<div class="etask" id="more-m12">
+<div class="walk-head"><span class="task-num">12</span><span class="walk-title" data-i18n="m12_t">Integer square root</span></div>
+<div class="walk-badges"><span class="badge-topic" data-i18n="mvb_bs">Searching for a value</span><span class="lv lv-easy" data-i18n="al_lv_easy">Easy</span><a class="lc-link" href="https://leetcode.com/problems/sqrtx/" target="_blank" rel="noopener">#69 <span data-i18n="al_open_lc">Open on LeetCode ↗</span></a></div>
+<p data-i18n="m12_task">Return the integer part of the square root of x, without <code>**</code> or the <code>math</code> module.</p>
+<div class="ex-line"><code>8 → 2        16 → 4</code></div>
+<button class="code-toggle hint-btn" onclick="algToggle(this)" aria-expanded="false" data-k-show="ez_think_btn" data-k-hide="ez_think_hide"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="ez_think_btn">Show the line of reasoning</span></button><div class="code-collapse" hidden><ol class="logic-steps"><li data-i18n="m12_s1">There is no list here — you search over the <b>answers</b> 0…x. They are sorted, and "<code>mid * mid &lt;= x</code>" is true up to a point and false after it.</li><li data-i18n="m12_s2">You want the <b>last</b> value where it is true, so round the middle up — otherwise <code>left = mid</code> never moves and the loop never ends.</li></ol></div>
+<button class="code-toggle " onclick="algToggle(this)" aria-expanded="false" data-k-show="al_show" data-k-hide="al_hide"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="al_show">Show solution</span></button><div class="code-collapse" hidden><div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-kw">def</span> <span class="hl-def">int_sqrt</span>(x):
+    <span class="hl-str">"""Integer part of the square root, without ** or math."""</span>
+    left, right = <span class="hl-num">0</span>, x
+    <span class="hl-ctl">while</span> left &lt; right:
+        mid = (left + right + <span class="hl-num">1</span>) // <span class="hl-num">2</span>   <span class="hl-com"># round UP, or the loop never ends</span>
+        <span class="hl-ctl">if</span> mid * mid &lt;= x:
+            left = mid                  <span class="hl-com"># mid works: the answer is mid or bigger</span>
+        <span class="hl-ctl">else</span>:
+            right = mid - <span class="hl-num">1</span>
+    <span class="hl-ctl">return</span> left</pre></div><div class="walk-label" data-i18n="pr_why">Why it works</div><div class="cs-takeaway" data-i18n="m12_why">"Binary search on the answer" — the same idea finds the smallest sample size that reaches a target power.</div><div class="walk-label" data-i18n="pr_tests">Tests to check yourself</div><div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-call">int_sqrt</span>(<span class="hl-num">8</span>)
+<span class="hl-call">int_sqrt</span>(<span class="hl-num">16</span>)</pre></div><div class="code-output"><span class="code-output-label" data-i18n="al_out"># tests (all passed):</span>&gt;&gt;&gt; int_sqrt(8)
+2
+&gt;&gt;&gt; int_sqrt(16)
+4</div></div>
+</div>
+<div class="etask" id="more-m13">
+<div class="walk-head"><span class="task-num">13</span><span class="walk-title" data-i18n="m13_t">First day revenue reached the goal</span></div>
+<div class="walk-badges"><span class="badge-topic" data-i18n="mvb_bs">Searching for a value</span><span class="lv lv-easy" data-i18n="al_lv_easy">Easy</span><a class="lc-link variant" href="https://leetcode.com/problems/first-bad-version/" target="_blank" rel="noopener"><span data-i18n="mv_variant">Variation of</span> #278 ↗</a></div>
+<p data-i18n="m13_task">Cumulative revenue by day only grows. Find the first day (index) on which it reached the goal, or −1.</p>
+<div class="ex-line"><code>cumulative = [120, 300, 455, 610, 890, 1040, 1310], goal = 1000 → 5</code></div>
+<button class="code-toggle hint-btn" onclick="algToggle(this)" aria-expanded="false" data-k-show="ez_think_btn" data-k-hide="ez_think_hide"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="ez_think_btn">Show the line of reasoning</span></button><div class="code-collapse" hidden><ol class="logic-steps"><li data-i18n="m13_s1">Growing data is sorted data. "Reached the goal" is false, false, …, then true forever — exactly what lower bound finds.</li><li data-i18n="m13_s2">If lower bound returns the length of the list, the goal was never reached — return −1.</li></ol></div>
+<button class="code-toggle " onclick="algToggle(this)" aria-expanded="false" data-k-show="al_show" data-k-hide="al_hide"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="al_show">Show solution</span></button><div class="code-collapse" hidden><div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-kw">def</span> <span class="hl-def">lower_bound</span>(nums, target):
+    <span class="hl-str">"""The first index whose value is &gt;= target (len(nums) if there is none).
+    Almost every "search in sorted data" question is a variation of this."""</span>
+    left, right = <span class="hl-num">0</span>, <span class="hl-bi">len</span>(nums)          <span class="hl-com"># the answer lies somewhere in [left, right]</span>
+    <span class="hl-ctl">while</span> left &lt; right:
+        mid = (left + right) // <span class="hl-num">2</span>
+        <span class="hl-ctl">if</span> nums[mid] &lt; target:          <span class="hl-com"># mid is too small: the answer is to the right</span>
+            left = mid + <span class="hl-num">1</span>
+        <span class="hl-ctl">else</span>:                           <span class="hl-com"># mid could be the answer: keep it in range</span>
+            right = mid
+    <span class="hl-ctl">return</span> left
+
+
+<span class="hl-kw">def</span> <span class="hl-def">first_day_reaching</span>(cumulative, target):
+    <span class="hl-str">"""Cumulative revenue only grows. On which day (index) did it first reach target?"""</span>
+    day = <span class="hl-call">lower_bound</span>(cumulative, target)
+    <span class="hl-ctl">return</span> day <span class="hl-ctl">if</span> day &lt; <span class="hl-bi">len</span>(cumulative) <span class="hl-ctl">else</span> -<span class="hl-num">1</span></pre></div><div class="walk-label" data-i18n="pr_why">Why it works</div><div class="cs-takeaway" data-i18n="m13_why">First Bad Version in disguise: "the first version that broke" and "the first day the goal was met" are the same search.</div><div class="walk-label" data-i18n="pr_tests">Tests to check yourself</div><div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-call">first_day_reaching</span>([<span class="hl-num">120</span>, <span class="hl-num">300</span>, <span class="hl-num">455</span>, <span class="hl-num">610</span>, <span class="hl-num">890</span>, <span class="hl-num">1040</span>, <span class="hl-num">1310</span>], <span class="hl-num">1000</span>)
+<span class="hl-call">first_day_reaching</span>([<span class="hl-num">120</span>, <span class="hl-num">300</span>, <span class="hl-num">455</span>], <span class="hl-num">1000</span>)</pre></div><div class="code-output"><span class="code-output-label" data-i18n="al_out"># tests (all passed):</span>&gt;&gt;&gt; first_day_reaching([120, 300, 455, 610, 890, 1040, 1310], 1000)
+5
+&gt;&gt;&gt; first_day_reaching([120, 300, 455], 1000)
+-1</div></div>
+</div>
+<div class="etask" id="more-m14">
+<div class="walk-head"><span class="task-num">14</span><span class="walk-title" data-i18n="m14_t">The value closest to a target</span></div>
+<div class="walk-badges"><span class="badge-topic" data-i18n="mvb_bs">Searching for a value</span><span class="lv lv-easy" data-i18n="al_lv_easy">Easy</span><a class="lc-link variant" href="https://leetcode.com/problems/find-k-closest-elements/" target="_blank" rel="noopener"><span data-i18n="mv_variant">Variation of</span> #658 ↗</a></div>
+<p data-i18n="m14_task">In a sorted list, return the value closest to the target. On a tie, return the smaller one.</p>
+<div class="ex-line"><code>[1, 3, 8, 10, 15], 12 → 10        [1, 3, 8, 10, 15], 9 → 8</code></div>
+<button class="code-toggle hint-btn" onclick="algToggle(this)" aria-expanded="false" data-k-show="ez_think_btn" data-k-hide="ez_think_hide"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="ez_think_btn">Show the line of reasoning</span></button><div class="code-collapse" hidden><ol class="logic-steps"><li data-i18n="m14_s1">Lower bound gives the first value ≥ target. The closest value is either that one or the one just before it — nothing else can be closer.</li><li data-i18n="m14_s2">Handle the edges: if the target is below everything or above everything, only one neighbour exists.</li></ol></div>
+<button class="code-toggle " onclick="algToggle(this)" aria-expanded="false" data-k-show="al_show" data-k-hide="al_hide"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="al_show">Show solution</span></button><div class="code-collapse" hidden><div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-kw">def</span> <span class="hl-def">lower_bound</span>(nums, target):
+    <span class="hl-str">"""The first index whose value is &gt;= target (len(nums) if there is none).
+    Almost every "search in sorted data" question is a variation of this."""</span>
+    left, right = <span class="hl-num">0</span>, <span class="hl-bi">len</span>(nums)          <span class="hl-com"># the answer lies somewhere in [left, right]</span>
+    <span class="hl-ctl">while</span> left &lt; right:
+        mid = (left + right) // <span class="hl-num">2</span>
+        <span class="hl-ctl">if</span> nums[mid] &lt; target:          <span class="hl-com"># mid is too small: the answer is to the right</span>
+            left = mid + <span class="hl-num">1</span>
+        <span class="hl-ctl">else</span>:                           <span class="hl-com"># mid could be the answer: keep it in range</span>
+            right = mid
+    <span class="hl-ctl">return</span> left
+
+
+<span class="hl-kw">def</span> <span class="hl-def">closest_value</span>(nums, target):
+    <span class="hl-str">"""The value in a sorted list closest to target (the smaller one on a tie)."""</span>
+    i = <span class="hl-call">lower_bound</span>(nums, target)       <span class="hl-com"># first value &gt;= target</span>
+    <span class="hl-ctl">if</span> i == <span class="hl-num">0</span>:
+        <span class="hl-ctl">return</span> nums[<span class="hl-num">0</span>]
+    <span class="hl-ctl">if</span> i == <span class="hl-bi">len</span>(nums):
+        <span class="hl-ctl">return</span> nums[-<span class="hl-num">1</span>]
+    before, after = nums[i - <span class="hl-num">1</span>], nums[i]
+    <span class="hl-ctl">return</span> before <span class="hl-ctl">if</span> target - before &lt;= after - target <span class="hl-ctl">else</span> after</pre></div><div class="walk-label" data-i18n="pr_why">Why it works</div><div class="cs-takeaway" data-i18n="m14_why">Two candidates instead of n — and the tie rule (<code>&lt;=</code>) decides which one you return.</div><div class="walk-label" data-i18n="pr_tests">Tests to check yourself</div><div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-call">closest_value</span>([<span class="hl-num">1</span>, <span class="hl-num">3</span>, <span class="hl-num">8</span>, <span class="hl-num">10</span>, <span class="hl-num">15</span>], <span class="hl-num">12</span>)
+<span class="hl-call">closest_value</span>([<span class="hl-num">1</span>, <span class="hl-num">3</span>, <span class="hl-num">8</span>, <span class="hl-num">10</span>, <span class="hl-num">15</span>], <span class="hl-num">9</span>)</pre></div><div class="code-output"><span class="code-output-label" data-i18n="al_out"># tests (all passed):</span>&gt;&gt;&gt; closest_value([1, 3, 8, 10, 15], 12)
+10
+&gt;&gt;&gt; closest_value([1, 3, 8, 10, 15], 9)
+8</div></div>
+</div>
+<div class="etask" id="more-m15">
+<div class="walk-head"><span class="task-num">15</span><span class="walk-title" data-i18n="m15_t">The peak of a mountain</span></div>
+<div class="walk-badges"><span class="badge-topic" data-i18n="mvb_bs">Searching for a value</span><span class="lv lv-med" data-i18n="al_lv_med">Medium</span><a class="lc-link" href="https://leetcode.com/problems/peak-index-in-a-mountain-array/" target="_blank" rel="noopener">#852 <span data-i18n="al_open_lc">Open on LeetCode ↗</span></a></div>
+<p data-i18n="m15_task">The values strictly rise and then strictly fall. Find the index of the top in O(log n).</p>
+<div class="ex-line"><code>[0, 2, 5, 9, 6, 3, 1] → 3</code></div>
+<button class="code-toggle hint-btn" onclick="algToggle(this)" aria-expanded="false" data-k-show="ez_think_btn" data-k-hide="ez_think_hide"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="ez_think_btn">Show the line of reasoning</span></button><div class="code-collapse" hidden><ol class="logic-steps"><li data-i18n="m15_s1">The list is not sorted, but each position answers a yes/no question: "is the next value bigger?" — yes on the way up, no on the way down.</li><li data-i18n="m15_s2">Yes, yes, …, no, no — an answer that flips exactly once, so it is again "find the first position where it flips". Still climbing → the peak is to the right; going down → it is here or to the left.</li></ol></div>
+<button class="code-toggle " onclick="algToggle(this)" aria-expanded="false" data-k-show="al_show" data-k-hide="al_hide"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="al_show">Show solution</span></button><div class="code-collapse" hidden><div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-kw">def</span> <span class="hl-def">peak_index</span>(arr):
+    <span class="hl-str">"""A list rises then falls. Find the index of the top in O(log n)."""</span>
+    left, right = <span class="hl-num">0</span>, <span class="hl-bi">len</span>(arr) - <span class="hl-num">1</span>
+    <span class="hl-ctl">while</span> left &lt; right:
+        mid = (left + right) // <span class="hl-num">2</span>
+        <span class="hl-ctl">if</span> arr[mid] &lt; arr[mid + <span class="hl-num">1</span>]:     <span class="hl-com"># still climbing: the peak is to the right</span>
+            left = mid + <span class="hl-num">1</span>
+        <span class="hl-ctl">else</span>:                           <span class="hl-com"># going down: the peak is mid or to the left</span>
+            right = mid
+    <span class="hl-ctl">return</span> left</pre></div><div class="walk-label" data-i18n="pr_why">Why it works</div><div class="cs-takeaway" data-i18n="m15_why">The deepest idea in the block: binary search needs a yes/no question that flips once, not necessarily sorted data.</div><div class="walk-label" data-i18n="pr_tests">Tests to check yourself</div><div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-call">peak_index</span>([<span class="hl-num">0</span>, <span class="hl-num">2</span>, <span class="hl-num">5</span>, <span class="hl-num">9</span>, <span class="hl-num">6</span>, <span class="hl-num">3</span>, <span class="hl-num">1</span>])</pre></div><div class="code-output"><span class="code-output-label" data-i18n="al_out"># tests (all passed):</span>&gt;&gt;&gt; peak_index([0, 2, 5, 9, 6, 3, 1])
+3</div></div>
+</div>
+<h3 class="lg-h"><span data-i18n="mvb_sw">Sliding window</span> <span class="lg-count">3</span></h3>
+<p data-i18n="mvb_sw_p">A window is a contiguous stretch you move along the data. Two kinds: a <b>fixed</b> window of k elements (add the one entering, drop the one leaving), and a <b>variable</b> window that grows on the right and shrinks on the left while a condition holds. The second needs non-negative numbers: with negatives, shrinking no longer makes the sum smaller.</p>
+<div class="walk-label" data-i18n="mv_tpl">Template</div>
+<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre>left = <span class="hl-num">0</span>
+window = <span class="hl-num">0</span>
+<span class="hl-ctl">for</span> right, x <span class="hl-opw">in</span> <span class="hl-bi">enumerate</span>(nums):
+    window += x                    <span class="hl-com"># 1. grow on the right</span>
+    <span class="hl-ctl">while</span> <span class="hl-call">condition_is_met</span>(window):
+        <span class="hl-call">record_answer</span>(left, right) <span class="hl-com"># 2. note the answer</span>
+        window -= nums[left]       <span class="hl-com"># 3. shrink from the left</span>
+        left += <span class="hl-num">1</span></pre></div>
+<div class="etask" id="more-m16">
+<div class="walk-head"><span class="task-num">16</span><span class="walk-title" data-i18n="m16_t">A repeat within k positions</span></div>
+<div class="walk-badges"><span class="badge-topic" data-i18n="mvb_sw">Sliding window</span><span class="lv lv-easy" data-i18n="al_lv_easy">Easy</span><a class="lc-link" href="https://leetcode.com/problems/contains-duplicate-ii/" target="_blank" rel="noopener">#219 <span data-i18n="al_open_lc">Open on LeetCode ↗</span></a></div>
+<p data-i18n="m16_task">Decide whether two equal values sit at most k positions apart.</p>
+<div class="ex-line"><code>[1, 2, 3, 1], k = 3 → True        [1, 2, 3, 1, 2, 3], k = 2 → False</code></div>
+<button class="code-toggle hint-btn" onclick="algToggle(this)" aria-expanded="false" data-k-show="ez_think_btn" data-k-hide="ez_think_hide"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="ez_think_btn">Show the line of reasoning</span></button><div class="code-collapse" hidden><ol class="logic-steps"><li data-i18n="m16_s1">A fixed window of the last k values, stored in a set so "is it here?" is instant.</li><li data-i18n="m16_s2">For each new value: if it is already in the window, answer True. Otherwise add it, and drop the value that fell out of range.</li></ol></div>
+<button class="code-toggle " onclick="algToggle(this)" aria-expanded="false" data-k-show="al_show" data-k-hide="al_hide"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="al_show">Show solution</span></button><div class="code-collapse" hidden><div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-kw">def</span> <span class="hl-def">nearby_duplicate</span>(nums, k):
+    <span class="hl-str">"""Are there equal values at most k positions apart?"""</span>
+    window = <span class="hl-bi">set</span>()                      <span class="hl-com"># the last k values</span>
+    <span class="hl-ctl">for</span> i, x <span class="hl-opw">in</span> <span class="hl-bi">enumerate</span>(nums):
+        <span class="hl-ctl">if</span> x <span class="hl-opw">in</span> window:
+            <span class="hl-ctl">return</span> <span class="hl-const">True</span>
+        window.<span class="hl-call">add</span>(x)
+        <span class="hl-ctl">if</span> <span class="hl-bi">len</span>(window) &gt; k:
+            window.<span class="hl-call">remove</span>(nums[i - k])  <span class="hl-com"># the value that just left the window</span>
+    <span class="hl-ctl">return</span> <span class="hl-const">False</span></pre></div><div class="walk-label" data-i18n="pr_why">Why it works</div><div class="cs-takeaway" data-i18n="m16_why">Contains Duplicate plus a window: the analyst version is "did the same user order twice within 3 days?".</div><div class="walk-label" data-i18n="pr_tests">Tests to check yourself</div><div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-call">nearby_duplicate</span>([<span class="hl-num">1</span>, <span class="hl-num">2</span>, <span class="hl-num">3</span>, <span class="hl-num">1</span>], <span class="hl-num">3</span>)
+<span class="hl-call">nearby_duplicate</span>([<span class="hl-num">1</span>, <span class="hl-num">2</span>, <span class="hl-num">3</span>, <span class="hl-num">1</span>, <span class="hl-num">2</span>, <span class="hl-num">3</span>], <span class="hl-num">2</span>)</pre></div><div class="code-output"><span class="code-output-label" data-i18n="al_out"># tests (all passed):</span>&gt;&gt;&gt; nearby_duplicate([1, 2, 3, 1], 3)
+True
+&gt;&gt;&gt; nearby_duplicate([1, 2, 3, 1, 2, 3], 2)
+False</div></div>
+</div>
+<div class="etask" id="more-m17">
+<div class="walk-head"><span class="task-num">17</span><span class="walk-title" data-i18n="m17_t">Shortest stretch reaching a sum</span></div>
+<div class="walk-badges"><span class="badge-topic" data-i18n="mvb_sw">Sliding window</span><span class="lv lv-med" data-i18n="al_lv_med">Medium</span><a class="lc-link" href="https://leetcode.com/problems/minimum-size-subarray-sum/" target="_blank" rel="noopener">#209 <span data-i18n="al_open_lc">Open on LeetCode ↗</span></a></div>
+<p data-i18n="m17_task">Find the length of the shortest contiguous stretch whose sum is at least the target. Numbers are positive. Return 0 if there is none.</p>
+<div class="ex-line"><code>target = 7, nums = [2, 3, 1, 2, 4, 3] → 2   # [4, 3]</code></div>
+<button class="code-toggle hint-btn" onclick="algToggle(this)" aria-expanded="false" data-k-show="ez_think_btn" data-k-hide="ez_think_hide"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="ez_think_btn">Show the line of reasoning</span></button><div class="code-collapse" hidden><ol class="logic-steps"><li data-i18n="m17_s1">A variable window: grow it on the right until the sum is big enough.</li><li data-i18n="m17_s2">Then shrink it from the left while it stays big enough, recording the length each time. Each element enters and leaves once — O(n).</li></ol></div>
+<button class="code-toggle " onclick="algToggle(this)" aria-expanded="false" data-k-show="al_show" data-k-hide="al_hide"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="al_show">Show solution</span></button><div class="code-collapse" hidden><div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-kw">def</span> <span class="hl-def">min_subarray_len</span>(target, nums):
+    <span class="hl-str">"""Shortest contiguous stretch with a sum &gt;= target (0 if none). Positives only."""</span>
+    left = <span class="hl-num">0</span>
+    window_sum = <span class="hl-num">0</span>
+    best = <span class="hl-bi">float</span>(<span class="hl-str">"inf"</span>)
+    <span class="hl-ctl">for</span> right, x <span class="hl-opw">in</span> <span class="hl-bi">enumerate</span>(nums):
+        window_sum += x                 <span class="hl-com"># grow the window to the right</span>
+        <span class="hl-ctl">while</span> window_sum &gt;= target:     <span class="hl-com"># it is big enough: try shrinking from the left</span>
+            best = <span class="hl-bi">min</span>(best, right - left + <span class="hl-num">1</span>)
+            window_sum -= nums[left]
+            left += <span class="hl-num">1</span>
+    <span class="hl-ctl">return</span> <span class="hl-num">0</span> <span class="hl-ctl">if</span> best == <span class="hl-bi">float</span>(<span class="hl-str">"inf"</span>) <span class="hl-ctl">else</span> best</pre></div><div class="walk-label" data-i18n="pr_why">Why it works</div><div class="cs-takeaway" data-i18n="m17_why">Analyst version: "the fewest consecutive days needed to reach a sales goal". Positives matter — with refunds (negatives) this window breaks.</div><div class="walk-label" data-i18n="pr_tests">Tests to check yourself</div><div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-call">min_subarray_len</span>(<span class="hl-num">7</span>, [<span class="hl-num">2</span>, <span class="hl-num">3</span>, <span class="hl-num">1</span>, <span class="hl-num">2</span>, <span class="hl-num">4</span>, <span class="hl-num">3</span>])
+<span class="hl-call">min_subarray_len</span>(<span class="hl-num">100</span>, [<span class="hl-num">1</span>, <span class="hl-num">2</span>, <span class="hl-num">3</span>])</pre></div><div class="code-output"><span class="code-output-label" data-i18n="al_out"># tests (all passed):</span>&gt;&gt;&gt; min_subarray_len(7, [2, 3, 1, 2, 4, 3])
+2
+&gt;&gt;&gt; min_subarray_len(100, [1, 2, 3])
+0</div></div>
+</div>
+<div class="etask" id="more-m18">
+<div class="walk-head"><span class="task-num">18</span><span class="walk-title" data-i18n="m18_t">Longest streak of daily growth</span></div>
+<div class="walk-badges"><span class="badge-topic" data-i18n="mvb_sw">Sliding window</span><span class="lv lv-easy" data-i18n="al_lv_easy">Easy</span><a class="lc-link variant" href="https://leetcode.com/problems/longest-continuous-increasing-subsequence/" target="_blank" rel="noopener"><span data-i18n="mv_variant">Variation of</span> #674 ↗</a></div>
+<p data-i18n="m18_task">Given daily values, find the longest run of consecutive days in which each day was higher than the day before.</p>
+<div class="ex-line"><code>[100, 120, 150, 140, 160, 170, 180] → 4   # 140 → 180</code></div>
+<button class="code-toggle hint-btn" onclick="algToggle(this)" aria-expanded="false" data-k-show="ez_think_btn" data-k-hide="ez_think_hide"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="ez_think_btn">Show the line of reasoning</span></button><div class="code-collapse" hidden><ol class="logic-steps"><li data-i18n="m18_s1">Compare each day with the previous one — the same move as counting runs in a string.</li><li data-i18n="m18_s2">Higher → the streak grows. Not higher → the streak restarts at 1. Keep the best length seen.</li></ol></div>
+<button class="code-toggle " onclick="algToggle(this)" aria-expanded="false" data-k-show="al_show" data-k-hide="al_hide"><svg class="code-toggle-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span data-i18n="al_show">Show solution</span></button><div class="code-collapse" hidden><div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-kw">def</span> <span class="hl-def">longest_growth_streak</span>(values):
+    <span class="hl-str">"""Longest run of consecutive days where the value went up."""</span>
+    <span class="hl-ctl">if</span> <span class="hl-opw">not</span> values:
+        <span class="hl-ctl">return</span> <span class="hl-num">0</span>
+    best = current = <span class="hl-num">1</span>
+    <span class="hl-ctl">for</span> i <span class="hl-opw">in</span> <span class="hl-bi">range</span>(<span class="hl-num">1</span>, <span class="hl-bi">len</span>(values)):
+        <span class="hl-ctl">if</span> values[i] &gt; values[i - <span class="hl-num">1</span>]:
+            current += <span class="hl-num">1</span>
+        <span class="hl-ctl">else</span>:
+            current = <span class="hl-num">1</span>                 <span class="hl-com"># the streak broke: start again</span>
+        best = <span class="hl-bi">max</span>(best, current)
+    <span class="hl-ctl">return</span> best</pre></div><div class="walk-label" data-i18n="pr_why">Why it works</div><div class="cs-takeaway" data-i18n="m18_why">A window whose left edge jumps to the break point. Analysts ask it as "the longest growth streak of DAU".</div><div class="walk-label" data-i18n="pr_tests">Tests to check yourself</div><div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-call">longest_growth_streak</span>([<span class="hl-num">100</span>, <span class="hl-num">120</span>, <span class="hl-num">150</span>, <span class="hl-num">140</span>, <span class="hl-num">160</span>, <span class="hl-num">170</span>, <span class="hl-num">180</span>])</pre></div><div class="code-output"><span class="code-output-label" data-i18n="al_out"># tests (all passed):</span>&gt;&gt;&gt; longest_growth_streak([100, 120, 150, 140, 160, 170, 180])
+4</div></div>
+</div>
+</div>
+<!--/MORE-->
 <div class="card" id="a-walk"><div class="card-title" data-i18n="wk_h">Nine step-by-step walkthroughs</div>
 <p data-i18n="wk_lead">One key problem per pattern, taken apart in the order you would reason at an interview: the task, the obvious solution and why it is slow, the insight that makes it fast, the code, and a step-by-step trace generated by actually running it.</p>
 <div class="walk" id="walk-w1">

@@ -2804,3 +2804,11 @@ code .ic { color: #c2410c; font-weight: 600; }
   .io-box { grid-template-columns: 1fr; }
   .io-arrow { transform: rotate(90deg); justify-self: center; }
 }
+
+/* five sections: flagship + a 2×2 grid of learning sections (no orphaned card) */
+.home-cards { grid-template-columns: repeat(2, 1fr); }
+@media (min-width: 901px) and (max-width: 1040px) { .home-cards { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 900px) { .home-cards { grid-template-columns: 1fr; } }
+.lc-link.variant, .lc-link.variant:link, .lc-link.variant:visited { border-style: dashed; }
+/* on phones .lc-link becomes inline-flex, which swallows the space in "#345 Open on LeetCode" */
+.lc-link { column-gap: .3em; }
