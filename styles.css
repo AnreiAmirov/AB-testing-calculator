@@ -2812,3 +2812,103 @@ code .ic { color: #c2410c; font-weight: 600; }
 .lc-link.variant, .lc-link.variant:link, .lc-link.variant:visited { border-style: dashed; }
 /* on phones .lc-link becomes inline-flex, which swallows the space in "#345 Open on LeetCode" */
 .lc-link { column-gap: .3em; }
+
+/* ═══════════════════════════════════════════════════════════════════════
+   THEORY PAGE (ab-theory.html): parts, route map, call to action
+   The theory moved out of the calculator's "Learn" tab into its own page and
+   is read in eight parts. Each part opens with a short "why this comes next".
+   ═══════════════════════════════════════════════════════════════════════ */
+.toc-part-n {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 17px; height: 17px; border-radius: 50%;
+  background: var(--accent); color: #fff;
+  font-size: 0.62rem; font-weight: 700; letter-spacing: 0;
+  margin-right: 6px; flex-shrink: 0;
+}
+.toc-group-h { display: flex; align-items: center; }
+
+.part-intro {
+  margin: 34px 0 16px;
+  padding: 18px 22px 16px;
+  border-left: 4px solid var(--accent);
+  border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+  background: linear-gradient(90deg, var(--accent-hover-bg), transparent 85%);
+  scroll-margin-top: 90px;
+}
+.part-kicker {
+  display: flex; align-items: center; gap: 7px;
+  font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em;
+  color: var(--accent); margin-bottom: 6px;
+}
+.part-ic { display: inline-flex; }
+.part-ic svg { width: 16px; height: 16px; }
+.part-title { font-size: 1.32rem; letter-spacing: -0.015em; margin: 0 0 6px; color: var(--ink); }
+.part-desc { margin: 0; color: var(--ink-muted); font-size: 0.93rem; line-height: 1.6; max-width: 68ch; }
+
+.th-route-grid {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: 12px;
+}
+.th-route-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 12px; border: 1px solid var(--border); border-radius: 12px;
+  text-decoration: none; color: var(--ink); font-size: 0.88rem; font-weight: 600;
+  transition: border-color .15s, background .15s;
+}
+.th-route-item:hover { border-color: var(--accent); background: var(--accent-hover-bg); }
+.th-route-n {
+  display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
+  width: 24px; height: 24px; border-radius: 50%;
+  background: var(--pill-bg); color: var(--accent); font-size: 0.78rem; font-weight: 700;
+}
+@media (max-width: 560px) { .th-route-grid { grid-template-columns: 1fr; } }
+
+.th-cta { display: flex; align-items: center; justify-content: space-between; gap: 18px; flex-wrap: wrap;
+  background: linear-gradient(135deg, var(--card), var(--accent-hover-bg)); }
+.th-cta .card-title { margin-bottom: 4px; }
+.th-cta p { margin: 0; color: var(--ink-muted); max-width: 60ch; }
+.th-cta-btn {
+  display: inline-block; padding: 11px 20px; border-radius: 999px;
+  background: var(--accent); color: #fff; font-weight: 700; text-decoration: none; white-space: nowrap;
+}
+.th-cta-btn:hover { filter: brightness(1.08); }
+
+/* calculator: the "Learn" tab is now a link to the theory page */
+a.tab-btn, a.btab { text-decoration: none; }
+/* home: the theory sits right after the calculator, as its quieter companion */
+.home-flagship.flagship-theory { background: var(--card); }
+[data-theme="dark"] .home-flagship.flagship-theory { background: var(--card); }
+.flagship-theory .flagship-tag { background: transparent; color: var(--accent); box-shadow: inset 0 0 0 1.5px var(--accent); }
+/* phones: the title and the header buttons no longer fit on one line (the calculator has four buttons,
+   the theory page four as well) and used to overlap. Stack them: title first, buttons below. */
+@media (max-width: 640px) {
+  .site-header-row { flex-direction: column; align-items: stretch; gap: 12px; }
+  .header-controls { flex-wrap: wrap; gap: 8px; }
+}
+
+/* ── Algorithms: "Other ways to solve" ── */
+.alt-count {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 20px; height: 20px; padding: 0 6px; margin-left: 6px; border-radius: 999px;
+  background: var(--accent); color: #fff; font-size: 0.7rem; font-weight: 700;
+}
+.alt-wrap { margin-top: 10px; }
+.alt-intro { font-size: 0.86rem; color: var(--ink-muted); margin: 0 0 6px; }
+.alt-item { border-top: 1px dashed var(--border-strong, var(--border)); padding-top: 12px; margin-top: 12px; }
+.alt-head { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; margin-bottom: 4px; }
+.alt-letter {
+  display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
+  width: 22px; height: 22px; border-radius: 6px;
+  background: var(--pill-bg); color: var(--accent); font-size: 0.75rem; font-weight: 700;
+}
+.alt-label { font-weight: 700; font-size: 0.92rem; color: var(--ink); }
+.alt-cx {
+  font-size: 0.72rem; padding: 2px 8px; border-radius: 999px;
+  background: var(--pill-bg); color: var(--ink-muted); white-space: nowrap;
+}
+.alt-note { margin: 0 0 8px; font-size: 0.88rem; line-height: 1.55; color: var(--ink-muted); }
+/* plain links inside prose (theory text, calculator notices and warnings) use the accent colour in both themes */
+.ref-content a:not([class]), .notice a:not([class]), .up-warn a:not([class]),
+.analysis-result a:not([class]), .process-panel a:not([class]) {
+  color: var(--accent); text-decoration: underline; text-underline-offset: 2px; font-weight: 600;
+}
+.py-sub-p { margin-top: 12px; }

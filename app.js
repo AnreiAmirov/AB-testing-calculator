@@ -134,6 +134,9 @@ function toggleTheme() {
 // ── URL State — encode inputs into query params ───────────────────────────
 
 function encodeState() {
+  // Only the calculator keeps its state in the URL. The theory page also has inputs (chart sliders),
+  // and without this guard every slider move would rewrite its address to ?tab=plan&…
+  if (!document.getElementById('tab-plan')) return;
   try {
     const p = new URLSearchParams();
     const activeBtn = document.querySelector('.tab-btn.active');

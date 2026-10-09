@@ -44,7 +44,7 @@
         </button>
       </div>
     </div>
-    <p data-i18n="py_sub">Fundamentals, algorithms and real data work.</p>
+    <p data-i18n="py_sub">Fundamentals, algorithms and real data work. Every chart on this page was produced by actually running the code shown beside it.</p>
   </div>
 </header>
 <main class="causal-main" id="tab-reference">
@@ -589,6 +589,122 @@ normalise = <span class="hl-kw">lambda</span> s: <span class="hl-str">" "</span>
 </div>
 
 <div class="cs-takeaway" data-i18n="s25_take"><b>What ties these together:</b> four of the five problems above are solved by "remember what you have seen in a dict or set". That single idea converts brute-force comparison into a single pass — and it is the foundation of every fast operation in pandas.</div>
+<!--S26-->
+<div class="dd-h3" data-i18n="s26_h">2.6 · One task, several ways</div>
+<p data-i18n="s26_p1">The same answer can usually be written three or four ways: a plain loop with a dict, <code>defaultdict</code>, <code>Counter</code>, pandas. All of them are correct, so the choice is about readability and about one hidden trap. Below, each way solves the same task on the same data, checks that its answer matches, and is timed.</p>
+<p class="py-sub-p" data-i18n="s26_p2">Counting page views five ways. On a few distinct values they all take about the same time. The difference appears when there are many distinct values: <code>list.count()</code> rescans the whole list for each of them.</p>
+<button class="code-toggle" onclick="toggleCode(this)" aria-expanded="false"><span data-i18n="c_did_code_show">Show Python code</span></button>
+<div class="code-collapse" hidden>
+<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-kw">import</span> <span class="hl-lib">random</span>, <span class="hl-lib">time</span>
+<span class="hl-kw">from</span> <span class="hl-lib">collections</span> <span class="hl-kw">import</span> <span class="hl-bi">Counter</span>, <span class="hl-bi">defaultdict</span>
+<span class="hl-kw">import</span> pandas <span class="hl-kw">as</span> <span class="hl-lib">pd</span>
+
+<span class="hl-lib">random</span>.<span class="hl-call">seed</span>(<span class="hl-num">1</span>)
+pages = [<span class="hl-lib">random</span>.<span class="hl-call">choice</span>([<span class="hl-str">"/home"</span>, <span class="hl-str">"/pricing"</span>, <span class="hl-str">"/docs"</span>, <span class="hl-str">"/blog"</span>, <span class="hl-str">"/cart"</span>]) <span class="hl-ctl">for</span> _ <span class="hl-opw">in</span> <span class="hl-bi">range</span>(<span class="hl-num">1_000_000</span>)]
+
+<span class="hl-kw">def</span> <span class="hl-def">with_get</span>(items):                 <span class="hl-com"># 1. a plain dict and .get()</span>
+    counts = {}
+    <span class="hl-ctl">for</span> x <span class="hl-opw">in</span> items:
+        counts[x] = counts.<span class="hl-call">get</span>(x, <span class="hl-num">0</span>) + <span class="hl-num">1</span>
+    <span class="hl-ctl">return</span> counts
+
+<span class="hl-kw">def</span> <span class="hl-def">with_defaultdict</span>(items):         <span class="hl-com"># 2. defaultdict: a missing key starts at 0</span>
+    counts = <span class="hl-bi">defaultdict</span>(<span class="hl-bi">int</span>)
+    <span class="hl-ctl">for</span> x <span class="hl-opw">in</span> items:
+        counts[x] += <span class="hl-num">1</span>
+    <span class="hl-ctl">return</span> <span class="hl-bi">dict</span>(counts)
+
+<span class="hl-kw">def</span> <span class="hl-def">with_counter</span>(items):             <span class="hl-com"># 3. Counter: counting is its only job</span>
+    <span class="hl-ctl">return</span> <span class="hl-bi">dict</span>(<span class="hl-bi">Counter</span>(items))
+
+<span class="hl-kw">def</span> <span class="hl-def">with_pandas</span>(items):              <span class="hl-com"># 4. pandas, the way it looks in a notebook</span>
+    <span class="hl-ctl">return</span> <span class="hl-lib">pd</span>.<span class="hl-call">Series</span>(items).<span class="hl-call">value_counts</span>().<span class="hl-call">to_dict</span>()
+
+<span class="hl-kw">def</span> <span class="hl-def">with_list_count</span>(items):          <span class="hl-com"># 5. list.count() for every distinct value</span>
+    <span class="hl-ctl">return</span> {x: items.<span class="hl-call">count</span>(x) <span class="hl-ctl">for</span> x <span class="hl-opw">in</span> <span class="hl-bi">set</span>(items)}
+
+reference = <span class="hl-call">with_get</span>(pages)
+<span class="hl-bi">print</span>(<span class="hl-str">"1,000,000 page views, 5 distinct pages:"</span>)
+<span class="hl-ctl">for</span> fn <span class="hl-opw">in</span> [with_get, with_defaultdict, with_counter, with_pandas, with_list_count]:
+    t0 = <span class="hl-lib">time</span>.<span class="hl-call">perf_counter</span>()
+    same = <span class="hl-call">fn</span>(pages) == reference
+    <span class="hl-bi">print</span>(<span class="hl-str">f"  {fn.__name__:&lt;17} {(time.perf_counter() - t0) * 1000:7.1f} ms   same answer: {same}"</span>)
+
+<span class="hl-com"># The trap: list.count() rescans the list once per distinct value.</span>
+<span class="hl-com"># With 5 pages that is 5 scans; with thousands of user IDs it is thousands.</span>
+user_ids = [<span class="hl-lib">random</span>.<span class="hl-call">randint</span>(<span class="hl-num">1</span>, <span class="hl-num">5_000</span>) <span class="hl-ctl">for</span> _ <span class="hl-opw">in</span> <span class="hl-bi">range</span>(<span class="hl-num">50_000</span>)]
+<span class="hl-bi">print</span>(<span class="hl-str">"50,000 events, ~5,000 distinct users:"</span>)
+<span class="hl-ctl">for</span> fn <span class="hl-opw">in</span> [with_counter, with_list_count]:
+    t0 = <span class="hl-lib">time</span>.<span class="hl-call">perf_counter</span>()
+    <span class="hl-call">fn</span>(user_ids)
+    <span class="hl-bi">print</span>(<span class="hl-str">f"  {fn.__name__:&lt;17} {(time.perf_counter() - t0) * 1000:7.1f} ms"</span>)</pre></div>
+<div class="code-output"><span class="code-output-label" data-i18n="py_out_label"># output when run (verified):</span>1,000,000 page views, 5 distinct pages:
+  with_get             82.8 ms   same answer: True
+  with_defaultdict     84.5 ms   same answer: True
+  with_counter         50.1 ms   same answer: True
+  with_pandas         104.6 ms   same answer: True
+  with_list_count      70.8 ms   same answer: True
+50,000 events, ~5,000 distinct users:
+  with_counter          2.7 ms
+  with_list_count    2154.5 ms</div>
+</div>
+
+<p class="py-sub-p" data-i18n="s26_p3">Removing duplicates while keeping the first occurrence — and the top-3 question asked three ways. The trap here is <code>x not in result</code> when <code>result</code> is a list: every check walks the list again.</p>
+<button class="code-toggle" onclick="toggleCode(this)" aria-expanded="false"><span data-i18n="c_did_code_show">Show Python code</span></button>
+<div class="code-collapse" hidden>
+<div class="code-block"><button class="code-copy" onclick="copyCodeBlock(this)" data-i18n="btn_copy">Copy</button><pre><span class="hl-kw">import</span> heapq, <span class="hl-lib">random</span>, <span class="hl-lib">time</span>
+<span class="hl-kw">from</span> <span class="hl-lib">collections</span> <span class="hl-kw">import</span> <span class="hl-bi">Counter</span>
+<span class="hl-kw">import</span> pandas <span class="hl-kw">as</span> <span class="hl-lib">pd</span>
+
+<span class="hl-lib">random</span>.<span class="hl-call">seed</span>(<span class="hl-num">2</span>)
+emails = [<span class="hl-str">f"user{random.randint(1, 10_000)}@mail.com"</span> <span class="hl-ctl">for</span> _ <span class="hl-opw">in</span> <span class="hl-bi">range</span>(<span class="hl-num">50_000</span>)]
+
+<span class="hl-kw">def</span> <span class="hl-def">with_seen_set</span>(items):            <span class="hl-com"># 1. the classic loop: a set remembers what we took</span>
+    seen, result = <span class="hl-bi">set</span>(), []
+    <span class="hl-ctl">for</span> x <span class="hl-opw">in</span> items:
+        <span class="hl-ctl">if</span> x <span class="hl-opw">not</span> <span class="hl-opw">in</span> seen:
+            seen.<span class="hl-call">add</span>(x)
+            result.<span class="hl-call">append</span>(x)
+    <span class="hl-ctl">return</span> result
+
+<span class="hl-kw">def</span> <span class="hl-def">with_dict_fromkeys</span>(items):       <span class="hl-com"># 2. dict keys are unique and keep insertion order</span>
+    <span class="hl-ctl">return</span> <span class="hl-bi">list</span>(<span class="hl-bi">dict</span>.<span class="hl-call">fromkeys</span>(items))
+
+<span class="hl-kw">def</span> <span class="hl-def">with_pandas</span>(items):              <span class="hl-com"># 3. pandas: keeps the first occurrence too</span>
+    <span class="hl-ctl">return</span> <span class="hl-lib">pd</span>.<span class="hl-call">Series</span>(items).<span class="hl-call">drop_duplicates</span>().<span class="hl-call">tolist</span>()
+
+<span class="hl-kw">def</span> <span class="hl-def">with_list_check</span>(items):          <span class="hl-com"># 4. "x not in result" scans a LIST every time</span>
+    result = []
+    <span class="hl-ctl">for</span> x <span class="hl-opw">in</span> items:
+        <span class="hl-ctl">if</span> x <span class="hl-opw">not</span> <span class="hl-opw">in</span> result:
+            result.<span class="hl-call">append</span>(x)
+    <span class="hl-ctl">return</span> result
+
+reference = <span class="hl-call">with_seen_set</span>(emails)
+<span class="hl-bi">print</span>(<span class="hl-str">"50,000 sign-ups, ~10,000 distinct e-mails, first occurrence kept:"</span>)
+<span class="hl-ctl">for</span> fn <span class="hl-opw">in</span> [with_seen_set, with_dict_fromkeys, with_pandas, with_list_check]:
+    t0 = <span class="hl-lib">time</span>.<span class="hl-call">perf_counter</span>()
+    same = <span class="hl-call">fn</span>(emails) == reference
+    <span class="hl-bi">print</span>(<span class="hl-str">f"  {fn.__name__:&lt;19} {(time.perf_counter() - t0) * 1000:8.1f} ms   same answer: {same}"</span>)
+
+<span class="hl-com"># Top 3 most active users — three ways to ask the same question</span>
+counts = <span class="hl-bi">Counter</span>(emails)
+top_sorted = <span class="hl-bi">sorted</span>(counts.<span class="hl-call">items</span>(), key=<span class="hl-kw">lambda</span> kv: kv[<span class="hl-num">1</span>], reverse=<span class="hl-const">True</span>)[:<span class="hl-num">3</span>]
+top_heap = heapq.<span class="hl-call">nlargest</span>(<span class="hl-num">3</span>, counts.<span class="hl-call">items</span>(), key=<span class="hl-kw">lambda</span> kv: kv[<span class="hl-num">1</span>])
+top_counter = counts.<span class="hl-call">most_common</span>(<span class="hl-num">3</span>)
+<span class="hl-bi">print</span>(<span class="hl-str">"top 3:"</span>, top_counter)
+<span class="hl-bi">print</span>(<span class="hl-str">"sorted == nlargest == most_common:"</span>, top_sorted == top_heap == top_counter)</pre></div>
+<div class="code-output"><span class="code-output-label" data-i18n="py_out_label"># output when run (verified):</span>50,000 sign-ups, ~10,000 distinct e-mails, first occurrence kept:
+  with_seen_set            3.4 ms   same answer: True
+  with_dict_fromkeys       2.2 ms   same answer: True
+  with_pandas              7.8 ms   same answer: True
+  with_list_check       2189.1 ms   same answer: True
+top 3: [(&#x27;user5610@mail.com&#x27;, 15), (&#x27;user7973@mail.com&#x27;, 14), (&#x27;user2858@mail.com&#x27;, 14)]
+sorted == nlargest == most_common: True</div>
+</div>
+
+<div class="cs-takeaway" data-i18n="s26_take"><b>How to choose:</b> for counting, <code>Counter</code> — shortest and fastest; for “unique, in order”, <code>dict.fromkeys</code>; when the data is already a DataFrame column, stay in pandas. Whatever you pick, never check membership in a list inside a loop: with thousands of distinct values that single habit makes code hundreds of times slower. Times in the output are from one real run and will differ on your machine; the ratios are what matters.</div>
+<!--/S26-->
 </div>
 <div class="card" id="s-data"><div class="card-title" data-i18n="s3_h">3 · Working with data</div>
 <p data-i18n="s3_lead">Where the language stops and the craft begins. Half of all analytical errors are born not in the calculation but in how the table was assembled.</p>

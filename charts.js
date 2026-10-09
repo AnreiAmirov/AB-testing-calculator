@@ -683,7 +683,7 @@ function drawCharts() {
 
 // Draw reference charts on resize
 window.addEventListener('resize', () => {
-  if (document.getElementById('tab-reference').classList.contains('active')) drawCharts();
+  if (document.getElementById('tab-reference')?.classList.contains('active')) drawCharts();
 });
 
 // Interactive slider handlers for the CUPED and peeking charts
