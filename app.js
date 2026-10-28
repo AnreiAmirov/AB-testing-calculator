@@ -1436,7 +1436,9 @@ function copyCodeBlock(btn) {
   const block = btn.closest('.code-block');
   const pre = block && block.querySelector('pre');
   if (!pre) return;
-  const text = pre.innerText;
+  // Blocks with per-line role highlighting keep their exact source in data-copy:
+  // their lines are block elements, and innerText would double every line break.
+  const text = pre.hasAttribute('data-copy') ? pre.getAttribute('data-copy') : pre.innerText;
   const done = () => {
     const orig = btn.getAttribute('data-label') || btn.textContent;
     if (!btn.getAttribute('data-label')) btn.setAttribute('data-label', orig);

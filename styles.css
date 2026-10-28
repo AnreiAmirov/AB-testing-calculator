@@ -2912,3 +2912,99 @@ a.tab-btn, a.btab { text-decoration: none; }
   color: var(--accent); text-decoration: underline; text-underline-offset: 2px; font-weight: 600;
 }
 .py-sub-p { margin-top: 12px; }
+
+/* ═══════════════════════════════════════════════════════════════════════
+   ALGORITHMS: "How to come up with a solution" (#a-derive)
+   Code lines are tagged by role — state / step / end / edge — so every
+   solution reads as the same three-part skeleton.
+   ═══════════════════════════════════════════════════════════════════════ */
+:root {
+  --role-state: #2a9db5; --role-step: #d08a1c; --role-end: #2f9e5f; --role-edge: #c2477a;
+}
+.dv-code pre .cl { display: block; margin: 0 -18px; padding: 0 18px 0 15px; border-left: 3px solid transparent; }
+.dv-code pre .cl-state { border-left-color: var(--role-state); background: rgba(42, 157, 181, 0.13); }
+.dv-code pre .cl-step  { border-left-color: var(--role-step);  background: rgba(208, 138, 28, 0.13); }
+.dv-code pre .cl-end   { border-left-color: var(--role-end);   background: rgba(47, 158, 95, 0.15); }
+.dv-code pre .cl-edge  { border-left-color: var(--role-edge);  background: rgba(194, 71, 122, 0.14); }
+.role-chip { display: inline-block; padding: 1px 9px; border-radius: 999px; font-size: 0.8em; font-weight: 700;
+  color: #fff; vertical-align: 1px; }
+.role-chip.role-state { background: var(--role-state); }
+.role-chip.role-step  { background: var(--role-step); }
+.role-chip.role-end   { background: var(--role-end); }
+.role-chip.role-edge  { background: var(--role-edge); }
+
+.dv-method li { margin-bottom: 8px; }
+.dv-cat td:first-child { font-weight: 600; }
+.dv-cat td a { white-space: nowrap; font-weight: 700; color: var(--accent); }
+
+.dv-fam .card-title { font-size: 1.12rem; }
+.dv-step-h {
+  margin: 22px 0 8px; font-size: 0.78rem; font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase;
+  color: var(--accent);
+}
+.callout-box.dv-state { border-left: 4px solid var(--role-state); }
+.dv-rules td:first-child { width: 38%; font-weight: 600; }
+.dv-vars td:last-child { font-size: 0.86rem; }
+.dv-vars td:last-child code { word-break: break-word; }
+
+.dv-chips { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: 4px 0 14px; }
+.dv-chips-lab { font-size: 0.8rem; color: var(--ink-muted); margin-right: 4px; }
+.dv-chip {
+  font-size: 0.76rem; font-weight: 600; padding: 3px 10px; border-radius: 999px; text-decoration: none;
+  background: var(--pill-bg); color: var(--accent); border: 1px solid transparent;
+}
+.dv-chip:hover { border-color: var(--accent); }
+
+.runs-vis { display: flex; flex-wrap: wrap; gap: 10px; margin: 6px 0 14px; }
+.run-grp { display: inline-flex; flex-direction: column; align-items: center; gap: 4px; padding: 6px 6px 4px;
+  border: 1px dashed var(--border-strong); border-radius: 10px; }
+.run-cells { display: flex; gap: 3px; }
+.run-lab { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 0.82rem; color: var(--role-end); }
+
+.dv-bug { margin-top: 18px; padding: 12px 14px 4px; border-radius: var(--radius-md);
+  background: var(--warning-bg); border-left: 4px solid var(--warning); }
+.dv-bug .dv-step-h { margin-top: 2px; color: var(--warning); }
+.dv-bug p { font-size: 0.9rem; }
+
+.dv-signal { margin-top: 18px; }
+.dv-signal b { display: block; margin-bottom: 2px; }
+.dv-next { display: inline-block; margin-top: 16px; font-weight: 700; color: var(--accent); text-decoration: none; }
+.dv-next:hover { text-decoration: underline; }
+
+/* trainer */
+.dv-tr-score { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; font-size: 0.92rem; }
+.dv-tr-n { color: var(--accent); font-size: 1.1rem; }
+.dv-tr-reset { margin-left: auto; padding: 6px 14px; border-radius: 999px; border: 1px solid var(--border-strong);
+  background: var(--card); color: var(--ink); font: inherit; font-size: 0.82rem; cursor: pointer; }
+.dv-q { border: 1px solid var(--border); border-radius: var(--radius-md); padding: 12px 14px; margin-bottom: 10px; }
+.dv-q.ok { border-color: var(--success); }
+.dv-q.no { border-color: var(--warning); }
+.dv-q-t { display: flex; gap: 10px; align-items: flex-start; font-weight: 600; margin-bottom: 10px; }
+.dv-q-n { flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px;
+  border-radius: 50%; background: var(--pill-bg); color: var(--accent); font-size: 0.75rem; font-weight: 700; }
+.dv-opts { display: flex; flex-wrap: wrap; gap: 6px; }
+.dv-opt { padding: 7px 12px; border-radius: 999px; border: 1px solid var(--border-strong); background: var(--card);
+  color: var(--ink); font: inherit; font-size: 0.82rem; cursor: pointer; min-height: 36px; }
+.dv-opt:hover { border-color: var(--accent); color: var(--accent); }
+.dv-q.done .dv-opt { cursor: default; opacity: 0.55; }
+.dv-q.done .dv-opt.right { opacity: 1; background: var(--success-bg); border-color: var(--success); color: var(--success); font-weight: 700; }
+.dv-q.no .dv-opt.picked { opacity: 1; background: var(--warning-bg); border-color: var(--warning); color: var(--warning); }
+.dv-fb { margin-top: 10px; font-size: 0.88rem; color: var(--ink-muted); line-height: 1.55; }
+.dv-q.ok .dv-fb-v { color: var(--success); }
+.dv-q.no .dv-fb-v { color: var(--warning); }
+
+/* "Solution outline" at the top of every easy problem's line of reasoning */
+.dv-schema { border: 1px solid var(--border); border-radius: var(--radius-md); padding: 10px 12px; margin: 10px 0 12px;
+  background: var(--card); }
+.dv-sch-h { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 6px; font-weight: 700; font-size: 0.86rem;
+  margin-bottom: 6px; }
+.dv-sch-fam { font-weight: 500; color: var(--ink-muted); }
+.dv-sch-fam a { font-weight: 700; color: var(--accent); }
+.dv-sch-row { display: grid; grid-template-columns: 150px 1fr; gap: 10px; padding: 6px 0 6px 10px; font-size: 0.88rem;
+  border-left: 3px solid transparent; }
+.dv-sch-row + .dv-sch-row { border-top: 1px dashed var(--border); }
+.dv-sch-k { font-weight: 700; }
+.dv-sch-state { border-left-color: var(--role-state); }
+.dv-sch-step  { border-left-color: var(--role-step); }
+.dv-sch-end   { border-left-color: var(--role-end); }
+@media (max-width: 560px) { .dv-sch-row { grid-template-columns: 1fr; gap: 2px; } }
