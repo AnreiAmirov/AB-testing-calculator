@@ -6,9 +6,11 @@ function applyLang(lang) {
   // and CSS can show the matching version of bilingual charts.
   document.documentElement.setAttribute('lang', lang);
   const dict = T[lang];
+  const missing = [];
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const key = el.getAttribute('data-i18n');
     const val = dict[key];
+    if (val === undefined) missing.push(key);
     if (val !== undefined) {
       // Some translation strings intentionally contain inline markup (<strong>, <em>, <sub>).
       // These are author-controlled (not user input), so rendering them as HTML is safe.
@@ -16,6 +18,9 @@ function applyLang(lang) {
       else el.textContent = val;
     }
   });
+  // A key missing from the dictionary means the page and i18n.js are from different versions
+  // (usually a cached i18n.js). Say so in the console instead of failing silently.
+  if (missing.length) console.warn('i18n: ' + missing.length + ' keys missing for "' + lang + '" (stale i18n.js?):', missing.slice(0, 5));
   // Update lang button: always shows the OTHER language as the switch target
   document.getElementById('lang-label').textContent = lang === 'en' ? 'RU' : 'EN';
   document.documentElement.lang = lang;
