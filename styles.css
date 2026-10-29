@@ -3039,14 +3039,25 @@ a.tab-btn, a.btab { text-decoration: none; }
   --dy-grid: rgba(244,245,255,0.08); --dy-weekend: rgba(165,156,247,0.08); --dy-bad: #ff8a8a; --dy-bad-bg: #2a1012; }
 /* the site has no global [hidden] rule, and .dy-btn sets display — keep hidden elements hidden */
 .dy-card [hidden] { display: none !important; }
-.dy-entry { margin-top: 18px; border-style: dashed; }
-.dy-entry-row { display: flex; gap: 18px; align-items: center; justify-content: space-between; flex-wrap: wrap; }
-.dy-entry-text { flex: 1 1 360px; min-width: 0; }
-.dy-kicker { font-size: 0.7rem; font-weight: 800; letter-spacing: 0.07em; text-transform: uppercase; color: var(--accent); }
-.dy-entry h3 { margin: 4px 0 4px; font-size: 1.08rem; }
-.dy-entry p { margin: 0; color: var(--ink-muted); font-size: 0.9rem; max-width: 70ch; }
-.dy-open { white-space: nowrap; }
-.dy-card { margin-top: 14px; }
+.dy-switch-wrap { margin: 0 0 14px; }
+.dy-switch { display: inline-flex; flex-wrap: wrap; gap: 4px; padding: 4px; border-radius: 999px; background: var(--pill-bg); border: 1px solid var(--border); }
+.dy-switch button { font: inherit; font-size: 0.86rem; font-weight: 600; padding: 8px 16px; border: 0; border-radius: 999px; background: transparent;
+  color: var(--ink-muted); cursor: pointer; display: inline-flex; align-items: center; gap: 8px; min-height: 40px; }
+.dy-switch button.on { background: var(--card); color: var(--accent); box-shadow: 0 1px 6px rgba(30,30,80,0.12); }
+.dy-badge { font-size: 0.66rem; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; padding: 2px 8px; border-radius: 999px;
+  background: var(--success-bg); color: var(--success); }
+.dy-switch-note { margin: 8px 2px 0; font-size: 0.86rem; color: var(--ink-muted); max-width: 80ch; }
+/* view switch: "Dynamics by day" hides the classic analysis, "Final totals" hides the dashboard */
+#tab-analyse.dy-daily > main > :not(.dy-keep) { display: none !important; }
+/* calculator tab pill: the Russian "Анализ результатов" was cut to "Анализ результат…" at 520px */
+.tabs-bar { max-width: 600px; }
+@media (max-width: 560px) {
+  .dy-switch { display: grid; grid-template-columns: 1fr 1fr; width: 100%; border-radius: var(--radius-md); }
+  .dy-switch button { justify-content: center; border-radius: var(--radius-sm); padding: 8px 10px; }
+  .dy-badge { display: none; }
+}
+#tab-analyse:not(.dy-daily) #dy-card { display: none !important; }
+.dy-card { margin-top: 0; }
 .dy-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
 .dy-head h3 { margin: 0; font-size: 1.15rem; }
 .dy-databar { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; align-items: center; margin-top: 12px;

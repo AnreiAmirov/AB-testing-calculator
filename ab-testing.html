@@ -87,7 +87,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-<link rel="stylesheet" href="styles.css?v=7db3f12c">
+<link rel="stylesheet" href="styles.css?v=383e704b">
 </head>
 <body>
 
@@ -241,7 +241,7 @@
     <div class="card-heading" data-i18n="plan_step3_heading">Test parameters</div>
     <div class="form-row cols-3" style="margin-top:12px">
       <div class="field">
-        <label>Significance (α)</label>
+        <label data-i18n="lbl_significance">Significance (α)</label>
         <div class="radio-group">
           <label><input type="radio" name="p-alpha" value="0.10"> <span>0.10</span></label>
           <label><input type="radio" name="p-alpha" value="0.05" checked> <span>0.05</span></label>
@@ -368,8 +368,89 @@
 <!-- ══════════════════════════════
      ANALYSE
      ══════════════════════════════ -->
-<div id="tab-analyse" class="tab-panel">
+<div id="tab-analyse" class="tab-panel dy-daily">
 <main>
+<!--DAILY-->
+  <div class="dy-keep dy-switch-wrap">
+    <div class="dy-switch" role="group">
+      <button type="button" data-dy-view="daily" class="on"><span data-i18n="dy_view_daily">Dynamics by day</span> <span class="dy-badge" data-i18n="dy_view_badge">sample loaded</span></button>
+      <button type="button" data-dy-view="classic"><span data-i18n="dy_view_classic">Final totals</span></button>
+    </div>
+    <p class="dy-switch-note" data-i18n="dy_view_note">Two ways to analyse a test: day by day, with the metric of both groups over time — or from the final totals with the classic Z- or t-test.</p>
+  </div>
+  <div class="card dy-card dy-keep" id="dy-card">
+    <div class="dy-head">
+      <h3 data-i18n="dy_h">Test dynamics by day</h3>
+      <span class="dy-chip neutral" data-i18n="dy_method">Welch’s t-test · cumulative</span>
+    </div>
+    <div class="dy-verdict neutral" id="dy-verdict"><div class="dy-verdict-k">&nbsp;</div><h3>&nbsp;</h3></div>
+    <div class="dy-databar">
+      <div class="dy-srcbox"><span class="dy-src" id="dy-src"></span><span class="dy-meta" id="dy-meta"></span></div>
+      <div class="dy-actions">
+        <label class="dy-btn primary" for="dy-file"><span data-i18n="dy_upload">Upload CSV or Excel</span></label>
+        <input type="file" id="dy-file" accept=".csv,.txt,.xlsx,.xls" hidden>
+        <button type="button" class="dy-btn" id="dy-dl"><span data-i18n="dy_download">Download sample dataset</span></button>
+        <button type="button" class="dy-btn" id="dy-reset" hidden><span data-i18n="dy_reset">Back to the sample</span></button>
+      </div>
+    </div>
+    <div class="dy-err" id="dy-err" hidden></div>
+    <div class="dy-note" id="dy-dl-note" hidden></div>
+      <details class="dy-fmt">
+        <summary><span data-i18n="dy_fmt_sum">Which file works</span></summary>
+        <div class="dy-fmt-grid">
+          <div><p data-i18n="dy_fmt_users"><b>Per user</b> — one row per user: date, group, metric value. The sample dataset looks like this.</p><pre class="dy-sample" translate="no">date,user_id,group,revenue
+2026-09-07,u100000,A,0
+2026-09-07,u100004,B,3184</pre></div>
+          <div><p data-i18n="dy_fmt_agg"><b>Daily totals</b> — one row per day and group: users, mean and standard deviation for that day.</p><pre class="dy-sample" translate="no">date,group,users,mean,sd
+2026-09-07,A,1446,171.2,812.5
+2026-09-07,B,1488,233.9,960.1</pre></div>
+        </div>
+        <p data-i18n="dy_fmt_note">Columns are recognised by name (date / дата, group / группа, revenue / value / значение — or users, mean, sd). Separator: comma or semicolon. There must be exactly two groups; A or control is treated as the control — swap them with the button below.</p>
+      </details>
+      <div class="dy-params">
+        <span class="dy-param"><span data-i18n="dy_alpha">Significance level α</span>
+          <span class="dy-seg" role="group"><button type="button" data-dy-alpha="0.05" class="on"><span data-i18n="dy_a05">0.05</span></button><button type="button" data-dy-alpha="0.01"><span data-i18n="dy_a01">0.01</span></button></span></span>
+        <label class="dy-param" for="dy-plan"><span data-i18n="dy_plan">Planned days</span> <input type="number" id="dy-plan" min="1" max="365" value="21"></label>
+        <span class="dy-groups" id="dy-groups"></span>
+        <button type="button" class="dy-btn" id="dy-swap"><span data-i18n="dy_swap">Swap control and test</span></button>
+      </div>
+      <div class="dy-kpis" id="dy-kpis"></div>
+      <div class="dy-scrub">
+        <button type="button" class="dy-play" id="dy-play" aria-label="Play day by day">▶</button>
+        <input type="range" id="dy-day" min="1" max="21" value="21" aria-label="day">
+        <span class="dy-day-lab" id="dy-day-lab"></span>
+      </div>
+      <div class="dy-charts">
+        <div class="dy-chart wide">
+          <div class="dy-chart-h"><h4 data-i18n="dy_c1_h">The metric in both groups</h4>
+            <span class="dy-seg" role="group"><button type="button" data-dy-mode="daily" class="on"><span data-i18n="dy_daily">Each day</span></button><button type="button" data-dy-mode="cum"><span data-i18n="dy_cum">Cumulative</span></button></span></div>
+          <p class="dy-sub" id="dy-c1-sub"></p>
+          <div class="dy-legend"><span><span class="dy-dot a"></span><span id="dy-lgA"></span></span><span><span class="dy-dot b"></span><span id="dy-lgB"></span></span></div>
+          <div class="dy-cv"><canvas id="dy-c1"></canvas></div>
+        </div>
+        <div class="dy-chart">
+          <h4 data-i18n="dy_c2_h">Effect and confidence interval</h4>
+          <p class="dy-sub" id="dy-c2-sub"></p>
+          <div class="dy-cv"><canvas id="dy-c2"></canvas></div>
+        </div>
+        <div class="dy-chart">
+          <h4 data-i18n="dy_c3_h">p-value by day</h4>
+          <p class="dy-sub" data-i18n="dy_c3_sub">Log scale. Below the dashed line — significant at α; the vertical dashed line marks the planned day.</p>
+          <div class="dy-cv"><canvas id="dy-c3"></canvas></div>
+        </div>
+        <div class="dy-chart wide">
+          <div class="dy-chart-h"><h4 data-i18n="dy_c4_h">Users by day</h4><span class="dy-chip good" id="dy-srm"></span></div>
+          <p class="dy-sub" data-i18n="dy_c4_sub">How many users landed in each group. A visible imbalance in a 50/50 split points to an assignment bug (SRM).</p>
+          <div class="dy-cv short"><canvas id="dy-c4"></canvas></div>
+        </div>
+      </div>
+      <details class="dy-tbl">
+        <summary><span data-i18n="dy_table">Table by day</span></summary>
+        <div class="dy-tbl-wrap"><table id="dy-tbl"></table></div>
+      </details>
+      <p class="dy-foot" data-i18n="dy_foot">The sample is synthetic: a true +6% lift in conversion plus a temporary novelty effect in the first week. Every day uses Welch’s t-test on all data accumulated up to that day — the same test as in the block above.</p>
+    </div>
+<!--/DAILY-->
 
   <!-- Recent results (populated from localStorage; hidden when empty) -->
   <div id="recent-results-card" class="card" style="display:none">
@@ -432,8 +513,8 @@
             <div class="variant-row">
               <div class="variant-tag">B</div>
               <div class="variant-inputs">
-                <div class="vi-field"><label>Exposed</label><input type="number" class="cv-users" placeholder="5000" min="1"></div>
-                <div class="vi-field"><label>Converted</label><input type="number" class="cv-conv" placeholder="280" min="0"></div>
+                <div class="vi-field"><label data-i18n="lbl_exposed">Exposed</label><input type="number" class="cv-users" placeholder="5000" min="1"></div>
+                <div class="vi-field"><label data-i18n="lbl_converted">Converted</label><input type="number" class="cv-conv" placeholder="280" min="0"></div>
               </div>
               <div></div>
             </div>
@@ -544,8 +625,8 @@
                 <textarea class="cv-raw-ta" rows="3" placeholder="42.1, 38.5, 0, 55.2, 12.0, 0, 71.3 ..." style="width:100%;padding:8px 10px;border:1.5px solid var(--border-strong);border-radius:var(--radius-sm);font-family:'JetBrains Mono',monospace;font-size:0.82rem;resize:vertical;background:#fff"></textarea>
               </div>
               <div class="form-row cols-3 mt-8" id="cont-summary-A" style="display:none">
-                <div class="field"><label>Mean</label><input type="number" class="cv-mean" step="0.0001" placeholder="auto"></div>
-                <div class="field"><label>SD</label><input type="number" class="cv-sd" step="0.0001" min="0" placeholder="auto"></div>
+                <div class="field"><label data-i18n="lbl_mean">Mean</label><input type="number" class="cv-mean" step="0.0001" placeholder="auto"></div>
+                <div class="field"><label data-i18n="lbl_sd">SD</label><input type="number" class="cv-sd" step="0.0001" min="0" placeholder="auto"></div>
                 <div class="field"><label>n</label><input type="number" class="cv-n" min="2" placeholder="auto"></div>
               </div>
               <div class="mt-8" style="text-align:right">
@@ -556,12 +637,12 @@
             <div class="cont-variant-block" data-tag="B">
               <div style="font-family:'JetBrains Mono',monospace;font-size:0.8rem;font-weight:600;color:var(--ink-muted);margin-bottom:6px">B</div>
               <div class="field">
-                <label>Per-user values <span class="tip" data-i18n="tip_sep">comma or space separated</span></label>
+                <label><span data-i18n="lbl_per_user_values">Per-user values</span> <span class="tip" data-i18n="tip_sep">comma or space separated</span></label>
                 <textarea class="cv-raw-ta" rows="3" placeholder="45.0, 41.2, 0, 58.0, 14.5, 0, 80.1 ..." style="width:100%;padding:8px 10px;border:1.5px solid var(--border-strong);border-radius:var(--radius-sm);font-family:'JetBrains Mono',monospace;font-size:0.82rem;resize:vertical;background:#fff"></textarea>
               </div>
               <div class="form-row cols-3 mt-8" id="cont-summary-B" style="display:none">
-                <div class="field"><label>Mean</label><input type="number" class="cv-mean" step="0.0001" placeholder="auto"></div>
-                <div class="field"><label>SD</label><input type="number" class="cv-sd" step="0.0001" min="0" placeholder="auto"></div>
+                <div class="field"><label data-i18n="lbl_mean">Mean</label><input type="number" class="cv-mean" step="0.0001" placeholder="auto"></div>
+                <div class="field"><label data-i18n="lbl_sd">SD</label><input type="number" class="cv-sd" step="0.0001" min="0" placeholder="auto"></div>
                 <div class="field"><label>n</label><input type="number" class="cv-n" min="2" placeholder="auto"></div>
               </div>
               <div class="mt-8" style="text-align:right">
@@ -596,90 +677,6 @@
         <div id="cont-result" class="analysis-result hidden"></div>
       </div>
     </div>
-<!--DAILY-->
-    <div class="card dy-entry">
-      <div class="dy-entry-row">
-        <div class="dy-entry-text">
-          <div class="dy-kicker" data-i18n="dy_entry_k">Optional · daily dynamics</div>
-          <h3 data-i18n="dy_entry_h">Have data by day? See how the test evolved</h3>
-          <p data-i18n="dy_entry_p">Upload rows with a date — one per user, or daily totals — and see the metric in both groups day by day, how the confidence interval narrowed and how the p-value moved. Opens with a sample dataset you can download.</p>
-        </div>
-        <button type="button" class="btn-primary dy-open" id="dy-open" aria-expanded="false" aria-controls="dy-card"><span data-i18n="dy_open">Open daily dynamics</span></button>
-      </div>
-    </div>
-    <div class="card dy-card hidden" id="dy-card">
-      <div class="dy-head">
-        <h3 data-i18n="dy_h">Test dynamics by day</h3>
-        <span class="dy-chip neutral" data-i18n="dy_method">Welch’s t-test · cumulative</span>
-      </div>
-      <div class="dy-databar">
-        <div class="dy-srcbox"><span class="dy-src" id="dy-src"></span><span class="dy-meta" id="dy-meta"></span></div>
-        <div class="dy-actions">
-          <label class="dy-btn primary" for="dy-file"><span data-i18n="dy_upload">Upload CSV or Excel</span></label>
-          <input type="file" id="dy-file" accept=".csv,.txt,.xlsx,.xls" hidden>
-          <button type="button" class="dy-btn" id="dy-dl"><span data-i18n="dy_download">Download sample dataset</span></button>
-          <button type="button" class="dy-btn" id="dy-reset" hidden><span data-i18n="dy_reset">Back to the sample</span></button>
-        </div>
-      </div>
-      <div class="dy-err" id="dy-err" hidden></div>
-      <div class="dy-note" id="dy-dl-note" hidden></div>
-      <div class="dy-verdict neutral" id="dy-verdict"></div>
-      <details class="dy-fmt">
-        <summary><span data-i18n="dy_fmt_sum">Which file works</span></summary>
-        <div class="dy-fmt-grid">
-          <div><p data-i18n="dy_fmt_users"><b>Per user</b> — one row per user: date, group, metric value. The sample dataset looks like this.</p><pre class="dy-sample" translate="no">date,user_id,group,revenue
-2026-09-07,u100000,A,0
-2026-09-07,u100004,B,3184</pre></div>
-          <div><p data-i18n="dy_fmt_agg"><b>Daily totals</b> — one row per day and group: users, mean and standard deviation for that day.</p><pre class="dy-sample" translate="no">date,group,users,mean,sd
-2026-09-07,A,1446,171.2,812.5
-2026-09-07,B,1488,233.9,960.1</pre></div>
-        </div>
-        <p data-i18n="dy_fmt_note">Columns are recognised by name (date / дата, group / группа, revenue / value / значение — or users, mean, sd). Separator: comma or semicolon. There must be exactly two groups; A or control is treated as the control — swap them with the button below.</p>
-      </details>
-      <div class="dy-params">
-        <span class="dy-param"><span data-i18n="dy_alpha">Significance level α</span>
-          <span class="dy-seg" role="group"><button type="button" data-dy-alpha="0.05" class="on"><span data-i18n="dy_a05">0.05</span></button><button type="button" data-dy-alpha="0.01"><span data-i18n="dy_a01">0.01</span></button></span></span>
-        <label class="dy-param" for="dy-plan"><span data-i18n="dy_plan">Planned days</span> <input type="number" id="dy-plan" min="1" max="365" value="21"></label>
-        <span class="dy-groups" id="dy-groups"></span>
-        <button type="button" class="dy-btn" id="dy-swap"><span data-i18n="dy_swap">Swap control and test</span></button>
-      </div>
-      <div class="dy-kpis" id="dy-kpis"></div>
-      <div class="dy-scrub">
-        <button type="button" class="dy-play" id="dy-play" aria-label="Play day by day">▶</button>
-        <input type="range" id="dy-day" min="1" max="21" value="21" aria-label="day">
-        <span class="dy-day-lab" id="dy-day-lab"></span>
-      </div>
-      <div class="dy-charts">
-        <div class="dy-chart wide">
-          <div class="dy-chart-h"><h4 data-i18n="dy_c1_h">The metric in both groups</h4>
-            <span class="dy-seg" role="group"><button type="button" data-dy-mode="daily" class="on"><span data-i18n="dy_daily">Each day</span></button><button type="button" data-dy-mode="cum"><span data-i18n="dy_cum">Cumulative</span></button></span></div>
-          <p class="dy-sub" id="dy-c1-sub"></p>
-          <div class="dy-legend"><span><span class="dy-dot a"></span><span id="dy-lgA"></span></span><span><span class="dy-dot b"></span><span id="dy-lgB"></span></span></div>
-          <div class="dy-cv"><canvas id="dy-c1"></canvas></div>
-        </div>
-        <div class="dy-chart">
-          <h4 data-i18n="dy_c2_h">Effect and confidence interval</h4>
-          <p class="dy-sub" id="dy-c2-sub"></p>
-          <div class="dy-cv"><canvas id="dy-c2"></canvas></div>
-        </div>
-        <div class="dy-chart">
-          <h4 data-i18n="dy_c3_h">p-value by day</h4>
-          <p class="dy-sub" data-i18n="dy_c3_sub">Log scale. Below the dashed line — significant at α; the vertical dashed line marks the planned day.</p>
-          <div class="dy-cv"><canvas id="dy-c3"></canvas></div>
-        </div>
-        <div class="dy-chart wide">
-          <div class="dy-chart-h"><h4 data-i18n="dy_c4_h">Users by day</h4><span class="dy-chip good" id="dy-srm"></span></div>
-          <p class="dy-sub" data-i18n="dy_c4_sub">How many users landed in each group. A visible imbalance in a 50/50 split points to an assignment bug (SRM).</p>
-          <div class="dy-cv short"><canvas id="dy-c4"></canvas></div>
-        </div>
-      </div>
-      <details class="dy-tbl">
-        <summary><span data-i18n="dy_table">Table by day</span></summary>
-        <div class="dy-tbl-wrap"><table id="dy-tbl"></table></div>
-      </details>
-      <p class="dy-foot" data-i18n="dy_foot">The sample is synthetic: a true +6% lift in conversion plus a temporary novelty effect in the first week. Every day uses Welch’s t-test on all data accumulated up to that day — the same test as in the block above.</p>
-    </div>
-<!--/DAILY-->
   </div>
 
   <!-- ── RATIO (aggregated per user, t-test) ── -->
@@ -721,8 +718,8 @@
                 <textarea class="cv-raw-ta" rows="3" placeholder="28.50, 45.00, 12.00, 67.50, 22.00 ..." style="width:100%;padding:8px 10px;border:1.5px solid var(--border-strong);border-radius:var(--radius-sm);font-family:'JetBrains Mono',monospace;font-size:0.82rem;resize:vertical;background:#fff"></textarea>
               </div>
               <div class="form-row cols-3 mt-8" id="ratio-summary-A" style="display:none">
-                <div class="field"><label>Mean</label><input type="number" class="cv-mean" step="0.0001" placeholder="auto"></div>
-                <div class="field"><label>SD</label><input type="number" class="cv-sd" step="0.0001" min="0" placeholder="auto"></div>
+                <div class="field"><label data-i18n="lbl_mean">Mean</label><input type="number" class="cv-mean" step="0.0001" placeholder="auto"></div>
+                <div class="field"><label data-i18n="lbl_sd">SD</label><input type="number" class="cv-sd" step="0.0001" min="0" placeholder="auto"></div>
                 <div class="field"><label>n</label><input type="number" class="cv-n" min="2" placeholder="auto"></div>
               </div>
               <div class="mt-8" style="text-align:right">
@@ -733,12 +730,12 @@
             <div class="cont-variant-block" data-tag="B">
               <div style="font-family:'JetBrains Mono',monospace;font-size:0.8rem;font-weight:600;color:var(--ink-muted);margin-bottom:6px">B</div>
               <div class="field">
-                <label>Per-user ratio values <span class="tip" data-i18n="tip_sep">comma or space separated</span></label>
+                <label><span data-i18n="lbl_per_user_ratio">Per-user ratio values</span> <span class="tip" data-i18n="tip_sep">comma or space separated</span></label>
                 <textarea class="cv-raw-ta" rows="3" placeholder="30.00, 48.50, 13.50, 71.00, 25.50 ..." style="width:100%;padding:8px 10px;border:1.5px solid var(--border-strong);border-radius:var(--radius-sm);font-family:'JetBrains Mono',monospace;font-size:0.82rem;resize:vertical;background:#fff"></textarea>
               </div>
               <div class="form-row cols-3 mt-8" id="ratio-summary-B" style="display:none">
-                <div class="field"><label>Mean</label><input type="number" class="cv-mean" step="0.0001" placeholder="auto"></div>
-                <div class="field"><label>SD</label><input type="number" class="cv-sd" step="0.0001" min="0" placeholder="auto"></div>
+                <div class="field"><label data-i18n="lbl_mean">Mean</label><input type="number" class="cv-mean" step="0.0001" placeholder="auto"></div>
+                <div class="field"><label data-i18n="lbl_sd">SD</label><input type="number" class="cv-sd" step="0.0001" min="0" placeholder="auto"></div>
                 <div class="field"><label>n</label><input type="number" class="cv-n" min="2" placeholder="auto"></div>
               </div>
               <div class="mt-8" style="text-align:right">
@@ -782,9 +779,9 @@
      REFERENCE
      ══════════════════════════════ -->
 <script src="stats.js?v=6393e047"></script>
-<script src="i18n.js?v=4fc8f0ae"></script>
+<script src="i18n.js?v=ed81eb2c"></script>
 <script src="charts.js?v=54f63be5"></script>
 <script src="app.js?v=3717537e"></script>
-<script src="daily.js?v=04179774"></script>
+<script src="daily.js?v=18fab283"></script>
 </body>
 </html>

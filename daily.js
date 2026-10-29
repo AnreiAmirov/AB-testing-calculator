@@ -247,20 +247,32 @@
   function stop() { if (st.timer) { clearInterval(st.timer); st.timer = null; $('dy-play').textContent = '▶'; } }
   function showError(msg) { const e = $('dy-err'); e.hidden = false; e.textContent = msg; }
 
-  /* ── open / close ── */
-  let opened = false;
-  $('dy-open').addEventListener('click', () => {
-    const card = $('dy-card'), show = card.classList.contains('hidden');
-    card.classList.toggle('hidden', !show);
-    $('dy-open').setAttribute('aria-expanded', show ? 'true' : 'false');
-    const lab = $('dy-open').querySelector('span[data-i18n]'); const key = show ? 'dy_close' : 'dy_open';
-    lab.setAttribute('data-i18n', key); lab.textContent = L(key);
-    if (!show) { stop(); return; }
+  /* ── view switch: "Dynamics by day" (default, prefilled) or "Final totals" ── */
+  const VIEW_KEY = 'abcalc-analyse-view';
+  let built = false;
+  function ensure() {
+    const tab = $('tab-analyse');
+    if (!tab || !tab.classList.contains('active') || !tab.classList.contains('dy-daily')) return;
     loadChart().then(() => {
-      if (!opened) { opened = true; Chart.defaults.locale = loc(); loadSample(); } else render();
-      card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      if (!built) { built = true; Chart.defaults.locale = loc(); loadSample(); } else render();
     }).catch(() => showError(L('dy_e_chart')));
-  });
+  }
+  function setView(v) {
+    const tab = $('tab-analyse'); if (!tab) return;
+    tab.classList.toggle('dy-daily', v === 'daily');
+    document.querySelectorAll('[data-dy-view]').forEach(b => b.classList.toggle('on', b.dataset.dyView === v));
+    try { localStorage.setItem(VIEW_KEY, v); } catch (e) {}
+    if (v === 'daily') ensure(); else stop();
+  }
+  document.querySelectorAll('[data-dy-view]').forEach(b => b.addEventListener('click', () => setView(b.dataset.dyView)));
+  try { if (localStorage.getItem(VIEW_KEY) === 'classic') setView('classic'); } catch (e) {}
+  // build the dashboard whenever the Analyse tab is shown (tab buttons, bottom bar, shared ?tab=analyse links)
+  if (typeof showTab === 'function') {
+    const prevShow = showTab;
+    showTab = function (name, btn) { prevShow(name, btn); if (name === 'analyse') ensure(); };
+  }
+  const boot = () => { ensure(); const idle = window.requestIdleCallback || (f => setTimeout(f, 1500)); idle(() => loadChart().catch(() => {})); };
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => setTimeout(boot, 0)); else setTimeout(boot, 0);
 
   /* ── controls ── */
   $('dy-day').addEventListener('input', e => { stop(); setDay(+e.target.value); });
