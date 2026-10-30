@@ -6,7 +6,7 @@ function drawCharts() {
   const PL   = RC.PL;
   const OR   = RC.OR;
   const ORL  = RC.ORL;
-  const RED  = RC.REDL || 'rgba(220,50,50,0.25)';
+  const RED  = RC.REDL || 'rgba(194,65,12,0.25)';
   const GREY = 'rgba(120,120,140,0.2)';
   const INK   = () => RC.INK;
   const MUTED = () => RC.MUTED;
@@ -173,7 +173,7 @@ function drawCharts() {
     labelStyle(ctx); ctx.textAlign = 'center';
     ctx.fillStyle = P;    ctx.fillText(T[currentLang].chart_h0_null||'H₀ (null)',  toX(mu0), pad.t + 12);
     ctx.fillStyle = OR;   ctx.fillText(T[currentLang].chart_h1_effect||'H₁ (true effect)', toX(mu1), pad.t + 12);
-    ctx.fillStyle = 'rgba(200,50,50,0.8)'; ctx.fillText('α', toX(critX + 0.55), toY(0.04));
+    ctx.fillStyle = 'rgba(194,65,12,0.85)'; ctx.fillText('α', toX(critX + 0.55), toY(0.04));
     ctx.fillStyle = MUTED(); ctx.fillText('β', toX(critX - 0.6), toY(0.06));
   })();
 
@@ -360,7 +360,7 @@ function drawCharts() {
     ctx.beginPath();
     for (let k = 1; k <= 30; k++) (k === 1 ? ctx.moveTo(toX(k), toY(fpRate(k))) : ctx.lineTo(toX(k), toY(fpRate(k))));
     ctx.lineTo(toX(30), toY(0)); ctx.lineTo(toX(1), toY(0)); ctx.closePath();
-    ctx.fillStyle = RC.REDL || 'rgba(220,50,50,0.15)'; ctx.fill();
+    ctx.fillStyle = RC.REDL || 'rgba(194,65,12,0.15)'; ctx.fill();
     // curve
     ctx.beginPath();
     for (let k = 1; k <= 30; k++) (k === 1 ? ctx.moveTo(toX(k), toY(fpRate(k))) : ctx.lineTo(toX(k), toY(fpRate(k))));
@@ -877,13 +877,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // ── Interactive A/B process walkthrough ──
 const PROCESS_STEPS = [
-  { emoji: '💡', key: 'hypo' },
-  { emoji: '📐', key: 'metric' },
-  { emoji: '🔢', key: 'size' },
-  { emoji: '🅰️', key: 'aacheck' },
-  { emoji: '🚀', key: 'run' },
-  { emoji: '📊', key: 'analyse' },
-  { emoji: '🧭', key: 'decide' },
+  { icon: 'bulb', key: 'hypo' },
+  { icon: 'ruler', key: 'metric' },
+  { icon: 'hash', key: 'size' },
+  { icon: 'letter_a', key: 'aacheck' },
+  { icon: 'rocket', key: 'run' },
+  { icon: 'chart', key: 'analyse' },
+  { icon: 'compass', key: 'decide' },
 ];
 let processCurrent = 0;
 
@@ -897,7 +897,7 @@ function renderProcess() {
   // build step chips
   track.innerHTML = PROCESS_STEPS.map((s, i) => `
     <div class="process-step ${i===processCurrent?'active':''}" data-step="${i}">
-      <span class="process-step-emoji">${s.emoji}</span>
+      <span class="process-step-emoji">${ic(s.icon)}</span>
       <span class="process-step-num">${(L.proc_step || 'Step')} ${i+1}</span>
       <span class="process-step-label">${L['proc_'+s.key+'_t'] || s.key}</span>
     </div>`).join('');
@@ -908,7 +908,7 @@ function renderProcess() {
   // panel
   const s = PROCESS_STEPS[processCurrent];
   panel.innerHTML = `
-    <div class="process-panel-title">${s.emoji} ${L['proc_'+s.key+'_t'] || ''}</div>
+    <div class="process-panel-title">${ic(s.icon)} ${L['proc_'+s.key+'_t'] || ''}</div>
     <div class="process-panel-goal">${(L.proc_goal || 'Goal')}: ${L['proc_'+s.key+'_g'] || ''}</div>
     <div class="process-panel-body">${L['proc_'+s.key+'_b'] || ''}</div>
     <div class="process-example"><strong>${L.proc_example || 'Example'}:</strong> ${L['proc_'+s.key+'_e'] || ''}</div>

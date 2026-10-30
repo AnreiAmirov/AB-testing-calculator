@@ -87,11 +87,12 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-<link rel="stylesheet" href="styles.css?v=32a680d8">
+<link rel="stylesheet" href="styles.css?v=fd9df2bb">
 </head>
 <body>
 
 <!-- ── Header ── -->
+<!--TOPBAR--><div class="topbar"><div class="topbar-in"><a class="tb-brand" href="index.html"><span class="tb-logo"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 19v-8M12 19V5M19 19v-6"/></svg></span><span data-i18n="home_brand">Data for Everyone</span></a><nav class="tb-nav" aria-label="Sections"><a class="tb-link on" href="ab-testing.html" aria-current="page"><span data-i18n="tb_calc">Calculator</span></a><a class="tb-link" href="ab-theory.html"><span data-i18n="tb_theory">A/B theory</span></a><a class="tb-link" href="causal.html"><span data-i18n="tb_causal">Causal inference</span></a><a class="tb-link" href="python.html"><span data-i18n="tb_py">Python</span></a><a class="tb-link" href="sql.html"><span data-i18n="tb_sql">SQL</span></a><a class="tb-link" href="algorithms.html"><span data-i18n="tb_alg">Algorithms</span></a></nav><div class="tb-ctrl"><button class="tb-btn share-btn" onclick="copyShareLink()" aria-label="Copy shareable link" title="Copy link"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg><span class="sr-only" data-i18n="btn_share">Share</span></button><button class="tb-btn lang-toggle" onclick="toggleLang()" aria-label="Switch language" id="lang-btn"><span id="lang-label">RU</span></button><button class="tb-btn theme-toggle" onclick="toggleTheme()" aria-label="Dark" title="Dark"><span class="theme-toggle-icon" id="theme-icon"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></span><span class="sr-only" id="theme-label" data-i18n="theme_dark">Dark</span></button></div></div></div><!--/TOPBAR-->
 <header class="site-header">
   <div class="site-header-inner">
     <nav class="crumbs" aria-label="Breadcrumb">
@@ -101,23 +102,6 @@
       </nav>
     <div class="site-header-row">
       <h1 data-i18n="site_title">A/B Testing Calculator</h1>
-      <div class="header-controls">
-        <a class="home-link" href="index.html">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-          <span data-i18n="nav_home">Home</span>
-        </a>
-        <button class="share-btn" onclick="copyShareLink()" aria-label="Copy shareable link" title="Copy link">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
-          <span data-i18n="btn_share">Share</span>
-        </button>
-        <button class="lang-toggle" onclick="toggleLang()" aria-label="Switch language" id="lang-btn">
-          <span id="lang-label">RU</span>
-        </button>
-        <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">
-          <span class="theme-toggle-icon" id="theme-icon">🌙</span>
-          <span id="theme-label" data-i18n="theme_dark">Dark</span>
-        </button>
-      </div>
     </div>
     <p data-i18n="site_subtitle">Pick your metric, drop in your numbers, get a confident decision — with the right statistical test for what you're actually measuring.</p>
     <div class="hero-props">
@@ -177,15 +161,15 @@
     <div class="plan-metric-choice" style="display:flex;flex-direction:column;gap:8px;margin-top:14px">
       <button class="plan-metric-btn selected" id="plan-btn-conversion" onclick="selectPlanMetric('conversion', this)">
         <div style="flex:1;text-align:left">
-          <span style="font-weight:600;font-size:0.9rem;display:block;margin-bottom:2px;color:var(--accent)" data-i18n="plan_conv_label">Conversion</span>
-          <span style="font-size:0.78rem;color:var(--ink-muted)" data-i18n="plan_conv_desc">Yes/no per user — signup rate, purchase rate, click-through rate, retention</span>
+          <span style="font-weight:600;font-size:0.875rem;display:block;margin-bottom:2px;color:var(--accent)" data-i18n="plan_conv_label">Conversion</span>
+          <span style="font-size:0.75rem;color:var(--ink-muted)" data-i18n="plan_conv_desc">Yes/no per user — signup rate, purchase rate, click-through rate, retention</span>
         </div>
         <span class="plan-metric-badge">Z-test</span>
       </button>
       <button class="plan-metric-btn" id="plan-btn-continuous" onclick="selectPlanMetric('continuous', this)">
         <div style="flex:1;text-align:left">
-          <span style="font-weight:600;font-size:0.9rem;display:block;margin-bottom:2px;color:var(--accent)" data-i18n="plan_cont_label">Continuous metric</span>
-          <span style="font-size:0.78rem;color:var(--ink-muted)" data-i18n="plan_cont_desc">One continuous value per user — ARPU, session time, items in cart, 14-day spend</span>
+          <span style="font-weight:600;font-size:0.875rem;display:block;margin-bottom:2px;color:var(--accent)" data-i18n="plan_cont_label">Continuous metric</span>
+          <span style="font-size:0.75rem;color:var(--ink-muted)" data-i18n="plan_cont_desc">One continuous value per user — ARPU, session time, items in cart, 14-day spend</span>
         </div>
         <span class="plan-metric-badge">Welch's t</span>
       </button>
@@ -265,8 +249,8 @@
       </div>
     </div>
     <hr class="divider">
-    <div class="card-heading" style="font-size:0.9rem" data-i18n="plan_duration_heading">How long will it take?</div>
-    <p style="font-size:0.82rem;color:var(--ink-muted);margin:4px 0 12px" data-i18n="plan_duration_hint">Enter your daily eligible traffic to estimate experiment duration.</p>
+    <div class="card-heading" style="font-size:0.875rem" data-i18n="plan_duration_heading">How long will it take?</div>
+    <p style="font-size:0.875rem;color:var(--ink-muted);margin:4px 0 12px" data-i18n="plan_duration_hint">Enter your daily eligible traffic to estimate experiment duration.</p>
     <div class="form-row cols-2" style="align-items:start">
       <div class="field">
         <label><span data-i18n="plan_daily_users_short">Daily eligible users</span><br><span class="tip" data-i18n="plan_daily_users_tip">users who could enter the test</span></label>
@@ -302,8 +286,8 @@
   <!-- Reverse mode: traffic & time -> smallest detectable lift -->
   <div class="step-card">
     <div class="step-num" data-i18n="rev_step">Reverse mode</div>
-    <div class="card-heading" data-i18n="rev_title">🔄 What lift can I detect?</div>
-    <p style="font-size:0.82rem;color:var(--ink-muted);margin:4px 0 12px" data-i18n="rev_hint">The opposite question: given the traffic and time you actually have, this finds the smallest relative lift the test could reliably detect — using the same baseline, α, power and variants set above.</p>
+    <div class="card-heading" data-i18n="rev_title"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11a8 8 0 0 0-14.7-4.4L3 9M3 4v5h5M4 13a8 8 0 0 0 14.7 4.4L21 15M21 20v-5h-5"/></svg> What lift can I detect?</div>
+    <p style="font-size:0.875rem;color:var(--ink-muted);margin:4px 0 12px" data-i18n="rev_hint">The opposite question: given the traffic and time you actually have, this finds the smallest relative lift the test could reliably detect — using the same baseline, α, power and variants set above.</p>
     <div class="form-row cols-2" style="align-items:start">
       <div class="field">
         <label><span data-i18n="rev_daily">Daily eligible users</span><br><span class="tip" data-i18n="rev_daily_tip">total across all variants</span></label>
@@ -324,7 +308,7 @@
   <div class="plan-result-col">
   <!-- Empty state: shown before the first calculation -->
   <div id="plan-empty" class="plan-empty">
-    <div class="plan-empty-ic">📊</div>
+    <div class="plan-empty-ic"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h16"/><path d="M7 16v-5M12 16V6M17 16v-8"/></svg></div>
     <div class="plan-empty-t" data-i18n="plan_empty_t">Your result will appear here</div>
     <div class="plan-empty-s" data-i18n="plan_empty_s">Required sample size, estimated test duration, and a plain-English read of what it means.</div>
   </div>
@@ -355,7 +339,7 @@
 
   <!-- What this means: plain-English interpretation, shown after a calculation -->
   <div id="plan-explain" class="plan-explain hidden">
-    <h4 class="plan-explain-h"><span>📖</span><span data-i18n="plan_explain_h">What this means</span></h4>
+    <h4 class="plan-explain-h"><span><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5"/></svg></span><span data-i18n="plan_explain_h">What this means</span></h4>
     <ul id="plan-explain-list" class="plan-explain-list"></ul>
     <a class="plan-explain-link" href="ab-theory.html#sec-choose"><span data-i18n="plan_explain_link">Read how this is computed →</span></a>
   </div>
@@ -510,24 +494,24 @@
 
       <button class="plan-metric-btn selected" onclick="selectAnalyseMetric('conversion', this)">
         <div style="flex:1;text-align:left">
-          <span style="font-weight:600;font-size:0.9rem;display:block;margin-bottom:2px;color:var(--accent)" data-i18n="plan_conv_label">Conversion</span>
-          <span style="font-size:0.78rem;color:var(--ink-muted)" data-i18n="plan_conv_desc">Yes/no per user — signup rate, purchase rate, click-through rate, retention</span>
+          <span style="font-weight:600;font-size:0.875rem;display:block;margin-bottom:2px;color:var(--accent)" data-i18n="plan_conv_label">Conversion</span>
+          <span style="font-size:0.75rem;color:var(--ink-muted)" data-i18n="plan_conv_desc">Yes/no per user — signup rate, purchase rate, click-through rate, retention</span>
         </div>
         <span class="plan-metric-badge">Z-test</span>
       </button>
 
       <button class="plan-metric-btn" onclick="selectAnalyseMetric('continuous', this)">
         <div style="flex:1;text-align:left">
-          <span style="font-weight:600;font-size:0.9rem;display:block;margin-bottom:2px;color:var(--accent)" data-i18n="plan_cont_label">Continuous metric</span>
-          <span style="font-size:0.78rem;color:var(--ink-muted)" data-i18n="plan_cont_desc">One continuous value per user — ARPU, session time, items in cart, 14-day spend</span>
+          <span style="font-weight:600;font-size:0.875rem;display:block;margin-bottom:2px;color:var(--accent)" data-i18n="plan_cont_label">Continuous metric</span>
+          <span style="font-size:0.75rem;color:var(--ink-muted)" data-i18n="plan_cont_desc">One continuous value per user — ARPU, session time, items in cart, 14-day spend</span>
         </div>
         <span class="plan-metric-badge">Welch's t</span>
       </button>
 
       <button class="plan-metric-btn" onclick="selectAnalyseMetric('ratio', this)">
         <div style="flex:1;text-align:left">
-          <span style="font-weight:600;font-size:0.9rem;display:block;margin-bottom:2px;color:var(--accent)" data-i18n="plan_ratio_label">Ratio metric</span>
-          <span style="font-size:0.78rem;color:var(--ink-muted)" data-i18n="plan_ratio_desc">Rate with varying denominator — AOV, CTR per session, items per order</span>
+          <span style="font-weight:600;font-size:0.875rem;display:block;margin-bottom:2px;color:var(--accent)" data-i18n="plan_ratio_label">Ratio metric</span>
+          <span style="font-size:0.75rem;color:var(--ink-muted)" data-i18n="plan_ratio_desc">Rate with varying denominator — AOV, CTR per session, items per order</span>
         </div>
         <span class="plan-metric-badge">t (aggregated)</span>
       </button>
@@ -566,7 +550,7 @@
           <!-- File upload (raw per-user rows or pre-aggregated counts) -->
           <div class="upload-zone" id="conv-upload-zone" ondragover="event.preventDefault();this.classList.add('drag-over')" ondragleave="this.classList.remove('drag-over')" ondrop="handleExcelDrop(event,'conversion')">
             <input type="file" accept=".xlsx,.xls,.csv" onchange="handleExcelFile(this.files[0],'conversion')">
-            <div class="upload-zone-icon">📂</div>
+            <div class="upload-zone-icon"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></div>
             <span class="upload-zone-label" data-i18n="lbl_upload">Upload Excel / CSV file</span>
             <span class="upload-zone-hint" data-i18n="up_hint_conv">One row per user with <code>group</code> and <code>converted</code> (0/1) — or pre-aggregated <code>group</code>, <code>exposed</code>, <code>converted</code>. Columns are auto-detected.</span>
           </div>
@@ -614,8 +598,8 @@
             <input type="number" id="a-prereg-mde" placeholder="e.g. 5" min="0" step="0.1" style="max-width:160px">
           </div>
           <details class="revenue-inputs" style="margin-top:14px">
-            <summary style="font-size:0.82rem;font-weight:600;color:var(--ink-muted);cursor:pointer;list-style:none;display:flex;align-items:center;gap:6px">
-              <span style="font-size:0.9rem">💰</span>
+            <summary style="font-size:0.875rem;font-weight:600;color:var(--ink-muted);cursor:pointer;list-style:none;display:flex;align-items:center;gap:6px">
+              <span style="font-size:0.875rem"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M15 9.5c-.6-1-1.7-1.5-3-1.5-1.7 0-3 .9-3 2s1.3 1.7 3 2 3 .9 3 2-1.3 2-3 2c-1.3 0-2.4-.5-3-1.5M12 6v12"/></svg></span>
               <span data-i18n="lbl_revenue_toggle">Revenue projection (optional)</span>
             </summary>
             <div style="margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:10px">
@@ -646,23 +630,23 @@
           <div class="card-title" data-i18n="step2_variant">Step 2 · Variant data</div>
           <div class="upload-zone" id="cont-upload-zone" ondragover="event.preventDefault();this.classList.add('drag-over')" ondragleave="this.classList.remove('drag-over')" ondrop="handleExcelDrop(event,'continuous')">
             <input type="file" accept=".xlsx,.xls,.csv" onchange="handleExcelFile(this.files[0],'continuous')">
-            <div class="upload-zone-icon">📂</div>
+            <div class="upload-zone-icon"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></div>
             <span class="upload-zone-label" data-i18n="lbl_upload">Upload Excel / CSV file</span>
             <span class="upload-zone-hint" data-i18n="up_hint_cont">One row per user with <code>group</code> and <code>value</code>. Columns are auto-detected.</span>
           </div>
           <div id="cont-upload-status"></div>
           <div style="display:flex;align-items:center;gap:8px;margin:10px 0">
             <hr style="flex:1;border:none;border-top:1px solid var(--border)">
-            <span style="font-size:0.72rem;color:var(--ink-faint);flex-shrink:0" data-i18n="lbl_or_paste">or paste values below</span>
+            <span style="font-size:0.75rem;color:var(--ink-faint);flex-shrink:0" data-i18n="lbl_or_paste">or paste values below</span>
             <hr style="flex:1;border:none;border-top:1px solid var(--border)">
           </div>
-          <p style="font-size:0.8rem;color:var(--ink-muted);margin-bottom:14px" data-i18n="cont_hint">Each value = one user's metric (e.g. their total revenue that week).</p>
+          <p style="font-size:0.75rem;color:var(--ink-muted);margin-bottom:14px" data-i18n="cont_hint">Each value = one user's metric (e.g. their total revenue that week).</p>
           <div id="cont-variants">
             <div class="cont-variant-block" data-tag="A">
-              <div style="font-family:'JetBrains Mono',monospace;font-size:0.8rem;font-weight:600;color:var(--accent);margin-bottom:6px">A <span style="font-weight:400;color:var(--ink-faint);font-size:0.72rem" data-i18n="lbl_control">(control)</span></div>
+              <div style="font-family:'JetBrains Mono',monospace;font-size:0.75rem;font-weight:600;color:var(--accent);margin-bottom:6px">A <span style="font-weight:400;color:var(--ink-faint);font-size:0.75rem" data-i18n="lbl_control">(control)</span></div>
               <div class="field">
                 <label data-i18n="lbl_per_user_values">Per-user values <span class="tip" data-i18n="tip_sep">comma or space separated</span></label>
-                <textarea class="cv-raw-ta" rows="3" placeholder="42.1, 38.5, 0, 55.2, 12.0, 0, 71.3 ..." style="width:100%;padding:8px 10px;border:1.5px solid var(--border-strong);border-radius:var(--radius-sm);font-family:'JetBrains Mono',monospace;font-size:0.82rem;resize:vertical;background:#fff"></textarea>
+                <textarea class="cv-raw-ta" rows="3" placeholder="42.1, 38.5, 0, 55.2, 12.0, 0, 71.3 ..." style="width:100%;padding:8px 10px;border:1.5px solid var(--border-strong);border-radius:var(--radius-sm);font-family:'JetBrains Mono',monospace;font-size:0.875rem;resize:vertical;background:#fff"></textarea>
               </div>
               <div class="form-row cols-3 mt-8" id="cont-summary-A" style="display:none">
                 <div class="field"><label data-i18n="lbl_mean">Mean</label><input type="number" class="cv-mean" step="0.0001" placeholder="auto"></div>
@@ -675,10 +659,10 @@
             </div>
             <hr class="divider">
             <div class="cont-variant-block" data-tag="B">
-              <div style="font-family:'JetBrains Mono',monospace;font-size:0.8rem;font-weight:600;color:var(--ink-muted);margin-bottom:6px">B</div>
+              <div style="font-family:'JetBrains Mono',monospace;font-size:0.75rem;font-weight:600;color:var(--ink-muted);margin-bottom:6px">B</div>
               <div class="field">
                 <label><span data-i18n="lbl_per_user_values">Per-user values</span> <span class="tip" data-i18n="tip_sep">comma or space separated</span></label>
-                <textarea class="cv-raw-ta" rows="3" placeholder="45.0, 41.2, 0, 58.0, 14.5, 0, 80.1 ..." style="width:100%;padding:8px 10px;border:1.5px solid var(--border-strong);border-radius:var(--radius-sm);font-family:'JetBrains Mono',monospace;font-size:0.82rem;resize:vertical;background:#fff"></textarea>
+                <textarea class="cv-raw-ta" rows="3" placeholder="45.0, 41.2, 0, 58.0, 14.5, 0, 80.1 ..." style="width:100%;padding:8px 10px;border:1.5px solid var(--border-strong);border-radius:var(--radius-sm);font-family:'JetBrains Mono',monospace;font-size:0.875rem;resize:vertical;background:#fff"></textarea>
               </div>
               <div class="form-row cols-3 mt-8" id="cont-summary-B" style="display:none">
                 <div class="field"><label data-i18n="lbl_mean">Mean</label><input type="number" class="cv-mean" step="0.0001" placeholder="auto"></div>
@@ -725,7 +709,7 @@
       <strong data-i18n="ratio_agg_title">Aggregate to one value per user before pasting.</strong>
       <span data-i18n="ratio_warn_body">For AOV: each user's total revenue ÷ their number of orders. For CTR per session: each user's total clicks ÷ their total sessions. Running a t-test on raw transaction rows (not aggregated) inflates false positives by 2–10×.</span>
       <details class="disclosure" style="margin-top:8px;background:transparent;border:none;padding:0">
-        <summary style="font-size:0.78rem" data-i18n="ratio_warn_why">Why does this matter?</summary>
+        <summary style="font-size:0.75rem" data-i18n="ratio_warn_why">Why does this matter?</summary>
         <ul style="margin-top:6px">
           <li data-i18n="ratio_li1">A heavy buyer with 10 orders contributes 10 rows if not aggregated — their data dominates, creating correlation between rows that breaks the independence assumption of t-tests.</li>
           <li data-i18n="ratio_li2">The standard error becomes 2–10× too small, making results look far more significant than they are. False positive rate can exceed 30%.</li>
@@ -739,23 +723,23 @@
           <div class="card-title" data-i18n="step2_variant_agg">Step 2 · Variant data (aggregated per user)</div>
           <div class="upload-zone" id="ratio-upload-zone" ondragover="event.preventDefault();this.classList.add('drag-over')" ondragleave="this.classList.remove('drag-over')" ondrop="handleExcelDrop(event,'ratio')">
             <input type="file" accept=".xlsx,.xls,.csv" onchange="handleExcelFile(this.files[0],'ratio')">
-            <div class="upload-zone-icon">📂</div>
+            <div class="upload-zone-icon"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></div>
             <span class="upload-zone-label" data-i18n="lbl_upload">Upload Excel / CSV file</span>
             <span class="upload-zone-hint" data-i18n="up_hint_ratio">One row per user with <code>group</code> and <code>value</code> (already aggregated per user). Columns are auto-detected.</span>
           </div>
           <div id="ratio-upload-status"></div>
           <div style="display:flex;align-items:center;gap:8px;margin:10px 0">
             <hr style="flex:1;border:none;border-top:1px solid var(--border)">
-            <span style="font-size:0.72rem;color:var(--ink-faint);flex-shrink:0" data-i18n="tip_paste">or paste values below</span>
+            <span style="font-size:0.75rem;color:var(--ink-faint);flex-shrink:0" data-i18n="tip_paste">or paste values below</span>
             <hr style="flex:1;border:none;border-top:1px solid var(--border)">
           </div>
-          <p style="font-size:0.8rem;color:var(--ink-muted);margin-bottom:14px" data-i18n="ratio_hint">Each value = one user's computed ratio (e.g. their AOV or their CTR).</p>
+          <p style="font-size:0.75rem;color:var(--ink-muted);margin-bottom:14px" data-i18n="ratio_hint">Each value = one user's computed ratio (e.g. their AOV or their CTR).</p>
           <div id="ratio-variants">
             <div class="cont-variant-block" data-tag="A">
-              <div style="font-family:'JetBrains Mono',monospace;font-size:0.8rem;font-weight:600;color:var(--accent);margin-bottom:6px">A <span style="font-weight:400;color:var(--ink-faint);font-size:0.72rem" data-i18n="lbl_control">(control)</span></div>
+              <div style="font-family:'JetBrains Mono',monospace;font-size:0.75rem;font-weight:600;color:var(--accent);margin-bottom:6px">A <span style="font-weight:400;color:var(--ink-faint);font-size:0.75rem" data-i18n="lbl_control">(control)</span></div>
               <div class="field">
                 <label data-i18n="lbl_per_user_ratio">Per-user ratio values <span class="tip" data-i18n="tip_sep">comma or space separated</span></label>
-                <textarea class="cv-raw-ta" rows="3" placeholder="28.50, 45.00, 12.00, 67.50, 22.00 ..." style="width:100%;padding:8px 10px;border:1.5px solid var(--border-strong);border-radius:var(--radius-sm);font-family:'JetBrains Mono',monospace;font-size:0.82rem;resize:vertical;background:#fff"></textarea>
+                <textarea class="cv-raw-ta" rows="3" placeholder="28.50, 45.00, 12.00, 67.50, 22.00 ..." style="width:100%;padding:8px 10px;border:1.5px solid var(--border-strong);border-radius:var(--radius-sm);font-family:'JetBrains Mono',monospace;font-size:0.875rem;resize:vertical;background:#fff"></textarea>
               </div>
               <div class="form-row cols-3 mt-8" id="ratio-summary-A" style="display:none">
                 <div class="field"><label data-i18n="lbl_mean">Mean</label><input type="number" class="cv-mean" step="0.0001" placeholder="auto"></div>
@@ -768,10 +752,10 @@
             </div>
             <hr class="divider">
             <div class="cont-variant-block" data-tag="B">
-              <div style="font-family:'JetBrains Mono',monospace;font-size:0.8rem;font-weight:600;color:var(--ink-muted);margin-bottom:6px">B</div>
+              <div style="font-family:'JetBrains Mono',monospace;font-size:0.75rem;font-weight:600;color:var(--ink-muted);margin-bottom:6px">B</div>
               <div class="field">
                 <label><span data-i18n="lbl_per_user_ratio">Per-user ratio values</span> <span class="tip" data-i18n="tip_sep">comma or space separated</span></label>
-                <textarea class="cv-raw-ta" rows="3" placeholder="30.00, 48.50, 13.50, 71.00, 25.50 ..." style="width:100%;padding:8px 10px;border:1.5px solid var(--border-strong);border-radius:var(--radius-sm);font-family:'JetBrains Mono',monospace;font-size:0.82rem;resize:vertical;background:#fff"></textarea>
+                <textarea class="cv-raw-ta" rows="3" placeholder="30.00, 48.50, 13.50, 71.00, 25.50 ..." style="width:100%;padding:8px 10px;border:1.5px solid var(--border-strong);border-radius:var(--radius-sm);font-family:'JetBrains Mono',monospace;font-size:0.875rem;resize:vertical;background:#fff"></textarea>
               </div>
               <div class="form-row cols-3 mt-8" id="ratio-summary-B" style="display:none">
                 <div class="field"><label data-i18n="lbl_mean">Mean</label><input type="number" class="cv-mean" step="0.0001" placeholder="auto"></div>
@@ -819,9 +803,9 @@
      REFERENCE
      ══════════════════════════════ -->
 <script src="stats.js?v=6393e047"></script>
-<script src="i18n.js?v=8f60dbba"></script>
-<script src="charts.js?v=54f63be5"></script>
-<script src="app.js?v=3717537e"></script>
+<script src="i18n.js?v=4f6306a1"></script>
+<script src="charts.js?v=5fbf8799"></script>
+<script src="app.js?v=5b9b49bd"></script>
 <script src="daily.js?v=ca02d1bc"></script>
 </body>
 </html>

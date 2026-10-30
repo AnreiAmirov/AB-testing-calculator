@@ -49,9 +49,10 @@
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=32a680d8">
+<link rel="stylesheet" href="styles.css?v=fd9df2bb">
 </head>
 <body class="theory-page">
+<!--TOPBAR--><div class="topbar"><div class="topbar-in"><a class="tb-brand" href="index.html"><span class="tb-logo"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 19v-8M12 19V5M19 19v-6"/></svg></span><span data-i18n="home_brand">Data for Everyone</span></a><nav class="tb-nav" aria-label="Sections"><a class="tb-link" href="ab-testing.html"><span data-i18n="tb_calc">Calculator</span></a><a class="tb-link on" href="ab-theory.html" aria-current="page"><span data-i18n="tb_theory">A/B theory</span></a><a class="tb-link" href="causal.html"><span data-i18n="tb_causal">Causal inference</span></a><a class="tb-link" href="python.html"><span data-i18n="tb_py">Python</span></a><a class="tb-link" href="sql.html"><span data-i18n="tb_sql">SQL</span></a><a class="tb-link" href="algorithms.html"><span data-i18n="tb_alg">Algorithms</span></a></nav><div class="tb-ctrl"><button class="tb-btn lang-toggle" onclick="toggleLang()" aria-label="Switch language" id="lang-btn"><span id="lang-label">RU</span></button><button class="tb-btn theme-toggle" onclick="toggleTheme()" aria-label="Dark" title="Dark"><span class="theme-toggle-icon" id="theme-icon"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></span><span class="sr-only" id="theme-label" data-i18n="theme_dark">Dark</span></button></div></div></div><!--/TOPBAR-->
 <header class="site-header">
   <div class="site-header-inner">
     <nav class="crumbs" aria-label="Breadcrumb">
@@ -61,23 +62,6 @@
       </nav>
     <div class="site-header-row">
       <h1 data-i18n="th_title">A/B Testing Theory</h1>
-      <div class="header-controls">
-        <a class="home-link" href="index.html">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-          <span data-i18n="nav_home">Home</span>
-        </a>
-        <a class="home-link" href="ab-testing.html">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="18" y="3" width="4" height="18"/><rect x="10" y="8" width="4" height="13"/><rect x="2" y="13" width="4" height="8"/></svg>
-          <span data-i18n="th_to_calc">Calculator</span>
-        </a>
-        <button class="lang-toggle" onclick="toggleLang()" aria-label="Switch language" id="lang-btn">
-          <span id="lang-label">RU</span>
-        </button>
-        <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">
-          <span class="theme-toggle-icon" id="theme-icon">🌙</span>
-          <span id="theme-label" data-i18n="theme_dark">Dark</span>
-        </button>
-      </div>
     </div>
     <p data-i18n="th_sub">From the shape of your data to a decision you can defend: thirty sections in a deliberate order, interactive charts and five end-to-end case studies.</p>
   </div>
@@ -158,90 +142,90 @@
 
     <div class="glossary">
       <div class="gloss-item">
-        <div class="gloss-term"><span class="gloss-emoji">🎯</span><span data-i18n="gl_null_t">Null hypothesis (H₀)</span></div>
+        <div class="gloss-term"><span class="gloss-emoji"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg></span><span data-i18n="gl_null_t">Null hypothesis (H₀)</span></div>
         <div class="gloss-def" data-i18n="gl_null_d">The starting assumption that there is <strong>no real difference</strong> between your variants — any gap you see is just chance. A test tries to gather enough evidence to reject it.</div>
         <div class="gloss-eg"><strong data-i18n="gl_eg">Example:</strong> <span data-i18n="gl_null_e">"The new checkout button converts exactly the same as the old one." You run the test hoping to disprove this.</span></div>
       </div>
 
       <div class="gloss-item">
-        <div class="gloss-term"><span class="gloss-emoji">🎲</span><span data-i18n="gl_pval_t">P-value</span></div>
+        <div class="gloss-term"><span class="gloss-emoji"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.2"/><circle cx="15.5" cy="15.5" r="1.2"/><circle cx="12" cy="12" r="1.2"/></svg></span><span data-i18n="gl_pval_t">P-value</span></div>
         <div class="gloss-def" data-i18n="gl_pval_d">The probability of seeing a difference <strong>at least as big</strong> as the one you observed <em>if the variants were actually identical</em>. A small p-value means "this gap would be surprising if nothing were really going on" — so you start to believe something is.</div>
         <div class="gloss-eg"><strong data-i18n="gl_eg">Example:</strong> <span data-i18n="gl_pval_e">p = 0.03 means: if the button truly made no difference, you'd see a gap this large only 3% of the time by luck. That's rare enough to call it a real effect. <strong>It does not</strong> mean "97% chance the button is better" — a common trap.</span></div>
       </div>
 
       <div class="gloss-item">
-        <div class="gloss-term"><span class="gloss-emoji">🚦</span><span data-i18n="gl_alpha_t">Significance level (α)</span></div>
+        <div class="gloss-term"><span class="gloss-emoji"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/></svg></span><span data-i18n="gl_alpha_t">Significance level (α)</span></div>
         <div class="gloss-def" data-i18n="gl_alpha_d">The bar you set <em>in advance</em> for how small the p-value must be to call a result "significant." It is also your accepted false-positive rate. Usually 0.05.</div>
         <div class="gloss-eg"><strong data-i18n="gl_eg">Example:</strong> <span data-i18n="gl_alpha_e">α = 0.05 means you accept a 1-in-20 chance of being fooled by noise into declaring a winner that isn't real.</span></div>
       </div>
 
       <div class="gloss-item">
-        <div class="gloss-term"><span class="gloss-emoji">🆚</span><span data-i18n="gl_vs_t">P-value vs α — what's the difference?</span></div>
+        <div class="gloss-term"><span class="gloss-emoji"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v16M8 20h8M5 8h14"/><path d="M5 8l-3 6a3 3 0 0 0 6 0zM19 8l-3 6a3 3 0 0 0 6 0z"/></svg></span><span data-i18n="gl_vs_t">P-value vs α — what's the difference?</span></div>
         <div class="gloss-def" data-i18n="gl_vs_d">They are easy to confuse but they are <strong>opposite kinds of thing</strong>. <strong>α is a threshold you choose before the test</strong> — fixed, set by you, the same every time. <strong>The p-value is a number the data produces after the test</strong> — it changes with every experiment. You compare one to the other: if <em>p &lt; α</em>, the result is significant.</div>
         <div class="gloss-eg"><strong data-i18n="gl_vs_e_b">Think of an exam:</strong> <span data-i18n="gl_vs_e">α is the <strong>pass mark you set in advance</strong> (say 60%). The p-value is the <strong>score a student actually got</strong> (say 73%). The pass mark is your rule; the score is the evidence. Saying "p-value and α are the same" is like saying the pass mark and the grade are the same thing.</span></div>
       </div>
 
       <div class="gloss-item">
-        <div class="gloss-term"><span class="gloss-emoji">✅</span><span data-i18n="gl_sig_t">Statistical significance</span></div>
+        <div class="gloss-term"><span class="gloss-emoji"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.7 2.7L16 9.8"/></svg></span><span data-i18n="gl_sig_t">Statistical significance</span></div>
         <div class="gloss-def" data-i18n="gl_sig_d">A result is "statistically significant" when its p-value falls below your α. It means the difference is unlikely to be pure chance — <strong>not</strong> that it is large or important.</div>
         <div class="gloss-eg"><strong data-i18n="gl_eg">Example:</strong> <span data-i18n="gl_sig_e">A 0.1% lift can be significant with millions of users, yet be too small to matter for the business. Significant ≠ meaningful.</span></div>
       </div>
 
       <div class="gloss-item">
-        <div class="gloss-term"><span class="gloss-emoji">📏</span><span data-i18n="gl_ci_t">Confidence interval (CI)</span></div>
+        <div class="gloss-term"><span class="gloss-emoji"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 17L17 3l4 4L7 21z"/><path d="M7 13l2 2M10 10l2 2M13 7l2 2"/></svg></span><span data-i18n="gl_ci_t">Confidence interval (CI)</span></div>
         <div class="gloss-def" data-i18n="gl_ci_d">A <strong>range of plausible values</strong> for the true effect, instead of a single number. A 95% CI means: if you repeated the experiment many times, about 95% of the intervals you'd build would contain the true value. Wider interval = more uncertainty.</div>
         <div class="gloss-eg"><strong data-i18n="gl_ci_e">Example:</strong> <span data-i18n="gl_ci_e2">A lift of "+8% with 95% CI [+2%, +14%]" says the real effect is probably between +2% and +14%. Because the whole range is above zero, you can be confident it's a genuine improvement. If the CI were [−3%, +19%], it crosses zero — you couldn't rule out no effect (or even harm).</span></div>
       </div>
 
       <div class="gloss-item">
-        <div class="gloss-term"><span class="gloss-emoji">💪</span><span data-i18n="gl_power_t">Statistical power</span></div>
+        <div class="gloss-term"><span class="gloss-emoji"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg></span><span data-i18n="gl_power_t">Statistical power</span></div>
         <div class="gloss-def" data-i18n="gl_power_d">The chance your test will <strong>detect a real effect</strong> if one truly exists. Low power means you might miss a genuine winner. The standard target is 80%.</div>
         <div class="gloss-eg"><strong data-i18n="gl_eg">Example:</strong> <span data-i18n="gl_power_e">80% power means: if the new button really is better, you have an 80% chance of your test catching it — and a 20% chance of missing it because your sample was too small.</span></div>
       </div>
 
       <div class="gloss-item">
-        <div class="gloss-term"><span class="gloss-emoji">📐</span><span data-i18n="gl_mde_t">Minimum detectable effect (MDE)</span></div>
+        <div class="gloss-term"><span class="gloss-emoji"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 17L17 3l4 4L7 21z"/><path d="M7 13l2 2M10 10l2 2M13 7l2 2"/></svg></span><span data-i18n="gl_mde_t">Minimum detectable effect (MDE)</span></div>
         <div class="gloss-def" data-i18n="gl_mde_d">The <strong>smallest improvement worth catching</strong>. You decide it before the test — it drives how many users you need. Smaller MDE = much larger sample.</div>
         <div class="gloss-eg"><strong data-i18n="gl_eg">Example:</strong> <span data-i18n="gl_mde_e">"I only care if the button lifts conversion by at least 5%." Detecting a 5% lift needs far fewer users than detecting a 1% lift.</span></div>
       </div>
 
       <div class="gloss-item">
-        <div class="gloss-term"><span class="gloss-emoji">👥</span><span data-i18n="gl_ss_t">Sample size</span></div>
+        <div class="gloss-term"><span class="gloss-emoji"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14a6 6 0 0 1 3.5 6"/></svg></span><span data-i18n="gl_ss_t">Sample size</span></div>
         <div class="gloss-def" data-i18n="gl_ss_d">How many users you need per variant to reliably detect your MDE at your chosen α and power. Too few and the test is underpowered; the calculator's <a href="ab-testing.html?tab=plan">Plan tab</a> computes this for you.</div>
         <div class="gloss-eg"><strong data-i18n="gl_eg">Example:</strong> <span data-i18n="gl_ss_e">To spot a 5% lift on a 3% baseline at 80% power, you might need ~50,000 users per arm — roughly two weeks at typical traffic.</span></div>
       </div>
 
       <div class="gloss-item">
-        <div class="gloss-term"><span class="gloss-emoji">⚠️</span><span data-i18n="gl_errors_t">Type I & Type II errors</span></div>
+        <div class="gloss-term"><span class="gloss-emoji"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5l9 16H3z"/><path d="M12 10v4.5M12 17.5v.01"/></svg></span><span data-i18n="gl_errors_t">Type I & Type II errors</span></div>
         <div class="gloss-def" data-i18n="gl_errors_xref">The two ways a test can be wrong: a <strong>false positive</strong> (shipping nothing) and a <strong>false negative</strong> (missing a real win). Explained in full, with the α/β trade-off chart, in <a href="#sec-errors">Type I &amp; Type II errors</a> under Core concepts.</div>
       </div>
 
       <div class="gloss-item">
-        <div class="gloss-term"><span class="gloss-emoji">🔋</span><span data-i18n="gl_beta_t">β (beta)</span></div>
+        <div class="gloss-term"><span class="gloss-emoji"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="17" height="10" rx="2"/><path d="M22 11v2M6 10v4M10 10v4"/></svg></span><span data-i18n="gl_beta_t">β (beta)</span></div>
         <div class="gloss-def" data-i18n="gl_beta_d">The chance of <strong>missing a real effect</strong> — a false negative. It's the flip side of power: <strong>power = 1 − β</strong>. If you aim for 80% power, you're accepting β = 20%.</div>
         <div class="gloss-eg"><strong data-i18n="gl_eg">Example:</strong> <span data-i18n="gl_beta_e">β = 0.20 means: if the variant truly is better, there's a 20% chance your test fails to notice — usually because the sample was too small.</span></div>
       </div>
 
       <div class="gloss-item">
-        <div class="gloss-term"><span class="gloss-emoji">📉</span><span data-i18n="gl_se_t">Standard error (SE)</span></div>
+        <div class="gloss-term"><span class="gloss-emoji"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7l6 6 4-4 8 8"/><path d="M15 17h6v-6"/></svg></span><span data-i18n="gl_se_t">Standard error (SE)</span></div>
         <div class="gloss-def" data-i18n="gl_se_d">How much your measured result would <strong>bounce around</strong> if you reran the experiment with a fresh sample. It shrinks as your sample grows — specifically as 1/√n, so quadrupling the users halves the wobble.</div>
         <div class="gloss-eg"><strong data-i18n="gl_eg">Example:</strong> <span data-i18n="gl_se_e">Measure a 4.0% conversion rate with a small SE and you can trust the 4.0%. A large SE means the true rate could easily be 3% or 5% — the same number, far less certainty.</span></div>
       </div>
 
       <div class="gloss-item">
-        <div class="gloss-term"><span class="gloss-emoji">🌪️</span><span data-i18n="gl_cv_t">Coefficient of variation (CV)</span></div>
+        <div class="gloss-term"><span class="gloss-emoji"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h11a3 3 0 1 0-3-3M3 12h15a3 3 0 1 1-3 3M3 16h7"/></svg></span><span data-i18n="gl_cv_t">Coefficient of variation (CV)</span></div>
         <div class="gloss-def" data-i18n="gl_cv_d">The spread of a metric <strong>relative to its average</strong> (SD ÷ mean). A unit-free "noisiness" score: high CV means the metric jumps around a lot for its size, so you'll need more data to see a signal.</div>
         <div class="gloss-eg"><strong data-i18n="gl_eg">Example:</strong> <span data-i18n="gl_cv_e">Revenue per user is famously high-CV — a few big spenders dwarf everyone else. That's exactly why ARPU tests need huge samples (or CUPED, below).</span></div>
       </div>
 
       <div class="gloss-item">
-        <div class="gloss-term"><span class="gloss-emoji">🚨</span><span data-i18n="gl_srm_t">Sample Ratio Mismatch (SRM)</span></div>
+        <div class="gloss-term"><span class="gloss-emoji"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5l9 16H3z"/><path d="M12 10v4.5M12 17.5v.01"/></svg></span><span data-i18n="gl_srm_t">Sample Ratio Mismatch (SRM)</span></div>
         <div class="gloss-def" data-i18n="gl_srm_d">When the <strong>actual traffic split differs from the one you intended</strong> — e.g. you asked for 50/50 but got 52/48. It's a red flag for a bug in assignment, and it <strong>invalidates the whole test</strong>, even if the p-value looks great. The calculator's <a href="ab-testing.html?tab=analyse">Analyse tab</a> checks this for you automatically.</div>
         <div class="gloss-eg"><strong data-i18n="gl_eg">Example:</strong> <span data-i18n="gl_srm_e">A redirect was quietly dropping users before they reached the variant, so control filled faster. Until that's fixed, no result can be trusted — you fix the cause and rerun, never "adjust" the numbers.</span></div>
       </div>
 
       <div class="gloss-item">
-        <div class="gloss-term"><span class="gloss-emoji">⚡</span><span data-i18n="gl_cuped_t">CUPED</span></div>
+        <div class="gloss-term"><span class="gloss-emoji"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg></span><span data-i18n="gl_cuped_t">CUPED</span></div>
         <div class="gloss-def" data-i18n="gl_cuped_d">A <strong>variance-reduction</strong> technique that subtracts each user's predictable, pre-experiment behaviour from their result — leaving a cleaner signal, so you reach a decision with less data. It changes nothing about your estimate of the lift, only its precision.</div>
         <div class="gloss-eg"><strong data-i18n="gl_eg">Example:</strong> <span data-i18n="gl_cuped_e">A user who spent heavily last month will likely spend heavily this month regardless of your change. Subtracting that known tendency can cut the required sample by a third or more. Full walkthrough in the CUPED deep-dive below.</span></div>
       </div>
@@ -271,15 +255,15 @@
   <div class="card" id="sec-fieldguide">
     <div class="card-title" data-i18n="ref_disttypes_title">A field guide to distributions</div>
     <div class="accordion-body" style="padding:0;background:none">
-      <div class="tip-row"><span class="tip-icon">🔔</span><div><strong data-i18n="dt_normal_b">Normal (symmetric).</strong> <span data-i18n="dt_normal">The classic bell curve — values cluster around the mean and tail off evenly on both sides. Heights, measurement errors, and sample averages look like this. Most textbook tests assume it.</span></div></div>
-      <div class="tip-row"><span class="tip-icon">📈</span><div><strong data-i18n="dt_skew_b">Right-skewed (positive skew).</strong> <span data-i18n="dt_skew">A long tail to the right. Revenue, order value, time-on-page, and lifetime value almost always look like this — most users spend a little, a few spend a lot. The mean is dragged above the median.</span></div></div>
-      <div class="tip-row"><span class="tip-icon">📉</span><div><strong data-i18n="dt_leftskew_b">Left-skewed (negative skew).</strong> <span data-i18n="dt_leftskew">A long tail to the left. Rarer in product data, but appears in things like exam scores near a ceiling or days-until-churn for a loyal base — most values are high, a few are very low.</span></div></div>
-      <div class="tip-row"><span class="tip-icon">🐫</span><div><strong data-i18n="dt_bimodal_b">Bimodal.</strong> <span data-i18n="dt_bimodal">Two peaks, usually meaning two hidden sub-populations mixed together — e.g. free vs paid users, or mobile vs desktop. Often a signal you should segment before analysing.</span></div></div>
-      <div class="tip-row"><span class="tip-icon">🟰</span><div><strong data-i18n="dt_uniform_b">Uniform.</strong> <span data-i18n="dt_uniform">Every value is equally likely — a flat line. A single fair die is the textbook case. Rare in real metrics, but the building block for simulations and randomisation.</span></div></div>
-      <div class="tip-row"><span class="tip-icon">🎲</span><div><strong data-i18n="dt_triangular_b">Triangular (sum of dice).</strong> <span data-i18n="dt_triangular">Roll two dice and sum them, and the totals form a triangle peaking at 7 (the worked example below shows why). It comes from adding two uniform variables — and hints at the deeper rule that summing things pushes you toward a bell.</span></div></div>
-      <div class="tip-row"><span class="tip-icon">⏳</span><div><strong data-i18n="dt_exponential_b">Exponential.</strong> <span data-i18n="dt_exponential">A steep drop from a peak at zero. Models waiting times — time between purchases, time to first action, session gaps. Memoryless: the past does not change the expected wait.</span></div></div>
-      <div class="tip-row"><span class="tip-icon">🔢</span><div><strong data-i18n="dt_poisson_b">Poisson (counts).</strong> <span data-i18n="dt_poisson">For counts of rare events in a fixed window — orders per day, errors per session, support tickets per hour. Discrete, right-leaning, and defined by a single rate parameter.</span></div></div>
-      <div class="tip-row"><span class="tip-icon">🎯</span><div><strong data-i18n="dt_heavy_b">Heavy-tailed.</strong> <span data-i18n="dt_heavy">Mostly normal-looking but with rare extreme outliers far from the centre. A single whale purchase or a bot session can sit way out in the tail and distort the mean and variance.</span></div></div>
+      <div class="tip-row"><span class="tip-icon"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 16v-5a6 6 0 0 1 12 0v5l2 2H4z"/><path d="M10 21h4"/></svg></span><div><strong data-i18n="dt_normal_b">Normal (symmetric).</strong> <span data-i18n="dt_normal">The classic bell curve — values cluster around the mean and tail off evenly on both sides. Heights, measurement errors, and sample averages look like this. Most textbook tests assume it.</span></div></div>
+      <div class="tip-row"><span class="tip-icon"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg></span><div><strong data-i18n="dt_skew_b">Right-skewed (positive skew).</strong> <span data-i18n="dt_skew">A long tail to the right. Revenue, order value, time-on-page, and lifetime value almost always look like this — most users spend a little, a few spend a lot. The mean is dragged above the median.</span></div></div>
+      <div class="tip-row"><span class="tip-icon"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7l6 6 4-4 8 8"/><path d="M15 17h6v-6"/></svg></span><div><strong data-i18n="dt_leftskew_b">Left-skewed (negative skew).</strong> <span data-i18n="dt_leftskew">A long tail to the left. Rarer in product data, but appears in things like exam scores near a ceiling or days-until-churn for a loyal base — most values are high, a few are very low.</span></div></div>
+      <div class="tip-row"><span class="tip-icon"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 19c2 0 3-8 5-8s3 6 5 6 3-10 5-10 3 12 5 12"/></svg></span><div><strong data-i18n="dt_bimodal_b">Bimodal.</strong> <span data-i18n="dt_bimodal">Two peaks, usually meaning two hidden sub-populations mixed together — e.g. free vs paid users, or mobile vs desktop. Often a signal you should segment before analysing.</span></div></div>
+      <div class="tip-row"><span class="tip-icon"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 9h15M4 15h15M10 3L8 21M16 3l-2 18"/></svg></span><div><strong data-i18n="dt_uniform_b">Uniform.</strong> <span data-i18n="dt_uniform">Every value is equally likely — a flat line. A single fair die is the textbook case. Rare in real metrics, but the building block for simulations and randomisation.</span></div></div>
+      <div class="tip-row"><span class="tip-icon"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.2"/><circle cx="15.5" cy="15.5" r="1.2"/><circle cx="12" cy="12" r="1.2"/></svg></span><div><strong data-i18n="dt_triangular_b">Triangular (sum of dice).</strong> <span data-i18n="dt_triangular">Roll two dice and sum them, and the totals form a triangle peaking at 7 (the worked example below shows why). It comes from adding two uniform variables — and hints at the deeper rule that summing things pushes you toward a bell.</span></div></div>
+      <div class="tip-row"><span class="tip-icon"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><div><strong data-i18n="dt_exponential_b">Exponential.</strong> <span data-i18n="dt_exponential">A steep drop from a peak at zero. Models waiting times — time between purchases, time to first action, session gaps. Memoryless: the past does not change the expected wait.</span></div></div>
+      <div class="tip-row"><span class="tip-icon"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 9h15M4 15h15M10 3L8 21M16 3l-2 18"/></svg></span><div><strong data-i18n="dt_poisson_b">Poisson (counts).</strong> <span data-i18n="dt_poisson">For counts of rare events in a fixed window — orders per day, errors per session, support tickets per hour. Discrete, right-leaning, and defined by a single rate parameter.</span></div></div>
+      <div class="tip-row"><span class="tip-icon"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg></span><div><strong data-i18n="dt_heavy_b">Heavy-tailed.</strong> <span data-i18n="dt_heavy">Mostly normal-looking but with rare extreme outliers far from the centre. A single whale purchase or a bot session can sit way out in the tail and distort the mean and variance.</span></div></div>
     </div>
   </div>
 
@@ -289,38 +273,38 @@
 
     <!-- Normal -->
     <div class="anat-block">
-      <div class="anat-h"><span class="tip-icon">🔔</span><span data-i18n="anat_normal_h">Normal — the 68–95–99.7 rule</span></div>
+      <div class="anat-h"><span class="tip-icon"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 16v-5a6 6 0 0 1 12 0v5l2 2H4z"/><path d="M10 21h4"/></svg></span><span data-i18n="anat_normal_h">Normal — the 68–95–99.7 rule</span></div>
       <div class="cs-chart-wrap" style="height:200px"><canvas id="anat-chart-normal"></canvas></div>
       <p data-i18n="anat_normal_p">In a perfectly symmetric normal distribution, <strong>mean = median = mode</strong> — all three sit dead centre. The spread follows the empirical rule: about <strong>68%</strong> of values fall within ±1 SD of the mean, <strong>95%</strong> within ±2 SD, and <strong>99.7%</strong> within ±3 SD. Only ~0.3% lie beyond ±3 SD, which is why a 3-sigma event is considered rare.</p>
     </div>
 
     <!-- Right-skewed -->
     <div class="anat-block">
-      <div class="anat-h"><span class="tip-icon">📈</span><span data-i18n="anat_right_h">Right-skewed — the mean is pulled toward the tail</span></div>
+      <div class="anat-h"><span class="tip-icon"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg></span><span data-i18n="anat_right_h">Right-skewed — the mean is pulled toward the tail</span></div>
       <div class="cs-chart-wrap" style="height:200px"><canvas id="anat-chart-right"></canvas></div>
       <div class="anat-legend">
         <span class="anat-legend-item"><span class="anat-legend-dot" style="background:#5b50c8"></span><span data-i18n="anat_mode">mode</span></span>
-        <span class="anat-legend-item"><span class="anat-legend-dot" style="background:#0d9488"></span><span data-i18n="anat_median">median</span></span>
-        <span class="anat-legend-item"><span class="anat-legend-dot" style="background:#dc3232"></span><span data-i18n="anat_mean">mean</span></span>
+        <span class="anat-legend-item"><span class="anat-legend-dot" style="background:#1baf7a"></span><span data-i18n="anat_median">median</span></span>
+        <span class="anat-legend-item"><span class="anat-legend-dot" style="background:#c2410c"></span><span data-i18n="anat_mean">mean</span></span>
       </div>
       <p data-i18n="anat_right_p">With a long right tail, the order is <strong>mode &lt; median &lt; mean</strong>. The peak (mode) sits on the left where most values cluster; the few large values in the tail drag the mean rightward, past the median. Revenue and order value behave this way — which is why the average revenue per user is almost always higher than what a typical user spends. The spread is asymmetric: values stretch much further above the mean than below it.</p>
     </div>
 
     <!-- Left-skewed -->
     <div class="anat-block">
-      <div class="anat-h"><span class="tip-icon">📉</span><span data-i18n="anat_left_h">Left-skewed — the mirror image</span></div>
+      <div class="anat-h"><span class="tip-icon"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7l6 6 4-4 8 8"/><path d="M15 17h6v-6"/></svg></span><span data-i18n="anat_left_h">Left-skewed — the mirror image</span></div>
       <div class="cs-chart-wrap" style="height:200px"><canvas id="anat-chart-left"></canvas></div>
       <div class="anat-legend">
         <span class="anat-legend-item"><span class="anat-legend-dot" style="background:#5b50c8"></span><span data-i18n="anat_mode">mode</span></span>
-        <span class="anat-legend-item"><span class="anat-legend-dot" style="background:#0d9488"></span><span data-i18n="anat_median">median</span></span>
-        <span class="anat-legend-item"><span class="anat-legend-dot" style="background:#dc3232"></span><span data-i18n="anat_mean">mean</span></span>
+        <span class="anat-legend-item"><span class="anat-legend-dot" style="background:#1baf7a"></span><span data-i18n="anat_median">median</span></span>
+        <span class="anat-legend-item"><span class="anat-legend-dot" style="background:#c2410c"></span><span data-i18n="anat_mean">mean</span></span>
       </div>
       <p data-i18n="anat_left_p">A long left tail flips the order to <strong>mean &lt; median &lt; mode</strong>. The peak sits on the right where most values bunch up, and a few small values pull the mean leftward. Think of exam scores where most students do well but a handful fail badly, or the age at which a loyal cohort finally churns. Here the typical value (mode) is higher than the average.</p>
     </div>
 
     <!-- Binomial -->
     <div class="anat-block">
-      <div class="anat-h"><span class="tip-icon">🪙</span><span data-i18n="anat_binom_h">Binomial — counting successes</span></div>
+      <div class="anat-h"><span class="tip-icon"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M15 9.5c-.6-1-1.7-1.5-3-1.5-1.7 0-3 .9-3 2s1.3 1.7 3 2 3 .9 3 2-1.3 2-3 2c-1.3 0-2.4-.5-3-1.5M12 6v12"/></svg></span><span data-i18n="anat_binom_h">Binomial — counting successes</span></div>
       <div class="cs-chart-wrap" style="height:200px"><canvas id="anat-chart-binom"></canvas></div>
       <p data-i18n="anat_binom_p">The binomial distribution counts how many successes occur in a fixed number of yes/no trials — e.g. how many of 20 visitors convert. It is <strong>discrete</strong> (bars, not a curve) with mean = <strong>n × p</strong> (trials × probability). When p = 0.5 it is symmetric like a normal; when p is small it leans right. The key fact for A/B testing: as n grows, the binomial is well-approximated by a normal distribution — which is exactly why the Z-test works on conversion rates.</p>
     </div>
@@ -334,7 +318,7 @@
       <p data-i18n="dice_p1">A single die is <strong>uniform</strong> — each face 1–6 is equally likely. But sum <em>two</em> dice and the result is no longer flat: it peaks at 7 and falls away symmetrically toward 2 and 12. This is a <strong>triangular distribution</strong>.</p>
       <p data-i18n="dice_p2">The reason is simple counting. There is only one way to roll a 2 (1+1) and one way to roll a 12 (6+6), but six different ways to roll a 7 (1+6, 2+5, 3+4, 4+3, 5+2, 6+1). More combinations means higher probability, so the middle towers over the edges.</p>
       <div class="callout-box">
-        <div class="callout-title" data-i18n="dice_callout_title">🎯 The deeper lesson</div>
+        <div class="callout-title" data-i18n="dice_callout_title"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg> The deeper lesson</div>
         <p data-i18n="dice_callout_body" style="margin:0">Adding just two uniform dice already bends a flat distribution toward a peak. Add more dice and it gets smoother and more bell-shaped. This is the Central Limit Theorem in miniature — sums and averages of random things tend toward a normal distribution, whatever the original shape.</p>
       </div>
     </div>
@@ -344,7 +328,7 @@
     <div class="chart-title" data-i18n="ref_clt_title">Why skew usually doesn't break your test: the Central Limit Theorem</div>
     <div class="chart-sub" data-i18n="ref_clt_sub">Your test cares about the distribution of the average, not the raw data. Even from a very skewed population, the average of a sample becomes bell-shaped as the sample grows. Drag the sample size and watch it happen.</div>
     <div style="display:flex;align-items:center;gap:12px;margin:8px 0 4px;flex-wrap:wrap">
-      <label style="font-size:0.8rem;color:var(--ink-muted);font-weight:600" data-i18n="ref_clt_slider_label">Sample size (n):</label>
+      <label style="font-size:0.75rem;color:var(--ink-muted);font-weight:600" data-i18n="ref_clt_slider_label">Sample size (n):</label>
       <input type="range" id="clt-slider" min="1" max="100" value="1" step="1" style="flex:1;min-width:140px;accent-color:var(--accent)">
       <span id="clt-slider-val" style="font-family:'JetBrains Mono',monospace;font-weight:600;color:var(--accent);min-width:42px">1</span>
     </div>
@@ -355,10 +339,10 @@
   <div class="card" id="sec-theory">
     <div class="card-title" data-i18n="ref_theory_title">The theory that ties it together</div>
     <div class="accordion-body" style="padding:0;background:none">
-      <div class="tip-row"><span class="tip-icon">🎯</span><div><strong data-i18n="th_clt_b">Central Limit Theorem (CLT).</strong> <span data-i18n="th_clt">The headline result of statistics: if you take many independent samples and average each one, those averages follow a normal distribution — no matter what shape the original data had. This is why tests built on the normal curve work on messy, skewed real-world metrics, as long as the sample is large enough.</span></div></div>
-      <div class="tip-row"><span class="tip-icon">📊</span><div><strong data-i18n="th_lln_b">Law of Large Numbers.</strong> <span data-i18n="th_lln">As your sample grows, its average converges to the true population average. The CLT describes the <em>shape</em> of the estimate's uncertainty; the Law of Large Numbers says that uncertainty shrinks toward zero with more data. Together they justify why bigger experiments are more trustworthy.</span></div></div>
-      <div class="tip-row"><span class="tip-icon">📐</span><div><strong data-i18n="th_se_b">Standard error and √n.</strong> <span data-i18n="th_se">The spread of the sample mean is the standard deviation divided by √n. Quadrupling your sample only halves your uncertainty — which is exactly why detecting tiny effects needs disproportionately large samples.</span></div></div>
-      <div class="tip-row"><span class="tip-icon">🧱</span><div><strong data-i18n="th_build_b">Distributions build on each other.</strong> <span data-i18n="th_build">Sum two uniforms → triangular. Sum many of almost anything → normal. Count rare events → Poisson. Time between those events → exponential. The shapes are not arbitrary; they arise from how the underlying randomness is generated.</span></div></div>
+      <div class="tip-row"><span class="tip-icon"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg></span><div><strong data-i18n="th_clt_b">Central Limit Theorem (CLT).</strong> <span data-i18n="th_clt">The headline result of statistics: if you take many independent samples and average each one, those averages follow a normal distribution — no matter what shape the original data had. This is why tests built on the normal curve work on messy, skewed real-world metrics, as long as the sample is large enough.</span></div></div>
+      <div class="tip-row"><span class="tip-icon"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h16"/><path d="M7 16v-5M12 16V6M17 16v-8"/></svg></span><div><strong data-i18n="th_lln_b">Law of Large Numbers.</strong> <span data-i18n="th_lln">As your sample grows, its average converges to the true population average. The CLT describes the <em>shape</em> of the estimate's uncertainty; the Law of Large Numbers says that uncertainty shrinks toward zero with more data. Together they justify why bigger experiments are more trustworthy.</span></div></div>
+      <div class="tip-row"><span class="tip-icon"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 17L17 3l4 4L7 21z"/><path d="M7 13l2 2M10 10l2 2M13 7l2 2"/></svg></span><div><strong data-i18n="th_se_b">Standard error and √n.</strong> <span data-i18n="th_se">The spread of the sample mean is the standard deviation divided by √n. Quadrupling your sample only halves your uncertainty — which is exactly why detecting tiny effects needs disproportionately large samples.</span></div></div>
+      <div class="tip-row"><span class="tip-icon"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M12 3v6M8 9v6M16 9v6M12 15v6"/></svg></span><div><strong data-i18n="th_build_b">Distributions build on each other.</strong> <span data-i18n="th_build">Sum two uniforms → triangular. Sum many of almost anything → normal. Count rare events → Poisson. Time between those events → exponential. The shapes are not arbitrary; they arise from how the underlying randomness is generated.</span></div></div>
     </div>
   </div>
 
@@ -398,7 +382,7 @@
       </div>
 
       <div style="display:flex;align-items:center;gap:12px;margin:10px 0 4px;flex-wrap:wrap">
-        <label style="font-size:0.8rem;color:var(--ink-muted);font-weight:600" data-i18n="cifac_slider_label">Users per group (n):</label>
+        <label style="font-size:0.75rem;color:var(--ink-muted);font-weight:600" data-i18n="cifac_slider_label">Users per group (n):</label>
         <input type="range" id="ci-n-slider" min="100" max="20000" value="1000" step="100" style="flex:1;min-width:140px;accent-color:var(--accent)">
         <span id="ci-n-slider-val" style="font-family:'JetBrains Mono',monospace;font-weight:600;color:var(--accent);min-width:52px">1,000</span>
       </div>
@@ -406,11 +390,11 @@
     </div>
 
     <div class="accordion-body" style="padding:0;background:none;margin-top:14px">
-      <div class="tip-row"><span class="tip-icon">👥</span><div><strong data-i18n="cifac_f1_b">Sample size (n) — biggest lever.</strong> <span data-i18n="cifac_f1">More data means less uncertainty. The width shrinks with 1/√n, so going from 1,000 to 4,000 users halves it, but from 1,000 to 2,000 only cuts it by ~30%. Diminishing returns.</span></div></div>
-      <div class="tip-row"><span class="tip-icon">📊</span><div><strong data-i18n="cifac_f2_b">Variability (spread) of the data.</strong> <span data-i18n="cifac_f2">Noisier metrics give wider intervals. For a proportion the spread is fixed by the rate itself (largest near 50%); for revenue or time, a few extreme values widen the CI — which is why variance-reduction tricks like CUPED help.</span></div></div>
-      <div class="tip-row"><span class="tip-icon">🎚️</span><div><strong data-i18n="cifac_f3_b">Confidence level you choose.</strong> <span data-i18n="cifac_f3">Demanding more confidence widens the interval: a 99% CI is wider than a 95% CI, which is wider than 90%. Higher confidence buys certainty at the cost of precision.</span></div></div>
+      <div class="tip-row"><span class="tip-icon"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14a6 6 0 0 1 3.5 6"/></svg></span><div><strong data-i18n="cifac_f1_b">Sample size (n) — biggest lever.</strong> <span data-i18n="cifac_f1">More data means less uncertainty. The width shrinks with 1/√n, so going from 1,000 to 4,000 users halves it, but from 1,000 to 2,000 only cuts it by ~30%. Diminishing returns.</span></div></div>
+      <div class="tip-row"><span class="tip-icon"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h16"/><path d="M7 16v-5M12 16V6M17 16v-8"/></svg></span><div><strong data-i18n="cifac_f2_b">Variability (spread) of the data.</strong> <span data-i18n="cifac_f2">Noisier metrics give wider intervals. For a proportion the spread is fixed by the rate itself (largest near 50%); for revenue or time, a few extreme values widen the CI — which is why variance-reduction tricks like CUPED help.</span></div></div>
+      <div class="tip-row"><span class="tip-icon"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/></svg></span><div><strong data-i18n="cifac_f3_b">Confidence level you choose.</strong> <span data-i18n="cifac_f3">Demanding more confidence widens the interval: a 99% CI is wider than a 95% CI, which is wider than 90%. Higher confidence buys certainty at the cost of precision.</span></div></div>
       <div class="callout-box">
-        <div class="callout-title" data-i18n="cifac_tip_title">💡 Why this matters in practice</div>
+        <div class="callout-title" data-i18n="cifac_tip_title"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"/></svg> Why this matters in practice</div>
         <p data-i18n="cifac_tip_body" style="margin:0">A wide CI that crosses zero is the data telling you "I can't rule out no effect yet." The usual fix is more users — but because of the 1/√n rule, detecting ever-smaller effects gets expensive fast. That trade-off is exactly what the calculator's <a href="ab-testing.html?tab=plan">Plan tab</a> quantifies when it sizes your test.</p>
       </div>
     </div>
@@ -467,13 +451,13 @@
     <div class="accordion-body" style="padding:0;background:none">
       <p data-i18n="cn_intro">The most common misconception in A/B testing is that your raw data must be normally distributed. It usually doesn't. The t-test and Z-test assume the <em>sampling distribution of the mean</em> is roughly normal — and thanks to the Central Limit Theorem, that happens automatically once your sample is large enough, no matter how skewed the underlying data is.</p>
       <div class="callout-box">
-        <div class="callout-title" data-i18n="cn_rule_title">✅ The practical rule</div>
+        <div class="callout-title" data-i18n="cn_rule_title"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.7 2.7L16 9.8"/></svg> The practical rule</div>
         <p data-i18n="cn_rule_body" style="margin:0">With more than ~30–50 users per group for a fairly tame metric, or a few hundred for a heavily skewed one like revenue, you do not need to check normality at all. The CLT has you covered.</p>
       </div>
-      <div class="tip-row"><span class="tip-icon">✔️</span><div><strong data-i18n="cn_skip_b">You can skip the check when:</strong> <span data-i18n="cn_skip">your sample is large (hundreds+ per arm) and your metric is a mean or proportion. This covers the large majority of online experiments.</span></div></div>
-      <div class="tip-row"><span class="tip-icon">⚠️</span><div><strong data-i18n="cn_do_b">You should check (or switch tests) when:</strong> <span data-i18n="cn_do">your sample is small (under ~100–200 per arm), your metric is extremely skewed or dominated by a few outliers, or your data is clearly bimodal. In those cases the CLT may not have kicked in yet.</span></div></div>
-      <div class="tip-row"><span class="tip-icon">🔍</span><div><strong data-i18n="cn_how_b">How to check:</strong> <span data-i18n="cn_how">plot a histogram and look at the shape; compare the mean and median (far apart = skewed); or use a Q–Q plot. Formal tests like Shapiro–Wilk exist but are over-sensitive on large samples, so the eyeball test is usually more useful.</span></div></div>
-      <div class="tip-row"><span class="tip-icon">🔧</span><div><strong data-i18n="cn_fix_b">What to do if it's not normal and n is small:</strong> <span data-i18n="cn_fix">use the Mann–Whitney U test (compares ranks, no normality assumption), apply a log transform to tame right-skew, or cap/winsorize extreme outliers. Collecting more data is the simplest fix of all.</span></div></div>
+      <div class="tip-row"><span class="tip-icon"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.7 2.7L16 9.8"/></svg></span><div><strong data-i18n="cn_skip_b">You can skip the check when:</strong> <span data-i18n="cn_skip">your sample is large (hundreds+ per arm) and your metric is a mean or proportion. This covers the large majority of online experiments.</span></div></div>
+      <div class="tip-row"><span class="tip-icon"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5l9 16H3z"/><path d="M12 10v4.5M12 17.5v.01"/></svg></span><div><strong data-i18n="cn_do_b">You should check (or switch tests) when:</strong> <span data-i18n="cn_do">your sample is small (under ~100–200 per arm), your metric is extremely skewed or dominated by a few outliers, or your data is clearly bimodal. In those cases the CLT may not have kicked in yet.</span></div></div>
+      <div class="tip-row"><span class="tip-icon"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg></span><div><strong data-i18n="cn_how_b">How to check:</strong> <span data-i18n="cn_how">plot a histogram and look at the shape; compare the mean and median (far apart = skewed); or use a Q–Q plot. Formal tests like Shapiro–Wilk exist but are over-sensitive on large samples, so the eyeball test is usually more useful.</span></div></div>
+      <div class="tip-row"><span class="tip-icon"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 3.5a5 5 0 0 0 6 6L10 20a2.1 2.1 0 0 1-3-3L17.5 6.5"/></svg></span><div><strong data-i18n="cn_fix_b">What to do if it's not normal and n is small:</strong> <span data-i18n="cn_fix">use the Mann–Whitney U test (compares ranks, no normality assumption), apply a log transform to tame right-skew, or cap/winsorize extreme outliers. Collecting more data is the simplest fix of all.</span></div></div>
     </div>
   </div>
 
@@ -485,21 +469,21 @@
       <p data-i18n="ch_intro"><strong>The deciding question:</strong> is each user a yes/no, or a number? That answer picks your test. Everything else is detail.</p>
 
       <div class="choose-block">
-        <div class="choose-head"><span class="tip-icon">✅</span><span data-i18n="ch_z_h">Z-test — for conversion / proportions</span></div>
+        <div class="choose-head"><span class="tip-icon"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.7 2.7L16 9.8"/></svg></span><span data-i18n="ch_z_h">Z-test — for conversion / proportions</span></div>
         <div class="choose-row"><span class="choose-tag" data-i18n="ch_use">Use it when</span><span data-i18n="ch_z_use">each user is a binary outcome: converted or not, clicked or not, signed up or not.</span></div>
         <div class="choose-row"><span class="choose-tag" data-i18n="ch_stat">In statistics</span><span data-i18n="ch_z_stat">It compares two proportions. For a binary variable the spread is fixed by the rate itself (variance = p(1−p)), so once you know the conversion rate you already know the variability — no extra information needed. With thousands of users the proportion is essentially normal, so a Z (normal) test is exact enough.</span></div>
         <div class="choose-row"><span class="choose-tag" data-i18n="ch_biz">In business</span><span data-i18n="ch_z_biz">Answers "did a meaningfully larger share of users take the action?" Think checkout conversion, signup rate, email click-through. You only need two numbers per group — how many were shown it, and how many converted.</span></div>
       </div>
 
       <div class="choose-block">
-        <div class="choose-head"><span class="tip-icon">📊</span><span data-i18n="ch_t_h">t-test (Welch's) — for continuous metrics</span></div>
+        <div class="choose-head"><span class="tip-icon"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h16"/><path d="M7 16v-5M12 16V6M17 16v-8"/></svg></span><span data-i18n="ch_t_h">t-test (Welch's) — for continuous metrics</span></div>
         <div class="choose-row"><span class="choose-tag" data-i18n="ch_use">Use it when</span><span data-i18n="ch_t_use">each user produces a number that can vary freely: revenue, session length, items in cart, days retained.</span></div>
         <div class="choose-row"><span class="choose-tag" data-i18n="ch_stat">In statistics</span><span data-i18n="ch_t_stat">It compares two means. Unlike a proportion, a continuous metric's spread is <em>not</em> determined by its average — two groups can share a mean yet differ wildly in variance — so the test must estimate the spread from the data. Welch's version doesn't assume the two groups have equal variance, which makes it the safe default. (The "t" accounts for the extra uncertainty of estimating that spread; at large n it converges to the Z-test.)</span></div>
         <div class="choose-row"><span class="choose-tag" data-i18n="ch_biz">In business</span><span data-i18n="ch_t_biz">Answers "did the average value per user move?" Think ARPU, average order value, time on site. You need the mean, the standard deviation, and the sample size for each group — the spread matters as much as the average.</span></div>
       </div>
 
       <div class="callout-box">
-        <div class="callout-title" data-i18n="ch_key_title">🔑 The one-line reason they differ</div>
+        <div class="callout-title" data-i18n="ch_key_title"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="15" r="4"/><path d="M11 12l9-9M17 6l3 3M15 8l2 2"/></svg> The one-line reason they differ</div>
         <p data-i18n="ch_key_body" style="margin:0">For a <strong>proportion</strong>, the rate fixes the variance — so summary counts are enough (Z-test). For a <strong>continuous</strong> value, the average and the spread are independent — so you must measure the spread separately, and the t-test is built to handle that uncertainty.</p>
       </div>
 
@@ -517,16 +501,16 @@
       <p data-i18n="ch_when_read"><strong>Read it as:</strong> above ~200 users per arm the two tests give the same answer to three decimal places — at web scale the debate is academic. Below ~50 per arm the difference is real, and it matters in exactly one direction: the Z-test is <em>overconfident</em> on small samples.</p>
 
       <div class="case-study" style="margin-top:14px">
-        <div class="case-study-tag" data-i18n="ch_ex_tag">⚠️ Where it bites</div>
+        <div class="case-study-tag" data-i18n="ch_ex_tag"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5l9 16H3z"/><path d="M12 10v4.5M12 17.5v.01"/></svg> Where it bites</div>
         <div class="case-study-title" data-i18n="ch_ex_h">Same data, opposite verdicts: a 15-user B2B pilot</div>
         <p data-i18n="ch_ex_p">A B2B team pilots new pricing with 15 accounts per arm. Control averages $100 per seat, variant $114.60 (SD ≈ $20 in both). A <strong>+14.6% lift</strong> — worth real money. Run both tests on this identical data: the <strong>Z-test says p = 0.046 → "significant, ship it."</strong> <strong>Welch's t says p = 0.055 → "not there yet."</strong></p>
         <p data-i18n="ch_ex_p2">The t-test isn't being difficult — it's being honest. With 15 accounts, the SD of $20 is itself a rough guess, and the t-test prices in that extra uncertainty. The Z-test pretends the spread is known exactly, borrows confidence the data hasn't earned, and nudges you toward shipping on evidence that isn't quite there. On a pricing change, that overconfidence has a real invoice attached.</p>
         <div class="cs-takeaway"><strong data-i18n="ch_ex_take_b">The practical rule:</strong> <span data-i18n="ch_ex_take">for continuous metrics, just always use Welch's t — it can only make you appropriately more cautious, and at large n it costs you nothing because it converges to Z anyway. Reserve the Z-test for what it's built for: proportions.</span></div>
       </div>
 
-      <div class="tip-row"><span class="tip-icon">🔀</span><div><strong data-i18n="ch_ratio_b">Ratio metrics (AOV, CTR per session):</strong> <span data-i18n="ch_ratio">these have a varying denominator. Compute one value per user, then treat it as a continuous metric and use Welch's t.</span></div></div>
-      <div class="tip-row"><span class="tip-icon">📉</span><div><strong data-i18n="ch_mw_b">Skewed data with small n (&lt;200):</strong> <span data-i18n="ch_mw">when the Central Limit Theorem hasn't smoothed things out yet, switch to the Mann–Whitney U test, which compares ranks and assumes no particular shape.</span></div></div>
-      <div class="tip-row"><span class="tip-icon">🎰</span><div><strong data-i18n="ch_multi_b">3+ variants:</strong> <span data-i18n="ch_multi">compare each variant to control and apply a Holm–Bonferroni correction across those comparisons — no omnibus test needed once you correct. See "Multiple testing" below.</span></div></div>
+      <div class="tip-row"><span class="tip-icon"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 3h5v5M4 20L21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg></span><div><strong data-i18n="ch_ratio_b">Ratio metrics (AOV, CTR per session):</strong> <span data-i18n="ch_ratio">these have a varying denominator. Compute one value per user, then treat it as a continuous metric and use Welch's t.</span></div></div>
+      <div class="tip-row"><span class="tip-icon"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7l6 6 4-4 8 8"/><path d="M15 17h6v-6"/></svg></span><div><strong data-i18n="ch_mw_b">Skewed data with small n (&lt;200):</strong> <span data-i18n="ch_mw">when the Central Limit Theorem hasn't smoothed things out yet, switch to the Mann–Whitney U test, which compares ranks and assumes no particular shape.</span></div></div>
+      <div class="tip-row"><span class="tip-icon"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.2"/><circle cx="15.5" cy="15.5" r="1.2"/><circle cx="12" cy="12" r="1.2"/></svg></span><div><strong data-i18n="ch_multi_b">3+ variants:</strong> <span data-i18n="ch_multi">compare each variant to control and apply a Holm–Bonferroni correction across those comparisons — no omnibus test needed once you correct. See "Multiple testing" below.</span></div></div>
     </div>
   </div>
 
@@ -607,11 +591,11 @@
     <div class="card-title" data-i18n="ref_usecases_title">Matching the test to the situation</div>
     <div class="accordion-body" style="padding:0;background:none">
       <p data-i18n="uc_intro" style="margin-bottom:10px">Beyond normality, the distribution shape often tells you which test or metric to reach for. A few common product situations:</p>
-      <div class="tip-row"><span class="tip-icon">💰</span><div><strong data-i18n="uc1_b">Revenue / order value (right-skewed):</strong> <span data-i18n="uc1">Report the mean for business impact, but pair it with the median and consider CUPED to cut variance. With large n the t-test is fine; with small n switch to Mann–Whitney.</span></div></div>
-      <div class="tip-row"><span class="tip-icon">⏱️</span><div><strong data-i18n="uc2_b">Time-to-event / latency (exponential):</strong> <span data-i18n="uc2">Averages are dominated by the tail. Prefer percentiles (p50, p95) and consider a log transform before testing means.</span></div></div>
-      <div class="tip-row"><span class="tip-icon">🔢</span><div><strong data-i18n="uc3_b">Counts per user (Poisson-like):</strong> <span data-i18n="uc3">Orders per user, errors per session. The mean is meaningful, but variance grows with the mean — Welch's t (unequal variances) is a safe default.</span></div></div>
-      <div class="tip-row"><span class="tip-icon">🐫</span><div><strong data-i18n="uc4_b">Mixed populations (bimodal):</strong> <span data-i18n="uc4">Segment before you test. A single average across two distinct groups is usually misleading, however large the sample.</span></div></div>
-      <div class="tip-row"><span class="tip-icon">✅</span><div><strong data-i18n="uc5_b">Binary outcomes (proportions):</strong> <span data-i18n="uc5">Conversion, click, signup. Use the Z-test; normality of raw data never matters, only that you have enough events (a rule of thumb: at least ~10 conversions in each arm).</span></div></div>
+      <div class="tip-row"><span class="tip-icon"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M15 9.5c-.6-1-1.7-1.5-3-1.5-1.7 0-3 .9-3 2s1.3 1.7 3 2 3 .9 3 2-1.3 2-3 2c-1.3 0-2.4-.5-3-1.5M12 6v12"/></svg></span><div><strong data-i18n="uc1_b">Revenue / order value (right-skewed):</strong> <span data-i18n="uc1">Report the mean for business impact, but pair it with the median and consider CUPED to cut variance. With large n the t-test is fine; with small n switch to Mann–Whitney.</span></div></div>
+      <div class="tip-row"><span class="tip-icon"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><div><strong data-i18n="uc2_b">Time-to-event / latency (exponential):</strong> <span data-i18n="uc2">Averages are dominated by the tail. Prefer percentiles (p50, p95) and consider a log transform before testing means.</span></div></div>
+      <div class="tip-row"><span class="tip-icon"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 9h15M4 15h15M10 3L8 21M16 3l-2 18"/></svg></span><div><strong data-i18n="uc3_b">Counts per user (Poisson-like):</strong> <span data-i18n="uc3">Orders per user, errors per session. The mean is meaningful, but variance grows with the mean — Welch's t (unequal variances) is a safe default.</span></div></div>
+      <div class="tip-row"><span class="tip-icon"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 19c2 0 3-8 5-8s3 6 5 6 3-10 5-10 3 12 5 12"/></svg></span><div><strong data-i18n="uc4_b">Mixed populations (bimodal):</strong> <span data-i18n="uc4">Segment before you test. A single average across two distinct groups is usually misleading, however large the sample.</span></div></div>
+      <div class="tip-row"><span class="tip-icon"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.7 2.7L16 9.8"/></svg></span><div><strong data-i18n="uc5_b">Binary outcomes (proportions):</strong> <span data-i18n="uc5">Conversion, click, signup. Use the Z-test; normality of raw data never matters, only that you have enough events (a rule of thumb: at least ~10 conversions in each arm).</span></div></div>
     </div>
   </div>
 
@@ -620,7 +604,7 @@
     <div class="accordion-body" style="padding:0;background:none">
 
       <div class="case-study">
-        <div class="case-study-tag" data-i18n="dc1_tag">✅ Case 1 · Safe to skip</div>
+        <div class="case-study-tag" data-i18n="dc1_tag"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.7 2.7L16 9.8"/></svg> Case 1 · Safe to skip</div>
         <div class="case-study-title" data-i18n="dc1_title">Checkout conversion rate, 40,000 users per arm</div>
         <p data-i18n="dc1_p">A team tests a new checkout button. The metric is binary — converted or not — and each arm has 40,000 users. Someone asks whether they need to check normality first.</p>
         <div class="cs-chart-wrap"><canvas id="cs-chart-1"></canvas></div>
@@ -630,7 +614,7 @@
       </div>
 
       <div class="case-study" style="margin-top:14px">
-        <div class="case-study-tag" data-i18n="dc2_tag">⚠️ Case 2 · You must check</div>
+        <div class="case-study-tag" data-i18n="dc2_tag"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5l9 16H3z"/><path d="M12 10v4.5M12 17.5v.01"/></svg> Case 2 · You must check</div>
         <div class="case-study-title" data-i18n="dc2_title">Revenue per user, 80 users in a B2B pilot</div>
         <p data-i18n="dc2_p">A B2B company pilots a pricing change with only 80 customers per arm. The metric is revenue per account — and two enterprise deals dwarf everyone else.</p>
         <div class="cs-chart-wrap"><canvas id="cs-chart-2"></canvas></div>
@@ -640,7 +624,7 @@
       </div>
 
       <div class="case-study" style="margin-top:14px">
-        <div class="case-study-tag" data-i18n="dc3_tag">🐫 Case 3 · The hidden trap</div>
+        <div class="case-study-tag" data-i18n="dc3_tag"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 19c2 0 3-8 5-8s3 6 5 6 3-10 5-10 3 12 5 12"/></svg> Case 3 · The hidden trap</div>
         <div class="case-study-title" data-i18n="dc3_title">Session duration that looked fine but wasn't</div>
         <p data-i18n="dc3_p">A team analysed average session duration with 5,000 users per arm — comfortably large — and trusted the t-test. The result was significant, but the rollout didn't move the needle.</p>
         <div class="cs-chart-wrap"><canvas id="cs-chart-3"></canvas></div>
@@ -657,11 +641,11 @@
   <div class="card" id="sec-lifecycle">
     <div class="card-title" data-i18n="ref_lifecycle_title">The experiment lifecycle</div>
     <div class="accordion-body" style="padding:0;background:none">
-      <div class="tip-row"><span class="tip-icon">🎯</span><div><strong data-i18n="dd_lc_1_b">1. Hypothesis</strong> — <span data-i18n="dd_lc_1">State the change, the metric it should move, and the direction. "Bigger CTA button → higher signup rate."</span></div></div>
-      <div class="tip-row"><span class="tip-icon">📐</span><div><strong data-i18n="dd_lc_2_b">2. Power analysis</strong> — <span data-i18n="dd_lc_2">Decide the MDE that matters for the business, then compute the sample size and duration before launch. (That's what the calculator's <a href="ab-testing.html?tab=plan">Plan tab</a> is for.)</span></div></div>
-      <div class="tip-row"><span class="tip-icon">🚀</span><div><strong data-i18n="dd_lc_3_b">3. Run</strong> — <span data-i18n="dd_lc_3">Launch, check for SRM in the first hours, then leave it alone for at least one full business cycle (usually 1–2 weeks). No peeking.</span></div></div>
-      <div class="tip-row"><span class="tip-icon">📊</span><div><strong data-i18n="dd_lc_4_b">4. Analyse</strong> — <span data-i18n="dd_lc_4">At the planned sample size, run the right test for your metric type, check guardrails, and look at key segments. (That's the calculator's <a href="ab-testing.html?tab=analyse">Analyse tab</a>.)</span></div></div>
-      <div class="tip-row"><span class="tip-icon">✅</span><div><strong data-i18n="dd_lc_5_b">5. Decide & document</strong> — <span data-i18n="dd_lc_5">Ship, iterate, or abandon. Write down the result either way — negative results stop your team from repeating dead ideas.</span></div></div>
+      <div class="tip-row"><span class="tip-icon"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg></span><div><strong data-i18n="dd_lc_1_b">1. Hypothesis</strong> — <span data-i18n="dd_lc_1">State the change, the metric it should move, and the direction. "Bigger CTA button → higher signup rate."</span></div></div>
+      <div class="tip-row"><span class="tip-icon"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 17L17 3l4 4L7 21z"/><path d="M7 13l2 2M10 10l2 2M13 7l2 2"/></svg></span><div><strong data-i18n="dd_lc_2_b">2. Power analysis</strong> — <span data-i18n="dd_lc_2">Decide the MDE that matters for the business, then compute the sample size and duration before launch. (That's what the calculator's <a href="ab-testing.html?tab=plan">Plan tab</a> is for.)</span></div></div>
+      <div class="tip-row"><span class="tip-icon"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 15c-1.5 1.5-2 5-2 5s3.5-.5 5-2M9 15l-3-3c1-4 4.5-8 12-9-1 7.5-5 11-9 12z"/><circle cx="14.5" cy="9.5" r="1.5"/></svg></span><div><strong data-i18n="dd_lc_3_b">3. Run</strong> — <span data-i18n="dd_lc_3">Launch, check for SRM in the first hours, then leave it alone for at least one full business cycle (usually 1–2 weeks). No peeking.</span></div></div>
+      <div class="tip-row"><span class="tip-icon"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h16"/><path d="M7 16v-5M12 16V6M17 16v-8"/></svg></span><div><strong data-i18n="dd_lc_4_b">4. Analyse</strong> — <span data-i18n="dd_lc_4">At the planned sample size, run the right test for your metric type, check guardrails, and look at key segments. (That's the calculator's <a href="ab-testing.html?tab=analyse">Analyse tab</a>.)</span></div></div>
+      <div class="tip-row"><span class="tip-icon"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.7 2.7L16 9.8"/></svg></span><div><strong data-i18n="dd_lc_5_b">5. Decide & document</strong> — <span data-i18n="dd_lc_5">Ship, iterate, or abandon. Write down the result either way — negative results stop your team from repeating dead ideas.</span></div></div>
     </div>
   </div>
 
@@ -669,12 +653,12 @@
     <div class="card-title" data-i18n="ref_aatest_title">Before launch: the A/A test</div>
     <div class="chart-sub" style="margin-bottom:14px" data-i18n="ref_aatest_sub">Before you trust any A/B result, prove your splitting platform is fair. An A/A test sends two identical experiences to two randomly split groups — and expects to find no difference.</div>
     <div class="accordion-body" style="padding:0;background:none">
-      <div class="tip-row"><span class="tip-icon">❓</span><div><strong data-i18n="aa_what_b">What it is.</strong> <span data-i18n="aa_what">You run an experiment where A and B are exactly the same. Since nothing differs, any "winner" your tool reports is pure noise. It is the experiment equivalent of weighing an empty scale to check it reads zero.</span></div></div>
-      <div class="tip-row"><span class="tip-icon">🎯</span><div><strong data-i18n="aa_why_b">Why juniors should start here.</strong> <span data-i18n="aa_why">Most splitting bugs are invisible until you look: a broken randomiser, users landing in both groups, bots skewing one side, or logging that double-counts. An A/A test surfaces all of these before a real test misleads you.</span></div></div>
-      <div class="tip-row"><span class="tip-icon">📊</span><div><strong data-i18n="aa_read_b">How to read it.</strong> <span data-i18n="aa_read">Expect a non-significant result (p &gt; 0.05) roughly 95% of the time. A single significant A/A result is not alarming — at α = 0.05, about 1 in 20 will trip by chance. Run several. If significants come up far more often than ~5%, your platform has a problem.</span></div></div>
-      <div class="tip-row"><span class="tip-icon">⚖️</span><div><strong data-i18n="aa_srm_b">Check the split ratio (SRM).</strong> <span data-i18n="aa_srm">If you asked for a 50/50 split, the group sizes should be very close. A large imbalance — a Sample Ratio Mismatch — means assignment is broken, and no result from that platform can be trusted until it is fixed.</span></div></div>
+      <div class="tip-row"><span class="tip-icon"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.6v.6M12 17v.01"/></svg></span><div><strong data-i18n="aa_what_b">What it is.</strong> <span data-i18n="aa_what">You run an experiment where A and B are exactly the same. Since nothing differs, any "winner" your tool reports is pure noise. It is the experiment equivalent of weighing an empty scale to check it reads zero.</span></div></div>
+      <div class="tip-row"><span class="tip-icon"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg></span><div><strong data-i18n="aa_why_b">Why juniors should start here.</strong> <span data-i18n="aa_why">Most splitting bugs are invisible until you look: a broken randomiser, users landing in both groups, bots skewing one side, or logging that double-counts. An A/A test surfaces all of these before a real test misleads you.</span></div></div>
+      <div class="tip-row"><span class="tip-icon"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h16"/><path d="M7 16v-5M12 16V6M17 16v-8"/></svg></span><div><strong data-i18n="aa_read_b">How to read it.</strong> <span data-i18n="aa_read">Expect a non-significant result (p &gt; 0.05) roughly 95% of the time. A single significant A/A result is not alarming — at α = 0.05, about 1 in 20 will trip by chance. Run several. If significants come up far more often than ~5%, your platform has a problem.</span></div></div>
+      <div class="tip-row"><span class="tip-icon"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v16M8 20h8M5 8h14"/><path d="M5 8l-3 6a3 3 0 0 0 6 0zM19 8l-3 6a3 3 0 0 0 6 0z"/></svg></span><div><strong data-i18n="aa_srm_b">Check the split ratio (SRM).</strong> <span data-i18n="aa_srm">If you asked for a 50/50 split, the group sizes should be very close. A large imbalance — a Sample Ratio Mismatch — means assignment is broken, and no result from that platform can be trusted until it is fixed.</span></div></div>
       <div class="callout-box">
-        <div class="callout-title" data-i18n="aa_tip_title">✅ Practical starting checklist</div>
+        <div class="callout-title" data-i18n="aa_tip_title"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.7 2.7L16 9.8"/></svg> Practical starting checklist</div>
         <p data-i18n="aa_tip_body" style="margin:0">1. Run an A/A test on your platform. 2. Confirm the split ratio matches what you configured. 3. Confirm the p-value is non-significant across a few runs. 4. Only then start real A/B tests. You can paste the two A/A group numbers into the calculator's <a href="ab-testing.html?tab=analyse">Analyse tab</a> and confirm "no clear winner" — exactly what you want to see.</p>
       </div>
     </div>
@@ -699,7 +683,7 @@
       </div>
 
       <div style="display:flex;align-items:center;gap:12px;margin:10px 0 4px;flex-wrap:wrap">
-        <label style="font-size:0.8rem;color:var(--ink-muted);font-weight:600" data-i18n="split_slider_label">Share to variant:</label>
+        <label style="font-size:0.75rem;color:var(--ink-muted);font-weight:600" data-i18n="split_slider_label">Share to variant:</label>
         <input type="range" id="split-slider" min="5" max="50" value="10" step="5" style="flex:1;min-width:140px;accent-color:var(--accent)">
         <span id="split-slider-val" style="font-family:'JetBrains Mono',monospace;font-weight:600;color:var(--accent);min-width:42px">10%</span>
       </div>
@@ -707,12 +691,12 @@
     </div>
 
     <div class="accordion-body" style="padding:0;background:none;margin-top:14px">
-      <div class="tip-row"><span class="tip-icon">🛡️</span><div><strong data-i18n="split_why_b">Why you'd do it.</strong> <span data-i18n="split_why">A pricing change, a new checkout flow, or anything with revenue or support risk. A 10% exposure caps your downside: if the variant is bad, only 10% of users feel it.</span></div></div>
-      <div class="tip-row"><span class="tip-icon">🔋</span><div><strong data-i18n="split_power_b">Effect on power.</strong> <span data-i18n="split_power">Power is driven by the <em>smaller</em> arm. Shrinking the variant to 10% starves it of data, so to keep 80% power you must enlarge the whole experiment — the control arm balloons to compensate. Net effect: more total users than a balanced test.</span></div></div>
-      <div class="tip-row"><span class="tip-icon">⏱️</span><div><strong data-i18n="split_time_b">Effect on duration.</strong> <span data-i18n="split_time">The variant arm fills slowly because it only gets a thin slice of daily traffic. With the same total traffic, a 90/10 test can take roughly 2–3× longer than 50/50 to reach the needed numbers — the small arm is the bottleneck.</span></div></div>
-      <div class="tip-row"><span class="tip-icon">📐</span><div><strong data-i18n="split_rule_b">Rule of thumb.</strong> <span data-i18n="split_rule">50/50 is optimal for speed and sample efficiency. Don't go more extreme than you need: 80/20 costs ~60% more total users than 50/50, while 90/10 costs nearly 3×. Use the mildest imbalance that keeps the risk acceptable.</span></div></div>
+      <div class="tip-row"><span class="tip-icon"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 4.5-3.4 8-8 9-4.6-1-8-4.5-8-9V6z"/></svg></span><div><strong data-i18n="split_why_b">Why you'd do it.</strong> <span data-i18n="split_why">A pricing change, a new checkout flow, or anything with revenue or support risk. A 10% exposure caps your downside: if the variant is bad, only 10% of users feel it.</span></div></div>
+      <div class="tip-row"><span class="tip-icon"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="17" height="10" rx="2"/><path d="M22 11v2M6 10v4M10 10v4"/></svg></span><div><strong data-i18n="split_power_b">Effect on power.</strong> <span data-i18n="split_power">Power is driven by the <em>smaller</em> arm. Shrinking the variant to 10% starves it of data, so to keep 80% power you must enlarge the whole experiment — the control arm balloons to compensate. Net effect: more total users than a balanced test.</span></div></div>
+      <div class="tip-row"><span class="tip-icon"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><div><strong data-i18n="split_time_b">Effect on duration.</strong> <span data-i18n="split_time">The variant arm fills slowly because it only gets a thin slice of daily traffic. With the same total traffic, a 90/10 test can take roughly 2–3× longer than 50/50 to reach the needed numbers — the small arm is the bottleneck.</span></div></div>
+      <div class="tip-row"><span class="tip-icon"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 17L17 3l4 4L7 21z"/><path d="M7 13l2 2M10 10l2 2M13 7l2 2"/></svg></span><div><strong data-i18n="split_rule_b">Rule of thumb.</strong> <span data-i18n="split_rule">50/50 is optimal for speed and sample efficiency. Don't go more extreme than you need: 80/20 costs ~60% more total users than 50/50, while 90/10 costs nearly 3×. Use the mildest imbalance that keeps the risk acceptable.</span></div></div>
       <div class="callout-box">
-        <div class="callout-title" data-i18n="split_tip_title">💡 Practical guidance</div>
+        <div class="callout-title" data-i18n="split_tip_title"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"/></svg> Practical guidance</div>
         <p data-i18n="split_tip_body" style="margin:0">Start risky or expensive changes on a small slice (5–10%) to confirm nothing breaks, then — if it's safe — ramp toward 50/50 to gather evidence efficiently. If you must keep a small exposure for the whole test, plan for the longer runtime up front and check that your traffic can realistically reach the variant's required sample within your timeframe.</p>
       </div>
     </div>
@@ -722,7 +706,7 @@
     <div class="chart-title" data-i18n="ref_chart6_title">Why peeking inflates your false-positive rate</div>
     <div class="chart-sub" data-i18n="ref_chart6_sub">Each extra look at the data gives the false-positive rate another chance to cross 5%. Drag to see how the true error rate climbs with the number of peeks.</div>
     <div style="display:flex;align-items:center;gap:12px;margin:8px 0 4px;flex-wrap:wrap">
-      <label style="font-size:0.8rem;color:var(--ink-muted);font-weight:600" data-i18n="ref_peek_slider_label">Number of peeks:</label>
+      <label style="font-size:0.75rem;color:var(--ink-muted);font-weight:600" data-i18n="ref_peek_slider_label">Number of peeks:</label>
       <input type="range" id="peek-slider" min="1" max="30" value="5" step="1" style="flex:1;min-width:140px;accent-color:var(--accent)">
       <span id="peek-slider-val" style="font-family:'JetBrains Mono',monospace;font-weight:600;color:var(--accent);min-width:42px">5</span>
     </div>
@@ -749,7 +733,7 @@
       </div>
 
       <div style="display:flex;align-items:center;gap:12px;margin:10px 0 4px;flex-wrap:wrap">
-        <label style="font-size:0.8rem;color:var(--ink-muted);font-weight:600" data-i18n="mt_slider_label">Comparisons (m):</label>
+        <label style="font-size:0.75rem;color:var(--ink-muted);font-weight:600" data-i18n="mt_slider_label">Comparisons (m):</label>
         <input type="range" id="fwer-slider" min="1" max="20" value="3" step="1" style="flex:1;min-width:140px;accent-color:var(--accent)">
         <span id="fwer-slider-val" style="font-family:'JetBrains Mono',monospace;font-weight:600;color:var(--accent);min-width:32px">3</span>
       </div>
@@ -757,9 +741,9 @@
     </div>
 
     <div class="accordion-body" style="padding:0;background:none;margin-top:14px">
-      <div class="tip-row"><span class="tip-icon">➗</span><div><strong data-i18n="mt_bonf_b">Bonferroni correction.</strong> <span data-i18n="mt_bonf">Divide your target α by the number of comparisons m (e.g. 0.05 / 10 = 0.005); only p-values below that count as significant. Dead simple and strictly controls FWER — but over-conservative, so it costs you power and can miss real effects.</span></div></div>
-      <div class="tip-row"><span class="tip-icon">📶</span><div><strong data-i18n="mt_holm_b">Holm–Bonferroni (step-down).</strong> <span data-i18n="mt_holm">Sort the p-values smallest to largest and test them in order against progressively looser thresholds (α/m, then α/(m−1), …). Uniformly more powerful than plain Bonferroni while giving the same FWER guarantee. A sensible default.</span></div></div>
-      <div class="tip-row"><span class="tip-icon">📊</span><div><strong data-i18n="mt_bh_b">Benjamini–Hochberg (FDR control).</strong> <span data-i18n="mt_bh">Instead of guarding against even one false positive, it controls the expected <em>fraction</em> of false positives among your significant results (the False Discovery Rate). Much more powerful when you screen many metrics, at the cost of allowing a controlled share of errors. The standard choice for large dashboards and exploratory analyses.</span></div></div>
+      <div class="tip-row"><span class="tip-icon"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><circle cx="12" cy="6.5" r="1.2"/><circle cx="12" cy="17.5" r="1.2"/></svg></span><div><strong data-i18n="mt_bonf_b">Bonferroni correction.</strong> <span data-i18n="mt_bonf">Divide your target α by the number of comparisons m (e.g. 0.05 / 10 = 0.005); only p-values below that count as significant. Dead simple and strictly controls FWER — but over-conservative, so it costs you power and can miss real effects.</span></div></div>
+      <div class="tip-row"><span class="tip-icon"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h16"/><path d="M7 16v-5M12 16V6M17 16v-8"/></svg></span><div><strong data-i18n="mt_holm_b">Holm–Bonferroni (step-down).</strong> <span data-i18n="mt_holm">Sort the p-values smallest to largest and test them in order against progressively looser thresholds (α/m, then α/(m−1), …). Uniformly more powerful than plain Bonferroni while giving the same FWER guarantee. A sensible default.</span></div></div>
+      <div class="tip-row"><span class="tip-icon"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h16"/><path d="M7 16v-5M12 16V6M17 16v-8"/></svg></span><div><strong data-i18n="mt_bh_b">Benjamini–Hochberg (FDR control).</strong> <span data-i18n="mt_bh">Instead of guarding against even one false positive, it controls the expected <em>fraction</em> of false positives among your significant results (the False Discovery Rate). Much more powerful when you screen many metrics, at the cost of allowing a controlled share of errors. The standard choice for large dashboards and exploratory analyses.</span></div></div>
 
       <div class="dd-h3" style="margin-top:18px" data-i18n="mt_walk_h">Holm step by step — a worked example</div>
       <p data-i18n="mt_walk_p">Say you ran control + 3 variants, so you have <strong>3 comparisons</strong> (each variant vs control) and you want to keep your overall false-positive risk at α = 5%. You get these p-values back. Holm walks through them from smallest to largest, against a threshold that <em>loosens</em> at each step:</p>
@@ -780,7 +764,7 @@
         <p data-i18n="mt_omnibus_body3" style="margin:0"><strong>What the <a href="ab-testing.html?tab=analyse">calculator</a> does:</strong> for 3+ variants it compares each variant against control and applies <strong>Holm–Bonferroni</strong> across those comparisons — no omnibus gate required. The omnibus test is still worth running when your only question really is "did the experiment do <em>anything</em>?" (a research framing), or as a quick screen when there's no designated control.</p>
       </div>
       <div class="callout-box">
-        <div class="callout-title" data-i18n="mt_pick_title">✅ Which to use</div>
+        <div class="callout-title" data-i18n="mt_pick_title"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.7 2.7L16 9.8"/></svg> Which to use</div>
         <p data-i18n="mt_pick_body" style="margin:0">A few pre-planned comparisons where any false positive is costly → <strong>Holm–Bonferroni</strong> (the recommended default). Screening many metrics where you can tolerate a small false-positive share for more discoveries → <strong>Benjamini–Hochberg</strong>. Plain Bonferroni is fine when m is small and you want the simplest defensible rule. Guardrail metrics that protect against regressions are usually left <em>uncorrected</em> — there you want maximum sensitivity.</p>
       </div>
     </div>
@@ -793,9 +777,9 @@
       <summary data-i18n="acc_variance">High variance → low power</summary>
       <div class="accordion-body">
         <p data-i18n="ab_variance_intro">High-variance metrics (ARPU, LTV) need enormous samples to detect meaningful lifts. Three ways to fix this:</p>
-        <div class="tip-row"><span class="tip-icon">🎯</span><div><strong data-i18n="ab_cuped_bold">CUPED</strong> — <span data-i18n="ab_cuped_text">Regress out a pre-experiment covariate (e.g. prior-period revenue). Typical variance reduction: 30–50%. Formula: <code>Y_cuped = Y − θ·(X − E[X])</code>, where θ = Cov(Y,X)/Var(X). Same expected value, much less noise.</span></div></div>
-        <div class="tip-row"><span class="tip-icon">📊</span><div><strong data-i18n="ab_strat_bold">Stratified randomisation</strong> — <span data-i18n="ab_strat_text">Split users into strata (country, device tier) before assignment. Removes between-strata variance from the error term.</span></div></div>
-        <div class="tip-row"><span class="tip-icon">✂️</span><div><strong data-i18n="ab_winsor_bold">Winsorisation</strong> — <span data-i18n="ab_winsor_text">Cap values at the 99th percentile to stop whale users dominating. Apply the same cap to both variants before analysis.</span></div></div>
+        <div class="tip-row"><span class="tip-icon"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg></span><div><strong data-i18n="ab_cuped_bold">CUPED</strong> — <span data-i18n="ab_cuped_text">Regress out a pre-experiment covariate (e.g. prior-period revenue). Typical variance reduction: 30–50%. Formula: <code>Y_cuped = Y − θ·(X − E[X])</code>, where θ = Cov(Y,X)/Var(X). Same expected value, much less noise.</span></div></div>
+        <div class="tip-row"><span class="tip-icon"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h16"/><path d="M7 16v-5M12 16V6M17 16v-8"/></svg></span><div><strong data-i18n="ab_strat_bold">Stratified randomisation</strong> — <span data-i18n="ab_strat_text">Split users into strata (country, device tier) before assignment. Removes between-strata variance from the error term.</span></div></div>
+        <div class="tip-row"><span class="tip-icon"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M8.5 7.5L20 18M8.5 16.5L20 6"/></svg></span><div><strong data-i18n="ab_winsor_bold">Winsorisation</strong> — <span data-i18n="ab_winsor_text">Cap values at the 99th percentile to stop whale users dominating. Apply the same cap to both variants before analysis.</span></div></div>
       </div>
     </details>
 
@@ -803,9 +787,9 @@
       <summary data-i18n="acc_novelty">Novelty &amp; primacy effects</summary>
       <div class="accordion-body">
         <p data-i18n="ab_novelty_intro">Users respond differently to something new (novelty) or resist change (primacy). Both distort early estimates.</p>
-        <div class="tip-row"><span class="tip-icon">📅</span><div><strong data-i18n="ab_novelty_t1_bold">Run for at least 2 full weeks</strong> — <span data-i18n="ab_novelty_t1">to capture the full weekly cycle — weekday vs weekend behaviour differs for most products.</span></div></div>
-        <div class="tip-row"><span class="tip-icon">👥</span><div><strong data-i18n="ab_novelty_t2_bold">Segment by user tenure</strong> — <span data-i18n="ab_novelty_t2">Novelty effects are strongest for returning users who notice the change; new users have no baseline to compare.</span></div></div>
-        <div class="tip-row"><span class="tip-icon">📉</span><div><strong data-i18n="ab_novelty_t3_bold">Check if the effect decays</strong> — <span data-i18n="ab_novelty_t3">If week 1 shows +10% and week 3 shows +2%, the long-run impact is ~2%. Don't call a test on day 3.</span></div></div>
+        <div class="tip-row"><span class="tip-icon"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></span><div><strong data-i18n="ab_novelty_t1_bold">Run for at least 2 full weeks</strong> — <span data-i18n="ab_novelty_t1">to capture the full weekly cycle — weekday vs weekend behaviour differs for most products.</span></div></div>
+        <div class="tip-row"><span class="tip-icon"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14a6 6 0 0 1 3.5 6"/></svg></span><div><strong data-i18n="ab_novelty_t2_bold">Segment by user tenure</strong> — <span data-i18n="ab_novelty_t2">Novelty effects are strongest for returning users who notice the change; new users have no baseline to compare.</span></div></div>
+        <div class="tip-row"><span class="tip-icon"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7l6 6 4-4 8 8"/><path d="M15 17h6v-6"/></svg></span><div><strong data-i18n="ab_novelty_t3_bold">Check if the effect decays</strong> — <span data-i18n="ab_novelty_t3">If week 1 shows +10% and week 3 shows +2%, the long-run impact is ~2%. Don't call a test on day 3.</span></div></div>
       </div>
     </details>
 
@@ -813,9 +797,9 @@
       <summary data-i18n="acc_srm">Sample Ratio Mismatch (SRM)</summary>
       <div class="accordion-body">
         <p data-i18n="ab_srm_intro">An SRM occurs when the actual split differs from the intended split. This indicates a bug and invalidates results even if p &lt; 0.05.</p>
-        <div class="tip-row"><span class="tip-icon">🔍</span><div><strong data-i18n="ab_srm_t1_bold">Detect it</strong> — <span data-i18n="ab_srm_t1">Run a χ² test on observed variant counts vs. expected split. If p &lt; 0.01, stop and investigate.</span></div></div>
-        <div class="tip-row"><span class="tip-icon">🐛</span><div><strong data-i18n="ab_srm_t2_bold">Common causes</strong> — <span data-i18n="ab_srm_t2">Bot filtering on one variant only; redirect assignment losing users; CDN caching; client-side events firing conditionally.</span></div></div>
-        <div class="tip-row"><span class="tip-icon">🚫</span><div><strong data-i18n="ab_srm_t3_bold">Never adjust statistically</strong> — <span data-i18n="ab_srm_t3">Fix the root cause and rerun from scratch.</span></div></div>
+        <div class="tip-row"><span class="tip-icon"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg></span><div><strong data-i18n="ab_srm_t1_bold">Detect it</strong> — <span data-i18n="ab_srm_t1">Run a χ² test on observed variant counts vs. expected split. If p &lt; 0.01, stop and investigate.</span></div></div>
+        <div class="tip-row"><span class="tip-icon"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="7" width="10" height="13" rx="5"/><path d="M12 11v9M7 12H3M21 12h-4M7 17H4M20 17h-3M9 7L7 4M15 7l2-3"/></svg></span><div><strong data-i18n="ab_srm_t2_bold">Common causes</strong> — <span data-i18n="ab_srm_t2">Bot filtering on one variant only; redirect assignment losing users; CDN caching; client-side events firing conditionally.</span></div></div>
+        <div class="tip-row"><span class="tip-icon"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M5.6 5.6l12.8 12.8"/></svg></span><div><strong data-i18n="ab_srm_t3_bold">Never adjust statistically</strong> — <span data-i18n="ab_srm_t3">Fix the root cause and rerun from scratch.</span></div></div>
       </div>
     </details>
 
@@ -823,8 +807,8 @@
       <summary data-i18n="acc_peeking">Peeking — calling results too early</summary>
       <div class="accordion-body">
         <p data-i18n="ab_peeking_intro">Stopping as soon as p &lt; 0.05 inflates your actual error rate. With daily peeking over 4 weeks, it can reach 25%+.</p>
-        <div class="tip-row"><span class="tip-icon">📋</span><div><strong data-i18n="ab_peeking_t1_bold">Pre-register your MDE and plan</strong> — <span data-i18n="ab_peeking_t1">before launch. Commit to running until you hit the planned sample size.</span></div></div>
-        <div class="tip-row"><span class="tip-icon">🔄</span><div><strong data-i18n="ab_peeking_t2_bold">Sequential testing</strong> — <span data-i18n="ab_peeking_t2">Methods like mSPRT let you peek continuously with controlled error rates. Worth it for high-velocity teams.</span></div></div>
+        <div class="tip-row"><span class="tip-icon"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4M9 12h6M9 16h6"/></svg></span><div><strong data-i18n="ab_peeking_t1_bold">Pre-register your MDE and plan</strong> — <span data-i18n="ab_peeking_t1">before launch. Commit to running until you hit the planned sample size.</span></div></div>
+        <div class="tip-row"><span class="tip-icon"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11a8 8 0 0 0-14.7-4.4L3 9M3 4v5h5M4 13a8 8 0 0 0 14.7 4.4L21 15M21 20v-5h-5"/></svg></span><div><strong data-i18n="ab_peeking_t2_bold">Sequential testing</strong> — <span data-i18n="ab_peeking_t2">Methods like mSPRT let you peek continuously with controlled error rates. Worth it for high-velocity teams.</span></div></div>
       </div>
     </details>
 
@@ -832,9 +816,9 @@
       <summary data-i18n="acc_network">Network effects &amp; interference between users</summary>
       <div class="accordion-body">
         <p data-i18n="ab_network_intro">Standard A/B testing assumes user independence. This breaks in social products, marketplaces, and referral loops.</p>
-        <div class="tip-row"><span class="tip-icon">🗂️</span><div><strong data-i18n="ab_network_t1_bold">Cluster randomisation</strong> — <span data-i18n="ab_network_t1">Assign clusters of connected users (region, social graph) rather than individuals. Less power, less interference.</span></div></div>
-        <div class="tip-row"><span class="tip-icon">🚧</span><div><strong data-i18n="ab_network_t2_bold">Holdout groups</strong> — <span data-i18n="ab_network_t2">Keep a portion of users out of the experiment entirely to measure aggregate spillover.</span></div></div>
-        <div class="tip-row"><span class="tip-icon">⏱️</span><div><strong data-i18n="ab_network_t3_bold">Switchback experiments</strong> — <span data-i18n="ab_network_t3">Alternate treatment and control in time windows. Common in ride-hailing and logistics.</span></div></div>
+        <div class="tip-row"><span class="tip-icon"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></span><div><strong data-i18n="ab_network_t1_bold">Cluster randomisation</strong> — <span data-i18n="ab_network_t1">Assign clusters of connected users (region, social graph) rather than individuals. Less power, less interference.</span></div></div>
+        <div class="tip-row"><span class="tip-icon"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5l9 16H3z"/><path d="M12 10v4.5M12 17.5v.01"/></svg></span><div><strong data-i18n="ab_network_t2_bold">Holdout groups</strong> — <span data-i18n="ab_network_t2">Keep a portion of users out of the experiment entirely to measure aggregate spillover.</span></div></div>
+        <div class="tip-row"><span class="tip-icon"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><div><strong data-i18n="ab_network_t3_bold">Switchback experiments</strong> — <span data-i18n="ab_network_t3">Alternate treatment and control in time windows. Common in ride-hailing and logistics.</span></div></div>
       </div>
     </details>
 
@@ -842,9 +826,9 @@
       <summary data-i18n="acc_multiple">Multiple metrics — what do you optimise for?</summary>
       <div class="accordion-body">
         <p data-i18n="ab_multiple_intro">Testing many metrics at once inflates the chance at least one looks significant by chance.</p>
-        <div class="tip-row"><span class="tip-icon">🎯</span><div><strong data-i18n="ab_mult_t1_bold">Pre-register one primary metric</strong> — <span data-i18n="ab_mult_t1">the decision hinges on it. Secondary metrics are directional signals only.</span></div></div>
-        <div class="tip-row"><span class="tip-icon">🛡️</span><div><strong data-i18n="ab_mult_t2_bold">Guardrail metrics</strong> — <span data-i18n="ab_mult_t2">(revenue, latency, crash rate) — check without Bonferroni correction. You want maximum sensitivity to regressions.</span></div></div>
-        <div class="tip-row"><span class="tip-icon">📐</span><div><strong data-i18n="ab_mult_t3_bold">Benjamini–Hochberg FDR</strong> — <span data-i18n="ab_mult_t3">If testing many metrics, BH correction is less conservative than Bonferroni while still disciplined.</span></div></div>
+        <div class="tip-row"><span class="tip-icon"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg></span><div><strong data-i18n="ab_mult_t1_bold">Pre-register one primary metric</strong> — <span data-i18n="ab_mult_t1">the decision hinges on it. Secondary metrics are directional signals only.</span></div></div>
+        <div class="tip-row"><span class="tip-icon"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 4.5-3.4 8-8 9-4.6-1-8-4.5-8-9V6z"/></svg></span><div><strong data-i18n="ab_mult_t2_bold">Guardrail metrics</strong> — <span data-i18n="ab_mult_t2">(revenue, latency, crash rate) — check without Bonferroni correction. You want maximum sensitivity to regressions.</span></div></div>
+        <div class="tip-row"><span class="tip-icon"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 17L17 3l4 4L7 21z"/><path d="M7 13l2 2M10 10l2 2M13 7l2 2"/></svg></span><div><strong data-i18n="ab_mult_t3_bold">Benjamini–Hochberg FDR</strong> — <span data-i18n="ab_mult_t3">If testing many metrics, BH correction is less conservative than Bonferroni while still disciplined.</span></div></div>
       </div>
     </details>
   </div>
@@ -855,7 +839,7 @@
     <div class="chart-title" data-i18n="ref_chart5_title">CUPED: how variance reduction shrinks the sample you need</div>
     <div class="chart-sub" data-i18n="ref_chart5_sub">CUPED removes pre-experiment noise. Drag the slider to see how the variance-reduction percentage cuts the required sample size.</div>
     <div style="display:flex;align-items:center;gap:12px;margin:8px 0 4px;flex-wrap:wrap">
-      <label style="font-size:0.8rem;color:var(--ink-muted);font-weight:600" data-i18n="ref_cuped_slider_label">Variance reduction:</label>
+      <label style="font-size:0.75rem;color:var(--ink-muted);font-weight:600" data-i18n="ref_cuped_slider_label">Variance reduction:</label>
       <input type="range" id="cuped-slider" min="0" max="60" value="30" step="5" style="flex:1;min-width:140px;accent-color:var(--accent)">
       <span id="cuped-slider-val" style="font-family:'JetBrains Mono',monospace;font-weight:600;color:var(--accent);min-width:42px">30%</span>
     </div>
@@ -901,17 +885,17 @@
           <li data-i18n="dd2_pl_a5"><strong>Run your normal test on Ỹ</strong> and read the p-value exactly as usual.</li>
         </ol>
       </div>
-      <p style="font-size:.85rem;color:var(--ink-muted)" data-i18n="dd2_when_sum"><strong>One-line timing:</strong> collect X before, collect Y during, compute θ and adjust after. CUPED is a planning decision made up front but a calculation done at analysis time.</p>
+      <p style="font-size:0.875rem;color:var(--ink-muted)" data-i18n="dd2_when_sum"><strong>One-line timing:</strong> collect X before, collect Y during, compute θ and adjust after. CUPED is a planning decision made up front but a calculation done at analysis time.</p>
 
       <div class="dd-h3" data-i18n="dd2_h_case">3 · A worked case, step by step</div>
       <p data-i18n="dd2_case_intro">Forget formulas for a moment. Here are <strong>8 users</strong> from a revenue test — four in control (A), four in the variant (B). For each we have <strong>X</strong> = spend in the weeks <em>before</em> the test, and <strong>Y</strong> = spend <em>during</em> it. Small enough to follow every number by hand.</p>
-      <div class="dd-h3" style="font-size:0.9rem" data-i18n="dd2_case_fail_h">First, try it the normal way — and watch it fail</div>
+      <div class="dd-h3" style="font-size:0.875rem" data-i18n="dd2_case_fail_h">First, try it the normal way — and watch it fail</div>
       <p data-i18n="dd2_case_fail">Average Y in control = <strong>$24.00</strong>, in variant = <strong>$29.25</strong> — looks like a big +21.9% lift! But run a t-test and <strong>p = 0.74</strong>, nowhere near significant. Why? U2 ($55) and U6 ($60) are naturally big spenders bouncing the averages around so hard the test can't tell the gain from luck. The signal is real but the <em>noise</em> drowns it.</p>
-      <div class="dd-h3" style="font-size:0.9rem" data-i18n="dd2_case_apply_h">Now apply CUPED</div>
+      <div class="dd-h3" style="font-size:0.875rem" data-i18n="dd2_case_apply_h">Now apply CUPED</div>
       <div class="dd-step"><span class="dd-n">1</span><div><strong data-i18n="dd2_case_s1_b">Find θ.</strong> <span data-i18n="dd2_case_s1">θ = Cov(X,Y) / Var(X) across all 8 users = 337.4 / 296.0 = <strong>1.14</strong>. (Every extra $1 spent before predicts ~$1.14 during — consistent spenders.)</span></div></div>
       <div class="dd-step"><span class="dd-n">2</span><div><strong data-i18n="dd2_case_s2_b">Find X̄.</strong> <span data-i18n="dd2_case_s2">The average of X over all 8 users = <strong>$22.375</strong>.</span></div></div>
       <div class="dd-step"><span class="dd-n">3</span><div><strong data-i18n="dd2_case_s3_b">Adjust each user:</strong> <span data-i18n="dd2_case_s3">Ỹ = Y − θ·(X − X̄). For big spender U2: X = $50, so subtract 1.14 × (50 − 22.375) = $31.50, giving Ỹ = 55 − 31.50 = <strong>$23.50</strong>. Do this for all 8.</span></div></div>
-      <div class="dd-h3" style="font-size:0.9rem" data-i18n="dd2_case_cmp_h">Side-by-side: original Y vs. CUPED-adjusted Ỹ</div>
+      <div class="dd-h3" style="font-size:0.875rem" data-i18n="dd2_case_cmp_h">Side-by-side: original Y vs. CUPED-adjusted Ỹ</div>
       <p data-i18n="dd2_case_cmp_p">Watch the wild original column get pulled into a tight band — while the group averages barely move:</p>
       <table class="cmp-table">
         <thead><tr><th data-i18n="dd2_tbl_user">User</th><th data-i18n="dd2_tbl_orig">Original Y ($)</th><th data-i18n="dd2_tbl_cuped">CUPED Ỹ ($)</th></tr></thead>
@@ -936,7 +920,7 @@
           <li data-i18n="dd2_wc3"><strong>So the verdict flips.</strong> Same difference in means, but now measured against tiny noise instead of huge noise. The result that was invisible becomes obvious.</li>
         </ol>
       </div>
-      <div class="dd-h3" style="font-size:0.9rem" data-i18n="dd2_case_verdict_h">Step 4 — re-run the same test, see the verdict flip</div>
+      <div class="dd-h3" style="font-size:0.875rem" data-i18n="dd2_case_verdict_h">Step 4 — re-run the same test, see the verdict flip</div>
       <table class="verdict-table">
         <thead><tr><th data-i18n="dd2_vt_test">Test on…</th><th data-i18n="dd2_vt_lift">Lift</th><th>t</th><th>p</th><th data-i18n="dd2_vt_verdict">Verdict at α = 0.05</th></tr></thead>
         <tbody>
@@ -945,11 +929,11 @@
         </tbody>
       </table>
       <p style="background:rgba(5,150,105,0.07);border-left:3px solid var(--success);padding:11px 14px;border-radius:6px" data-i18n="dd2_case_lesson"><strong>The lesson:</strong> the raw test said "no difference" — but that was the <em>noise</em> talking, not the truth. The variant really was better; a few big spenders hid it. If your test comes back "not significant" on a noisy metric like revenue, don't conclude "no effect" — first ask whether you have pre-period data to CUPED-adjust with. You may have a winner hiding under the noise.</p>
-      <p style="font-size:.82rem;color:var(--ink-muted)" data-i18n="dd2_case_note">(This 8-user set is deliberately tiny so you can check the arithmetic — its correlation is unrealistically clean. Real covariates correlate around 0.3–0.6; the realistic example below uses ρ = 0.55.)</p>
+      <p style="font-size:0.875rem;color:var(--ink-muted)" data-i18n="dd2_case_note">(This 8-user set is deliberately tiny so you can check the arithmetic — its correlation is unrealistically clean. Real covariates correlate around 0.3–0.6; the realistic example below uses ρ = 0.55.)</p>
 
       <div class="dd-h3" data-i18n="dd2_h_real">4 · The same idea at realistic scale</div>
       <div class="case-study">
-        <div class="case-study-tag" data-i18n="cs_tag">📘 Case study</div>
+        <div class="case-study-tag" data-i18n="cs_tag"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5"/></svg> Case study</div>
         <div class="case-study-title" data-i18n="cs_title">StreamFlix tests a new checkout flow</div>
         <p data-i18n="cs_intro">StreamFlix wants to know if a one-click checkout lifts average revenue per user (ARPU). ARPU is brutally noisy — a handful of annual-plan buyers dominate, so the standard deviation is huge relative to the mean.</p>
         <div class="cs-step"><strong data-i18n="cs_s1_b">The problem without CUPED:</strong> <span data-i18n="cs_s1">Baseline ARPU is $12.00 with an SD of $48.00 (CV = 4.0). To detect a 3% lift at 80% power, they'd need ≈ 279,000 users per arm — about 6 weeks at ~6,700 eligible users per day per arm.</span></div>
@@ -1018,12 +1002,12 @@ Y[N:] *= <span class="tok-n">1.03</span>                                  <span 
       <div class="tip-row"><span class="tip-icon">4️⃣</span><div><strong data-i18n="dd_delta_s4_b">Feed it to a Z-test</strong> — <span data-i18n="dd_delta_s4">That corrected variance gives an honest standard error. From there it's an ordinary two-sample Z-test on the two groups' ratios. The delta method is <strong>not</strong> a separate test — it's the variance-estimation step that makes the Z-test trustworthy for ratio metrics.</span></div></div>
 
       <div class="callout" style="background:rgba(217,119,6,0.08);border:1px solid rgba(217,119,6,0.3);border-radius:8px;padding:12px 14px;margin:14px 0">
-        <strong data-i18n="dd_delta_note_b" style="color:var(--warn,#D97706)">A common shortcut — and when it's enough.</strong>
+        <strong data-i18n="dd_delta_note_b" style="color:var(--warn,#c98500)">A common shortcut — and when it's enough.</strong>
         <span data-i18n="dd_delta_note">For many product metrics you can sidestep the formula: aggregate to <em>one value per user</em> first (each user's own actions ÷ their own sessions), then run a plain Welch's t-test on those per-user numbers. That also respects the user-level independence. The full delta method earns its keep when you can't cleanly aggregate per user, or when the denominator can be zero for some users.</span>
       </div>
 
       <div class="case-study">
-        <div class="case-study-tag" data-i18n="cs_tag">📘 Case study</div>
+        <div class="case-study-tag" data-i18n="cs_tag"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5"/></svg> Case study</div>
         <div class="case-study-title" data-i18n="ds_title">A nudge that lifts "actions per session"</div>
         <p data-i18n="ds_intro">A team ships an onboarding nudge and measures actions per session. They randomise by user, but users have very different session counts — a handful of power users have dozens of sessions each.</p>
         <div class="cs-step"><strong data-i18n="ds_s1_b">The trap:</strong> <span data-i18n="ds_s1">A naive test on 50,000 sessions reports z ≈ 11, p &lt; 0.0001 — looks like a slam dunk. But those sessions come from far fewer users, and one power user's good day counts dozens of times.</span></div>
@@ -1040,13 +1024,13 @@ Y[N:] *= <span class="tok-n">1.03</span>                                  <span 
     <div class="card-title" data-i18n="cases_title">Case studies: A/B testing from problem to decision</div>
     <div class="chart-sub" style="margin-bottom:8px" data-i18n="cases_sub">Five stories ordered easy to hard — from a simple conversion test to a ratio metric needing the delta method. Each follows the same arc — problem, hypothesis, plan, run, analyse, decide — so you can copy the logic and run your own.</div>
     <div class="callout-box" style="margin-bottom:6px">
-      <div class="callout-title" data-i18n="cases_holdout_title">💡 The holdout principle (used in every case)</div>
+      <div class="callout-title" data-i18n="cases_holdout_title"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"/></svg> The holdout principle (used in every case)</div>
       <p style="margin:0" data-i18n="cases_holdout_body">Test on the <strong>minimum</strong> sample that gives 80% power — extra users past that add almost no certainty. Keep the rest as a <strong>holdout</strong> on the proven version, then roll the winner out to everyone afterwards. The full benefit comes at rollout, not during the test.</p>
     </div>
 
     <!-- Case 1 -->
     <details class="case-card">
-      <summary><span class="case-emoji">📧</span><span class="case-sum-title" data-i18n="c1_title">A better email subject line</span><span class="case-tags"><span class="case-pill metric" data-i18n="c1_metric">Conversion</span><span class="case-pill test">Z-test</span></span></summary>
+      <summary><span class="case-emoji"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span><span class="case-sum-title" data-i18n="c1_title">A better email subject line</span><span class="case-tags"><span class="case-pill metric" data-i18n="c1_metric">Conversion</span><span class="case-pill test">Z-test</span></span></summary>
       <div class="case-body">
         <div class="case-stage"><span class="case-lbl" data-i18n="cases_problem">The problem</span><p data-i18n="c1_problem">A SaaS team sends a weekly newsletter to 200,000 subscribers. Open rate is 22%. Marketing thinks a curiosity-driven subject line ("You're missing 3 features") will beat the current one. They want evidence before rolling it out to the whole list.</p></div>
         <div class="case-stage hypothesis"><span class="case-lbl" data-i18n="cases_hypothesis">Hypothesis</span><p data-i18n="c1_hyp"><strong>Because</strong> past sends show curiosity-gap subject lines earned higher opens in our own data, <strong>we believe</strong> a curiosity-driven line <strong>will</strong> raise the open rate from 22% to at least 23.1% (+5% relative). We'll know we're right if the Z-test clears p &lt; 0.05 with the lift above that threshold.</p></div>
@@ -1059,7 +1043,7 @@ Y[N:] *= <span class="tok-n">1.03</span>                                  <span 
               <text x="40" y="36" font-size="8" fill="#1a7a4a">80% power</text>
               <path d="M36,103 C110,96 140,60 190,44 C240,32 290,28 345,26" fill="none" stroke="#5b50c8" stroke-width="2.5"/>
               <rect x="196" y="26" width="149" height="79" fill="#5b50c8" opacity="0.06"/>
-              <circle cx="196" cy="42" r="4.5" fill="#e8832a" stroke="#fff" stroke-width="1.5"/>
+              <circle cx="196" cy="42" r="4.5" fill="#eb6834" stroke="#fff" stroke-width="1.5"/>
               <text x="150" y="122" font-size="8" fill="var(--ink-muted)" text-anchor="middle" data-i18n="c1_graph_x">sample size per group →</text>
               <text x="270" y="74" font-size="7.5" fill="var(--ink-faint)" text-anchor="middle" data-i18n="c1_graph_note">extra users add ~nothing</text>
             </svg>
@@ -1068,16 +1052,16 @@ Y[N:] *= <span class="tok-n">1.03</span>                                  <span 
         </div>
         <div class="case-stage"><span class="case-lbl" data-i18n="cases_run">Run &amp; collect</span><p data-i18n="c1_run">A single send goes out Tuesday; opens counted over 48 hours. Control 5,503/25,000 = 22.0%. Variant 5,795/25,000 = 23.2%.</p></div>
         <div class="case-stage result"><span class="case-lbl" data-i18n="cases_analyse">Analyse</span><p data-i18n="c1_analyse">Two-proportion Z-test: z ≈ 3.1, p ≈ 0.002. The 95% intervals for the two open rates don't overlap, and the split was a clean 50/50 (no SRM concern).</p></div>
-        <div class="case-verdict"><span>✅</span><div data-i18n="c1_verdict"><strong>Decision: roll out to all 200,000.</strong> The new line lifts opens ~5% relative — about 2,300 extra opens every week from then on. The holdout meant the full list was never risked on an untested idea.</div></div>
+        <div class="case-verdict"><span><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.7 2.7L16 9.8"/></svg></span><div data-i18n="c1_verdict"><strong>Decision: roll out to all 200,000.</strong> The new line lifts opens ~5% relative — about 2,300 extra opens every week from then on. The holdout meant the full list was never risked on an untested idea.</div></div>
         <div class="case-take" data-i18n="c1_take"><b>Answer for the product manager:</b> the absolute losses are equal (two people per step), but in relative terms the last transition hurts most — only half of those who submit ever activate. Fix the onboarding, not the form.</div>
       </div>
     </details>
 
     <!-- Case 2 -->
     <details class="case-card">
-      <summary><span class="case-emoji">🔔</span><span class="case-sum-title" data-i18n="c5_title">When the test says "no"</span><span class="case-tags"><span class="case-pill metric" data-i18n="c5_metric">Conversion</span><span class="case-pill test">Z-test</span></span></summary>
+      <summary><span class="case-emoji"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 16v-5a6 6 0 0 1 12 0v5l2 2H4z"/><path d="M10 21h4"/></svg></span><span class="case-sum-title" data-i18n="c5_title">When the test says "no"</span><span class="case-tags"><span class="case-pill metric" data-i18n="c5_metric">Conversion</span><span class="case-pill test">Z-test</span></span></summary>
       <div class="case-body">
-        <div class="case-stage"><span class="case-lbl" data-i18n="cases_problem">The problem</span><p data-i18n="c5_problem">A growth team adds emoji and urgency to a re-engagement push ("⏰ Don't lose your streak!"), expecting more dormant users to return. Re-engagement rate is ~4%.</p></div>
+        <div class="case-stage"><span class="case-lbl" data-i18n="cases_problem">The problem</span><p data-i18n="c5_problem">A growth team adds emoji and urgency to a re-engagement push ("<svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg> Don't lose your streak!"), expecting more dormant users to return. Re-engagement rate is ~4%.</p></div>
         <div class="case-stage hypothesis"><span class="case-lbl" data-i18n="cases_hypothesis">Hypothesis</span><p data-i18n="c5_hyp"><strong>Because</strong> support tickets and survey replies suggest users forget the app rather than dislike it, <strong>we believe</strong> an urgency-and-emoji push <strong>will</strong> lift the return rate from 4% by at least +0.5pp. We'll also watch a guardrail — mute/unsubscribe rate — so a "win" on returns doesn't quietly cost us long-term reach.</p></div>
         <div class="case-stage"><span class="case-lbl" data-i18n="cases_plan">Plan &amp; holdout</span><p data-i18n="c5_plan">Even with millions of dormant users, they test on a holdout-sized cohort — 50,000 per group — not the whole base. No reason to blast everyone with an unproven message.</p></div>
         <div class="case-stage"><span class="case-lbl" data-i18n="cases_run">Run &amp; collect</span><p data-i18n="c5_run">Control 4.0% vs variant 4.1%. The difference is tiny.</p></div>
@@ -1096,29 +1080,29 @@ Y[N:] *= <span class="tok-n">1.03</span>                                  <span 
             <div class="case-cap" data-i18n="c5_graph_cap">The confidence interval crosses zero — the data can't rule out "no effect."</div>
           </div>
         </div>
-        <div class="case-verdict no"><span>🛑</span><div data-i18n="c5_verdict"><strong>Decision: don't ship.</strong> No detectable lift — and a guardrail check showed the emoji slightly raised mute rates. "No change" saved them from shipping clutter and annoying users.</div></div>
+        <div class="case-verdict no"><span><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M5.6 5.6l12.8 12.8"/></svg></span><div data-i18n="c5_verdict"><strong>Decision: don't ship.</strong> No detectable lift — and a guardrail check showed the emoji slightly raised mute rates. "No change" saved them from shipping clutter and annoying users.</div></div>
         <div class="case-take" data-i18n="c5_take"><b>Answer for marketing:</b> "At risk" is 111 people who used to buy often and then disappeared. They are the most profitable target for reactivation — they have already proved they will pay. The 138 "dormant" are cheaper to let go.</div>
       </div>
     </details>
 
     <!-- Case 3 -->
     <details class="case-card">
-      <summary><span class="case-emoji">🛒</span><span class="case-sum-title" data-i18n="c2_title">A checkout redesign — and a split that lied</span><span class="case-tags"><span class="case-pill metric" data-i18n="c2_metric">Conversion</span><span class="case-pill test">Z-test</span></span></summary>
+      <summary><span class="case-emoji"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/><path d="M3 4h2l2.5 11h11l2-8H6"/></svg></span><span class="case-sum-title" data-i18n="c2_title">A checkout redesign — and a split that lied</span><span class="case-tags"><span class="case-pill metric" data-i18n="c2_metric">Conversion</span><span class="case-pill test">Z-test</span></span></summary>
       <div class="case-body">
         <div class="case-stage"><span class="case-lbl" data-i18n="cases_problem">The problem</span><p data-i18n="c2_problem">An e-commerce team rebuilds the checkout to cut drop-off. Current purchase-completion rate is 30%. They want to detect at least a +8% relative lift before shipping a change this big.</p></div>
         <div class="case-stage hypothesis"><span class="case-lbl" data-i18n="cases_hypothesis">Hypothesis</span><p data-i18n="c2_hyp"><strong>Because</strong> funnel analytics show 1 in 3 users abandon at a cluttered payment step, <strong>we believe</strong> a streamlined checkout with a progress bar <strong>will</strong> raise completion from 30% by at least +8% relative (to ≈32.4%). Success = a significant positive Z-test <em>on a clean 50/50 split</em> — the split health matters as much as the p-value here.</p></div>
         <div class="case-stage"><span class="case-lbl" data-i18n="cases_plan">Plan &amp; holdout</span><p data-i18n="c2_plan">The calculator says ~5,850 per group. With heavy daily traffic they expose just 10% of sessions to the test and keep 90% on the current checkout — a small, safe exposure for a risky change. They'll ramp up only if it's healthy.</p></div>
-        <div class="case-stage pitfall"><span class="case-lbl" data-i18n="cases_pitfall">⚠ The catch: SRM</span><p data-i18n="c2_pitfall">First read: 6,200 in control vs 5,800 in variant. The calculator's Sample Ratio Mismatch check flags it — p ≈ 0.0003, far below the 0.001 alarm. A redirect bug was dropping some users before assignment. <strong>Any result here would be untrustworthy.</strong> They fix the bug and rerun.</p>
+        <div class="case-stage pitfall"><span class="case-lbl" data-i18n="cases_pitfall"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5l9 16H3z"/><path d="M12 10v4.5M12 17.5v.01"/></svg> The catch: SRM</span><p data-i18n="c2_pitfall">First read: 6,200 in control vs 5,800 in variant. The calculator's Sample Ratio Mismatch check flags it — p ≈ 0.0003, far below the 0.001 alarm. A redirect bug was dropping some users before assignment. <strong>Any result here would be untrustworthy.</strong> They fix the bug and rerun.</p>
           <div class="case-graph">
             <svg viewBox="0 0 360 120" width="100%" height="120" font-family="Inter,sans-serif">
               <text x="180" y="16" font-size="8.5" fill="var(--ink-muted)" text-anchor="middle" data-i18n="c2_graph_t">Observed vs expected (50/50)</text>
               <text x="30" y="48" font-size="9" fill="var(--ink-muted)">A</text>
               <rect x="46" y="40" width="150" height="14" fill="#9a9cb8" rx="2"/>
-              <rect x="196" y="40" width="6" height="14" fill="#e11d48"/>
-              <text x="300" y="50" font-size="8" fill="#e11d48">6,200 (too many)</text>
+              <rect x="196" y="40" width="6" height="14" fill="#c2410c"/>
+              <text x="300" y="50" font-size="8" fill="#c2410c">6,200 (too many)</text>
               <text x="30" y="80" font-size="9" fill="var(--ink-muted)">B</text>
               <rect x="46" y="72" width="138" height="14" fill="#9a9cb8" rx="2"/>
-              <text x="300" y="82" font-size="8" fill="#e11d48">5,800 (too few)</text>
+              <text x="300" y="82" font-size="8" fill="#c2410c">5,800 (too few)</text>
               <line x1="190" y1="32" x2="190" y2="94" stroke="#1a1a2e" stroke-dasharray="3 3"/>
               <text x="190" y="108" font-size="7.5" fill="var(--ink-faint)" text-anchor="middle" data-i18n="c2_graph_exp">expected split point</text>
             </svg>
@@ -1126,14 +1110,14 @@ Y[N:] *= <span class="tok-n">1.03</span>                                  <span 
           </div>
         </div>
         <div class="case-stage result"><span class="case-lbl" data-i18n="cases_analyse">Analyse (after fix)</span><p data-i18n="c2_analyse">Clean rerun: control 30.0% vs variant 32.5%, a healthy 50/50 split, z ≈ 2.9, p ≈ 0.004.</p></div>
-        <div class="case-verdict"><span>✅</span><div data-i18n="c2_verdict"><strong>Decision: ramp up, then ship.</strong> A real +2.5pp lift in completed purchases. They increase exposure gradually, confirm the gain holds, and roll out.</div></div>
+        <div class="case-verdict"><span><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.7 2.7L16 9.8"/></svg></span><div data-i18n="c2_verdict"><strong>Decision: ramp up, then ship.</strong> A real +2.5pp lift in completed purchases. They increase exposure gradually, confirm the gain holds, and roll out.</div></div>
         <div class="case-take" data-i18n="c2_take"><b>Conclusion:</b> <b>72% of users earn less than the "average"</b>, and the top 10% bring 45% of all revenue. The ARPU rise could come from a couple of large deals while the typical user did not change at all. Track the median and segment.</div>
       </div>
     </details>
 
     <!-- Case 4 -->
     <details class="case-card">
-      <summary><span class="case-emoji">💸</span><span class="case-sum-title" data-i18n="c3_title">A pricing page that lifts revenue per visitor</span><span class="case-tags"><span class="case-pill metric cont" data-i18n="c3_metric">Continuous</span><span class="case-pill test">Welch's t</span></span></summary>
+      <summary><span class="case-emoji"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M15 9.5c-.6-1-1.7-1.5-3-1.5-1.7 0-3 .9-3 2s1.3 1.7 3 2 3 .9 3 2-1.3 2-3 2c-1.3 0-2.4-.5-3-1.5M12 6v12"/></svg></span><span class="case-sum-title" data-i18n="c3_title">A pricing page that lifts revenue per visitor</span><span class="case-tags"><span class="case-pill metric cont" data-i18n="c3_metric">Continuous</span><span class="case-pill test">Welch's t</span></span></summary>
       <div class="case-body">
         <div class="case-stage"><span class="case-lbl" data-i18n="cases_problem">The problem</span><p data-i18n="c3_problem">A team reorders the plans on a pricing page, hoping to raise average revenue per visitor (currently ~$18, but very spread out — many $0 visitors, a few large purchases).</p></div>
         <div class="case-stage hypothesis"><span class="case-lbl" data-i18n="cases_hypothesis">Hypothesis</span><p data-i18n="c3_hyp"><strong>Because</strong> session recordings show visitors anchor on the first plan they see, <strong>we believe</strong> leading with the mid-tier plan <strong>will</strong> raise average revenue per visitor from $18 by at least +$1. Because revenue is a continuous, highly-skewed amount, success is a significant <strong>Welch's t-test</strong> — not a Z-test — on the per-visitor means.</p></div>
@@ -1152,14 +1136,14 @@ Y[N:] *= <span class="tok-n">1.03</span>                                  <span 
         </div>
         <div class="case-stage"><span class="case-lbl" data-i18n="cases_run">Run &amp; collect</span><p data-i18n="c3_run">After ~5\u00bd weeks: ~27,700 visitors per arm. Control mean $18.00, variant mean $19.15 (both with large standard deviations ~$42).</p></div>
         <div class="case-stage result"><span class="case-lbl" data-i18n="cases_analyse">Analyse</span><p data-i18n="c3_analyse">Welch's t-test: t ≈ 3.2, p ≈ 0.001. The +$1.15 per visitor is small relative to the spread, but with ~27,700 per arm it's clearly distinguishable from noise.</p></div>
-        <div class="case-verdict"><span>✅</span><div data-i18n="c3_verdict"><strong>Decision: ship it.</strong> +$1.15 per visitor across all traffic is meaningful revenue. The long runtime was the price of a noisy metric — worth it for a permanent gain.</div></div>
+        <div class="case-verdict"><span><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.7 2.7L16 9.8"/></svg></span><div data-i18n="c3_verdict"><strong>Decision: ship it.</strong> +$1.15 per visitor across all traffic is meaningful revenue. The long runtime was the price of a noisy metric — worth it for a permanent gain.</div></div>
         <div class="case-take" data-i18n="c3_take"><b>How to read it:</b> look <b>down column 1</b> — 30.2 → 32.4 → 34.6. Each later cohort retains better at the same age. That is the proof the onboarding worked, and overall retention would never have shown it.</div>
       </div>
     </details>
 
     <!-- Case 5 -->
     <details class="case-card">
-      <summary><span class="case-emoji">🚀</span><span class="case-sum-title" data-i18n="c4_title">An onboarding nudge that changes behaviour</span><span class="case-tags"><span class="case-pill metric ratio" data-i18n="c4_metric">Ratio</span><span class="case-pill test">Delta method</span></span></summary>
+      <summary><span class="case-emoji"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 15c-1.5 1.5-2 5-2 5s3.5-.5 5-2M9 15l-3-3c1-4 4.5-8 12-9-1 7.5-5 11-9 12z"/><circle cx="14.5" cy="9.5" r="1.5"/></svg></span><span class="case-sum-title" data-i18n="c4_title">An onboarding nudge that changes behaviour</span><span class="case-tags"><span class="case-pill metric ratio" data-i18n="c4_metric">Ratio</span><span class="case-pill test">Delta method</span></span></summary>
       <div class="case-body">
         <div class="case-stage"><span class="case-lbl" data-i18n="cases_problem">The problem</span><p data-i18n="c4_problem">A product team adds a guided checklist to onboarding, hoping new users take more key actions per session. The metric is <strong>actions per session</strong> — a ratio, where each user contributes many sessions.</p></div>
         <div class="case-stage hypothesis"><span class="case-lbl" data-i18n="cases_hypothesis">Hypothesis</span><p data-i18n="c4_hyp"><strong>Because</strong> activation data shows users who complete 3+ actions in week one retain far better, <strong>we believe</strong> a guided checklist <strong>will</strong> raise actions per session from ~1.0 by a meaningful margin. Because the metric is a ratio (many sessions per user), success must be judged with the <strong>delta method</strong>, which gets the variance right — a naive test would over-claim.</p></div>
@@ -1177,7 +1161,7 @@ Y[N:] *= <span class="tok-n">1.03</span>                                  <span 
           </div>
         </div>
         <div class="case-stage result"><span class="case-lbl" data-i18n="cases_analyse">Analyse</span><p data-i18n="c4_analyse">Delta method + Z-test: z ≈ 6.9, p &lt; 0.001. The lift in actions per session is real, and the variance was estimated correctly — a naive test would have over-stated the certainty.</p></div>
-        <div class="case-verdict"><span>✅</span><div data-i18n="c4_verdict"><strong>Decision: ramp and ship.</strong> The checklist genuinely changes behaviour. They expand from 20% to full rollout after confirming the lift holds.</div></div>
+        <div class="case-verdict"><span><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.7 2.7L16 9.8"/></svg></span><div data-i18n="c4_verdict"><strong>Decision: ramp and ship.</strong> The checklist genuinely changes behaviour. They expand from 20% to full rollout after confirming the lift holds.</div></div>
         <div class="case-take" data-i18n="c4_take"><b>Conclusion:</b> p = 0.073 > 0.05 and variant A's interval overlaps the control. The difference is <b>not significant</b> — shipping now would be premature. This is exactly why error bars are more honest than bare bars.</div>
       </div>
     </details>
@@ -1191,8 +1175,8 @@ Y[N:] *= <span class="tok-n">1.03</span>                                  <span 
 </div>
 
 <script src="stats.js?v=6393e047"></script>
-<script src="i18n.js?v=8f60dbba"></script>
-<script src="charts.js?v=54f63be5"></script>
-<script src="app.js?v=3717537e"></script>
+<script src="i18n.js?v=4f6306a1"></script>
+<script src="charts.js?v=5fbf8799"></script>
+<script src="app.js?v=5b9b49bd"></script>
 </body>
 </html>
